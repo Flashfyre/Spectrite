@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "spectritemod:diamond_chest" },
+        "facing=east": { "model": "spectritemod:diamond_chest", "y": 90  },
+        "facing=south": { "model": "spectritemod:diamond_chest", "y": 180  },
+        "facing=west": { "model": "spectritemod:diamond_chest", "y": 270  }
+    }
+}

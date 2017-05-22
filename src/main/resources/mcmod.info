@@ -1,0 +1,16 @@
+[
+{
+  "modid": "spectritemod",
+  "name": "Spectrite Mod",
+  "description": "Adds a new and extremely rare mineral to world generation!",
+  "version": "1.0.0",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Samuel Harbord"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

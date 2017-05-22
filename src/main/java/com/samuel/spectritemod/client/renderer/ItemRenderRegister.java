@@ -1,0 +1,51 @@
+package com.samuel.spectritemod.client.renderer;
+
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.model.ModelLoader;
+
+import com.samuel.spectritemod.SpectriteMod;
+import com.samuel.spectritemod.init.ModItems;
+
+public final class ItemRenderRegister {
+
+	public static String modid = SpectriteMod.MOD_ID;
+
+	public static void registerItemRenderer() {
+		reg(ModItems.diamond_rod);
+		reg(ModItems.spectrite_rod);
+		reg(ModItems.spectrite_gem);
+		reg(ModItems.spectrite_orb);
+		reg(ModItems.spectrite_shovel);
+		reg(ModItems.spectrite_shovel_special);
+		reg(ModItems.spectrite_pickaxe);
+		reg(ModItems.spectrite_pickaxe_special);
+		reg(ModItems.spectrite_axe);
+		reg(ModItems.spectrite_axe_special);
+		reg(ModItems.spectrite_sword);
+		reg(ModItems.spectrite_sword_special);
+		reg(ModItems.spectrite_sword_2);
+		reg(ModItems.spectrite_sword_2_special);
+		reg(ModItems.spectrite_helmet);
+		reg(ModItems.spectrite_chestplate);
+		reg(ModItems.spectrite_leggings);
+		reg(ModItems.spectrite_boots);
+	}
+
+	public static void reg(Item item) {
+		ModelLoader.setCustomModelResourceLocation(item, 0,
+			new ModelResourceLocation(modid + ":" +
+			item.getUnlocalizedName().substring(5), "inventory"));
+	}
+
+	public static void reg(Item item, int meta) {
+		ModelLoader.setCustomModelResourceLocation(item,
+			meta, new ModelResourceLocation(modid
+				+ ":"
+				+ item.getUnlocalizedName(
+					new ItemStack(item, 1, meta))
+					.substring(5), "inventory"));
+	}
+
+}

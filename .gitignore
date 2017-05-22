@@ -1,47 +1,24 @@
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
+/.gradle
+/.settings
+/eclipse
+/bin
+/build
+/run
 
-# Folder config file
-Desktop.ini
+/CREDITS-fml.txt
+/LICENSE-fml.txt
+/LICENSE-new.txt
+/MinecraftForge-Credits.txt
+/MinecraftForge-License.txt
+/README.txt
+/forge-1.11.2-13.20.0.2296-changelog.txt
+/forge-1.11.2-13.20.0.2296-mdk_Client.launch
+/forge-1.11.2-13.20.0.2296-mdk_Server.launch
+/Paulscode IBXM Library License.txt
+/Paulscode SoundSystem CodecIBXM License.txt
+/.classpath
 
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
-
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
-
-# Windows shortcuts
-*.lnk
-
-# =========================
-# Operating System Files
-# =========================
-
-# OSX
-# =========================
-
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Thumbnails
-._*
-
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
+*.bak
+*.psd
+*.db
+gradle.properties

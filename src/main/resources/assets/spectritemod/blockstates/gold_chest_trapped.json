@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "spectritemod:gold_chest_trapped" },
+        "facing=east": { "model": "spectritemod:gold_chest_trapped", "y": 90  },
+        "facing=south": { "model": "spectritemod:gold_chest_trapped", "y": 180  },
+        "facing=west": { "model": "spectritemod:gold_chest_trapped", "y": 270  }
+    }
+}
