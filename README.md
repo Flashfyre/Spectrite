@@ -1,7 +1,7 @@
 # Spectrite Mod
 
 ## Description
-This is a Minecraft Forge mod that adds a new and extremely rare mineral to world generation in all 3 default dimensions. Hold on! This isn't just another boring mineral mod! This mineral is capable of crafting far better items than diamond such as a pickaxe that can mine 9 blocks at once and an armour set that, with all the pieces, will make you practically invincible. Sound game-breaking? Not really, spectrite is really hard to come by so it would usually take a very long time to acquire enough to craft items with it, unless of course you decide to make it more common in the configuration. This mod, aside from providing the (hard-to-reach) means of making you extremely overpowered, fits right into Vanilla gameplay, so I can recommend using it no matter what mods you use. To be honest, I (the developer) can't even play the game without it anymore.
+This is a Minecraft Forge mod that adds a new and extremely rare mineral to world generation in all 3 default dimensions. Hold on! This isn't just another boring mineral mod! This mineral is capable of crafting far better items than diamond such as a pickaxe that can mine 9 blocks at once and an armour set that, with all the pieces, will make you practically invincible. Sound game-breaking? Not really, Spectrite is really hard to come by so it would usually take a very long time to acquire enough to craft items with it, unless of course you decide to make it more common in the configuration. This mod, aside from providing the (hard-to-reach) means of making you extremely overpowered, fits right into Vanilla gameplay, so I can recommend using it no matter what mods you use. To be honest, I (the developer) can't even play the game without it anymore.
 
 ## Finding Spectrite Ore
 Spectrite Ore is intended to be very rare, even though it is the only ore you can find it in any of the 3 dimensions. Unlike other ores, the size of a vein is chosen by taking a random number between the minimum and maximum vein sizes, taking another random number between 1 and the first random number, and repeating this a third time. This means that there is a very high chance of getting a vein with the minimum size and a very low chance of getting a vein with the maximum size. The chances a Spectrite Ore vein generating, by default, are different for each dimension:
@@ -17,8 +17,8 @@ There are 2 chances of a Spectrite Ore vein per chunk between height=4 and heigh
 
 ## Blocks and Items
 
-### Mineral Chests (Iron, Gold, Diamond, and Spectrite)
-A chest with the texture of a mineral. You may smelt them for 5 of their mineral's respective crafting material, though it takes 8 to craft a chest, so it's inefficient to do this unless you desparately need some of the mineral you crafted the chest with. Unfortunately, the textures for these chests are not resource pack compatible so they will have textures like mineral blocks regardless of the resource pack being used. These chests serve no special purpose, they are purely for bragging rights. ("Look at me, I have so many diamonds I can afford to make a chest out of diamond blocks!")
+### Spectrite Chests
+A chest with the texture of Spectrite. You may smelt it for 5 Spectrite Gems, though it takes 8 to craft a chest, so it's inefficient to do this unless you desperately need some of the Spectrite Gems you crafted the chest with. These chests serve no special purpose, they are purely for bragging rights. ("Look at me, I have so many Spectrite Gems I can afford to make a chest out of Spectrite Blocks!")
 
 Crafting Recipe:
 
@@ -29,7 +29,7 @@ X　-　X
 X　X　X
 
 
-X = Iron Ingot, Gold Ingot, Diamond, or Spectrite Gem
+X = Spectrite Gem
 
 ### Spectrite Ore
 An extremely rare ore that can be found in the same place as diamonds in the surface world, though significantly rarer, but can also be found more commonly in the Nether and The End. 
@@ -227,6 +227,7 @@ Spectrite Ore as found in The End
 
 ![New chests!](/screenshots/4.png?raw=true "New chests!")
 New chests!
+**(Edit: Iron, Gold, and Diamond chests have been removed in favour of using the Iron Chests mod version instead)**
 
 ![A Spectrite Boss mob](/screenshots/5.png?raw=true "A Spectrite Boss mob")
 A Spectrite Boss mob
