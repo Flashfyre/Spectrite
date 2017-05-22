@@ -17,23 +17,23 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 
-import com.samuel.spectritemod.blocks.BlockMineralChest;
-import com.samuel.spectritemod.blocks.BlockMineralChest.Type;
+import com.samuel.spectritemod.blocks.BlockSpectriteChest;
+import com.samuel.spectritemod.blocks.BlockSpectriteChest.Type;
 import com.samuel.spectritemod.etc.ContainerMineralChest;
 import com.samuel.spectritemod.etc.InventoryLargeMineralChest;
 
-public class TileEntityMineralChest extends TileEntityChest
+public class TileEntitySpectriteChest extends TileEntityChest
 	implements ITickable, IInventory {
 	
 	private int ticksSinceSync;
 	private Type cachedChestType;
 	private String customName;
 
-	public TileEntityMineralChest() {
+	public TileEntitySpectriteChest() {
 		this.cachedChestType = null;
 	}
 
-	public TileEntityMineralChest(Type chestType) {
+	public TileEntitySpectriteChest(Type chestType) {
 		this.cachedChestType = chestType;
 	}
 
@@ -63,11 +63,11 @@ public class TileEntityMineralChest extends TileEntityChest
 	@Override
 	public ITextComponent getDisplayName() {
 		final int chestType = cachedChestType != null ? cachedChestType.ordinal() +
-			(cachedChestType.ordinal() < 4 ? 0 : -4) : 0;
+			(cachedChestType.ordinal() == 0 ? 0 : -1) : 0;
 		if (blockType == null)
 			blockType = getBlockType();
 		String name = blockType.getUnlocalizedName() + ".name";
-		if (((BlockMineralChest) blockType).isDoubleChest(world, pos)) {
+		if (((BlockSpectriteChest) blockType).isDoubleChest(world, pos)) {
 			name = name.substring(0, 5) + "large_" + name.substring(5);
 		}
 		return new TextComponentTranslation(name);
@@ -77,15 +77,15 @@ public class TileEntityMineralChest extends TileEntityChest
 	public BlockChest.Type getChestType() {
 		if (this.cachedChestType == null) {
 			if (this.world == null
-				|| !(this.getBlockType() instanceof BlockMineralChest)) {
+				|| !(this.getBlockType() instanceof BlockSpectriteChest)) {
 				return BlockChest.Type.BASIC;
 			}
 
-			this.cachedChestType = ((BlockMineralChest) this
+			this.cachedChestType = ((BlockSpectriteChest) this
 				.getBlockType()).chestType;
 		}
 
-		return this.cachedChestType.ordinal() < 4 ? BlockChest.Type.BASIC :
+		return this.cachedChestType.ordinal() == 0 ? BlockChest.Type.BASIC :
 			BlockChest.Type.TRAP;
 	}
 	
@@ -93,11 +93,11 @@ public class TileEntityMineralChest extends TileEntityChest
 		
 		if (this.cachedChestType == null) {
 			if (this.world == null
-				|| !(this.getBlockType() instanceof BlockMineralChest)) {
-				return Type.IRON;
+				|| !(this.getBlockType() instanceof BlockSpectriteChest)) {
+				return Type.NORMAL;
 			}
 
-			this.cachedChestType = ((BlockMineralChest) this
+			this.cachedChestType = ((BlockSpectriteChest) this
 				.getBlockType()).chestType;
 		}
 		
@@ -113,9 +113,9 @@ public class TileEntityMineralChest extends TileEntityChest
         {
             TileEntity tileentity = this.world.getTileEntity(blockpos);
 
-            if (tileentity instanceof TileEntityMineralChest)
+            if (tileentity instanceof TileEntitySpectriteChest)
             {
-                TileEntityMineralChest tileentitychest = (TileEntityMineralChest)tileentity;
+                TileEntitySpectriteChest tileentitychest = (TileEntitySpectriteChest)tileentity;
                 tileentitychest.func_174910_a(this, side.getOpposite());
                 return tileentitychest;
             }
@@ -130,15 +130,15 @@ public class TileEntityMineralChest extends TileEntityChest
 		} else {
 			Block block = this.world
 				.getBlockState(posIn).getBlock();
-			return block instanceof BlockMineralChest
-				&& ((BlockMineralChest) block).chestType == this
+			return block instanceof BlockSpectriteChest
+				&& ((BlockSpectriteChest) block).chestType == this
 					.getMineralChestType();
 		}
 	}
 
 	@SuppressWarnings("incomplete-switch")
 	private void func_174910_a(
-		TileEntityMineralChest chestTe, EnumFacing side) {
+		TileEntitySpectriteChest chestTe, EnumFacing side) {
 		if (chestTe.isInvalid()) {
 			this.adjacentChestChecked = false;
 		} else if (this.adjacentChestChecked) {

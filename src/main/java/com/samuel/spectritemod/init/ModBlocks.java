@@ -5,39 +5,21 @@ import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import com.samuel.spectritemod.SpectriteMod;
-import com.samuel.spectritemod.blocks.BlockMineralChest;
+import com.samuel.spectritemod.blocks.BlockSpectriteChest;
 import com.samuel.spectritemod.blocks.BlockSpectrite;
 import com.samuel.spectritemod.blocks.BlockSpectriteOre;
 import com.samuel.spectritemod.items.ItemBlockMeta;
 
 public class ModBlocks {
 
-	public static BlockMineralChest mineralChestIron;
-	public static BlockMineralChest mineralChestGold;
-	public static BlockMineralChest mineralChestDiamond;
-	public static BlockMineralChest mineralChestSpectrite;
-	public static BlockMineralChest mineralChestIronTrapped;
-	public static BlockMineralChest mineralChestGoldTrapped;
-	public static BlockMineralChest mineralChestDiamondTrapped;
-	public static BlockMineralChest mineralChestSpectriteTrapped;
+	public static BlockSpectriteChest mineralChestSpectrite;
+	public static BlockSpectriteChest mineralChestSpectriteTrapped;
 	public static BlockSpectriteOre spectriteOre;
 	public static BlockSpectrite spectriteBlock;
 
 	public static void createBlocks() {
-		registerBlock(mineralChestIron = SpectriteMod.BlockIronChest,
-			"iron_chest");
-		registerBlock(mineralChestGold = SpectriteMod.BlockGoldChest,
-			"gold_chest");
-		registerBlock(mineralChestDiamond = SpectriteMod.BlockDiamondChest,
-			"diamond_chest");
 		registerBlock(mineralChestSpectrite = SpectriteMod.BlockSpectriteChest,
 			"spectrite_chest");
-		registerBlock(mineralChestIronTrapped = SpectriteMod.BlockTrappedIronChest,
-			"iron_chest_trapped");
-		registerBlock(mineralChestGoldTrapped = SpectriteMod.BlockTrappedGoldChest,
-			"gold_chest_trapped");
-		registerBlock(mineralChestDiamondTrapped = SpectriteMod.BlockTrappedDiamondChest,
-			"diamond_chest_trapped");
 		registerBlock(mineralChestSpectriteTrapped = SpectriteMod.BlockTrappedSpectriteChest,
 			"spectrite_chest_trapped");
 		registerBlock(spectriteOre = SpectriteMod.BlockSpectriteOre, new ItemBlockMeta(spectriteOre),

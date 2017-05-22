@@ -27,9 +27,9 @@ import net.minecraft.world.World;
 
 import com.samuel.spectritemod.SpectriteMod;
 import com.samuel.spectritemod.etc.InventoryLargeMineralChest;
-import com.samuel.spectritemod.tileentity.TileEntityMineralChest;
+import com.samuel.spectritemod.tileentity.TileEntitySpectriteChest;
 
-public class BlockMineralChest extends BlockChest {
+public class BlockSpectriteChest extends BlockChest {
 	
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public final Type chestType;
@@ -37,7 +37,7 @@ public class BlockMineralChest extends BlockChest {
     
     public static enum Type implements IStringSerializable
     {
-        IRON, GOLD, DIAMOND, SPECTRITE, IRON_TRAPPED, GOLD_TRAPPED, DIAMOND_TRAPPED, SPECTRITE_TRAPPED;
+        NORMAL, TRAPPED;
 
 		@Override
 		public String getName() {
@@ -45,10 +45,10 @@ public class BlockMineralChest extends BlockChest {
 		}
     }
 
-	public BlockMineralChest(Type chestType) {
-		super(chestType.ordinal() < 4 ? BlockChest.Type.BASIC : BlockChest.Type.TRAP);
+	public BlockSpectriteChest(Type chestType) {
+		super(chestType.ordinal() == 0 ? BlockChest.Type.BASIC : BlockChest.Type.TRAP);
         this.chestType = chestType;
-        this.setCreativeTab(chestType.ordinal() < 4 ? CreativeTabs.DECORATIONS : CreativeTabs.REDSTONE);
+        this.setCreativeTab(chestType.ordinal() == 0 ? CreativeTabs.DECORATIONS : CreativeTabs.REDSTONE);
 	}
 	
 	@Override
@@ -163,9 +163,9 @@ public class BlockMineralChest extends BlockChest {
         {
             TileEntity tileentity = worldIn.getTileEntity(pos);
 
-            if (tileentity instanceof TileEntityMineralChest)
+            if (tileentity instanceof TileEntitySpectriteChest)
             {
-                ((TileEntityMineralChest)tileentity).setCustomName(stack.getDisplayName());
+                ((TileEntitySpectriteChest)tileentity).setCustomName(stack.getDisplayName());
             }
         }
     }
@@ -396,7 +396,7 @@ public class BlockMineralChest extends BlockChest {
         super.neighborChanged(state, worldIn, pos, neighborBlock, fromPos);
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
-        if (tileentity instanceof TileEntityMineralChest)
+        if (tileentity instanceof TileEntitySpectriteChest)
         {
             tileentity.updateContainingBlockInfo();
         }
@@ -418,7 +418,7 @@ public class BlockMineralChest extends BlockChest {
             {
                 playerIn.displayGUIChest(ilockablecontainer);
 
-                if (this.chestType.ordinal() < 4)
+                if (this.chestType.ordinal() == 0)
                     playerIn.addStat(StatList.CHEST_OPENED);
                 else
                     playerIn.addStat(StatList.TRAPPED_CHEST_TRIGGERED);
@@ -458,13 +458,13 @@ public class BlockMineralChest extends BlockChest {
     {
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
-        if (!(tileentity instanceof TileEntityMineralChest))
+        if (!(tileentity instanceof TileEntitySpectriteChest))
         {
             return null;
         }
         else
         {
-            ILockableContainer ilockablecontainer = (TileEntityMineralChest)tileentity;
+            ILockableContainer ilockablecontainer = (TileEntitySpectriteChest)tileentity;
 
             if (this.isBlocked(worldIn, pos))
             {
@@ -486,19 +486,19 @@ public class BlockMineralChest extends BlockChest {
 
                         TileEntity tileentity1 = worldIn.getTileEntity(blockpos);
 
-                        if (tileentity1 instanceof TileEntityMineralChest)
+                        if (tileentity1 instanceof TileEntitySpectriteChest)
                         {
                             if (enumfacing != EnumFacing.WEST && enumfacing != EnumFacing.NORTH)
                             {
                                 ilockablecontainer = new InventoryLargeMineralChest(
-                                	((TileEntityMineralChest) tileentity1).getName(),
-                                	ilockablecontainer, (TileEntityMineralChest)tileentity1);
+                                	((TileEntitySpectriteChest) tileentity1).getName(),
+                                	ilockablecontainer, (TileEntitySpectriteChest)tileentity1);
                             }
                             else
                             {
                                 ilockablecontainer = new InventoryLargeMineralChest(
-                                	((TileEntityMineralChest) tileentity1).getDisplayName().getUnformattedText(),
-                                	(TileEntityMineralChest)tileentity1, ilockablecontainer);
+                                	((TileEntitySpectriteChest) tileentity1).getDisplayName().getUnformattedText(),
+                                	(TileEntitySpectriteChest)tileentity1, ilockablecontainer);
                             }
                         }
                     }
@@ -515,7 +515,7 @@ public class BlockMineralChest extends BlockChest {
      */
     public TileEntity createNewTileEntity(World worldIn, int meta)
     {
-        return new TileEntityMineralChest();
+        return new TileEntitySpectriteChest();
     }
     
     @Override
@@ -524,7 +524,7 @@ public class BlockMineralChest extends BlockChest {
      */
     public boolean canProvidePower(IBlockState state)
     {
-        return this.chestType.ordinal() >= 4;
+        return this.chestType.ordinal() == 1;
     }
 
     @Override
@@ -539,9 +539,9 @@ public class BlockMineralChest extends BlockChest {
             int i = 0;
             TileEntity tileentity = blockAccess.getTileEntity(pos);
 
-            if (tileentity instanceof TileEntityMineralChest)
+            if (tileentity instanceof TileEntitySpectriteChest)
             {
-                i = ((TileEntityMineralChest)tileentity).numPlayersUsing;
+                i = ((TileEntitySpectriteChest)tileentity).numPlayersUsing;
             }
 
             return MathHelper.clamp(i, 0, 15);

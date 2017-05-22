@@ -35,10 +35,10 @@ import com.samuel.spectritemod.SpectriteMod;
 import com.samuel.spectritemod.client.eventhandlers.SpectriteClientEventHandler;
 import com.samuel.spectritemod.client.renderer.BlockRenderRegister;
 import com.samuel.spectritemod.client.renderer.ItemRenderRegister;
-import com.samuel.spectritemod.client.renderer.tileentity.TileEntityMineralChestRenderer;
+import com.samuel.spectritemod.client.renderer.tileentity.TileEntitySpectriteChestRenderer;
 import com.samuel.spectritemod.eventhandlers.SpectriteGeneralEventHandler;
 import com.samuel.spectritemod.init.ModBlocks;
-import com.samuel.spectritemod.tileentity.TileEntityMineralChest;
+import com.samuel.spectritemod.tileentity.TileEntitySpectriteChest;
 
 public class ClientProxy extends CommonProxy {
 
@@ -89,8 +89,8 @@ public class ClientProxy extends CommonProxy {
 		super.init(e);
 		BlockRenderRegister.registerBlockRenderer();
 		ClientRegistry.bindTileEntitySpecialRenderer(
-			TileEntityMineralChest.class,
-			new TileEntityMineralChestRenderer());
+			TileEntitySpectriteChest.class,
+			new TileEntitySpectriteChestRenderer());
 	}
 
 	@Override

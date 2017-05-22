@@ -10,51 +10,27 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import com.samuel.spectritemod.blocks.BlockMineralChest;
+import com.samuel.spectritemod.blocks.BlockSpectriteChest;
 import com.samuel.spectritemod.etc.SpectriteHelper;
-import com.samuel.spectritemod.tileentity.TileEntityMineralChest;
+import com.samuel.spectritemod.tileentity.TileEntitySpectriteChest;
 
 @SideOnly(Side.CLIENT)
-public class TileEntityMineralChestRenderer extends TileEntitySpecialRenderer {
-	private static final ResourceLocation textureIron = new ResourceLocation(
-		"spectritemod:textures/tileentities/chest_iron.png");
-	private static final ResourceLocation textureGold = new ResourceLocation(
-		"spectritemod:textures/tileentities/chest_gold.png");
-	private static final ResourceLocation textureDiamond = new ResourceLocation(
-		"spectritemod:textures/tileentities/chest_diamond.png");
+public class TileEntitySpectriteChestRenderer extends TileEntitySpecialRenderer {
 	private static final ResourceLocation[] textureSpectrite =
 		getSpectriteResourceLocations("");
-	private static final ResourceLocation textureDoubleIron = new ResourceLocation(
-		"spectritemod:textures/tileentities/chest_iron_double.png");
-	private static final ResourceLocation textureDoubleGold = new ResourceLocation(
-		"spectritemod:textures/tileentities/chest_gold_double.png");
-	private static final ResourceLocation textureDoubleDiamond = new ResourceLocation(
-		"spectritemod:textures/tileentities/chest_diamond_double.png");
 	private static final ResourceLocation[] textureDoubleSpectrite =
 		getSpectriteResourceLocations("_double");
-	private static final ResourceLocation textureTrappedIron = new ResourceLocation(
-		"spectritemod:textures/tileentities/chest_iron_trapped.png");
-	private static final ResourceLocation textureTrappedGold = new ResourceLocation(
-		"spectritemod:textures/tileentities/chest_gold_trapped.png");
-	private static final ResourceLocation textureTrappedDiamond = new ResourceLocation(
-		"spectritemod:textures/tileentities/chest_diamond_trapped.png");
 	private static final ResourceLocation[] textureTrappedSpectrite =
 		getSpectriteResourceLocations("_trapped");
-	private static final ResourceLocation textureDoubleTrappedIron = new ResourceLocation(
-		"spectritemod:textures/tileentities/chest_iron_trapped_double.png");
-	private static final ResourceLocation textureDoubleTrappedGold = new ResourceLocation(
-		"spectritemod:textures/tileentities/chest_gold_trapped_double.png");
-	private static final ResourceLocation textureDoubleTrappedDiamond = new ResourceLocation(
-		"spectritemod:textures/tileentities/chest_diamond_trapped_double.png");
 	private static final ResourceLocation[] textureDoubleTrappedSpectrite =
 		getSpectriteResourceLocations("_trapped_double");
 	private ModelChest simpleChest = new ModelChest();
 	private ModelLargeChest largeChest = new ModelLargeChest();
 
-	public TileEntityMineralChestRenderer() {
+	public TileEntitySpectriteChestRenderer() {
 	}
 
-	public void render(TileEntityMineralChest tile,
+	public void render(TileEntitySpectriteChest tile,
 		double x, double y_, double z, float partialTick,
 		int breakStage) {
 		int var10;
@@ -65,9 +41,9 @@ public class TileEntityMineralChestRenderer extends TileEntitySpecialRenderer {
 			Block var11 = tile.getBlockType();
 			var10 = tile.getBlockMetadata();
 
-			if (var11 instanceof BlockMineralChest
+			if (var11 instanceof BlockSpectriteChest
 				&& var10 == 0) {
-				((BlockMineralChest) var11)
+				((BlockSpectriteChest) var11)
 					.checkForSurroundingChests(tile
 						.getWorld(), tile.getPos(), tile
 						.getWorld().getBlockState(
@@ -99,27 +75,9 @@ public class TileEntityMineralChestRenderer extends TileEntitySpecialRenderer {
 					ResourceLocation texture = null;
 					switch (chestType) {
 						case 0:
-							texture = textureIron;
-							break;
-						case 1:
-							texture = textureGold;
-							break;
-						case 2:
-							texture = textureDiamond;
-							break;
-						case 3:
 							texture = textureSpectrite[SpectriteHelper.getCurrentSpectriteFrame(tile.getWorld())];
 							break;
-						case 4:
-							texture = textureTrappedIron;
-							break;
-						case 5:
-							texture = textureTrappedGold;
-							break;
-						case 6:
-							texture = textureTrappedDiamond;
-							break;
-						case 7:
+						case 1:
 							texture = textureTrappedSpectrite[SpectriteHelper.getCurrentSpectriteFrame(tile.getWorld())];
 						default:
 					}
@@ -130,27 +88,9 @@ public class TileEntityMineralChestRenderer extends TileEntitySpecialRenderer {
 				ResourceLocation textureDouble = null;
 				switch (chestType) {
     				case 0:
-    					textureDouble = textureDoubleIron;
-    					break;
-    				case 1:
-    					textureDouble = textureDoubleGold;
-    					break;
-    				case 2:
-    					textureDouble = textureDoubleDiamond;
-    					break;
-    				case 3:
     					textureDouble = textureDoubleSpectrite[SpectriteHelper.getCurrentSpectriteFrame(tile.getWorld())];
     					break;
-    				case 4:
-    					textureDouble = textureDoubleTrappedIron;
-    					break;
-    				case 5:
-    					textureDouble = textureDoubleTrappedGold;
-    					break;
-    				case 6:
-    					textureDouble = textureDoubleTrappedDiamond;
-    					break;
-    				case 7:
+    				case 1:
     					textureDouble = textureDoubleTrappedSpectrite[SpectriteHelper.getCurrentSpectriteFrame(tile.getWorld())];
     					break;
     				default:
@@ -257,7 +197,7 @@ public class TileEntityMineralChestRenderer extends TileEntitySpecialRenderer {
 	public void renderTileEntityAt(TileEntity tileentity,
 		double x, double y, double z, float partialTick,
 		int breakStage) {
-		this.render((TileEntityMineralChest) tileentity, x,
+		this.render((TileEntitySpectriteChest) tileentity, x,
 			y, z, partialTick, breakStage);
 	}
 	

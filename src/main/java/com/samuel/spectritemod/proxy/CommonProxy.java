@@ -26,8 +26,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.samuel.spectritemod.SpectriteMod;
-import com.samuel.spectritemod.blocks.BlockMineralChest;
-import com.samuel.spectritemod.blocks.BlockMineralChest.Type;
+import com.samuel.spectritemod.blocks.BlockSpectriteChest;
+import com.samuel.spectritemod.blocks.BlockSpectriteChest.Type;
 import com.samuel.spectritemod.capabilities.ISpectriteBossCapability;
 import com.samuel.spectritemod.capabilities.SpectriteBossCapability;
 import com.samuel.spectritemod.eventhandlers.SpectriteGeneralEventHandler;
@@ -52,7 +52,7 @@ import com.samuel.spectritemod.items.ItemSpectriteShovel;
 import com.samuel.spectritemod.items.ItemSpectriteShovelSpecial;
 import com.samuel.spectritemod.items.ItemSpectriteSword;
 import com.samuel.spectritemod.items.ItemSpectriteSwordSpecial;
-import com.samuel.spectritemod.tileentity.TileEntityMineralChest;
+import com.samuel.spectritemod.tileentity.TileEntitySpectriteChest;
 import com.samuel.spectritemod.world.WorldGenSpectrite;
 
 public class CommonProxy {
@@ -89,21 +89,9 @@ public class CommonProxy {
 	        }
 	    };
 	    
-		(SpectriteMod.BlockIronChest = new BlockMineralChest(Type.IRON))
-    		.setUnlocalizedName("iron_chest");
-    	(SpectriteMod.BlockGoldChest = new BlockMineralChest(Type.GOLD))
-    		.setUnlocalizedName("gold_chest");
-    	(SpectriteMod.BlockDiamondChest = new BlockMineralChest(Type.DIAMOND))
-    		.setUnlocalizedName("diamond_chest");
-    	(SpectriteMod.BlockSpectriteChest = new BlockMineralChest(Type.SPECTRITE))
+    	(SpectriteMod.BlockSpectriteChest = new BlockSpectriteChest(Type.NORMAL))
 			.setUnlocalizedName("spectrite_chest");
-    	(SpectriteMod.BlockTrappedIronChest = new BlockMineralChest(Type.IRON_TRAPPED))
-        	.setUnlocalizedName("iron_chest_trapped");
-        (SpectriteMod.BlockTrappedGoldChest = new BlockMineralChest(Type.GOLD_TRAPPED))
-        	.setUnlocalizedName("gold_chest_trapped");
-        (SpectriteMod.BlockTrappedDiamondChest = new BlockMineralChest(Type.DIAMOND_TRAPPED))
-        	.setUnlocalizedName("diamond_chest_trapped");
-        (SpectriteMod.BlockTrappedSpectriteChest = new BlockMineralChest(Type.SPECTRITE_TRAPPED))
+        (SpectriteMod.BlockTrappedSpectriteChest = new BlockSpectriteChest(Type.TRAPPED))
     		.setUnlocalizedName("spectrite_chest_trapped");
 		(SpectriteMod.BlockSpectriteOre = new BlockSpectriteOre())
 			.setHardness(6.0F).setResistance(10.0F).setUnlocalizedName("spectrite_ore");
@@ -153,7 +141,7 @@ public class CommonProxy {
 			.setUnlocalizedName("spectrite_leggings");
 		(SpectriteMod.ItemSpectriteBoots = new ItemSpectriteArmor(EntityEquipmentSlot.FEET))
 			.setUnlocalizedName("spectrite_boots");
-		SpectriteMod.TileEntityMineralChest = new TileEntityMineralChest();
+		SpectriteMod.TileEntityMineralChest = new TileEntitySpectriteChest();
 		SpectriteMod.spectrite = new WorldGenSpectrite();
 		
 		CapabilityManager.INSTANCE.register(ISpectriteBossCapability.class,

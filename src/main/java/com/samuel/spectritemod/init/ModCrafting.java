@@ -11,26 +11,8 @@ public final class ModCrafting {
 
 	public static void initCrafting() {
 		GameRegistry.addRecipe(new ItemStack(
-			ModBlocks.mineralChestIron), "XXX", "X X", "XXX",
-			'X', new ItemStack(Items.IRON_INGOT));
-		GameRegistry.addRecipe(new ItemStack(
-			ModBlocks.mineralChestGold), "XXX", "X X", "XXX",
-			'X', new ItemStack(Items.GOLD_INGOT));
-		GameRegistry.addRecipe(new ItemStack(
-			ModBlocks.mineralChestDiamond), "XXX", "X X", "XXX",
-			'X', new ItemStack(Items.DIAMOND));
-		GameRegistry.addRecipe(new ItemStack(
 			ModBlocks.mineralChestSpectrite), "XXX", "X X", "XXX",
 			'X', new ItemStack(ModItems.spectrite_gem));
-		GameRegistry.addShapelessRecipe(new ItemStack(
-			ModBlocks.mineralChestIronTrapped), new ItemStack(
-			ModBlocks.mineralChestIron), new ItemStack(Blocks.TRIPWIRE_HOOK));
-		GameRegistry.addShapelessRecipe(new ItemStack(
-			ModBlocks.mineralChestGoldTrapped), new ItemStack(
-			ModBlocks.mineralChestGold), new ItemStack(Blocks.TRIPWIRE_HOOK));
-		GameRegistry.addShapelessRecipe(new ItemStack(
-			ModBlocks.mineralChestDiamondTrapped), new ItemStack(
-			ModBlocks.mineralChestDiamond), new ItemStack(Blocks.TRIPWIRE_HOOK));
 		GameRegistry.addShapelessRecipe(new ItemStack(
 			ModBlocks.mineralChestSpectriteTrapped), new ItemStack(
 			ModBlocks.mineralChestSpectrite), new ItemStack(Blocks.TRIPWIRE_HOOK));
@@ -106,12 +88,6 @@ public final class ModCrafting {
 			ModItems.spectrite_boots), "X X", "X X",
 			'X', new ItemStack(ModItems.spectrite_gem));
 		
-		GameRegistry.addSmelting(ModBlocks.mineralChestIron, new ItemStack(Items.IRON_INGOT, 5), 1.75f);
-		GameRegistry.addSmelting(ModBlocks.mineralChestIronTrapped, new ItemStack(Items.IRON_INGOT, 5), 1.75f);
-		GameRegistry.addSmelting(ModBlocks.mineralChestGold, new ItemStack(Items.GOLD_INGOT, 5), 2.5f);
-		GameRegistry.addSmelting(ModBlocks.mineralChestGoldTrapped, new ItemStack(Items.GOLD_INGOT, 5), 2.5f);
-		GameRegistry.addSmelting(ModBlocks.mineralChestDiamond, new ItemStack(Items.DIAMOND, 5), 2.5f);
-		GameRegistry.addSmelting(ModBlocks.mineralChestDiamondTrapped, new ItemStack(Items.DIAMOND, 5), 2.5f);
 		GameRegistry.addSmelting(ModBlocks.mineralChestSpectrite, new ItemStack(ModItems.spectrite_gem, 5), 5.0f);
 		GameRegistry.addSmelting(ModBlocks.mineralChestSpectriteTrapped, new ItemStack(ModItems.spectrite_gem, 5), 5.0f);
 		

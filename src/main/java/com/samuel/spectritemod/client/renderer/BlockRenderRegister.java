@@ -12,13 +12,7 @@ public class BlockRenderRegister {
 	public static String modid = SpectriteMod.MOD_ID;
 
 	public static void registerBlockRenderer() {
-		reg(ModBlocks.mineralChestIron, 0);
-		reg(ModBlocks.mineralChestGold, 0);
-		reg(ModBlocks.mineralChestDiamond, 0);
 		reg(ModBlocks.mineralChestSpectrite, 0);
-		reg(ModBlocks.mineralChestIronTrapped, 0);
-		reg(ModBlocks.mineralChestGoldTrapped, 0);
-		reg(ModBlocks.mineralChestDiamondTrapped, 0);
 		reg(ModBlocks.mineralChestSpectriteTrapped, 0);;
 		reg(ModBlocks.spectriteOre, 0, "spectrite_ore_surface");
 		reg(ModBlocks.spectriteOre, 1, "spectrite_ore_nether");
