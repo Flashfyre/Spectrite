@@ -188,7 +188,7 @@ A special sword capable of even higher damage than a Perfect Spectrite Sword and
 A special sword capable of insane damage that will always 1-shot most non-boss entities. It creates a huge explosion. This sword cannot be crafted and can only be obtained by defeating a Spectrite Boss mob that uses this sword. There is a cooldown period (default 1.75s) for hitting an entity with instant damage and no instant damage will be applied if the sword is used before this cooldown has finished, though the item will be damaged just as much either way so it is more efficient just to wait for the cooldown to end.
 
 ### Spectrite Armour (Helmet, Chestplate, Leggings, Boots)
-A set of armour made of spectrite. It's just as protective as diamond but lasts a lot longer. In addition, for every piece of armour equipped, the player will be provided with 1 level of Absorption (2 hearts) until the last armour piece which will provide Regeneration I instead. The effects last 10 seconds but reapply as long as the player is still wearing the required armour. Also, Absorption is applied 1 level at a time and is only applied if the player's health is full.
+A set of armour made of spectrite. It's just as protective as diamond but lasts a lot longer. In addition, the player's max health is increased with every piece with more health given for pieces that require more Spectrite Gems. The total max health increase is 10 hearts by default but, depending on the value of the 'Spectrite Armour Bonus Mode' configuration option, the increase could be up to 50 hearts, though this setting is not recommended. There is also a set bonus provided when the player has equipped all pieces, which is by default a passive Regeneration I effect.
 
 Crafting Recipes:
 
