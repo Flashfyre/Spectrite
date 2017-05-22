@@ -241,4 +241,4 @@ Tired of playing fair and want to go on an overpowered rampage? There's a config
 
 * Changing difficulty to peaceful while a Spectrite Boss' boss bar is showing will make the bar stay on the screen until either the player dies or goes back to the menu
 * The name of the Spectrite Legend Sword and Perfect Spectrite Legend Sword cannot be changed; this is because the text formatting in the default name would cause of mess of formatting characters translated into text, so this is an intential bug added to prevent a worse bug
-* Changing dimensions with a Spectrite Armour max health boost may not appear to carry over into other dimensions and cause bugging behaviour when taking damage (this is a Vanilla bug)
+* Changing dimensions with a Spectrite Armour max health boost may not appear to carry over into other dimensions and may cause buggy behaviour when taking damage (this is a Vanilla bug)
