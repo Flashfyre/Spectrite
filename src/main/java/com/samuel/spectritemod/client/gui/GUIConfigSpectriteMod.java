@@ -1,13 +1,12 @@
 package com.samuel.spectritemod.client.gui;
 
-import net.minecraft.client.gui.GuiButton;
+import com.samuel.spectritemod.SpectriteMod;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.config.GuiConfig;
-
-import com.samuel.spectritemod.SpectriteMod;
 
 public class GUIConfigSpectriteMod extends GuiConfig {
 	public GUIConfigSpectriteMod(GuiScreen parent) {

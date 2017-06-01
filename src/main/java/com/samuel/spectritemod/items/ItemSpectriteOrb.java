@@ -1,5 +1,9 @@
 package com.samuel.spectritemod.items;
 
+import java.util.List;
+
+import com.samuel.spectritemod.SpectriteMod;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -14,10 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-
-import java.util.List;
-
-import com.samuel.spectritemod.SpectriteMod;
 
 public class ItemSpectriteOrb extends Item {
 	

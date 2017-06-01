@@ -1,10 +1,10 @@
 package com.samuel.spectritemod.items;
 
+import com.samuel.spectritemod.etc.IMetaBlockName;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-
-import com.samuel.spectritemod.etc.IMetaBlockName;
 
 public class ItemBlockMeta extends ItemBlock {
 

@@ -1,6 +1,5 @@
 package com.samuel.spectritemod.capabilities;
 
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BossInfo;
 
 public interface ISpectriteBossCapability {
@@ -9,9 +8,9 @@ public interface ISpectriteBossCapability {
 	
 	public void setEnabled(boolean enabled);
 	
-	public boolean isPerfectSword();
+	public boolean isPerfectWeapon();
 	
-	public void setPerfectSword(boolean hasPerfectSword);
+	public void setPerfectWeapon(boolean perfectWeapon);
 	
 	public BossInfo getBossInfo();
 }

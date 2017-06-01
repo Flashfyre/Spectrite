@@ -1,23 +1,27 @@
 package com.samuel.spectritemod.init;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemDoor;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import com.samuel.spectritemod.SpectriteMod;
 import com.samuel.spectritemod.items.ItemDiamondRod;
 import com.samuel.spectritemod.items.ItemSpectriteArmor;
+import com.samuel.spectritemod.items.ItemSpectriteArrow;
 import com.samuel.spectritemod.items.ItemSpectriteAxe;
 import com.samuel.spectritemod.items.ItemSpectriteAxeSpecial;
+import com.samuel.spectritemod.items.ItemSpectriteBow;
+import com.samuel.spectritemod.items.ItemSpectriteBowSpecial;
 import com.samuel.spectritemod.items.ItemSpectriteGem;
 import com.samuel.spectritemod.items.ItemSpectriteOrb;
 import com.samuel.spectritemod.items.ItemSpectritePickaxe;
 import com.samuel.spectritemod.items.ItemSpectritePickaxeSpecial;
 import com.samuel.spectritemod.items.ItemSpectriteRod;
+import com.samuel.spectritemod.items.ItemSpectriteShield;
+import com.samuel.spectritemod.items.ItemSpectriteShieldSpecial;
 import com.samuel.spectritemod.items.ItemSpectriteShovel;
 import com.samuel.spectritemod.items.ItemSpectriteShovelSpecial;
 import com.samuel.spectritemod.items.ItemSpectriteSword;
 import com.samuel.spectritemod.items.ItemSpectriteSwordSpecial;
+
+import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ModItems {
 
@@ -39,6 +43,11 @@ public class ModItems {
 	public static ItemSpectriteArmor spectrite_chestplate = SpectriteMod.ItemSpectriteChestplate;
 	public static ItemSpectriteArmor spectrite_leggings = SpectriteMod.ItemSpectriteLeggings;
 	public static ItemSpectriteArmor spectrite_boots = SpectriteMod.ItemSpectriteBoots;
+	public static ItemSpectriteArrow spectrite_arrow = SpectriteMod.ItemSpectriteArrow;
+	public static ItemSpectriteBow spectrite_bow = SpectriteMod.ItemSpectriteBow;
+	public static ItemSpectriteBowSpecial spectrite_bow_special = SpectriteMod.ItemSpectriteBowSpecial;
+	public static ItemSpectriteShield spectrite_shield = SpectriteMod.ItemSpectriteShield;
+	public static ItemSpectriteShieldSpecial spectrite_shield_special = SpectriteMod.ItemSpectriteShieldSpecial;
 
 	public static void createItems() {
 		registerItem(diamond_rod, "diamond_rod");
@@ -67,6 +76,16 @@ public class ModItems {
 			"spectrite_sword_2");
 		registerItem(spectrite_sword_2_special,
 			"spectrite_sword_2_special");
+		registerItem(spectrite_arrow,
+			"spectrite_arrow");
+		registerItem(spectrite_bow,
+			"spectrite_bow");
+		registerItem(spectrite_bow_special,
+			"spectrite_bow_special");
+		registerItem(spectrite_shield,
+			"spectrite_shield");
+		registerItem(spectrite_shield_special,
+			"spectrite_shield_special");
 		registerItem(spectrite_helmet,
 			"spectrite_helmet");
 		registerItem(spectrite_chestplate,

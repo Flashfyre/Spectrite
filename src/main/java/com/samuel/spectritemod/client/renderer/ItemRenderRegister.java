@@ -1,12 +1,12 @@
 package com.samuel.spectritemod.client.renderer;
 
+import com.samuel.spectritemod.SpectriteMod;
+import com.samuel.spectritemod.init.ModItems;
+
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
-
-import com.samuel.spectritemod.SpectriteMod;
-import com.samuel.spectritemod.init.ModItems;
 
 public final class ItemRenderRegister {
 
@@ -27,6 +27,11 @@ public final class ItemRenderRegister {
 		reg(ModItems.spectrite_sword_special);
 		reg(ModItems.spectrite_sword_2);
 		reg(ModItems.spectrite_sword_2_special);
+		reg(ModItems.spectrite_arrow);
+		reg(ModItems.spectrite_bow);
+		reg(ModItems.spectrite_bow_special);
+		reg(ModItems.spectrite_shield);
+		reg(ModItems.spectrite_shield_special);
 		reg(ModItems.spectrite_helmet);
 		reg(ModItems.spectrite_chestplate);
 		reg(ModItems.spectrite_leggings);

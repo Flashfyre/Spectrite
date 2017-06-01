@@ -1,10 +1,5 @@
 package com.samuel.spectritemod.items;
 
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-
 import com.samuel.spectritemod.SpectriteMod;
 
 public class ItemSpectriteSwordSpecial extends ItemSpectriteSword {

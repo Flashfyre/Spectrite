@@ -1,6 +1,5 @@
 package com.samuel.spectritemod.client.gui;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -10,13 +9,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.config.ConfigElement;
-import net.minecraftforge.fml.client.DefaultGuiFactory;
 import net.minecraftforge.fml.client.IModGuiFactory;
-import net.minecraftforge.fml.client.IModGuiFactory.RuntimeOptionCategoryElement;
-import net.minecraftforge.fml.client.IModGuiFactory.RuntimeOptionGuiHandler;
 import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.IConfigElement;
-import net.minecraftforge.fml.common.ModContainer;
 
 public class GUIFactorySpectriteMod implements IModGuiFactory {
 	

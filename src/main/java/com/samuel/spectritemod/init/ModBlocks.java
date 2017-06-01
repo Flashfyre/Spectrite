@@ -1,30 +1,30 @@
 package com.samuel.spectritemod.init;
 
+import com.samuel.spectritemod.SpectriteMod;
+import com.samuel.spectritemod.blocks.BlockSpectrite;
+import com.samuel.spectritemod.blocks.BlockSpectriteChest;
+import com.samuel.spectritemod.blocks.BlockSpectriteOre;
+import com.samuel.spectritemod.items.ItemBlockMeta;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import com.samuel.spectritemod.SpectriteMod;
-import com.samuel.spectritemod.blocks.BlockSpectriteChest;
-import com.samuel.spectritemod.blocks.BlockSpectrite;
-import com.samuel.spectritemod.blocks.BlockSpectriteOre;
-import com.samuel.spectritemod.items.ItemBlockMeta;
-
 public class ModBlocks {
 
-	public static BlockSpectriteChest mineralChestSpectrite;
-	public static BlockSpectriteChest mineralChestSpectriteTrapped;
-	public static BlockSpectriteOre spectriteOre;
-	public static BlockSpectrite spectriteBlock;
+	public static BlockSpectriteChest mineral_chest_spectrite;
+	public static BlockSpectriteChest mineral_chest_spectrite_trapped;
+	public static BlockSpectriteOre spectrite_ore;
+	public static BlockSpectrite spectrite_block;
 
 	public static void createBlocks() {
-		registerBlock(mineralChestSpectrite = SpectriteMod.BlockSpectriteChest,
+		registerBlock(mineral_chest_spectrite = SpectriteMod.BlockSpectriteChest,
 			"spectrite_chest");
-		registerBlock(mineralChestSpectriteTrapped = SpectriteMod.BlockTrappedSpectriteChest,
+		registerBlock(mineral_chest_spectrite_trapped = SpectriteMod.BlockTrappedSpectriteChest,
 			"spectrite_chest_trapped");
-		registerBlock(spectriteOre = SpectriteMod.BlockSpectriteOre, new ItemBlockMeta(spectriteOre),
+		registerBlock(spectrite_ore = SpectriteMod.BlockSpectriteOre, new ItemBlockMeta(spectrite_ore),
 			"spectrite_ore");
-		registerBlock(spectriteBlock = SpectriteMod.BlockSpectrite, "spectrite_block");
+		registerBlock(spectrite_block = SpectriteMod.BlockSpectrite, "spectrite_block");
 	}
 	
 	private static void registerBlock(Block block, ItemBlock item, String name)

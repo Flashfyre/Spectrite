@@ -1,8 +1,8 @@
 package com.samuel.spectritemod.init;
 
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import com.samuel.spectritemod.tileentity.TileEntitySpectriteChest;
+
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ModTileEntities {
 

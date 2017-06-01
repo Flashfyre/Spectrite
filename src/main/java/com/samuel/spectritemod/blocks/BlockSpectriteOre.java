@@ -1,7 +1,9 @@
 package com.samuel.spectritemod.blocks;
 
-import java.util.List;
 import java.util.Random;
+
+import com.samuel.spectritemod.etc.IMetaBlockName;
+import com.samuel.spectritemod.init.ModItems;
 
 import net.minecraft.block.BlockOre;
 import net.minecraft.block.material.MapColor;
@@ -23,9 +25,6 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.samuel.spectritemod.etc.IMetaBlockName;
-import com.samuel.spectritemod.init.ModItems;
 
 public class BlockSpectriteOre extends BlockOre implements IMetaBlockName {
 	

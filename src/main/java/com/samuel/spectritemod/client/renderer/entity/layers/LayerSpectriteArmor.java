@@ -2,6 +2,11 @@ package com.samuel.spectritemod.client.renderer.entity.layers;
 
 import java.util.Map;
 
+import com.google.common.collect.Maps;
+import com.samuel.spectritemod.SpectriteMod;
+import com.samuel.spectritemod.etc.SpectriteHelper;
+import com.samuel.spectritemod.items.ItemSpectriteArmor;
+
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -9,11 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.google.common.collect.Maps;
-import com.samuel.spectritemod.SpectriteMod;
-import com.samuel.spectritemod.etc.SpectriteHelper;
-import com.samuel.spectritemod.items.ItemSpectriteArmor;
 
 @SideOnly(Side.CLIENT)
 public class LayerSpectriteArmor extends LayerBipedArmor {
@@ -53,15 +53,15 @@ public class LayerSpectriteArmor extends LayerBipedArmor {
 	        	(isLegSlot(slot) ? 2 : 1), curFrame);
 	
 	        s1 = net.minecraftforge.client.ForgeHooksClient.getArmorTexture(entity, stack, s1, slot, type);
-	        ResourceLocation resourcelocation = ARMOR_TEXTURE_RES_MAP.get(s1);
+	        ResourceLocation resourceLocation = ARMOR_TEXTURE_RES_MAP.get(s1);
 	
-	        if (resourcelocation == null)
+	        if (resourceLocation == null)
 	        {
-	            resourcelocation = new ResourceLocation(s1);
-	            ARMOR_TEXTURE_RES_MAP.put(s1, resourcelocation);
+	            resourceLocation = new ResourceLocation(s1);
+	            ARMOR_TEXTURE_RES_MAP.put(s1, resourceLocation);
 	        }
 	
-	        return resourcelocation;
+	        return resourceLocation;
 		}
 		
 		return super.getArmorResource(entity, stack, slot, type);

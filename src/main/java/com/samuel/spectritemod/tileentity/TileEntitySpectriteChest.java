@@ -1,5 +1,10 @@
 package com.samuel.spectritemod.tileentity;
 
+import com.samuel.spectritemod.blocks.BlockSpectriteChest;
+import com.samuel.spectritemod.blocks.BlockSpectriteChest.Type;
+import com.samuel.spectritemod.etc.ContainerMineralChest;
+import com.samuel.spectritemod.etc.InventoryLargeMineralChest;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,11 +21,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
-
-import com.samuel.spectritemod.blocks.BlockSpectriteChest;
-import com.samuel.spectritemod.blocks.BlockSpectriteChest.Type;
-import com.samuel.spectritemod.etc.ContainerMineralChest;
-import com.samuel.spectritemod.etc.InventoryLargeMineralChest;
 
 public class TileEntitySpectriteChest extends TileEntityChest
 	implements ITickable, IInventory {

@@ -18,18 +18,19 @@ There are 2 chances of a Spectrite Ore vein per chunk between height=4 and heigh
 ## Blocks and Items
 
 ### Spectrite Chests
-A chest with the texture of Spectrite. You may smelt it for 5 Spectrite Gems, though it takes 8 to craft a chest, so it's inefficient to do this unless you desperately need some of the Spectrite Gems you crafted the chest with. These chests serve no special purpose, they are purely for bragging rights. ("Look at me, I have so many Spectrite Gems I can afford to make a chest out of Spectrite Blocks!")
+A chest with the texture of Spectrite. You may smelt it for 5 Spectrite Gems, though it takes 8 to craft a chest (plus a diamond), so it's inefficient to do this unless you desperately need some of the Spectrite Gems you crafted the chest with. These chests serve no special purpose, they are purely for bragging rights. ("Look at me, I have so much Spectrite I can afford to make a chest out of Spectrite Blocks!")
 
 Crafting Recipe:
 
 X　X　X
 
-X　-　X
+X　Y　X
 
 X　X　X
 
 
-X = Spectrite Gem
+X = Spectrite Gem;
+Y = Diamond
 
 ### Spectrite Ore
 An extremely rare ore that can be found in the same place as diamonds in the surface world, though significantly rarer, but can also be found more commonly in the Nether and The End. 

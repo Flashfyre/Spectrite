@@ -1,59 +1,59 @@
 package com.samuel.spectritemod.proxy;
 
-import net.minecraft.block.material.MapColor;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.IItemPropertyGetter;
-import net.minecraft.item.ItemDoor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableList;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.samuel.spectritemod.SpectriteMod;
+import com.samuel.spectritemod.blocks.BlockSpectrite;
 import com.samuel.spectritemod.blocks.BlockSpectriteChest;
 import com.samuel.spectritemod.blocks.BlockSpectriteChest.Type;
+import com.samuel.spectritemod.blocks.BlockSpectriteOre;
 import com.samuel.spectritemod.capabilities.ISpectriteBossCapability;
 import com.samuel.spectritemod.capabilities.SpectriteBossCapability;
 import com.samuel.spectritemod.eventhandlers.SpectriteGeneralEventHandler;
-import com.samuel.spectritemod.blocks.BlockSpectrite;
-import com.samuel.spectritemod.blocks.BlockSpectriteOre;
 import com.samuel.spectritemod.init.ModBlocks;
 import com.samuel.spectritemod.init.ModCrafting;
+import com.samuel.spectritemod.init.ModDispenserBehavior;
+import com.samuel.spectritemod.init.ModEntities;
 import com.samuel.spectritemod.init.ModItems;
 import com.samuel.spectritemod.init.ModSounds;
 import com.samuel.spectritemod.init.ModTileEntities;
 import com.samuel.spectritemod.init.ModWorldGen;
 import com.samuel.spectritemod.items.ItemDiamondRod;
 import com.samuel.spectritemod.items.ItemSpectriteArmor;
+import com.samuel.spectritemod.items.ItemSpectriteArrow;
 import com.samuel.spectritemod.items.ItemSpectriteAxe;
 import com.samuel.spectritemod.items.ItemSpectriteAxeSpecial;
+import com.samuel.spectritemod.items.ItemSpectriteBow;
+import com.samuel.spectritemod.items.ItemSpectriteBowSpecial;
 import com.samuel.spectritemod.items.ItemSpectriteGem;
 import com.samuel.spectritemod.items.ItemSpectriteOrb;
 import com.samuel.spectritemod.items.ItemSpectritePickaxe;
 import com.samuel.spectritemod.items.ItemSpectritePickaxeSpecial;
 import com.samuel.spectritemod.items.ItemSpectriteRod;
+import com.samuel.spectritemod.items.ItemSpectriteShield;
+import com.samuel.spectritemod.items.ItemSpectriteShieldSpecial;
 import com.samuel.spectritemod.items.ItemSpectriteShovel;
 import com.samuel.spectritemod.items.ItemSpectriteShovelSpecial;
 import com.samuel.spectritemod.items.ItemSpectriteSword;
 import com.samuel.spectritemod.items.ItemSpectriteSwordSpecial;
 import com.samuel.spectritemod.tileentity.TileEntitySpectriteChest;
 import com.samuel.spectritemod.world.WorldGenSpectrite;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.IItemPropertyGetter;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CommonProxy {
 	
@@ -63,6 +63,8 @@ public class CommonProxy {
     }
 
 	public void preInit(FMLPreInitializationEvent e) {
+		ModEntities.initEntities(SpectriteMod.Instance);
+		
 		SpectriteMod.ItemPropertyGetterSpectrite = new IItemPropertyGetter() {
 			
 			public int curFrame = 0;
@@ -133,6 +135,16 @@ public class CommonProxy {
 			.setUnlocalizedName("spectrite_sword_2");
 		(SpectriteMod.ItemSpectriteSword2Special = new ItemSpectriteSwordSpecial(true))
 			.setUnlocalizedName("spectrite_sword_2_special");
+		(SpectriteMod.ItemSpectriteArrow = new ItemSpectriteArrow())
+			.setUnlocalizedName("spectrite_arrow");
+		(SpectriteMod.ItemSpectriteBow = new ItemSpectriteBow())
+			.setUnlocalizedName("spectrite_bow");
+		(SpectriteMod.ItemSpectriteBowSpecial = new ItemSpectriteBowSpecial())
+			.setUnlocalizedName("spectrite_bow");
+		(SpectriteMod.ItemSpectriteShield = new ItemSpectriteShield())
+			.setUnlocalizedName("spectrite_shield");
+		(SpectriteMod.ItemSpectriteShieldSpecial = new ItemSpectriteShieldSpecial())
+			.setUnlocalizedName("spectrite_shield_special");
 		(SpectriteMod.ItemSpectriteHelmet = new ItemSpectriteArmor(EntityEquipmentSlot.HEAD))
 			.setUnlocalizedName("spectrite_helmet");
 		(SpectriteMod.ItemSpectriteChestplate = new ItemSpectriteArmor(EntityEquipmentSlot.CHEST))
@@ -152,6 +164,7 @@ public class CommonProxy {
 		ModBlocks.createBlocks();
 		ModItems.createItems();
 		ModTileEntities.initTileEntities();
+		ModDispenserBehavior.initDispenserBehavior();
 		ModWorldGen.initWorldGen();
 
 		FMLCommonHandler.instance().bus().register(SpectriteMod.Instance);

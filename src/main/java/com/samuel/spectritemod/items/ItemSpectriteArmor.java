@@ -1,28 +1,22 @@
 package com.samuel.spectritemod.items;
 
-import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.List;
 
+import com.samuel.spectritemod.SpectriteMod;
+import com.samuel.spectritemod.SpectriteModConfig;
+
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-
-import com.samuel.spectritemod.SpectriteMod;
-import com.samuel.spectritemod.SpectriteModConfig;
-import com.samuel.spectritemod.etc.SpectriteHelper;
 
 public class ItemSpectriteArmor extends ItemArmor {
 

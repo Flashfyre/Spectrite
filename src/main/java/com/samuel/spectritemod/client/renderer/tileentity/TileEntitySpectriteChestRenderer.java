@@ -1,5 +1,9 @@
 package com.samuel.spectritemod.client.renderer.tileentity;
 
+import com.samuel.spectritemod.blocks.BlockSpectriteChest;
+import com.samuel.spectritemod.etc.SpectriteHelper;
+import com.samuel.spectritemod.tileentity.TileEntitySpectriteChest;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelLargeChest;
@@ -9,10 +13,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.samuel.spectritemod.blocks.BlockSpectriteChest;
-import com.samuel.spectritemod.etc.SpectriteHelper;
-import com.samuel.spectritemod.tileentity.TileEntitySpectriteChest;
 
 @SideOnly(Side.CLIENT)
 public class TileEntitySpectriteChestRenderer extends TileEntitySpecialRenderer {

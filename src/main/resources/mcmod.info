@@ -3,7 +3,7 @@
   "modid": "spectritemod",
   "name": "Spectrite Mod",
   "description": "Adds a new and extremely rare mineral to world generation!",
-  "version": "1.0.2",
+  "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",

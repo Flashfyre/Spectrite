@@ -1,9 +1,12 @@
 package com.samuel.spectritemod.items;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
+
+import com.samuel.spectritemod.SpectriteMod;
+import com.samuel.spectritemod.etc.ISpectriteTool;
+import com.samuel.spectritemod.init.ModSounds;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -23,10 +26,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-
-import com.samuel.spectritemod.SpectriteMod;
-import com.samuel.spectritemod.etc.ISpectriteTool;
-import com.samuel.spectritemod.init.ModSounds;
 
 public class ItemSpectritePickaxe extends ItemPickaxe implements ISpectriteTool {
 	
@@ -111,7 +110,7 @@ public class ItemSpectritePickaxe extends ItemPickaxe implements ISpectriteTool 
 					
 					worldServer.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE,
 						EnumParticleTypes.EXPLOSION_LARGE.getShouldIgnoreRange(),
-						posX, posY, posZ, !(this instanceof ItemSpectritePickaxeSpecial) ? 3 : 7,
+						posX, posY, posZ, !(this instanceof ItemSpectritePickaxeSpecial) ? 1 : 7,
 						worldIn.rand.nextFloat() * 0.5f, worldIn.rand.nextFloat() * 0.5f,
 						worldIn.rand.nextFloat() * 0.5f, 0.0D, new int[0]);
 					
@@ -169,7 +168,8 @@ public class ItemSpectritePickaxe extends ItemPickaxe implements ISpectriteTool 
 					boolean isVisible = false;
 					for (EnumFacing side : EnumFacing.values()) {
 						BlockPos offsetPos = curPos.offset(side);
-						if (offsetPos.equals(pos) || worldIn.getBlockState(curPos.offset(side)).getMaterial().equals(Material.AIR)) {
+						if (offsetPos.equals(pos) || worldIn.getBlockState(curPos.offset(side)).getMaterial().equals(Material.AIR)
+							|| !worldIn.getBlockState(curPos.offset(side)).isFullBlock()) {
 							isVisible = true;
 							break;
 						}

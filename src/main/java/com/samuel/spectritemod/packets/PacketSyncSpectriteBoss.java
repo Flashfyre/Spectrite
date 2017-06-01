@@ -1,8 +1,5 @@
 package com.samuel.spectritemod.packets;
 
-import io.netty.buffer.ByteBuf;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -10,13 +7,12 @@ import java.util.stream.Collectors;
 import com.samuel.spectritemod.capabilities.ISpectriteBossCapability;
 import com.samuel.spectritemod.capabilities.SpectriteBossProvider;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.IThreadListener;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -71,7 +67,7 @@ public class PacketSyncSpectriteBoss implements IMessage {
 							entity.getCapability(SpectriteBossProvider.sbc, null);
 						if (props != null) {
 							props.setEnabled(message.enabled);
-							props.setPerfectSword(message.perfectSword);
+							props.setPerfectWeapon(message.perfectSword);
 						}
 					}
 				}

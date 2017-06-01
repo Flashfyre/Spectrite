@@ -2,12 +2,15 @@ package com.samuel.spectritemod.world;
 
 import java.util.Random;
 
+import com.google.common.base.Predicate;
+import com.samuel.spectritemod.SpectriteMod;
+import com.samuel.spectritemod.init.ModBlocks;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.block.state.pattern.BlockStateMatcher;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkGenerator;
@@ -15,10 +18,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
-
-import com.google.common.base.Predicate;
-import com.samuel.spectritemod.SpectriteMod;
-import com.samuel.spectritemod.init.ModBlocks;
 
 public class WorldGenSpectrite implements IWorldGenerator {
 	
@@ -63,17 +62,17 @@ public class WorldGenSpectrite implements IWorldGenerator {
 	}
 	
 	private void generateEnd(World world, Random random, int chunkX, int chunkZ) {
-		generateOre(ModBlocks.spectriteOre, world, random, chunkX, chunkZ, SpectriteMod.Config.spectriteCountEnd, SpectriteMod.Config.spectriteMinYEnd,
+		generateOre(ModBlocks.spectrite_ore, world, random, chunkX, chunkZ, SpectriteMod.Config.spectriteCountEnd, SpectriteMod.Config.spectriteMinYEnd,
 			SpectriteMod.Config.spectriteMaxYEnd);
 	}
 
 	private void generateSurface(World world, Random random, int chunkX, int chunkZ) {
-		generateOre(ModBlocks.spectriteOre, world, random, chunkX, chunkZ, SpectriteMod.Config.spectriteCountSurface, SpectriteMod.Config.spectriteMinYSurface,
+		generateOre(ModBlocks.spectrite_ore, world, random, chunkX, chunkZ, SpectriteMod.Config.spectriteCountSurface, SpectriteMod.Config.spectriteMinYSurface,
 			SpectriteMod.Config.spectriteMaxYEnd);
 	}
 
 	private void generateNether(World world, Random random, int chunkX, int chunkZ) {
-		generateOre(ModBlocks.spectriteOre, world, random, chunkX, chunkZ, SpectriteMod.Config.spectriteCountNether, SpectriteMod.Config.spectriteMinYNether,
+		generateOre(ModBlocks.spectrite_ore, world, random, chunkX, chunkZ, SpectriteMod.Config.spectriteCountNether, SpectriteMod.Config.spectriteMinYNether,
 			SpectriteMod.Config.spectriteMaxYNether);
 	}
 	

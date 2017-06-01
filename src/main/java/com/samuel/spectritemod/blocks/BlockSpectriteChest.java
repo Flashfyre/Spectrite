@@ -1,5 +1,8 @@
 package com.samuel.spectritemod.blocks;
 
+import com.samuel.spectritemod.etc.InventoryLargeMineralChest;
+import com.samuel.spectritemod.tileentity.TileEntitySpectriteChest;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockHorizontal;
@@ -24,10 +27,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
-
-import com.samuel.spectritemod.SpectriteMod;
-import com.samuel.spectritemod.etc.InventoryLargeMineralChest;
-import com.samuel.spectritemod.tileentity.TileEntitySpectriteChest;
 
 public class BlockSpectriteChest extends BlockChest {
 	

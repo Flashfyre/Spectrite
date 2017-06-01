@@ -1,47 +1,53 @@
 package com.samuel.spectritemod;
 
-import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
+import com.samuel.spectritemod.blocks.BlockSpectrite;
+import com.samuel.spectritemod.blocks.BlockSpectriteChest;
+import com.samuel.spectritemod.blocks.BlockSpectriteOre;
+import com.samuel.spectritemod.items.ItemDiamondRod;
+import com.samuel.spectritemod.items.ItemSpectriteArmor;
+import com.samuel.spectritemod.items.ItemSpectriteArrow;
+import com.samuel.spectritemod.items.ItemSpectriteAxe;
+import com.samuel.spectritemod.items.ItemSpectriteAxeSpecial;
+import com.samuel.spectritemod.items.ItemSpectriteBow;
+import com.samuel.spectritemod.items.ItemSpectriteBowSpecial;
+import com.samuel.spectritemod.items.ItemSpectriteGem;
+import com.samuel.spectritemod.items.ItemSpectriteOrb;
+import com.samuel.spectritemod.items.ItemSpectritePickaxe;
+import com.samuel.spectritemod.items.ItemSpectritePickaxeSpecial;
+import com.samuel.spectritemod.items.ItemSpectriteRod;
+import com.samuel.spectritemod.items.ItemSpectriteShield;
+import com.samuel.spectritemod.items.ItemSpectriteShieldSpecial;
+import com.samuel.spectritemod.items.ItemSpectriteShovel;
+import com.samuel.spectritemod.items.ItemSpectriteShovelSpecial;
+import com.samuel.spectritemod.items.ItemSpectriteSword;
+import com.samuel.spectritemod.items.ItemSpectriteSwordSpecial;
+import com.samuel.spectritemod.packets.PacketSyncSpectriteBoss;
+import com.samuel.spectritemod.proxy.CommonProxy;
+import com.samuel.spectritemod.tileentity.TileEntitySpectriteChest;
+import com.samuel.spectritemod.world.WorldGenSpectrite;
+
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
-import net.minecraft.item.ItemDoor;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
-
-import com.samuel.spectritemod.blocks.*;
-import com.samuel.spectritemod.eventhandlers.SpectriteGeneralEventHandler;
-import com.samuel.spectritemod.items.*;
-import com.samuel.spectritemod.packets.PacketSyncSpectriteBoss;
-import com.samuel.spectritemod.proxy.CommonProxy;
-import com.samuel.spectritemod.tileentity.*;
-import com.samuel.spectritemod.world.WorldGenSpectrite;
 
 @Mod(modid = SpectriteMod.MOD_ID, name = SpectriteMod.MOD_NAME, version = SpectriteMod.VERSION, guiFactory = "com.samuel."
 	+ SpectriteMod.MOD_ID + ".client.gui.GUIFactorySpectriteMod", acceptedMinecraftVersions="[1.11.2]")
 public class SpectriteMod {
 	public static final String MOD_NAME = "Spectrite Mod";
 	public static final String MOD_ID = "spectritemod";
-	public static final String VERSION = "1.0.2";
+	public static final String VERSION = "1.1.0";
 
 	@Mod.Instance
 	public static SpectriteMod Instance = new SpectriteMod();
@@ -71,6 +77,11 @@ public class SpectriteMod {
 	public static ItemSpectriteSwordSpecial ItemSpectriteSwordSpecial;
 	public static ItemSpectriteSword ItemSpectriteSword2;
 	public static ItemSpectriteSwordSpecial ItemSpectriteSword2Special;
+	public static ItemSpectriteArrow ItemSpectriteArrow;
+	public static ItemSpectriteBow ItemSpectriteBow;
+	public static ItemSpectriteBowSpecial ItemSpectriteBowSpecial;
+	public static ItemSpectriteShield ItemSpectriteShield;
+	public static ItemSpectriteShieldSpecial ItemSpectriteShieldSpecial;
 	public static ItemSpectriteArmor ItemSpectriteHelmet;
 	public static ItemSpectriteArmor ItemSpectriteChestplate;
 	public static ItemSpectriteArmor ItemSpectriteLeggings;
@@ -112,11 +123,16 @@ public class SpectriteMod {
 	public static final double SPECTRITE_TOOL_COOLDOWN_DEFAULT = 1.75d;
 	public static final SpectriteModConfig.EnumSpectriteArmourBonusMode SPECTRITE_ARMOUR_BONUS_MODE_DEFAULT =
 		SpectriteModConfig.EnumSpectriteArmourBonusMode.NORMAL_BONUSES;
+	public static final SpectriteModConfig.EnumSpectriteArrowDamageMode SPECTRITE_ARROW_DAMAGE_MODE_DEFAULT =
+		SpectriteModConfig.EnumSpectriteArrowDamageMode.INSTANT_DAMAGE;
 	public static final double SPECTRITE_BOSS_SPAWN_RATE_DEFAULT = 0.4d;
-	public static final double SPECTRITE_BOSS_PERFECT_SWORD_RATE_DEFAULT = 25.0d;
+	public static final double SPECTRITE_BOSS_PERFECT_WEAPON_RATE_DEFAULT = 25.0d;
+	public static final double SPECTRITE_BOSS_LEGEND_SWORD_RATE_DEFAULT = 25.0d;
 	public static final double SPECTRITE_BOSS_ARMOUR_DROP_RATE_DEFAULT = 25.0d;
 	public static final double SPECTRITE_BOSS_SWORD_DROP_RATE_DEFAULT = 50.0d;
 	public static final double SPECTRITE_BOSS_ORB_DROP_RATE_DEFAULT = 50.0d;
+	public static final double SPECTRITE_BOSS_BOW_DROP_RATE_DEFAULT = 50.0d;
+	public static final double SPECTRITE_BOSS_ARROW_DROP_RATE_DEFAULT = 100.0d;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
