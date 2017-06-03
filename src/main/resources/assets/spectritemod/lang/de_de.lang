@@ -1,3 +1,5 @@
+
+# Tiles
 tile.spectrite_chest.name=Spectrittruhe
 tile.large_spectrite_chest.name=Große Spectrittruhe
 tile.spectrite_chest_trapped.name=Redstone-Spectrittruhe
@@ -6,9 +8,12 @@ tile.spectrite_ore_surface.name=Spectriterz
 tile.spectrite_ore_nether.name=Netherrack-Spectriterz
 tile.spectrite_ore_end.name=Endstein-Spectriterz
 tile.spectrite_block.name=Spectritblock
+
+
+# Items
 item.diamond_rod.name=Diamantstange
 item.spectrite_rod.name=Spectritstange
-item.spectrite_gem.name=Spectritjuwel
+item.spectrite_gem.name=Spectritstein
 item.spectrite_orb.name=Heilende Spectritkugel
 item.spectrite_shovel.name=Spectritschaufel
 item.spectrite_shovel_special.name=Perfekte Spectritschaufel
@@ -20,10 +25,18 @@ item.spectrite_sword.name=Spectritschwert
 item.spectrite_sword_2.name=Legendäre Spectritklinge
 item.spectrite_sword_special.name=Perfektes Spectritschwert
 item.spectrite_sword_2_special.name=Perfekte Legendäre Spectritklinge
+item.spectrite_arrow.name=Spectritpfeil
+item.spectrite_bow.name=Spectritbogen
+item.spectrite_bow_special.name=Perfekter Spectritbogen
+item.spectrite_shield.name=Spectritschild
+item.spectrite_shield_special.name=Perfektes Spectritschild
 item.spectrite_helmet.name=Spectrithelm
 item.spectrite_chestplate.name=Spectritbrustpanzer
 item.spectrite_leggings.name=Spectritbeinschutz
 item.spectrite_boots.name=Spectritstiefel
+
+
+# Item Infos
 iteminfo.spectrite_orb.l1=§7Alle #s:
 iteminfo.spectrite_orb.l2=§7Regeneration I (#s)
 iteminfo.spectrite_orb.l3=§7(Erhöht Spectritrüstungseffekt)@
@@ -51,6 +64,11 @@ iteminfo.spectrite_sword_2.l3=§7Radialschaden III@
 iteminfo.spectrite_sword_2_special.l1=§7Alle #s:
 iteminfo.spectrite_sword_2_special.l2=§7Sofortschaden IV
 iteminfo.spectrite_sword_2_special.l3=§7Radialschaden IV@
+iteminfo.spectrite_arrow.l1=§7Sofortschaden II
+iteminfo.spectrite_arrow.l2=§7Radialschaden II
+iteminfo.spectrite_arrow.l3=§7Kritisch:
+iteminfo.spectrite_arrow.l4=§7Sofortschaden III
+iteminfo.spectrite_arrow.l5=§7Radialschaden III@
 iteminfo.spectrite_helmet.0.l1=§7Maximale Gesundheit +1
 iteminfo.spectrite_helmet.0.l2=§7Festgelegter Bonus:
 iteminfo.spectrite_helmet.0.l3=§7Regeneration I@
@@ -171,6 +189,13 @@ iteminfo.spectrite_boots.5.l4=§7Stärke III
 iteminfo.spectrite_boots.5.l5=§7Schutz III
 iteminfo.spectrite_boots.5.l6=§7Regeneration V
 iteminfo.spectrite_boots.5.l7=§7Feuerresistenz III@
+
+
+# Entities
+entity.SpectriteArrow.name=Spectritpfeil
+
+
+# Configurations
 config.title=Spectrite Mod Einstellungen
 config.spectrite_count_surface.name=Spectritvorkommen pro Chunk
 config.spectrite_count_surface.desc=Chancen pro Chunk dass eine Spectritader generiert wird
@@ -210,16 +235,31 @@ config.spectrite_armour_bonus_mode.options.2=Übermächtiger Bonus
 config.spectrite_armour_bonus_mode.options.3=Beast Mode
 config.spectrite_armour_bonus_mode.options.4=Du machst wohl Scherze
 config.spectrite_armour_bonus_mode.options.5=Irrer Bonus (Bitte nicht)
+config.spectrite_arrow_damage_mode.name=Spectritpfeil Schadensmodus
+config.spectrite_arrow_damage_mode.desc=Modus der festlegt, was bei einem Treffer durch einen Spectritpfeil geschieht
+config.spectrite_arrow_damage_mode.options.0=Sofortschaden
+config.spectrite_arrow_damage_mode.options.1=Explosion
+config.spectrite_arrow_damage_mode.options.2=Explosion + Sofortschaden
 config.spectrite_tool_cooldown.name=Spectritwerkzeug-Abklingzeit
 config.spectrite_tool_cooldown.desc=Abklingzeit in Sekunden für Spectritwerkzeugeffekte
 config.spectrite_boss_spawn_rate.name=Spectritboss-Vorkommen
 config.spectrite_boss_spawn_rate.desc=Die Chance mit der ein Zombie oder ein Skelett als Spectritboss spawnt (Prozent)
 config.spectrite_boss_perfect_sword_rate.name=Spectritboss-Vorkommen (mit Perfekter Klinge)
 config.spectrite_boss_perfect_sword_rate.desc=Die Chance mit der ein Spectritboss mit einer perfekten Klinge spawnt (Prozent)
+config.spectrite_boss_legend_sword_rate.name=Spectritboss-Vorkommen (mit Legendärer Klinge)
+config.spectrite_boss_legend_sword_rate.desc=Die Chance mit der ein Spectritboss mit einer Legendären Klinge spawnt (Prozent)
 config.spectrite_boss_armour_drop_rate.name=Spectritboss-Drop Chance (Rüstung)
 config.spectrite_boss_armour_drop_rate.desc=Die Chance mit der ein Spectritboss ein Rüstungsteil fallen lässt (Prozent)
-config.spectrite_boss_sword_drop_rate.name=Spectritboss-Drop Chance (Legendäres Schwert)
+config.spectrite_boss_sword_drop_rate.name=Spectritboss-Drop Chance (Legendäre Klinge)
 config.spectrite_boss_sword_drop_rate.desc=Die Chance mit der ein Spectritboss ein Legendäres Schwert fallen lässt (Prozent)
 config.spectrite_boss_orb_drop_rate.name=Spectritboss-Drop Chance (Heilende Spectritkugel)
 config.spectrite_boss_orb_drop_rate.desc=Die Chance mit der ein Spectritboss eine Heilende Spectritkugel fallen lässt (Prozent)
+config.spectrite_boss_bow_drop_rate.name=Spectritboss-Drop Chance (Spectritbogen)
+config.spectrite_boss_bow_drop_rate.desc=Die Chance mit der ein Spectritboss einen Spectritbogen fallen lässt (Prozent)
+config.spectrite_boss_arrow_drop_rate.nameSpectritboss-Drop Chance (Spectritpfeil)
+config.spectrite_boss_arrow_drop_rate.desc=Die Chance mit der ein Spectritboss einen Spectritpfeil fallen lässt (Prozent)
+
+
+# Subtitles
 subtitle.explosion=Große Explosion
+
