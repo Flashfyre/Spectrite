@@ -140,7 +140,7 @@ public class CommonProxy {
 		(SpectriteMod.ItemSpectriteBow = new ItemSpectriteBow())
 			.setUnlocalizedName("spectrite_bow");
 		(SpectriteMod.ItemSpectriteBowSpecial = new ItemSpectriteBowSpecial())
-			.setUnlocalizedName("spectrite_bow");
+			.setUnlocalizedName("spectrite_bow_special");
 		(SpectriteMod.ItemSpectriteShield = new ItemSpectriteShield())
 			.setUnlocalizedName("spectrite_shield");
 		(SpectriteMod.ItemSpectriteShieldSpecial = new ItemSpectriteShieldSpecial())
