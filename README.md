@@ -330,3 +330,4 @@ Tired of playing fair and want to go on an overpowered rampage? There's a config
 * The name of the Spectrite Legend Sword and Perfect Spectrite Legend Sword cannot be changed; this is because the text formatting in the default name would cause of mess of formatting characters translated into text, so this is an intential bug added to prevent a worse bug
 * Changing dimensions with a Spectrite Armour max health boost may not appear to carry over into other dimensions and may cause buggy behaviour when taking damage (this is a Vanilla bug)
 * Skeleton Spectrite Bosses may temporarily think their Spectrite Bow is a melee weapon, but this will fix itself shortly after
+* Spectrite Shields are not damaged as intended and actually take damage when the player takes damage instead of when they block
