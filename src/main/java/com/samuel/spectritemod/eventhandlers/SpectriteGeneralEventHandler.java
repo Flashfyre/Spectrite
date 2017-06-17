@@ -15,6 +15,7 @@ import com.samuel.spectritemod.etc.SpectriteHelper;
 import com.samuel.spectritemod.init.ModSounds;
 import com.samuel.spectritemod.items.ItemSpectriteArrow;
 import com.samuel.spectritemod.items.ItemSpectriteBow;
+import com.samuel.spectritemod.items.ItemSpectriteOrb;
 import com.samuel.spectritemod.items.ItemSpectriteShield;
 import com.samuel.spectritemod.items.ItemSpectriteShieldSpecial;
 import com.samuel.spectritemod.items.ItemSpectriteSword;
@@ -281,8 +282,12 @@ public class SpectriteGeneralEventHandler {
 			ISpectriteBossCapability sbc = entity.getCapability(SpectriteBossProvider.sbc, null);
 			if (sbc.isEnabled()) {
 				final int healRate;
-				switch (entity.getEntityWorld().getDifficulty().ordinal()) {
+				final int healingLevel = Math.max(entity.getEntityWorld().getDifficulty().ordinal() - (!entity.getHeldItemOffhand().isEmpty()
+					&& entity.getHeldItemOffhand().getItem().getClass() == ItemSpectriteOrb.class ? 0 : 1), 0);
+				switch (healingLevel) {
 					case 0:
+						healRate = 40;
+						break;
 					case 1:
 						healRate = 20;
 						break;

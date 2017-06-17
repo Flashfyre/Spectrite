@@ -1,7 +1,6 @@
 package com.samuel.spectritemod.tileentity;
 
 import com.samuel.spectritemod.blocks.BlockSpectriteChest;
-import com.samuel.spectritemod.blocks.BlockSpectriteChest.Type;
 import com.samuel.spectritemod.etc.ContainerMineralChest;
 import com.samuel.spectritemod.etc.InventoryLargeMineralChest;
 
@@ -26,14 +25,14 @@ public class TileEntitySpectriteChest extends TileEntityChest
 	implements ITickable, IInventory {
 	
 	private int ticksSinceSync;
-	private Type cachedChestType;
+	private BlockChest.Type cachedChestType;
 	private String customName;
 
 	public TileEntitySpectriteChest() {
 		this.cachedChestType = null;
 	}
 
-	public TileEntitySpectriteChest(Type chestType) {
+	public TileEntitySpectriteChest(BlockChest.Type chestType) {
 		this.cachedChestType = chestType;
 	}
 
@@ -89,15 +88,15 @@ public class TileEntitySpectriteChest extends TileEntityChest
 			BlockChest.Type.TRAP;
 	}
 	
-	public Type getMineralChestType() {
+	public BlockChest.Type getMineralChestType() {
 		
 		if (this.cachedChestType == null) {
 			if (this.world == null
 				|| !(this.getBlockType() instanceof BlockSpectriteChest)) {
-				return Type.NORMAL;
+				return BlockChest.Type.BASIC;
 			}
 
-			this.cachedChestType = ((BlockSpectriteChest) this
+			this.cachedChestType = ((BlockChest) this
 				.getBlockType()).chestType;
 		}
 		
@@ -131,8 +130,8 @@ public class TileEntitySpectriteChest extends TileEntityChest
 			Block block = this.world
 				.getBlockState(posIn).getBlock();
 			return block instanceof BlockSpectriteChest
-				&& ((BlockSpectriteChest) block).chestType == this
-					.getMineralChestType();
+				&& ((BlockChest) block).chestType == this
+					.getChestType();
 		}
 	}
 

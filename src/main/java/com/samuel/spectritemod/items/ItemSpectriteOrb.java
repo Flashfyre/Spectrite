@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.samuel.spectritemod.SpectriteMod;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -31,7 +32,7 @@ public class ItemSpectriteOrb extends Item {
 	
 	@Override
 	public void addInformation(ItemStack stack,
-		EntityPlayer player, List list, boolean Adva) {
+		World worldIn, List<String> list, ITooltipFlag adva) {
 		int lineCount = 0;
 		boolean isLastLine = false;
 		String curLine;

@@ -11,6 +11,7 @@ import com.samuel.spectritemod.init.ModSounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemAxe;
@@ -49,7 +50,7 @@ public class ItemSpectriteAxe extends ItemAxe implements ISpectriteTool {
 	
 	@Override
 	public void addInformation(ItemStack stack,
-		EntityPlayer player, List list, boolean Adva) {
+		World worldIn, List<String> list, ITooltipFlag adva) {
 		int lineCount = 0;
 		boolean isLastLine = false;
 		String curLine;

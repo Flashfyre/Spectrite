@@ -7,6 +7,7 @@ import com.samuel.spectritemod.SpectriteMod;
 import com.samuel.spectritemod.etc.SpectriteHelper;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -92,8 +93,8 @@ public class ItemSpectriteSword extends ItemSword {
     }
     
     @Override
-	public void addInformation(ItemStack stack,
-		EntityPlayer player, List list, boolean Adva) {
+    public void addInformation(ItemStack stack,
+		World worldIn, List<String> list, ITooltipFlag adva) {
 		int lineCount = 0;
 		boolean isLastLine = false;
 		String curLine;

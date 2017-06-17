@@ -22,6 +22,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -105,12 +106,12 @@ public class BlockSpectriteOre extends BlockOre implements IMetaBlockName {
     /**
      * Get the MapColor for this Block and the given BlockState
      */
-    public MapColor getMapColor(IBlockState state)
+    public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
     	int type = state.getValue(TYPE);
         return type == 0 ? this.blockMapColor : type == 1 ?
-        	Blocks.NETHERRACK.getMapColor(Blocks.NETHERRACK.getDefaultState()) :
-        	Blocks.END_STONE.getMapColor(Blocks.END_STONE.getDefaultState());
+        	Blocks.NETHERRACK.getMapColor(Blocks.NETHERRACK.getDefaultState(), worldIn, pos) :
+        	Blocks.END_STONE.getMapColor(Blocks.END_STONE.getDefaultState(), worldIn, pos);
     }
     
     @Override
@@ -141,11 +142,12 @@ public class BlockSpectriteOre extends BlockOre implements IMetaBlockName {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList list)
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> list)
     {
-    	list.add(new ItemStack(itemIn));
-    	list.add(new ItemStack(itemIn, 1, 1));
-    	list.add(new ItemStack(itemIn, 1, 2));
+    	Item item = Item.getItemFromBlock(this);
+    	list.add(new ItemStack(item));
+    	list.add(new ItemStack(item, 1, 1));
+    	list.add(new ItemStack(item, 1, 2));
     }
 
 	@Override

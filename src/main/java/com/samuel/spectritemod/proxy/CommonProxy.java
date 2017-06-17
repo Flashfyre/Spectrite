@@ -3,7 +3,6 @@ package com.samuel.spectritemod.proxy;
 import com.samuel.spectritemod.SpectriteMod;
 import com.samuel.spectritemod.blocks.BlockSpectrite;
 import com.samuel.spectritemod.blocks.BlockSpectriteChest;
-import com.samuel.spectritemod.blocks.BlockSpectriteChest.Type;
 import com.samuel.spectritemod.blocks.BlockSpectriteOre;
 import com.samuel.spectritemod.capabilities.ISpectriteBossCapability;
 import com.samuel.spectritemod.capabilities.SpectriteBossCapability;
@@ -37,6 +36,7 @@ import com.samuel.spectritemod.items.ItemSpectriteSwordSpecial;
 import com.samuel.spectritemod.tileentity.TileEntitySpectriteChest;
 import com.samuel.spectritemod.world.WorldGenSpectrite;
 
+import net.minecraft.block.BlockChest.Type;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -91,9 +91,9 @@ public class CommonProxy {
 	        }
 	    };
 	    
-    	(SpectriteMod.BlockSpectriteChest = new BlockSpectriteChest(Type.NORMAL))
+    	(SpectriteMod.BlockSpectriteChest = new BlockSpectriteChest(Type.BASIC))
 			.setUnlocalizedName("spectrite_chest");
-        (SpectriteMod.BlockTrappedSpectriteChest = new BlockSpectriteChest(Type.TRAPPED))
+        (SpectriteMod.BlockTrappedSpectriteChest = new BlockSpectriteChest(Type.TRAP))
     		.setUnlocalizedName("spectrite_chest_trapped");
 		(SpectriteMod.BlockSpectriteOre = new BlockSpectriteOre())
 			.setHardness(6.0F).setResistance(10.0F).setUnlocalizedName("spectrite_ore");

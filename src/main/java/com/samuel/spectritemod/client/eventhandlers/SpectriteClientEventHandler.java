@@ -16,9 +16,9 @@ import com.samuel.spectritemod.etc.SpectriteHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
@@ -79,14 +79,14 @@ public class SpectriteClientEventHandler {
 				GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
 					GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 				Tessellator tessellator = Tessellator.getInstance();
-				VertexBuffer vertexbuffer = tessellator.getBuffer();
+				BufferBuilder bufferBuilder = tessellator.getBuffer();
 				GlStateManager.color(r, g, b);
 				renderManager.renderEngine.bindTexture(new ResourceLocation(String.format("%s:textures/gui/crown.png", SpectriteMod.MOD_ID)));
-				vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
-				vertexbuffer.pos(-8.0D, 10.0D, 0.0D).tex(0, 1).endVertex();
-				vertexbuffer.pos(8.0D, 10.0D, 0.0D).tex(1, 1).endVertex();
-				vertexbuffer.pos(8.0D, 0.0D, 0.0D).tex(1, 0).endVertex();
-				vertexbuffer.pos(-8.0D, 0.0D, 0.0D).tex(0, 0).endVertex();
+				bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+				bufferBuilder.pos(-8.0D, 10.0D, 0.0D).tex(0, 1).endVertex();
+				bufferBuilder.pos(8.0D, 10.0D, 0.0D).tex(1, 1).endVertex();
+				bufferBuilder.pos(8.0D, 0.0D, 0.0D).tex(1, 0).endVertex();
+				bufferBuilder.pos(-8.0D, 0.0D, 0.0D).tex(0, 0).endVertex();
 				tessellator.draw();
 				
 				if (!isSneaking)

@@ -194,9 +194,8 @@ public class TileEntitySpectriteChestRenderer extends TileEntitySpecialRenderer 
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity tileentity,
-		double x, double y, double z, float partialTick,
-		int breakStage) {
+	public void func_192841_a(TileEntity tileentity,
+		double x, double y, double z, float partialTick, int breakStage, float partial) {
 		this.render((TileEntitySpectriteChest) tileentity, x,
 			y, z, partialTick, breakStage);
 	}

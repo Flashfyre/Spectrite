@@ -5,6 +5,7 @@ import java.util.List;
 import com.samuel.spectritemod.SpectriteMod;
 import com.samuel.spectritemod.entities.EntitySpectriteArrow;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -25,7 +26,7 @@ public class ItemSpectriteArrow extends ItemArrow {
 	
 	@Override
 	public void addInformation(ItemStack stack,
-		EntityPlayer player, List list, boolean Adva) {
+		World worldIn, List<String> list, ITooltipFlag adva) {
 		int lineCount = 0;
 		boolean isLastLine = false;
 		String curLine;

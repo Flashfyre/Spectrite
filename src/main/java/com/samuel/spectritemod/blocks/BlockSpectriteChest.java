@@ -31,22 +31,10 @@ import net.minecraft.world.World;
 public class BlockSpectriteChest extends BlockChest {
 	
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-    public final Type chestType;
     private boolean isLocked;
-    
-    public static enum Type implements IStringSerializable
-    {
-        NORMAL, TRAPPED;
-
-		@Override
-		public String getName() {
-			return null;
-		}
-    }
 
 	public BlockSpectriteChest(Type chestType) {
 		super(chestType.ordinal() == 0 ? BlockChest.Type.BASIC : BlockChest.Type.TRAP);
-        this.chestType = chestType;
         this.setCreativeTab(chestType.ordinal() == 0 ? CreativeTabs.DECORATIONS : CreativeTabs.REDSTONE);
 	}
 	
