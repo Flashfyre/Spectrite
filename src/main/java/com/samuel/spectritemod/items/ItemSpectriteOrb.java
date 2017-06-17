@@ -53,7 +53,7 @@ public class ItemSpectriteOrb extends Item {
     {
         worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ,
         	SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.NEUTRAL, 0.5F, (itemRand.nextFloat() * 0.4F + 0.8F));
-        playerIn.getCooldownTracker().setCooldown(this, 300);
+        playerIn.getCooldownTracker().setCooldown(this, 600);
         
         playerIn.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 300, !playerIn.isPotionActive(MobEffects.REGENERATION) ? 0 : 1));
 
