@@ -1,46 +1,22 @@
 package com.samuel.spectritemod.proxy;
 
 import com.samuel.spectritemod.SpectriteMod;
-import com.samuel.spectritemod.blocks.BlockSpectrite;
-import com.samuel.spectritemod.blocks.BlockSpectriteChest;
-import com.samuel.spectritemod.blocks.BlockSpectriteChest.Type;
-import com.samuel.spectritemod.blocks.BlockSpectriteOre;
 import com.samuel.spectritemod.capabilities.ISpectriteBossCapability;
 import com.samuel.spectritemod.capabilities.SpectriteBossCapability;
 import com.samuel.spectritemod.eventhandlers.SpectriteGeneralEventHandler;
+import com.samuel.spectritemod.init.ModBiomes;
 import com.samuel.spectritemod.init.ModBlocks;
 import com.samuel.spectritemod.init.ModCrafting;
 import com.samuel.spectritemod.init.ModDispenserBehavior;
 import com.samuel.spectritemod.init.ModEntities;
 import com.samuel.spectritemod.init.ModItems;
+import com.samuel.spectritemod.init.ModLootTables;
 import com.samuel.spectritemod.init.ModSounds;
 import com.samuel.spectritemod.init.ModTileEntities;
 import com.samuel.spectritemod.init.ModWorldGen;
-import com.samuel.spectritemod.items.ItemDiamondRod;
-import com.samuel.spectritemod.items.ItemSpectriteArmor;
-import com.samuel.spectritemod.items.ItemSpectriteArrow;
-import com.samuel.spectritemod.items.ItemSpectriteAxe;
-import com.samuel.spectritemod.items.ItemSpectriteAxeSpecial;
-import com.samuel.spectritemod.items.ItemSpectriteBow;
-import com.samuel.spectritemod.items.ItemSpectriteBowSpecial;
-import com.samuel.spectritemod.items.ItemSpectriteGem;
-import com.samuel.spectritemod.items.ItemSpectriteOrb;
-import com.samuel.spectritemod.items.ItemSpectritePickaxe;
-import com.samuel.spectritemod.items.ItemSpectritePickaxeSpecial;
-import com.samuel.spectritemod.items.ItemSpectriteRod;
-import com.samuel.spectritemod.items.ItemSpectriteShield;
-import com.samuel.spectritemod.items.ItemSpectriteShieldSpecial;
-import com.samuel.spectritemod.items.ItemSpectriteShovel;
-import com.samuel.spectritemod.items.ItemSpectriteShovelSpecial;
-import com.samuel.spectritemod.items.ItemSpectriteSword;
-import com.samuel.spectritemod.items.ItemSpectriteSwordSpecial;
-import com.samuel.spectritemod.tileentity.TileEntitySpectriteChest;
-import com.samuel.spectritemod.world.WorldGenSpectrite;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
@@ -90,86 +66,29 @@ public class CommonProxy {
 	            }
 	        }
 	    };
-	    
-    	(SpectriteMod.BlockSpectriteChest = new BlockSpectriteChest(Type.NORMAL))
-			.setUnlocalizedName("spectrite_chest");
-        (SpectriteMod.BlockTrappedSpectriteChest = new BlockSpectriteChest(Type.TRAPPED))
-    		.setUnlocalizedName("spectrite_chest_trapped");
-		(SpectriteMod.BlockSpectriteOre = new BlockSpectriteOre())
-			.setHardness(6.0F).setResistance(10.0F).setUnlocalizedName("spectrite_ore");
-		(SpectriteMod.BlockSpectrite = new BlockSpectrite())
-			.setHardness(10.0F).setResistance(15.0F).setUnlocalizedName("spectrite_block")
-			.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
-		(SpectriteMod.ItemDiamondRod = new ItemDiamondRod())
-			.setUnlocalizedName("diamond_rod")
-			.setCreativeTab(CreativeTabs.MATERIALS);
-		(SpectriteMod.ItemSpectriteRod = new ItemSpectriteRod())
-			.setUnlocalizedName("spectrite_rod")
-			.setCreativeTab(CreativeTabs.MATERIALS);
-		(SpectriteMod.ItemSpectriteGem = new ItemSpectriteGem())
-			.setUnlocalizedName("spectrite_gem")
-			.setCreativeTab(CreativeTabs.MATERIALS);
-		SpectriteMod.SPECTRITE_TOOL.setRepairItem(new ItemStack(SpectriteMod.ItemSpectriteGem));
-		SpectriteMod.PERFECT_SPECTRITE_TOOL.setRepairItem(new ItemStack(SpectriteMod.ItemSpectriteGem));
-		SpectriteMod.SPECTRITE_2_TOOL.setRepairItem(new ItemStack(SpectriteMod.ItemSpectriteGem));
-		SpectriteMod.PERFECT_SPECTRITE_2_TOOL.setRepairItem(new ItemStack(SpectriteMod.ItemSpectriteGem));
-		(SpectriteMod.ItemSpectriteOrb = new ItemSpectriteOrb())
-			.setUnlocalizedName("spectrite_orb");
-		(SpectriteMod.ItemSpectriteShovel = new ItemSpectriteShovel())
-			.setUnlocalizedName("spectrite_shovel");
-		(SpectriteMod.ItemSpectriteShovelSpecial = new ItemSpectriteShovelSpecial())
-			.setUnlocalizedName("spectrite_shovel_special");
-		(SpectriteMod.ItemSpectritePickaxe = new ItemSpectritePickaxe())
-			.setUnlocalizedName("spectrite_pickaxe");
-		(SpectriteMod.ItemSpectritePickaxeSpecial = new ItemSpectritePickaxeSpecial())
-			.setUnlocalizedName("spectrite_pickaxe_special");
-		(SpectriteMod.ItemSpectriteAxe = new ItemSpectriteAxe())
-			.setUnlocalizedName("spectrite_axe");
-		(SpectriteMod.ItemSpectriteAxeSpecial = new ItemSpectriteAxeSpecial())
-			.setUnlocalizedName("spectrite_axe_special");
-		(SpectriteMod.ItemSpectriteSword = new ItemSpectriteSword(false))
-			.setUnlocalizedName("spectrite_sword");
-		(SpectriteMod.ItemSpectriteSwordSpecial = new ItemSpectriteSwordSpecial(false))
-			.setUnlocalizedName("spectrite_sword_special");
-		(SpectriteMod.ItemSpectriteSword2 = new ItemSpectriteSword(true))
-			.setUnlocalizedName("spectrite_sword_2");
-		(SpectriteMod.ItemSpectriteSword2Special = new ItemSpectriteSwordSpecial(true))
-			.setUnlocalizedName("spectrite_sword_2_special");
-		(SpectriteMod.ItemSpectriteArrow = new ItemSpectriteArrow())
-			.setUnlocalizedName("spectrite_arrow");
-		(SpectriteMod.ItemSpectriteBow = new ItemSpectriteBow())
-			.setUnlocalizedName("spectrite_bow");
-		(SpectriteMod.ItemSpectriteBowSpecial = new ItemSpectriteBowSpecial())
-			.setUnlocalizedName("spectrite_bow_special");
-		(SpectriteMod.ItemSpectriteShield = new ItemSpectriteShield())
-			.setUnlocalizedName("spectrite_shield");
-		(SpectriteMod.ItemSpectriteShieldSpecial = new ItemSpectriteShieldSpecial())
-			.setUnlocalizedName("spectrite_shield_special");
-		(SpectriteMod.ItemSpectriteHelmet = new ItemSpectriteArmor(EntityEquipmentSlot.HEAD))
-			.setUnlocalizedName("spectrite_helmet");
-		(SpectriteMod.ItemSpectriteChestplate = new ItemSpectriteArmor(EntityEquipmentSlot.CHEST))
-			.setUnlocalizedName("spectrite_chestplate");
-		(SpectriteMod.ItemSpectriteLeggings = new ItemSpectriteArmor(EntityEquipmentSlot.LEGS))
-			.setUnlocalizedName("spectrite_leggings");
-		(SpectriteMod.ItemSpectriteBoots = new ItemSpectriteArmor(EntityEquipmentSlot.FEET))
-			.setUnlocalizedName("spectrite_boots");
-		SpectriteMod.TileEntityMineralChest = new TileEntitySpectriteChest();
-		SpectriteMod.spectrite = new WorldGenSpectrite();
+		
+		ModBlocks.createBlocks();
+		ModItems.createItems();
+		ModLootTables.registerLootTables();
 		
 		CapabilityManager.INSTANCE.register(ISpectriteBossCapability.class,
 				new SpectriteBossCapability.DefaultImpl.Storage(),
 				new SpectriteBossCapability.DefaultImpl.Factory());
 		
+		ModBlocks.registerBlocks();
+		ModItems.registerItems();
+		
 		ModSounds.initSounds();
-		ModBlocks.createBlocks();
-		ModItems.createItems();
 		ModTileEntities.initTileEntities();
 		ModDispenserBehavior.initDispenserBehavior();
+		ModBiomes.initBiomes();
 		ModWorldGen.initWorldGen();
 
 		FMLCommonHandler.instance().bus().register(SpectriteMod.Instance);
 		MinecraftForge.EVENT_BUS
 			.register(new SpectriteGeneralEventHandler());
+		MinecraftForge.EVENT_BUS
+			.register(ModWorldGen.spectriteDungeon);
 		MinecraftForge.EVENT_BUS.register(SpectriteMod.Instance);
 	}
 

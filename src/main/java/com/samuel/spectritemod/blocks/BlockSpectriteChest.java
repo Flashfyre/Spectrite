@@ -5,8 +5,6 @@ import com.samuel.spectritemod.tileentity.TileEntitySpectriteChest;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
-import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -20,7 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -30,23 +27,8 @@ import net.minecraft.world.World;
 
 public class BlockSpectriteChest extends BlockChest {
 	
-	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-    public final Type chestType;
-    private boolean isLocked;
-    
-    public static enum Type implements IStringSerializable
-    {
-        NORMAL, TRAPPED;
-
-		@Override
-		public String getName() {
-			return null;
-		}
-    }
-
 	public BlockSpectriteChest(Type chestType) {
-		super(chestType.ordinal() == 0 ? BlockChest.Type.BASIC : BlockChest.Type.TRAP);
-        this.chestType = chestType;
+		super(chestType);
         this.setCreativeTab(chestType.ordinal() == 0 ? CreativeTabs.DECORATIONS : CreativeTabs.REDSTONE);
 	}
 	
@@ -496,7 +478,7 @@ public class BlockSpectriteChest extends BlockChest {
                             else
                             {
                                 ilockablecontainer = new InventoryLargeMineralChest(
-                                	((TileEntitySpectriteChest) tileentity1).getDisplayName().getUnformattedText(),
+                                	((TileEntitySpectriteChest) tileentity1).getName(),
                                 	(TileEntitySpectriteChest)tileentity1, ilockablecontainer);
                             }
                         }

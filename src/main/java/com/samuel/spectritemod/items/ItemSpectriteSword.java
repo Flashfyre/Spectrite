@@ -52,7 +52,6 @@ public class ItemSpectriteSword extends ItemSword {
 			displayName = (stack.getItem() instanceof ItemSpectriteSwordSpecial ? TextFormatting.RED :
 				TextFormatting.LIGHT_PURPLE) + displayName;
 		} else {
-			StringBuilder formattedDisplayName = new StringBuilder();
 			final int startColour = this instanceof ItemSpectriteSwordSpecial ? Math.round((System.currentTimeMillis() >> 7) % 7) : 0;
 			displayName = SpectriteHelper.getMultiColouredString(displayName, startColour);
 		}

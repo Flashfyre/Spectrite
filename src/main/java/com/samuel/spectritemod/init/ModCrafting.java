@@ -1,7 +1,5 @@
 package com.samuel.spectritemod.init;
 
-import com.samuel.spectritemod.SpectriteMod;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -12,20 +10,38 @@ public final class ModCrafting {
 
 	public static void initCrafting() {
 		GameRegistry.addRecipe(new ItemStack(
-			ModBlocks.mineral_chest_spectrite), "XXX", "XYX", "XXX",
+			ModBlocks.spectrite_chest), "XXX", "XYX", "XXX",
 			'X', new ItemStack(ModItems.spectrite_gem), 'Y', new ItemStack(Items.DIAMOND));
 		GameRegistry.addShapelessRecipe(new ItemStack(
-			ModBlocks.mineral_chest_spectrite_trapped), new ItemStack(
-			ModBlocks.mineral_chest_spectrite), new ItemStack(Blocks.TRIPWIRE_HOOK));
+			ModBlocks.spectrite_chest_trapped), new ItemStack(
+			ModBlocks.spectrite_chest), new ItemStack(Blocks.TRIPWIRE_HOOK));
 		GameRegistry.addRecipe(new ItemStack(
 			ModItems.diamond_rod), "X", "X",
 			'X', new ItemStack(Items.DIAMOND));
 		GameRegistry.addRecipe(new ItemStack(
 			ModItems.spectrite_rod), "X", "X",
-			'X', new ItemStack(SpectriteMod.ItemSpectriteGem));
+			'X', new ItemStack(ModItems.spectrite_gem));
 		GameRegistry.addRecipe(new ItemStack(
 			ModBlocks.spectrite_block), "XXX", "XXX", "XXX",
 			'X', new ItemStack(ModItems.spectrite_gem));
+		GameRegistry.addRecipe(new ItemStack(
+			ModBlocks.spectrite_bricks), "XX", "XX",
+			'X', new ItemStack(ModItems.spectrite_brick));
+		GameRegistry.addRecipe(new ItemStack(
+			ModBlocks.spectrite_bricks), "X", "X",
+			'X', new ItemStack(ModBlocks.spectrite_brick_slab_half));
+		GameRegistry.addRecipe(new ItemStack(
+			ModBlocks.spectrite_brick_stairs, 4), "  X", " XX", "XXX",
+			'X', new ItemStack(ModBlocks.spectrite_bricks));
+		GameRegistry.addRecipe(new ItemStack(
+			ModBlocks.spectrite_brick_slab_half, 6), "XXX",
+			'X', new ItemStack(ModBlocks.spectrite_bricks));
+		GameRegistry.addRecipe(new ItemStack(
+			ModBlocks.diamond_ladder, 28), "X X", "XXX", "X X",
+			'X', new ItemStack(ModItems.diamond_rod));
+		GameRegistry.addRecipe(new ItemStack(
+			ModBlocks.spectrite_ladder, 28), "X X", "XXX", "X X",
+			'X', new ItemStack(ModItems.spectrite_rod));
 		GameRegistry.addRecipe(new ItemStack(
 			ModItems.spectrite_shovel), "X", "Y", "Y",
 			'X', new ItemStack(ModItems.spectrite_gem), 'Y', new ItemStack(ModItems.diamond_rod));
@@ -107,9 +123,13 @@ public final class ModCrafting {
 		GameRegistry.addRecipe(new ItemStack(
 			ModItems.spectrite_boots), "X X", "X X",
 			'X', new ItemStack(ModItems.spectrite_gem));
+		GameRegistry.addRecipe(new ItemStack(
+			ModItems.spectrite_compass), "XXX", "XYX", "XXX",
+			'X', new ItemStack(ModItems.spectrite_gem),
+			'Y', new ItemStack(Items.COMPASS));
 		
-		GameRegistry.addSmelting(ModBlocks.mineral_chest_spectrite, new ItemStack(ModItems.spectrite_gem, 5), 5.0f);
-		GameRegistry.addSmelting(ModBlocks.mineral_chest_spectrite_trapped, new ItemStack(ModItems.spectrite_gem, 5), 5.0f);
+		GameRegistry.addSmelting(ModBlocks.spectrite_chest, new ItemStack(ModItems.spectrite_gem, 5), 5.0f);
+		GameRegistry.addSmelting(ModBlocks.spectrite_chest_trapped, new ItemStack(ModItems.spectrite_gem, 5), 5.0f);
 		
 	}
 }

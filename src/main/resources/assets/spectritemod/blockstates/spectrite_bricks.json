@@ -1,0 +1,6 @@
+{
+	"variants": {
+		"odd=false": { "model": "spectritemod:spectrite_bricks" },
+		"odd=true": { "model": "spectritemod:spectrite_bricks_odd" }
+	}
+}

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.google.common.base.Predicate;
 import com.samuel.spectritemod.SpectriteMod;
+import com.samuel.spectritemod.init.ModBiomes;
 import com.samuel.spectritemod.init.ModBlocks;
 
 import net.minecraft.block.Block;
@@ -67,7 +68,8 @@ public class WorldGenSpectrite implements IWorldGenerator {
 	}
 
 	private void generateSurface(World world, Random random, int chunkX, int chunkZ) {
-		generateOre(ModBlocks.spectrite_ore, world, random, chunkX, chunkZ, SpectriteMod.Config.spectriteCountSurface, SpectriteMod.Config.spectriteMinYSurface,
+		final int chancesToSpawn = SpectriteMod.Config.spectriteCountSurface * (world.getBiome(new BlockPos(chunkX << 4, 0, chunkZ << 4)) == ModBiomes.spectrite_dungeon ? 3 : 1);
+		generateOre(ModBlocks.spectrite_ore, world, random, chunkX, chunkZ, chancesToSpawn, SpectriteMod.Config.spectriteMinYSurface,
 			SpectriteMod.Config.spectriteMaxYEnd);
 	}
 
@@ -78,9 +80,9 @@ public class WorldGenSpectrite implements IWorldGenerator {
 	
 	public class WorldGenSpectriteMinable extends WorldGenerator {
 
-		private final IBlockState stateSurface = SpectriteMod.BlockSpectriteOre.getDefaultState(),
-		stateNether = SpectriteMod.BlockSpectriteOre.getStateFromMeta(1),
-		stateEnd = SpectriteMod.BlockSpectriteOre.getStateFromMeta(2);
+		private final IBlockState stateSurface = ModBlocks.spectrite_ore.getDefaultState(),
+		stateNether = ModBlocks.spectrite_ore.getStateFromMeta(1),
+		stateEnd = ModBlocks.spectrite_ore.getStateFromMeta(2);
 	    private final Predicate<IBlockState> targetSurface = BlockStateMatcher.forBlock(Blocks.STONE),
 	    targetNether = BlockStateMatcher.forBlock(Blocks.NETHERRACK),
 	    targetEnd = BlockStateMatcher.forBlock(Blocks.END_STONE);

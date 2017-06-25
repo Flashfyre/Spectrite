@@ -15,6 +15,7 @@ public final class ItemRenderRegister {
 	public static void registerItemRenderer() {
 		reg(ModItems.diamond_rod);
 		reg(ModItems.spectrite_rod);
+		reg(ModItems.spectrite_brick);
 		reg(ModItems.spectrite_gem);
 		reg(ModItems.spectrite_orb);
 		reg(ModItems.spectrite_shovel);
@@ -36,6 +37,7 @@ public final class ItemRenderRegister {
 		reg(ModItems.spectrite_chestplate);
 		reg(ModItems.spectrite_leggings);
 		reg(ModItems.spectrite_boots);
+		reg(ModItems.spectrite_compass);
 	}
 
 	public static void reg(Item item) {

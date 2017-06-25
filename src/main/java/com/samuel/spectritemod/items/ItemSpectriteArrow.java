@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.samuel.spectritemod.SpectriteMod;
 import com.samuel.spectritemod.entities.EntitySpectriteArrow;
+import com.samuel.spectritemod.init.ModItems;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +14,7 @@ import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
@@ -21,6 +23,14 @@ public class ItemSpectriteArrow extends ItemArrow {
 	public ItemSpectriteArrow() {
 		super();
 		this.addPropertyOverride(new ResourceLocation("time"), SpectriteMod.ItemPropertyGetterSpectrite);
+	}
+	
+	@Override
+	public String getItemStackDisplayName(ItemStack stack) {
+		
+		String displayName = super.getItemStackDisplayName(stack);
+		displayName = TextFormatting.LIGHT_PURPLE + displayName;
+		return displayName;
 	}
 	
 	@Override
@@ -38,6 +48,7 @@ public class ItemSpectriteArrow extends ItemArrow {
 		}
 	}
 	
+	@Override
 	public EntityArrow createArrow(World worldIn, ItemStack stack, EntityLivingBase shooter)
     {
 		if (!shooter.getActiveItemStack().isEmpty() && shooter.getActiveItemStack().getItem() instanceof ItemBow) {
@@ -52,16 +63,17 @@ public class ItemSpectriteArrow extends ItemArrow {
 				bowDamage = 99;
 			}
 			
-			if (shooter instanceof EntityPlayer) {
+			if (shooter instanceof EntityPlayer && !((EntityPlayer) shooter).capabilities.isCreativeMode) {
 				((EntityPlayer) shooter).getCooldownTracker().setCooldown(Items.BOW, (int) Math.round(SpectriteMod.Config.spectriteToolCooldown * 20));
-				((EntityPlayer) shooter).getCooldownTracker().setCooldown(SpectriteMod.ItemSpectriteBow, (int) Math.round(SpectriteMod.Config.spectriteToolCooldown * 20));
-				((EntityPlayer) shooter).getCooldownTracker().setCooldown(SpectriteMod.ItemSpectriteBowSpecial, (int) Math.round(SpectriteMod.Config.spectriteToolCooldown * 20));
+				((EntityPlayer) shooter).getCooldownTracker().setCooldown(ModItems.spectrite_bow, (int) Math.round(SpectriteMod.Config.spectriteToolCooldown * 20));
+				((EntityPlayer) shooter).getCooldownTracker().setCooldown(ModItems.spectrite_bow_special, (int) Math.round(SpectriteMod.Config.spectriteToolCooldown * 20));
 			}
 			shooter.getActiveItemStack().damageItem(bowDamage, shooter);
 		}
         return new EntitySpectriteArrow(worldIn, shooter);
     }
 	
+	@Override
 	public boolean isInfinite(ItemStack stack, ItemStack bow, EntityPlayer player)
     {
         int enchant = net.minecraft.enchantment.EnchantmentHelper.getEnchantmentLevel(net.minecraft.init.Enchantments.INFINITY, bow);

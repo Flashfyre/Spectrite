@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.samuel.spectritemod.SpectriteMod;
 import com.samuel.spectritemod.SpectriteModConfig;
+import com.samuel.spectritemod.init.ModItems;
 import com.samuel.spectritemod.init.ModSounds;
 import com.samuel.spectritemod.items.ItemSpectriteShield;
 import com.samuel.spectritemod.items.ItemSpectriteShieldSpecial;
@@ -110,6 +111,9 @@ public class EntitySpectriteArrow extends EntityArrow {
 					if (SpectriteMod.Config.spectriteArrowDamageMode != SpectriteModConfig.EnumSpectriteArrowDamageMode.EXPLOSION) {
 						curEntity.addPotionEffect(new PotionEffect(!curEntity.isEntityUndead() ? MobEffects.INSTANT_DAMAGE :
 							MobEffects.INSTANT_HEALTH, 5, relPower - (curEntity instanceof EntityPlayer ? 1 : 0)));
+						if (this.shootingEntity instanceof EntityPlayer) {
+							curEntity.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) this.shootingEntity), 2.0f);
+						}
 					}
 				}
 			}
@@ -147,6 +151,6 @@ public class EntitySpectriteArrow extends EntityArrow {
 	@Override
 	protected ItemStack getArrowStack()
     {
-        return new ItemStack(SpectriteMod.ItemSpectriteArrow);
+        return new ItemStack(ModItems.spectrite_arrow);
     }
 }
