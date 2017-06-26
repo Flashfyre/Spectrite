@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "spectritemod:spectrite_brick_stairs",
+    "count": 4
+  },
+  "pattern": [
+    "  X",
+    " XX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "spectritemod:spectrite_bricks"
+    }
+  }
+}

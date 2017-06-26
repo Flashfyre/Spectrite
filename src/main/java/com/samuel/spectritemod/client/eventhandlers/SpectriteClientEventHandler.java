@@ -12,7 +12,6 @@ import com.samuel.spectritemod.capabilities.SpectriteBossProvider;
 import com.samuel.spectritemod.client.renderer.entity.layers.LayerSpectriteArmor;
 import com.samuel.spectritemod.etc.ISpectriteTool;
 import com.samuel.spectritemod.etc.SpectriteHelper;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -65,7 +64,7 @@ public class SpectriteClientEventHandler {
 				GlStateManager.translate(e.getX(), e.getY() + f, e.getZ());
 				GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
 				GlStateManager.rotate(-viewerYaw, 0.0F, 1.0F, 0.0F);
-				GlStateManager.rotate((float)(isThirdPersonFrontal ? -1 : 1) * viewerPitch, 1.0F, 0.0F, 0.0F);
+				GlStateManager.rotate((isThirdPersonFrontal ? -1 : 1) * viewerPitch, 1.0F, 0.0F, 0.0F);
 				GlStateManager.scale(-0.025F, -0.025F, 0.025F);
 				GlStateManager.disableLighting();
 				GlStateManager.depthMask(false);
@@ -170,7 +169,7 @@ public class SpectriteClientEventHandler {
 		EntityPlayer player = e.getPlayer();
 		BlockPos blockpos = e.getTarget().getBlockPos();
 		ItemStack playerHeldItem = player.getHeldItemMainhand();
-		if (blockpos != null) {
+		if (blockpos != null && !player.isSneaking()) {
 			if (playerHeldItem != null && playerHeldItem.getItem() instanceof ISpectriteTool) {
 				float cooldown = player.getCooldownTracker().getCooldown((playerHeldItem.getItem()), 0f);
 				float greenValue = new Double((SpectriteMod.Config.spectriteToolCooldown - (SpectriteMod.Config.spectriteToolCooldown * cooldown)) / SpectriteMod.Config.spectriteToolCooldown).floatValue();

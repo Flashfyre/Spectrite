@@ -32,7 +32,7 @@ public class SpectriteBossCapability {
 			this.enabled = enabled;
 			this.perfectWeapon = hasPerfectWeapon;
 			if (entity != null && !entity.getEntityWorld().isRemote) {
-				BossInfo bossInfo = (BossInfoServer)(new BossInfoServer(new TextComponentString(SpectriteHelper.getMultiColouredString(entity.getDisplayName().getUnformattedText(),
+				BossInfo bossInfo = (new BossInfoServer(new TextComponentString(SpectriteHelper.getMultiColouredString(entity.getDisplayName().getUnformattedText(),
 						Math.abs((int) entity.getUniqueID().getLeastSignificantBits() % 7))), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS)).setDarkenSky(true);
 				this.bossInfo = bossInfo;
 			}

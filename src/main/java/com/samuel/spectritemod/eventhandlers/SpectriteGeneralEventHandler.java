@@ -11,8 +11,11 @@ import com.samuel.spectritemod.capabilities.ISpectriteBossCapability;
 import com.samuel.spectritemod.capabilities.SpectriteBossCapability;
 import com.samuel.spectritemod.capabilities.SpectriteBossProvider;
 import com.samuel.spectritemod.entities.EntitySpectriteArrow;
+import com.samuel.spectritemod.entities.EntitySpectriteGolem;
 import com.samuel.spectritemod.etc.SpectriteHelper;
+import com.samuel.spectritemod.init.ModItems;
 import com.samuel.spectritemod.init.ModSounds;
+import com.samuel.spectritemod.init.ModWorldGen;
 import com.samuel.spectritemod.items.ItemSpectriteArrow;
 import com.samuel.spectritemod.items.ItemSpectriteBow;
 import com.samuel.spectritemod.items.ItemSpectriteOrb;
@@ -21,6 +24,7 @@ import com.samuel.spectritemod.items.ItemSpectriteShieldSpecial;
 import com.samuel.spectritemod.items.ItemSpectriteSword;
 import com.samuel.spectritemod.items.ItemSpectriteSwordSpecial;
 import com.samuel.spectritemod.packets.PacketSyncSpectriteBoss;
+import com.samuel.spectritemod.packets.PacketSyncSpectriteDungeonSpawnPos;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -49,9 +53,12 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.WorldType;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -79,17 +86,17 @@ public class SpectriteGeneralEventHandler {
 					final boolean hasPerfectWeapon = SpectriteMod.Config.spectriteBossPerfectWeaponRate > 0d
 						&& (entityLiving.getClass() == EntityWitherSkeleton.class
 						|| (int) entity.getUniqueID().getLeastSignificantBits() % (100 / SpectriteMod.Config.spectriteBossPerfectWeaponRate) == 0);
-					entityLiving.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(SpectriteMod.ItemSpectriteHelmet));
+					entityLiving.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(ModItems.spectrite_helmet));
 	                entityLiving.setDropChance(EntityEquipmentSlot.HEAD, new Double(SpectriteMod.Config.spectriteBossArmourDropRate).floatValue() / 100f);
-	                entityLiving.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(SpectriteMod.ItemSpectriteChestplate));
+	                entityLiving.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(ModItems.spectrite_chestplate));
 	                entityLiving.setDropChance(EntityEquipmentSlot.CHEST, new Double(SpectriteMod.Config.spectriteBossArmourDropRate).floatValue() / 100f);
-	                entityLiving.setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(SpectriteMod.ItemSpectriteLeggings));
+	                entityLiving.setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(ModItems.spectrite_leggings));
 	                entityLiving.setDropChance(EntityEquipmentSlot.LEGS, new Double(SpectriteMod.Config.spectriteBossArmourDropRate).floatValue() / 100f);
-	                entityLiving.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(SpectriteMod.ItemSpectriteBoots));
+	                entityLiving.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(ModItems.spectrite_boots));
 	                entityLiving.setDropChance(EntityEquipmentSlot.FEET, new Double(SpectriteMod.Config.spectriteBossArmourDropRate).floatValue() / 100f);
 	                if (entityLiving.getClass() == EntitySkeleton.class) {
 	                	entityLiving.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(
-                    		!hasPerfectWeapon ? SpectriteMod.ItemSpectriteBow : SpectriteMod.ItemSpectriteBowSpecial));
+                    		!hasPerfectWeapon ? ModItems.spectrite_bow : ModItems.spectrite_bow_special));
     	                entityLiving.setDropChance(EntityEquipmentSlot.MAINHAND, new Double(SpectriteMod.Config.spectriteBossBowDropRate).floatValue() / 100f);
 	                	Field aiArrowAttack = SpectriteHelper.findObfuscatedField(AbstractSkeleton.class, new String[] { "aiArrowAttack", "field_85037_d" });
 	                	try {
@@ -113,20 +120,20 @@ public class SpectriteGeneralEventHandler {
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
-	                	entityLiving.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, new ItemStack(SpectriteMod.ItemSpectriteArrow, e.getWorld().rand.nextInt(4) + 1));
+	                	entityLiving.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, new ItemStack(ModItems.spectrite_arrow, e.getWorld().rand.nextInt(4) + 1));
 	                	entityLiving.setDropChance(EntityEquipmentSlot.OFFHAND, new Double(SpectriteMod.Config.spectriteBossArrowDropRate).floatValue() / 100f);
 	                } else {
 	                	final boolean hasLegendBlade = SpectriteMod.Config.spectriteBossLegendSwordRate > 0d && 
                 			(int) entity.getUniqueID().getMostSignificantBits() % (100 / SpectriteMod.Config.spectriteBossLegendSwordRate) == 0;
 	                	if (!hasLegendBlade) {
 	                		entityLiving.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(
-	                			!hasPerfectWeapon ? SpectriteMod.ItemSpectriteSword : SpectriteMod.ItemSpectriteSwordSpecial));
+	                			!hasPerfectWeapon ? ModItems.spectrite_sword : ModItems.spectrite_sword_special));
 	                	} else {
 	                		entityLiving.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(
-	                			!hasPerfectWeapon ? SpectriteMod.ItemSpectriteSword2 : SpectriteMod.ItemSpectriteSword2Special));
+	                			!hasPerfectWeapon ? ModItems.spectrite_sword_2 : ModItems.spectrite_sword_2_special));
 	                	}
     	                entityLiving.setDropChance(EntityEquipmentSlot.MAINHAND, new Double(SpectriteMod.Config.spectriteBossSwordDropRate).floatValue() / 100f);
-	                	entityLiving.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, new ItemStack(SpectriteMod.ItemSpectriteOrb));
+	                	entityLiving.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, new ItemStack(ModItems.spectrite_orb));
 	                	entityLiving.setDropChance(EntityEquipmentSlot.OFFHAND, new Double(SpectriteMod.Config.spectriteBossOrbDropRate).floatValue() / 100f);
 	                }
 	                entityLiving.getCapability(SpectriteBossProvider.sbc, null).setEnabled(true);
@@ -140,10 +147,10 @@ public class SpectriteGeneralEventHandler {
 			if (arrow.shootingEntity != null && arrow.shootingEntity instanceof EntityLivingBase) {
 				EntityLivingBase shootingEntity = (EntityLivingBase) arrow.shootingEntity;
 				ISpectriteBossCapability sbc = shootingEntity.getCapability(SpectriteBossProvider.sbc, null);
-				if (sbc != null && sbc.isEnabled() && !((EntityLivingBase) shootingEntity).getHeldItemOffhand().isEmpty()
-					&& ((EntityLivingBase) shootingEntity).getHeldItemOffhand().getItem().getClass() == ItemSpectriteArrow.class) {
+				if (sbc != null && sbc.isEnabled() && !shootingEntity.getHeldItemOffhand().isEmpty()
+					&& shootingEntity.getHeldItemOffhand().getItem().getClass() == ItemSpectriteArrow.class) {
 					e.setCanceled(true);
-					EntitySpectriteArrow spectriteArrow = (EntitySpectriteArrow) SpectriteMod.ItemSpectriteArrow.createArrow(e.getWorld(), shootingEntity.getHeldItemOffhand(), shootingEntity);
+					EntitySpectriteArrow spectriteArrow = (EntitySpectriteArrow) ModItems.spectrite_arrow.createArrow(e.getWorld(), shootingEntity.getHeldItemOffhand(), shootingEntity);
 					float velocity = Math.min(e.getWorld().rand.nextFloat() + 0.25f, 1.0f);
 					spectriteArrow.setAim(shootingEntity, shootingEntity.rotationPitch, shootingEntity.rotationYaw, 0.0F, velocity * 3.0F, 1.0F);
 					if (velocity == 1.0f) {
@@ -151,6 +158,10 @@ public class SpectriteGeneralEventHandler {
 					}
 					e.getWorld().spawnEntity(spectriteArrow);
 				}
+			}
+		} else if (!e.getWorld().isRemote && e.getEntity() instanceof EntityPlayer) {
+			if (e.getWorld().getWorldType() != WorldType.FLAT && e.getWorld().getActualHeight() >= 30 && SpectriteMod.Config.generateSpectriteDungeon) {
+				SpectriteMod.Network.sendTo(new PacketSyncSpectriteDungeonSpawnPos(ModWorldGen.spectriteDungeon.getSpawnPos()), (EntityPlayerMP) e.getEntity());
 			}
 		}
 	}
@@ -173,25 +184,26 @@ public class SpectriteGeneralEventHandler {
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public void onSpectriteSwordAttack(LivingAttackEvent e) {
+	public void onLivingAttack(LivingAttackEvent e) {
 		Entity attacker = e.getSource().getEntity();
+		EntityLivingBase target = e.getEntityLiving();
 		if (!e.getSource().isMagicDamage() && attacker instanceof EntityLivingBase) {
 			ItemStack heldItemStack = ((EntityLivingBase) attacker).getHeldItem(EnumHand.MAIN_HAND);
 			Item heldItem = !heldItemStack.isEmpty() ? heldItemStack.getItem() : null;
-			if (heldItem instanceof ItemSpectriteSword) {
+			if (attacker instanceof EntitySpectriteGolem || heldItem instanceof ItemSpectriteSword) {
 				World world = e.getEntityLiving().getEntityWorld();
-				EntityLivingBase target = e.getEntityLiving();
 				BlockPos pos = new BlockPos(e.getSource().getDamageLocation());
 				if (!world.isRemote) {
 					if (!(attacker instanceof EntityPlayer) || (((EntityPlayer) attacker).getCooldownTracker().getCooldown(heldItem, 0) == 0.0f && !attacker.isSneaking())) {
 						WorldServer worldServer = (WorldServer) world;
-						int power = ((heldItem instanceof ItemSpectriteSwordSpecial) ? 2 : 1) + (!((ItemSpectriteSword) heldItem).isLegendBlade() ? 0 : 2);
+						int power = !(attacker instanceof EntitySpectriteGolem) ? ((heldItem instanceof ItemSpectriteSwordSpecial) ? 2 : 1)
+							+ (!((ItemSpectriteSword) heldItem).isLegendBlade() ? 0 : 2) : 3;
 						
 						List<Entity> surrounding = world.getEntitiesWithinAABBExcludingEntity(attacker,
 							new AxisAlignedBB(pos.north(power).west(power).down(power),
 							pos.south(power).east(power).up(power)));
 					
-						if (target.getMaxHealth() >= 200.0F) {
+						if (target.getMaxHealth() >= 200.0F && !(target instanceof EntitySpectriteGolem)) {
 							target.attackEntityFrom(DamageSource.causeThornsDamage(attacker), 5 + (9 * power));
 						}
 						EnumParticleTypes particle = null;
@@ -213,11 +225,13 @@ public class SpectriteGeneralEventHandler {
 								
 								world.playSound(null, pos, ModSounds.explosion, SoundCategory.PLAYERS, 0.75F,
 										0.75F + (world.rand.nextFloat()) * 0.4F);
+								
 								world.playSound(null, pos, ModSounds.fatality, SoundCategory.PLAYERS, 1.0F,
 									1.0F);
 								break;
 							default:
 								particle = EnumParticleTypes.EXPLOSION_NORMAL;
+								
 								world.playSound(null, pos, SoundEvents.ENTITY_FIREWORK_LARGE_BLAST, SoundCategory.PLAYERS, 1.0F,
 										1.0F + (world.rand.nextFloat()) * 0.4F);
 						}
@@ -259,10 +273,10 @@ public class SpectriteGeneralEventHandler {
 									if (shieldDamage > 0) {
 										curEntity.getActiveItemStack().damageItem(shieldDamage, curEntity);
 									}
+								} else {
+									curEntity.addPotionEffect(new PotionEffect(!curEntity.isEntityUndead() ? MobEffects.INSTANT_DAMAGE :
+										MobEffects.INSTANT_HEALTH, 5, relPower - (curEntity instanceof EntityPlayer ? 1 : 0)));
 								}
-								curEntity.addPotionEffect(new PotionEffect(!curEntity.isEntityUndead() ? MobEffects.INSTANT_DAMAGE :
-									MobEffects.INSTANT_HEALTH, 5,
-									relPower - (curEntity instanceof EntityPlayer ? 1 : 0)));
 							}
 						}
 						
@@ -271,6 +285,57 @@ public class SpectriteGeneralEventHandler {
 						}
 					}
 				}
+			} else if (target instanceof EntityPlayer && e.getAmount() >= 5f && !target.getActiveItemStack().isEmpty() && target.isActiveItemStackBlocking()
+				&& canBlockDamageSource((EntityPlayer) target, e.getSource())) {
+				damageShield((EntityPlayer) target, e.getAmount());
+				e.setCanceled(true);
+				if (!e.getSource().isProjectile()) {
+					if (attacker instanceof EntityLivingBase) {
+						((EntityLivingBase) attacker).knockBack(target, 0.5F, target.posX - attacker.posX, target.posZ - attacker.posZ);
+						target.world.setEntityState(target, (byte) 29);
+					}
+				}
+			}
+		}
+	}
+	
+	private boolean canBlockDamageSource(EntityPlayer player, DamageSource damageSourceIn) {
+		if (!damageSourceIn.isUnblockable() && player.isActiveItemStackBlocking()) {
+			Vec3d vec3d = damageSourceIn.getDamageLocation();
+
+			if (vec3d != null) {
+				Vec3d vec3d1 = player.getLook(1.0F);
+				Vec3d vec3d2 = vec3d.subtractReverse(new Vec3d(player.posX, player.posY, player.posZ)).normalize();
+				vec3d2 = new Vec3d(vec3d2.xCoord, 0.0D, vec3d2.zCoord);
+
+				if (vec3d2.dotProduct(vec3d1) < 0.0D) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+	
+	private void damageShield(EntityPlayer player, float damage) {
+		ItemStack activeItemStack = player.getActiveItemStack();
+		if (activeItemStack.getItem() instanceof ItemSpectriteShield &&
+			(!(activeItemStack.getItem() instanceof ItemSpectriteShieldSpecial) || damage >= 8f)) {
+			int i = 1 + MathHelper.floor(damage);
+			player.getActiveItemStack().damageItem(i, player);
+	
+			if (player.getActiveItemStack().isEmpty()) {
+				EnumHand enumhand = player.getActiveHand();
+				net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(player, player.getActiveItemStack(), enumhand);
+	
+				if (enumhand == EnumHand.MAIN_HAND) {
+					player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
+				} else {
+					player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);
+				}
+	
+				player.resetActiveHand();
+				player.playSound(SoundEvents.ITEM_SHIELD_BREAK, 0.8F, 0.8F + player.world.rand.nextFloat() * 0.4F);
 			}
 		}
 	}
@@ -324,30 +389,6 @@ public class SpectriteGeneralEventHandler {
 					((BossInfoServer) sbc.getBossInfo()).addPlayer((EntityPlayerMP) e.getSource().getSourceOfDamage());
 				}
 			}
-			if (target instanceof EntityPlayer && !target.getActiveItemStack().isEmpty() && target.getActiveItemStack().getItem() instanceof ItemSpectriteShield) {
-				ItemStack activeItemStack = target.getActiveItemStack();
-				if ((activeItemStack.getItem() instanceof ItemSpectriteShieldSpecial && e.getAmount() >= 8f) || e.getAmount() >= 5f) {
-		            int i = 1 + (int) Math.floor(e.getAmount());
-		            activeItemStack.damageItem(i, target);
-	
-		            if (activeItemStack.getCount() <= 0)
-		            {
-		                EnumHand enumhand = target.getActiveHand();
-		                net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem((EntityPlayer) target, activeItemStack, enumhand);
-	
-		                if (enumhand == EnumHand.MAIN_HAND)
-		                {
-		                    target.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
-		                }
-		                else
-		                {
-		                    target.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);
-		                }
-	
-		                target.playSound(SoundEvents.ITEM_SHIELD_BREAK, 0.8F, 0.8F + target.getEntityWorld().rand.nextFloat() * 0.4F);
-		            }
-				}
-	        }
 		}
 	}
 	
@@ -380,7 +421,8 @@ public class SpectriteGeneralEventHandler {
 			World world = player.getEntityWorld();
 			List<Entity> entityResults = world.getEntities(EntityLivingBase.class, new Predicate<Entity>()
 		    {
-		        public boolean apply(@Nullable Entity p_apply_1_)
+		        @Override
+				public boolean apply(@Nullable Entity p_apply_1_)
 		        {
 		            return p_apply_1_.hasCapability(SpectriteBossProvider.sbc, null) && p_apply_1_.getCapability(SpectriteBossProvider.sbc, null).isEnabled();
 		        }
@@ -398,7 +440,8 @@ public class SpectriteGeneralEventHandler {
 			World world = player.getEntityWorld();
 			List<Entity> entityResults = world.getEntities(EntityLivingBase.class, new Predicate<Entity>()
 		    {
-		        public boolean apply(@Nullable Entity p_apply_1_)
+		        @Override
+				public boolean apply(@Nullable Entity p_apply_1_)
 		        {
 		            return p_apply_1_.hasCapability(SpectriteBossProvider.sbc, null) && p_apply_1_.getCapability(SpectriteBossProvider.sbc, null).isEnabled();
 		        }
@@ -411,7 +454,8 @@ public class SpectriteGeneralEventHandler {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public void onAnvilRepair(AnvilRepairEvent e) {
-		if (!e.getItemResult().isEmpty() && (e.getItemResult().getItem().equals(SpectriteMod.ItemSpectriteSword2) || e.getItemResult().getItem().equals(SpectriteMod.ItemSpectriteSword2Special))) {
+		if (!e.getItemResult().isEmpty() && (e.getItemResult().getItem().equals(ModItems.spectrite_sword_2)
+			|| e.getItemResult().getItem().equals(ModItems.spectrite_sword_2_special))) {
 			if (e.getItemResult().getTagCompound().hasKey("display")) {
 				e.getItemResult().getTagCompound().removeTag("display");
 			}

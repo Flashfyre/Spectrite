@@ -1,6 +1,5 @@
 package com.samuel.spectritemod.init;
 
-import com.samuel.spectritemod.SpectriteMod;
 import com.samuel.spectritemod.entities.EntitySpectriteArrow;
 
 import net.minecraft.block.BlockDispenser;
@@ -14,7 +13,7 @@ public class ModDispenserBehavior {
 
 	public static void initDispenserBehavior() {
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(
-			SpectriteMod.ItemSpectriteArrow,
+			ModItems.spectrite_arrow,
 			new BehaviorProjectileDispense() {
 				@Override
 				protected IProjectile getProjectileEntity(World worldIn,

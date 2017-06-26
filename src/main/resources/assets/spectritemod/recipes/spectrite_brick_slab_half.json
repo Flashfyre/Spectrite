@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "spectritemod:spectrite_brick_slab_half",
+    "data": 0,
+    "count": 6
+  },
+  "pattern": [
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "spectritemod:spectrite_bricks"
+    }
+  }
+}

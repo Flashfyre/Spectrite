@@ -11,7 +11,7 @@ public class BlockSpectrite extends Block {
 
 	public BlockSpectrite() {
 		super(Material.IRON, MapColor.PURPLE);
-		setSoundType(SoundType.ANVIL);
+		setSoundType(SoundType.METAL);
 	}
 
 	@Override

@@ -18,8 +18,8 @@ public class RenderSpectriteArrow<T extends EntitySpectriteArrow> extends Render
 	
 	private static final Map<String, ResourceLocation> ARROW_TEXTURE_RES_MAP = Maps.<String, ResourceLocation>newHashMap();
 
-	public RenderSpectriteArrow(RenderManager p_i46193_1_) {
-		super(p_i46193_1_);
+	public RenderSpectriteArrow(RenderManager renderManagerIn) {
+		super(renderManagerIn);
 	}
 	
 	@Override

@@ -9,6 +9,7 @@ import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -24,9 +25,18 @@ public class ItemSpectriteBow extends ItemBow {
 			@SideOnly(Side.CLIENT)
             public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
             {
-                return entityIn == null ? 0.0F : (!(entityIn.getActiveItemStack().getItem() instanceof ItemSpectriteBow) ? 0.0F : (float)(stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F);
+                return entityIn == null ? 0.0F : (!(entityIn.getActiveItemStack().getItem() instanceof ItemSpectriteBow) ? 0.0F : (stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F);
             }
         });
 		this.setMaxDamage(this instanceof ItemSpectriteBowSpecial ? 888 : 600);
+	}
+	
+	@Override
+	public String getItemStackDisplayName(ItemStack stack) {
+		
+		String displayName = super.getItemStackDisplayName(stack);
+		displayName = (stack.getItem() instanceof ItemSpectriteBowSpecial ? TextFormatting.RED :
+			TextFormatting.LIGHT_PURPLE) + displayName;
+		return displayName;
 	}
 }

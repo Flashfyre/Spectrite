@@ -14,15 +14,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 
-public class TileEntitySpectriteChest extends TileEntityChest
-	implements ITickable, IInventory {
+public class TileEntitySpectriteChest extends TileEntityChest {
 	
 	private int ticksSinceSync;
 	private BlockChest.Type cachedChestType;
@@ -96,7 +94,7 @@ public class TileEntitySpectriteChest extends TileEntityChest
 				return BlockChest.Type.BASIC;
 			}
 
-			this.cachedChestType = ((BlockChest) this
+			this.cachedChestType = ((BlockSpectriteChest) this
 				.getBlockType()).chestType;
 		}
 		
@@ -130,8 +128,8 @@ public class TileEntitySpectriteChest extends TileEntityChest
 			Block block = this.world
 				.getBlockState(posIn).getBlock();
 			return block instanceof BlockSpectriteChest
-				&& ((BlockChest) block).chestType == this
-					.getChestType();
+				&& ((BlockSpectriteChest) block).chestType == this
+					.getMineralChestType();
 		}
 	}
 
@@ -189,9 +187,7 @@ public class TileEntitySpectriteChest extends TileEntityChest
             this.numPlayersUsing = 0;
             float f = 5.0F;
 
-            for (EntityPlayer entityplayer : this.world.getEntitiesWithinAABB(EntityPlayer.class,
-            	new AxisAlignedBB(i - f, j - f, k - f,
-            	i + 1 + f, j + 1 + f, k + 1 + f)))
+            for (EntityPlayer entityplayer : this.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(i - 5.0F, j - 5.0F, k - 5.0F, i + 1 + 5.0F, j + 1 + 5.0F, k + 1 + 5.0F)))
             {
                 if (entityplayer.openContainer instanceof ContainerMineralChest)
                 {
@@ -224,8 +220,7 @@ public class TileEntitySpectriteChest extends TileEntityChest
                 d1 += 0.5D;
             }
 
-            this.world.playSound((EntityPlayer)null, d1, j + 0.5D, d2,
-            	SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+            this.world.playSound((EntityPlayer)null, d1, j + 0.5D, d2, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
         }
 
         if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F)
@@ -234,11 +229,11 @@ public class TileEntitySpectriteChest extends TileEntityChest
 
             if (this.numPlayersUsing > 0)
             {
-                this.lidAngle += f1;
+                this.lidAngle += 0.1F;
             }
             else
             {
-                this.lidAngle -= f1;
+                this.lidAngle -= 0.1F;
             }
 
             if (this.lidAngle > 1.0F)
@@ -248,7 +243,7 @@ public class TileEntitySpectriteChest extends TileEntityChest
 
             float f3 = 0.5F;
 
-            if (this.lidAngle < f3 && f2 >= f3 && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
+            if (this.lidAngle < 0.5F && f2 >= 0.5F && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
             {
                 double d3 = i + 0.5D;
                 double d0 = k + 0.5D;
@@ -263,8 +258,7 @@ public class TileEntitySpectriteChest extends TileEntityChest
                     d3 += 0.5D;
                 }
 
-                this.world.playSound((EntityPlayer)null, d3, j + 0.5D, d0, SoundEvents.BLOCK_CHEST_CLOSE,
-                	SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+                this.world.playSound((EntityPlayer)null, d3, j + 0.5D, d0, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
             }
 
             if (this.lidAngle < 0.0F)
