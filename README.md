@@ -15,6 +15,9 @@ There are 2 chances of a Spectrite Ore vein per chunk between height=1 and heigh
 ### The End
 There are 2 chances of a Spectrite Ore vein per chunk between height=4 and height=55 with a maximum vein size of 10 and a minimum vein size of 10. This is actually not all that rare due to the visibility of the sides of the floating land masses in this dimension, so while Spectrite Boss mobs (which will be discussed further on) cannot be found in The End (no humanoid entities exist in The End), this is definitely the best place, with default configuration settings, to obtain Spectrite for crafting.
 
+## Spectrite Dungeons
+In every world, one Spectrite Dungeon will spawn somewhere, almost always a long journey from the spawn point. It can, however, be tracked down by crafting a Spectrite Compass and following it. The structure of the dungeon is fairly simple, though it should only be entered through its entrance on the surface as every other part of it is surrounded by Molten Spectrite which is much hotter than lava and will likely kill you on contact. This is also a good reason you probably shouldn't break any walls, though there are certain walls with paths on the other side, but none of these paths are exclusively accessed by breaking walls. This dungeon is also, by far, the easiest way to get Spectrite materials and items. The only catch is that it's full of Spectrite Golems, which have a lot of health and hit hard, so hard that you need Spectrite Armour even to survive a single hit. Thankfully, they aren't aggressive as long as you don't bump into them, though avoiding them could prove difficult if they are blocking your escape route. There are 3 floors to each dungeon with better loot with every floor. At the very end is a portal that lets you teleport back to the entrance so you don't have to worry about losing all that valuable loot you've collected. In the future, this may instead serve as a portal to another dimension.
+
 ## Blocks and Items
 
 ### Spectrite Chest
@@ -32,13 +35,94 @@ X　X　X
 X = Spectrite Gem;
 Y = Diamond
 
-### Spectrite Chest
+### Trapped Spectrite Chest
 A Spectrite Chest that functions as a trapped chest.
 
 Crafting Recipe: Spectrite Chest x1, Tripwire Hook x1
 
 ### Spectrite Ore
 An extremely rare ore that can be found in the same place as diamonds in the surface world, though significantly rarer, but can also be found more commonly in the Nether and The End. 
+
+### Spectrite Block
+A block of pure Spectrite. It can function as a beacon base.
+
+Crafting Recipe:
+
+X　X　X
+
+X　X　X
+
+X　X　X
+
+
+X = Spectrite Gem
+
+### Spectrite Bricks
+A block of Spectrite Bricks. Found in abundance in Spectrite Dungeons, though they are usually the only thing between you and deadly Molten Spectrite.
+
+Crafting Recipe:
+
+X　X
+
+X　X
+
+
+X = Spectrite Brick
+
+### Spectrite Brick Stairs
+Stairs made of Spectrite Bricks.
+
+Crafting Recipe:
+
+-　-　X
+
+-　X　X
+
+X　X　X
+
+
+X = Spectrite Brick
+
+### Spectrite Brick Slab
+A slab of Spectrite Bricks.
+
+Crafting Recipe:
+
+X　X　X
+
+X = Spectrite Brick
+
+### Diamond Ladder
+A ladder made of diamond. Why? Because you can, that's why.
+
+Crafting Recipe:
+
+X
+
+X
+
+
+X = Diamond Rod
+
+### Spectrite Ladder
+A ladder made of... Spectrite? Oh come on, that's just wasteful.
+
+Crafting Recipe:
+
+X　-　X
+
+X　X　X
+
+X　-　X
+
+
+X = Spectrite Rod
+
+### Spectrite Portal
+A portal that takes you to the entrance of a Spectrite Dungeon. In the future, this may serve as a portal to another dimension. (hint hint)
+
+### Molten Spectrite
+Essentially lava but with Spectrite instead of rock. Though, it's much hotter than lava and no potion could protect you against the intense heat of this element.
 
 ### Spectrite Gem
 An extremely rare mineral that can be acquired by mining Spectrite Ore.
@@ -66,6 +150,9 @@ X
 
 
 X = Spectrite Gem
+
+### Spectrite Brick
+A brick made of Spectrite. What can you do with it? Make a block of Spectrite Bricks for building. Is this practical? By no means whatsoever.
 
 ### Spectrite Shovel
 An extremely efficient shovel made of Spectrite with a diamond handle. When used on a shovel-effective block, a cross of surrounding weaker or equivalent blocks will also be destroyed, resulting in a maximum of 5 blocks destroyed per use. The surrounding blocks that will be destroyed depend on the player's rotation and perspective. There is a cooldown period (default 1.75s) for destroying 5 shovel-effective blocks and only one block will be destroyed if the shovel is used before this cooldown has finished, though the item will be damaged just as much either way so it is more efficient just to wait for the cooldown to end.
@@ -294,6 +381,29 @@ Y = Spectrite Block
 ### Spectrite Healing Orb
 A prismatic orb filled with healing power that, when used with a right click, will give you 15 seconds of regeneration with a 30 second cooldown (15 seconds between regeneration). If used with full Spectrite Armour, it will enhance your already present regeneration effect. This cannot be crafted and can only be acquired by defeating a Spectrite Boss mob that is holding this orb.
 
+### Spectrite Compass
+A compass that will direct you towards the Spectrite Dungeon, given that you have the generation of said dungeon enabled in your configuration.
+
+Crafting Recipe:
+
+X　X　X
+
+X　Y　X
+
+X　X　X
+
+
+X = Spectrite Gem;
+Y = Compass
+
+### Bucket of Molten Spectrite
+A bucket of deadly Molten Spectrite. Its only practical use is as a last-resort weapon since it cannot be used as a fuel source since it would melt its container. What? You want to know how the bucket can hold it? Well that's obviously becau
+
+## Mobs
+
+### Spectrite Golem
+A golem made of Spectrite that lives in Spectrite Dungeons. They are usually quite peaceful, though they do not like to be pushed around. They have extremely high endurance and power, but are somewhat lacking when it comes to speed.
+
 ## Spectrite Bosses
 With this mod, on rare occassions, a Zombie, Skeleton, or Zombie Pigman, marked with a hue-rotating crown icon above its head, may spawn with full Spectrite Armour and a Spectrite Weapon. Skeletons may spawn with a Spectrite Bow or Perfect Spectrite Bow and 1-4 Spectrite Arrows in their secondary hand while all other mobs will spawn with a sword ranging from a Spectrite Sword to a Perfect Spectrite Legend Blade and a Spectrite Healing Orb which will make them hard (maybe impossible) to kill unless you have a regular Spectrite Sword at the very least (unless you're on hard mode, then you'll definitely need a perfect one). It is recommended that you stay away from these guys until you have Spectrite Armour because otherwise they are almost guaranteed to 1-hit you, unless they are holding a Perfect Spectrite Legend Blade, in which case they will probably 1-hit you either way. In any case, if you have keep inventory off, make a spawn point nearby so you can pick up your lost items if you die. Armour pieces will drop at a default rate of 25% each and the weapon and orb will drop at a 50% default rate. Skeletons will drop 1-4 arrows at a 100% rate by default. These odds along with the rate of Spectrite Bosses can be adjusted in the config, but it is recommended you don't make them much higher than they are by default to avoid making it too easy to get Spectrite Armour and Legend Blades. The intention was that your primary means of acquiring Spectrite Ore would be through mining and, if you were lucky enough to come across one, you might eventually find a Spectrite Boss and, if you don't get yourself killed, might get a Spectrite Legend Blade and/or Healing Orb along with some armour pieces.
 
@@ -330,4 +440,3 @@ Tired of playing fair and want to go on an overpowered rampage? There's a config
 * The name of the Spectrite Legend Sword and Perfect Spectrite Legend Sword cannot be changed; this is because the text formatting in the default name would cause of mess of formatting characters translated into text, so this is an intential bug added to prevent a worse bug
 * Changing dimensions with a Spectrite Armour max health boost may not appear to carry over into other dimensions and may cause buggy behaviour when taking damage (this is a Vanilla bug)
 * Skeleton Spectrite Bosses may temporarily think their Spectrite Bow is a melee weapon, but this will fix itself shortly after
-* Spectrite Shields are not damaged as intended and actually take damage when the player takes damage instead of when they block
