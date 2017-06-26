@@ -21,8 +21,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSlab;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class ModBlocks {
 
@@ -41,10 +46,8 @@ public class ModBlocks {
 	public static BlockSpectritePortal spectrite_portal;
 	public static BlockMoltenSpectrite molten_spectrite;
 	public static FluidMoltenSpectrite fluid_molten_spectrite;
-	
 
 	public static void createBlocks() {
-		
 		fluid_molten_spectrite = (FluidMoltenSpectrite) new FluidMoltenSpectrite(
 				"moltenspectrite", new ResourceLocation(
 					"spectritemod:blocks/molten_spectrite_still"),
@@ -90,58 +93,60 @@ public class ModBlocks {
 		fluid_molten_spectrite.setUnlocalizedName("moltenspectrite");
 	}
 	
-	public static void registerBlocks() {
-		registerBlock(spectrite_chest, "spectrite_chest");
-		registerBlock(spectrite_chest_trapped, "spectrite_chest_trapped");
-		registerBlock(spectrite_chest_trapped_fake, "spectrite_chest_trapped_fake");
-		registerBlock(spectrite_ore, new ItemBlockMeta(spectrite_ore), "spectrite_ore");
-		registerBlock(spectrite_block, "spectrite_block");
-		registerBlock(spectrite_bricks, "spectrite_bricks");
-		registerBlock(spectrite_bricks_fake, "spectrite_bricks_fake");
-		registerBlock(spectrite_brick_stairs, "spectrite_brick_stairs");
-		registerSlabBlock(spectrite_brick_slab_half, spectrite_brick_slab_double, "spectrite_brick_slab");
-		registerBlock(diamond_ladder, "diamond_ladder");
-		registerBlock(spectrite_ladder, "spectrite_ladder");
-		registerBlock(spectrite_portal, null, "spectrite_portal");
-		registerBlock(molten_spectrite, "molten_spectrite");
+	@SubscribeEvent
+	public void onRegisterBlocks(RegistryEvent.Register<Block> event) {
+		IForgeRegistry<Block> blockRegistry = event.getRegistry();
+		registerBlock(blockRegistry, spectrite_chest, "spectrite_chest");
+		registerBlock(blockRegistry, spectrite_chest_trapped, "spectrite_chest_trapped");
+		registerBlock(blockRegistry, spectrite_chest_trapped_fake, "spectrite_chest_trapped_fake");
+		registerBlock(blockRegistry, spectrite_ore, new ItemBlockMeta(spectrite_ore), "spectrite_ore");
+		registerBlock(blockRegistry, spectrite_block, "spectrite_block");
+		registerBlock(blockRegistry, spectrite_bricks, "spectrite_bricks");
+		registerBlock(blockRegistry, spectrite_bricks_fake, "spectrite_bricks_fake");
+		registerBlock(blockRegistry, spectrite_brick_stairs, "spectrite_brick_stairs");
+		registerSlabBlock(blockRegistry, spectrite_brick_slab_half, spectrite_brick_slab_double, "spectrite_brick_slab");
+		registerBlock(blockRegistry, diamond_ladder, "diamond_ladder");
+		registerBlock(blockRegistry, spectrite_ladder, "spectrite_ladder");
+		registerBlock(blockRegistry, spectrite_portal, null, "spectrite_portal");
+		registerBlock(blockRegistry, molten_spectrite, "molten_spectrite");
 	}
 	
-	private static void registerBlock(Block block, ItemBlock item, String name)
+	private static void registerBlock(IForgeRegistry<Block> registry, Block block, ItemBlock item, String name)
 	{
 		block.setUnlocalizedName(name);
 		block.setRegistryName(name);
 
-		GameRegistry.register(block);
+		registry.register(block);
 
 		if (item != null)
 		{
-			registerItemBlock(item);
+			registerItemBlock(registry, item);
 		}
 	}
 	
-	private static void registerSlabBlock(BlockSlab halfSlab, BlockSlab doubleSlab, String name)
+	private static void registerSlabBlock(IForgeRegistry<Block> registry, BlockSlab halfSlab, BlockSlab doubleSlab, String name)
 	{
 		halfSlab.setUnlocalizedName(name + "_half");
 		halfSlab.setRegistryName(name + "_half");
 		doubleSlab.setUnlocalizedName(name + "_double");
 		doubleSlab.setRegistryName(name + "_double");
 
-		GameRegistry.register(halfSlab);
-		GameRegistry.register(doubleSlab);
+		registry.register(halfSlab);
+		registry.register(doubleSlab);
 
-		registerItemBlock(new ItemSlab(halfSlab, halfSlab, doubleSlab));
+		registerItemBlock(registry, new ItemSlab(halfSlab, halfSlab, doubleSlab));
 	}
 	
-	private static void registerBlock(Block block, String name)
+	private static void registerBlock(IForgeRegistry<Block> registry, Block block, String name)
 	{
-		registerBlock(block, new ItemBlock(block), name);
+		registerBlock(registry, block, new ItemBlock(block), name);
 	}
 
-	private static void registerItemBlock(ItemBlock item)
+	private static void registerItemBlock(IForgeRegistry<Block> registry, ItemBlock item)
 	{
 		item.setRegistryName(item.getBlock().getRegistryName());
 
-		GameRegistry.register(item);
+		ForgeRegistries.ITEMS.register(item);
 	}
 
 

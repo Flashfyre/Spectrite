@@ -23,11 +23,15 @@ import com.samuel.spectritemod.items.ItemSpectriteShovelSpecial;
 import com.samuel.spectritemod.items.ItemSpectriteSword;
 import com.samuel.spectritemod.items.ItemSpectriteSwordSpecial;
 
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModItems {
 
@@ -91,62 +95,64 @@ public class ModItems {
 		(spectrite_compass = new ItemSpectriteCompass()).setCreativeTab(CreativeTabs.TOOLS);
 	}
 	
-	public static void registerItems() {
-		registerItem(diamond_rod, "diamond_rod");
-		registerItem(spectrite_rod, "spectrite_rod");
-		registerItem(spectrite_brick, "spectrite_brick");
-		registerItem(spectrite_gem,
+	@SubscribeEvent
+	public void onRegisterItems(RegistryEvent.Register<Item> event) {
+		IForgeRegistry itemRegistry = event.getRegistry();
+		registerItem(itemRegistry, diamond_rod, "diamond_rod");
+		registerItem(itemRegistry, spectrite_rod, "spectrite_rod");
+		registerItem(itemRegistry, spectrite_brick, "spectrite_brick");
+		registerItem(itemRegistry, spectrite_gem,
 			"spectrite_gem");
-		registerItem(spectrite_orb,
+		registerItem(itemRegistry, spectrite_orb,
 			"spectrite_orb");
-		registerItem(spectrite_shovel,
+		registerItem(itemRegistry, spectrite_shovel,
 			"spectrite_shovel");
-		registerItem(spectrite_shovel_special,
+		registerItem(itemRegistry, spectrite_shovel_special,
 			"spectrite_shovel_special");
-		registerItem(spectrite_pickaxe,
+		registerItem(itemRegistry, spectrite_pickaxe,
 			"spectrite_pickaxe");
-		registerItem(spectrite_pickaxe_special,
+		registerItem(itemRegistry, spectrite_pickaxe_special,
 			"spectrite_pickaxe_special");
-		registerItem(spectrite_axe,
+		registerItem(itemRegistry, spectrite_axe,
 			"spectrite_axe");
-		registerItem(spectrite_axe_special,
+		registerItem(itemRegistry, spectrite_axe_special,
 			"spectrite_axe_special");
-		registerItem(spectrite_sword,
+		registerItem(itemRegistry, spectrite_sword,
 			"spectrite_sword");
-		registerItem(spectrite_sword_special,
+		registerItem(itemRegistry, spectrite_sword_special,
 			"spectrite_sword_special");
-		registerItem(spectrite_sword_2,
+		registerItem(itemRegistry, spectrite_sword_2,
 			"spectrite_sword_2");
-		registerItem(spectrite_sword_2_special,
+		registerItem(itemRegistry, spectrite_sword_2_special,
 			"spectrite_sword_2_special");
-		registerItem(spectrite_arrow,
+		registerItem(itemRegistry, spectrite_arrow,
 			"spectrite_arrow");
-		registerItem(spectrite_bow,
+		registerItem(itemRegistry, spectrite_bow,
 			"spectrite_bow");
-		registerItem(spectrite_bow_special,
+		registerItem(itemRegistry, spectrite_bow_special,
 			"spectrite_bow_special");
-		registerItem(spectrite_shield,
+		registerItem(itemRegistry, spectrite_shield,
 			"spectrite_shield");
-		registerItem(spectrite_shield_special,
+		registerItem(itemRegistry, spectrite_shield_special,
 			"spectrite_shield_special");
-		registerItem(spectrite_helmet,
+		registerItem(itemRegistry, spectrite_helmet,
 			"spectrite_helmet");
-		registerItem(spectrite_chestplate,
+		registerItem(itemRegistry, spectrite_chestplate,
 			"spectrite_chestplate");
-		registerItem(spectrite_leggings,
+		registerItem(itemRegistry, spectrite_leggings,
 			"spectrite_leggings");
-		registerItem(spectrite_boots,
+		registerItem(itemRegistry, spectrite_boots,
 			"spectrite_boots");
-		registerItem(spectrite_compass,
+		registerItem(itemRegistry, spectrite_compass,
 			"spectrite_compass");
 	}
 	
-	private static <T extends Item> T registerItem(T item, String name)
+	private static <T extends Item> T registerItem(IForgeRegistry<Item> registry, T item, String name)
 	{
 		item.setUnlocalizedName(name);
 		item.setRegistryName(name);
 
-		GameRegistry.register(item);
+		registry.register(item);
 
 		return item;
 	}

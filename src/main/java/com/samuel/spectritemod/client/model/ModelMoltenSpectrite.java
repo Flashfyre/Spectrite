@@ -4,14 +4,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector4f;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -41,8 +41,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.IModelCustomData;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
+import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.common.model.IModelPart;
 import net.minecraftforge.common.model.IModelState;
@@ -51,8 +50,11 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ModelMoltenSpectrite implements IModelCustomData
+@SideOnly(Side.CLIENT)
+public class ModelMoltenSpectrite implements IModel
 {
     public static final ModelMoltenSpectrite MOLTEN_SPECTRITE = new ModelMoltenSpectrite(ModBlocks.fluid_molten_spectrite);
     private final FluidMoltenSpectrite fluid;
@@ -74,13 +76,12 @@ public class ModelMoltenSpectrite implements IModelCustomData
         return ImmutableSet.of(fluid.getStill(), fluid.getFlowing(), fluid.getStillOdd(), fluid.getFlowingOdd());
     }
 
-    @Override
-	public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter)
-    {
-        ImmutableMap<TransformType, TRSRTransformation> map = IPerspectiveAwareModel.MapWrapper.getTransforms(state);
-        return new BakedFluid(state.apply(Optional.<IModelPart>absent()), map, format, fluid.getColor(), bakedTextureGetter.apply(fluid.getStill()),
+    public IBakedModel bake(IModelState state, VertexFormat format,
+		Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+        ImmutableMap<TransformType, TRSRTransformation> map = PerspectiveMapWrapper.getTransforms(state);
+        return new BakedFluid(state.apply(Optional.<IModelPart>empty()), map, format, fluid.getColor(), bakedTextureGetter.apply(fluid.getStill()),
     		bakedTextureGetter.apply(fluid.getFlowing()), bakedTextureGetter.apply(fluid.getStillOdd()), bakedTextureGetter.apply(fluid.getFlowingOdd()),
-    		fluid.isGaseous(), Optional.<IExtendedBlockState>absent());
+    		fluid.isGaseous(), Optional.<IExtendedBlockState>empty());
     }
 
     @Override
@@ -110,7 +111,7 @@ public class ModelMoltenSpectrite implements IModelCustomData
         }
     }
 
-    private static final class BakedFluid implements IPerspectiveAwareModel
+    private static final class BakedFluid implements IBakedModel
     {
         private static final int x[] = { 0, 0, 1, 1 };
         private static final int z[] = { 0, 1, 1, 0 };
@@ -413,7 +414,7 @@ public class ModelMoltenSpectrite implements IModelCustomData
         @Override
         public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType type)
         {
-            return IPerspectiveAwareModel.MapWrapper.handlePerspective(this, transforms, type);
+            return PerspectiveMapWrapper.handlePerspective(this, transforms, type);
         }
     }
 
@@ -432,5 +433,4 @@ public class ModelMoltenSpectrite implements IModelCustomData
         }
         return new ModelMoltenSpectrite((FluidMoltenSpectrite) FluidRegistry.getFluid(fluid));
     }
-
 }

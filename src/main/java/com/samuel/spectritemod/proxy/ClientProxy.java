@@ -7,6 +7,7 @@ import com.samuel.spectritemod.client.model.ModelMoltenSpectrite;
 import com.samuel.spectritemod.client.renderer.BlockRenderRegister;
 import com.samuel.spectritemod.client.renderer.EntityRenderRegister;
 import com.samuel.spectritemod.client.renderer.ItemRenderRegister;
+import com.samuel.spectritemod.client.renderer.TileEntityRenderRegister;
 import com.samuel.spectritemod.client.renderer.tileentity.TileEntitySpectriteChestRenderer;
 import com.samuel.spectritemod.client.renderer.tileentity.TileEntitySpectritePortalRenderer;
 import com.samuel.spectritemod.init.ModBlocks;
@@ -36,39 +37,7 @@ public class ClientProxy extends CommonProxy {
 	public void preInit(FMLPreInitializationEvent e) {
 		super.preInit(e);
 		
-		EntityRenderRegister.registerEntityRenderer();
-		ItemRenderRegister.registerItemRenderer();
-		
 		ModelLoaderRegistry.registerLoader(ModelMoltenSpectrite.FluidLoader.INSTANCE);
-		
-		IStateMapper builtInStateMapper = blockIn -> new HashMap();
-		
-		ModelLoader.setCustomModelResourceLocation(Item
-			.getItemFromBlock(ModBlocks.spectrite_ore), 0,
-			new ModelResourceLocation("spectritemod:spectrite_ore_surface"));
-		ModelLoader.setCustomModelResourceLocation(Item
-			.getItemFromBlock(ModBlocks.spectrite_ore), 1,
-			new ModelResourceLocation("spectritemod:spectrite_ore_nether"));
-		ModelLoader.setCustomModelResourceLocation(Item
-			.getItemFromBlock(ModBlocks.spectrite_ore), 2,
-			new ModelResourceLocation("spectritemod:spectrite_ore_end"));
-		ModelLoader.setCustomModelResourceLocation(Item
-			.getItemFromBlock(ModBlocks.spectrite_ore), 0,
-			new ModelResourceLocation("spectritemod:spectrite_chest"));
-		ModelBakery.registerItemVariants(Item.getItemFromBlock(ModBlocks.spectrite_ore),
-			new ResourceLocation("spectritemod:spectrite_ore_surface"),
-			new ResourceLocation("spectritemod:spectrite_ore_nether"),
-			new ResourceLocation("spectritemod:spectrite_ore_end"));
-		ModelLoader.setCustomModelResourceLocation(Item
-			.getItemFromBlock(ModBlocks.spectrite_bricks_fake), 0,
-			new ModelResourceLocation("spectritemod:spectrite_bricks"));
-		ModelLoader.setCustomModelResourceLocation(Item
-			.getItemFromBlock(ModBlocks.spectrite_chest_trapped_fake), 0,
-			new ModelResourceLocation("spectritemod:spectrite_chest_trapped"));
-		ModelLoader.setCustomStateMapper(ModBlocks.spectrite_portal, builtInStateMapper);
-		ModelLoader.setCustomStateMapper(ModBlocks.molten_spectrite,
-			(new StateMap.Builder()).ignore(BlockFluidBase.LEVEL).build());
-		ModelLoader.setBucketModelDefinition(ModItems.molten_spectrite_bucket);
 		
 		SpectriteMod.Config.propSpectriteCountSurface.setConfigEntryClass(NumberSliderEntry.class);
 		SpectriteMod.Config.propSpectriteMinSizeSurface.setConfigEntryClass(NumberSliderEntry.class);
@@ -87,19 +56,20 @@ public class ClientProxy extends CommonProxy {
 		SpectriteMod.Config.propSpectriteMaxYEnd.setConfigEntryClass(NumberSliderEntry.class);
 		
 		MinecraftForge.EVENT_BUS
+			.register(new BlockRenderRegister());
+		MinecraftForge.EVENT_BUS
+			.register(new ItemRenderRegister());
+		MinecraftForge.EVENT_BUS
+			.register(new EntityRenderRegister());
+		MinecraftForge.EVENT_BUS
+			.register(new TileEntityRenderRegister());
+		MinecraftForge.EVENT_BUS
 			.register(new SpectriteClientEventHandler());
 	}
 
 	@Override
 	public void init(FMLInitializationEvent e) {
 		super.init(e);
-		BlockRenderRegister.registerBlockRenderer();
-		ClientRegistry.bindTileEntitySpecialRenderer(
-			TileEntitySpectriteChest.class,
-			new TileEntitySpectriteChestRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(
-			TileEntitySpectritePortal.class,
-			new TileEntitySpectritePortalRenderer());
 	}
 
 	@Override

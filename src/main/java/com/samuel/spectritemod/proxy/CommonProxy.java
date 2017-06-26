@@ -75,9 +75,6 @@ public class CommonProxy {
 				new SpectriteBossCapability.DefaultImpl.Storage(),
 				new SpectriteBossCapability.DefaultImpl.Factory());
 		
-		ModBlocks.registerBlocks();
-		ModItems.registerItems();
-		
 		ModSounds.initSounds();
 		ModTileEntities.initTileEntities();
 		ModDispenserBehavior.initDispenserBehavior();
@@ -85,6 +82,9 @@ public class CommonProxy {
 		ModWorldGen.initWorldGen();
 
 		FMLCommonHandler.instance().bus().register(SpectriteMod.Instance);
+		MinecraftForge.EVENT_BUS.register(new ModBlocks());
+		MinecraftForge.EVENT_BUS.register(new ModItems());
+		MinecraftForge.EVENT_BUS.register(new ModSounds());
 		MinecraftForge.EVENT_BUS
 			.register(new SpectriteGeneralEventHandler());
 		MinecraftForge.EVENT_BUS
