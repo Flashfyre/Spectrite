@@ -72,7 +72,7 @@ X = Spectrite Brick
 ### Spectrite Brick Stairs
 Stairs made of Spectrite Bricks.
 
-Crafting Recipe:
+Crafting Recipe (x4):
 
 -　-　X
 
@@ -81,21 +81,22 @@ Crafting Recipe:
 X　X　X
 
 
-X = Spectrite Brick
+X = Spectrite Bricks
 
 ### Spectrite Brick Slab
 A slab of Spectrite Bricks.
 
-Crafting Recipe:
+Crafting Recipe (x6):
 
 X　X　X
+
 
 X = Spectrite Brick
 
 ### Diamond Ladder
 A ladder made of diamond. Why? Because you can, that's why.
 
-Crafting Recipe:
+Crafting Recipe (x28):
 
 X
 
@@ -107,7 +108,7 @@ X = Diamond Rod
 ### Spectrite Ladder
 A ladder made of... Spectrite? Oh come on, that's just wasteful.
 
-Crafting Recipe:
+Crafting Recipe (x28):
 
 X　-　X
 
