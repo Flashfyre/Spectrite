@@ -98,9 +98,11 @@ A ladder made of diamond. Why? Because you can, that's why.
 
 Crafting Recipe (x28):
 
-X
+X　-　X
 
-X
+X　X　X
+
+X　-　X
 
 
 X = Diamond Rod
