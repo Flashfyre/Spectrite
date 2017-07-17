@@ -4,6 +4,8 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Predicate;
 import com.samuel.spectritemod.init.ModLootTables;
+import com.samuel.spectritemod.init.ModPotions;
+import com.samuel.spectritemod.potions.PotionEffectSpectrite;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -22,6 +24,7 @@ import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.ResourceLocation;
@@ -29,12 +32,21 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class EntitySpectriteGolem extends EntityIronGolem {
+public class EntitySpectriteGolem extends EntityIronGolem implements ISpectriteMob {
+	
+	private int healTimer;
 
 	public EntitySpectriteGolem(World worldIn) {
 		super(worldIn);
+		this.initEntityAIAttackableTarget(false);
 	}
-
+	
+	public EntitySpectriteGolem(World worldIn, boolean playerCreated) {
+		super(worldIn);
+		this.setPlayerCreated(playerCreated);
+		this.initEntityAIAttackableTarget(playerCreated);
+	}
+	
 	@Override
 	protected void initEntityAI()
     {
@@ -44,16 +56,28 @@ public class EntitySpectriteGolem extends EntityIronGolem {
         this.tasks.addTask(4, new EntityAIWanderAvoidWater(this, 0.6D));
         this.tasks.addTask(5, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
-        this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[] { EntityIronGolem.class }));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityLiving.class, 10, false, true, new Predicate<EntityLiving>()
-        {
-            @Override
-			public boolean apply(@Nullable EntityLiving p_apply_1_)
-            {
-                return p_apply_1_ != null && IMob.VISIBLE_MOB_SELECTOR.apply(p_apply_1_) && !(p_apply_1_ instanceof EntityCreeper);
-            }
-        }));
+        this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[] { EntitySpectriteGolem.class }));
     }
+	
+	protected void initEntityAIAttackableTarget(boolean playerCreated) {
+		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityLiving.class, 10, false, true, !playerCreated ?
+			new Predicate<EntityLiving>()
+		    {
+		        @Override
+				public boolean apply(@Nullable EntityLiving p_apply_1_)
+		        {
+		            return p_apply_1_ != null && IMob.VISIBLE_MOB_SELECTOR.apply(p_apply_1_) && !(p_apply_1_ instanceof ISpectriteMob) && !(p_apply_1_ instanceof EntityCreeper);
+		        }
+		    } :
+		    new Predicate<EntityLiving>()
+		    {
+		        @Override
+				public boolean apply(@Nullable EntityLiving p_apply_1_)
+		        {
+		            return p_apply_1_ != null && IMob.VISIBLE_MOB_SELECTOR.apply(p_apply_1_) && !(p_apply_1_ instanceof EntityCreeper);
+		        }
+		    }));
+	}
 	
 	@Override
 	protected void applyEntityAttributes()
@@ -75,6 +99,19 @@ public class EntitySpectriteGolem extends EntityIronGolem {
     }
 	
 	@Override
+	public boolean canAttackClass(Class <? extends EntityLivingBase > cls)
+    {
+        if (this.isPlayerCreated() && EntityPlayer.class.isAssignableFrom(cls))
+        {
+            return false;
+        }
+        else
+        {
+            return cls == EntitySpectriteCreeper.class ? false : super.canAttackClass(cls);
+        }
+	}
+	
+	@Override
 	public boolean attackEntityAsMob(Entity entityIn)
     {
         this.world.setEntityState(this, (byte)4);
@@ -88,6 +125,25 @@ public class EntitySpectriteGolem extends EntityIronGolem {
 
         this.playSound(SoundEvents.ENTITY_IRONGOLEM_ATTACK, 1.0F, 1.0F);
         return flag;
+    }
+	
+	@Override
+	public void onLivingUpdate()
+    {
+        super.onLivingUpdate();
+
+        if (!this.world.isRemote) {
+	        if (this.healTimer > 0) {
+	        	this.healTimer--;
+	        } else {
+	        	this.heal(1.0f);
+	        	this.healTimer = 50;
+	        }
+	        
+	        if (this.getActivePotionEffect(ModPotions.SPECTRITE_RESISTANCE) == null) {
+				this.addPotionEffect(new PotionEffectSpectrite(ModPotions.SPECTRITE_RESISTANCE, 16, 0, true, true));
+			}
+        }
     }
 	
 	@Override
@@ -105,7 +161,8 @@ public class EntitySpectriteGolem extends EntityIronGolem {
 	
 	@Override
 	public boolean isOnSameTeam(Entity entityIn) {
-		return entityIn.getClass() == EntitySpectriteGolem.class || super.isOnSameTeam(entityIn);
+		return (entityIn instanceof ISpectriteMob && (entityIn.getClass() != EntitySpectriteGolem.class
+			|| ((EntitySpectriteGolem) entityIn).isPlayerCreated() == this.isPlayerCreated())) || super.isOnSameTeam(entityIn);
 	}
 	
 	@Override
@@ -113,5 +170,12 @@ public class EntitySpectriteGolem extends EntityIronGolem {
     protected ResourceLocation getLootTable()
     {
         return ModLootTables.spectrite_golem;
+    }
+	
+	@Override
+	public void readEntityFromNBT(NBTTagCompound compound)
+    {
+        super.readEntityFromNBT(compound);
+        this.initEntityAIAttackableTarget(this.isPlayerCreated());
     }
 }

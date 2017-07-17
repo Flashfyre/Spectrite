@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.samuel.spectritemod.SpectriteMod;
 import com.samuel.spectritemod.SpectriteModConfig;
+import com.samuel.spectritemod.etc.SpectriteHelper;
+import com.samuel.spectritemod.init.ModPotions;
+import com.samuel.spectritemod.potions.PotionEffectSpectrite;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -19,7 +22,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
-public class ItemSpectriteArmor extends ItemArmor {
+public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteItem {
 
 	public ItemSpectriteArmor(EntityEquipmentSlot equipmentSlotIn) {
 		super(SpectriteMod.SPECTRITE, 0, equipmentSlotIn);
@@ -31,7 +34,7 @@ public class ItemSpectriteArmor extends ItemArmor {
 	public String getItemStackDisplayName(ItemStack stack) {
 		
 		String displayName = super.getItemStackDisplayName(stack);
-		displayName = TextFormatting.LIGHT_PURPLE + displayName;
+		displayName = getMultiColouredDisplayName(stack, displayName);
 		return displayName;
 	}
 	
@@ -43,8 +46,8 @@ public class ItemSpectriteArmor extends ItemArmor {
 		String curLine;
 		while (!isLastLine) {
 			isLastLine = (curLine = TextFormatting.RED + I18n
-				.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + "." + SpectriteMod.Config.spectriteArmourBonusMode.ordinal() + ".l" +
-				++lineCount))).endsWith("@");
+				.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + (SpectriteHelper.isStackSpectriteEnhanced(stack) ? "_enhanced" : "")
+				+ "." + SpectriteModConfig.spectriteArmourBonusMode.ordinal()  + ".l" + ++lineCount))).endsWith("@");
 			list.add(!isLastLine ? curLine : curLine
 				.substring(0, curLine.length() - 1));
 		}
@@ -57,41 +60,59 @@ public class ItemSpectriteArmor extends ItemArmor {
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
 		if (!world.isRemote) {
 			float healthIncrease = 0f;
+			int armourCount = 0;
+			int enhancedCount = 0;
+			int spectriteResistanceLevel = -1;
 			Iterator<ItemStack> armourIterator = player.getArmorInventoryList().iterator();
 			while (armourIterator.hasNext()) {
 				ItemStack stack = armourIterator.next();
-				if (stack != null && stack.getItem() instanceof ItemSpectriteArmor)
-					healthIncrease += ((ItemSpectriteArmor) stack.getItem()).getHealthIncreaseValue();
+				if (stack != null && stack.getItem() instanceof ItemSpectriteArmor) {
+					float armourHealthIncrease = ((ItemSpectriteArmor) stack.getItem()).getHealthIncreaseValue(false);
+					armourCount++;
+					if (SpectriteHelper.isStackSpectriteEnhanced(stack)) {
+						enhancedCount++;
+						armourHealthIncrease *= 2;
+					}
+					healthIncrease += armourHealthIncrease;
+				}
 			}
 			if (healthIncrease > 0f) {
-				SpectriteModConfig.EnumSpectriteArmourBonusMode spectriteArmourBonusMode = SpectriteMod.Config.spectriteArmourBonusMode;
+				SpectriteModConfig.EnumSpectriteArmourBonusMode spectriteArmourBonusMode = SpectriteModConfig.spectriteArmourBonusMode;
+				boolean allEnhanced = enhancedCount == 4;
 				if (player.getMaxHealth() - 20f != healthIncrease) {
 					player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20f + healthIncrease);
 				}
-				if (healthIncrease == 20f * spectriteArmourBonusMode.getHealthIncreaseMultiplier()) {
-					if (player.getActivePotionEffect(MobEffects.REGENERATION) == null) {
-						player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 220, Math.max(SpectriteMod.Config.spectriteArmourBonusMode.ordinal() - 1, 0), true, true));
-					}
+				if (armourCount == 4) {
 					if (spectriteArmourBonusMode.ordinal() > 2) {
 						if (player.getActivePotionEffect(MobEffects.SPEED) == null) {
-							player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 220, SpectriteMod.Config.spectriteArmourBonusMode.ordinal() - 3, true, true));
+							player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 220, SpectriteModConfig.spectriteArmourBonusMode.ordinal() - (!allEnhanced ? 3 : 2), true, true));
 						}
 						if (player.getActivePotionEffect(MobEffects.STRENGTH) == null) {
-							player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 220, SpectriteMod.Config.spectriteArmourBonusMode.ordinal() - 3, true, true));
+							player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 220, SpectriteModConfig.spectriteArmourBonusMode.ordinal() - (!allEnhanced ? 3 : 2), true, true));
 						}
 						if (player.getActivePotionEffect(MobEffects.RESISTANCE) == null) {
-							player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 220, SpectriteMod.Config.spectriteArmourBonusMode.ordinal() - 3, true, true));
+							player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 220, SpectriteModConfig.spectriteArmourBonusMode.ordinal() - (!allEnhanced ? 3 : 2), true, true));
 						}
 						if (player.getActivePotionEffect(MobEffects.FIRE_RESISTANCE) == null) {
-							player.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 220, SpectriteMod.Config.spectriteArmourBonusMode.ordinal() - 3, true, true));
+							player.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 220, SpectriteModConfig.spectriteArmourBonusMode.ordinal() - (!allEnhanced ? 3 : 2), true, true));
 						}
+						spectriteResistanceLevel++;
+					}
+					if (allEnhanced) {
+						spectriteResistanceLevel++;
+					}
+					if (player.getActivePotionEffect(MobEffects.REGENERATION) == null) {
+						player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 220, Math.max(SpectriteModConfig.spectriteArmourBonusMode.ordinal() - 1, 0), true, true));
+					}
+					if (spectriteResistanceLevel >= 0 && player.getActivePotionEffect(ModPotions.SPECTRITE_RESISTANCE) == null) {
+						player.addPotionEffect(new PotionEffectSpectrite(ModPotions.SPECTRITE_RESISTANCE, 16, spectriteResistanceLevel, true, true));
 					}
 				}
 			}
 		}
     }
 	
-	public float getHealthIncreaseValue() {
+	public float getHealthIncreaseValue(boolean ignoreConfig) {
 		float healthIncreaseValue = 0f;
 		
 		if (this.armorType == EntityEquipmentSlot.HEAD) {
@@ -104,6 +125,10 @@ public class ItemSpectriteArmor extends ItemArmor {
 			healthIncreaseValue = 2f;
 		}
 		
-		return healthIncreaseValue * SpectriteMod.Config.spectriteArmourBonusMode.getHealthIncreaseMultiplier();
+		if (!ignoreConfig) {
+			healthIncreaseValue *= SpectriteModConfig.spectriteArmourBonusMode.getHealthIncreaseMultiplier();
+		}
+		
+		return healthIncreaseValue;
 	}
 }

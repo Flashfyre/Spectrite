@@ -12,6 +12,7 @@ import com.samuel.spectritemod.items.ItemSpectriteBowSpecial;
 import com.samuel.spectritemod.items.ItemSpectriteBrick;
 import com.samuel.spectritemod.items.ItemSpectriteCompass;
 import com.samuel.spectritemod.items.ItemSpectriteGem;
+import com.samuel.spectritemod.items.ItemSpectriteLegendBlade;
 import com.samuel.spectritemod.items.ItemSpectriteOrb;
 import com.samuel.spectritemod.items.ItemSpectritePickaxe;
 import com.samuel.spectritemod.items.ItemSpectritePickaxeSpecial;
@@ -23,14 +24,12 @@ import com.samuel.spectritemod.items.ItemSpectriteShovelSpecial;
 import com.samuel.spectritemod.items.ItemSpectriteSword;
 import com.samuel.spectritemod.items.ItemSpectriteSwordSpecial;
 
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModItems {
@@ -48,8 +47,7 @@ public class ModItems {
 	public static ItemSpectriteAxeSpecial spectrite_axe_special;
 	public static ItemSpectriteSword spectrite_sword;
 	public static ItemSpectriteSwordSpecial spectrite_sword_special;
-	public static ItemSpectriteSword spectrite_sword_2;
-	public static ItemSpectriteSwordSpecial spectrite_sword_2_special;
+	public static ItemSpectriteLegendBlade spectrite_sword_2;
 	public static ItemSpectriteArrow spectrite_arrow;
 	public static ItemSpectriteBow spectrite_bow;
 	public static ItemSpectriteBowSpecial spectrite_bow_special;
@@ -69,8 +67,6 @@ public class ModItems {
 		(spectrite_gem = new ItemSpectriteGem()).setCreativeTab(CreativeTabs.MATERIALS);
 		SpectriteMod.SPECTRITE_TOOL.setRepairItem(new ItemStack(spectrite_gem));
 		SpectriteMod.PERFECT_SPECTRITE_TOOL.setRepairItem(new ItemStack(spectrite_gem));
-		SpectriteMod.SPECTRITE_2_TOOL.setRepairItem(new ItemStack(spectrite_gem));
-		SpectriteMod.PERFECT_SPECTRITE_2_TOOL.setRepairItem(new ItemStack(spectrite_gem));
 		(spectrite_orb = new ItemSpectriteOrb()).setCreativeTab(CreativeTabs.MISC);
 		spectrite_shovel = new ItemSpectriteShovel();
 		spectrite_shovel_special = new ItemSpectriteShovelSpecial();
@@ -78,15 +74,15 @@ public class ModItems {
 		spectrite_pickaxe_special = new ItemSpectritePickaxeSpecial();
 		spectrite_axe = new ItemSpectriteAxe();
 		spectrite_axe_special = new ItemSpectriteAxeSpecial();
-		spectrite_sword = new ItemSpectriteSword(false);
-		spectrite_sword_special = new ItemSpectriteSwordSpecial(false);
-		spectrite_sword_2 = new ItemSpectriteSword(true);
-		spectrite_sword_2_special = new ItemSpectriteSwordSpecial(true);
+		spectrite_sword = new ItemSpectriteSword(SpectriteMod.SPECTRITE_TOOL);
+		spectrite_sword_special = new ItemSpectriteSwordSpecial(SpectriteMod.PERFECT_SPECTRITE_TOOL);
+		spectrite_sword_2 = new ItemSpectriteLegendBlade(SpectriteMod.PERFECT_SPECTRITE_2_TOOL);
 		spectrite_arrow = new ItemSpectriteArrow();
 		spectrite_bow = new ItemSpectriteBow();
 		spectrite_bow_special = new ItemSpectriteBowSpecial();
 		spectrite_shield = new ItemSpectriteShield();
 		spectrite_shield_special = new ItemSpectriteShieldSpecial();
+		SpectriteMod.SPECTRITE.setRepairItem(new ItemStack(spectrite_gem));
 		spectrite_helmet = new ItemSpectriteArmor(EntityEquipmentSlot.HEAD);
 		spectrite_chestplate = new ItemSpectriteArmor(EntityEquipmentSlot.CHEST);
 		spectrite_leggings = new ItemSpectriteArmor(EntityEquipmentSlot.LEGS);
@@ -123,8 +119,6 @@ public class ModItems {
 			"spectrite_sword_special");
 		registerItem(itemRegistry, spectrite_sword_2,
 			"spectrite_sword_2");
-		registerItem(itemRegistry, spectrite_sword_2_special,
-			"spectrite_sword_2_special");
 		registerItem(itemRegistry, spectrite_arrow,
 			"spectrite_arrow");
 		registerItem(itemRegistry, spectrite_bow,

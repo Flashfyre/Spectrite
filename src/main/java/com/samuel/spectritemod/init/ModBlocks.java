@@ -11,6 +11,7 @@ import com.samuel.spectritemod.blocks.BlockSpectriteChest;
 import com.samuel.spectritemod.blocks.BlockSpectriteLadder;
 import com.samuel.spectritemod.blocks.BlockSpectriteOre;
 import com.samuel.spectritemod.blocks.BlockSpectritePortal;
+import com.samuel.spectritemod.blocks.BlockSpectriteSand;
 import com.samuel.spectritemod.etc.FluidMoltenSpectrite;
 import com.samuel.spectritemod.items.ItemBlockMeta;
 
@@ -25,9 +26,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class ModBlocks {
 
@@ -36,6 +35,7 @@ public class ModBlocks {
 	public static BlockSpectriteChest spectrite_chest_trapped_fake;
 	public static BlockSpectriteOre spectrite_ore;
 	public static BlockSpectrite spectrite_block;
+	public static BlockSpectriteSand spectrite_sand;
 	public static BlockSpectriteBricks spectrite_bricks;
 	public static BlockSpectriteBricks spectrite_bricks_fake;
 	public static BlockSpectriteBrickStairs spectrite_brick_stairs;
@@ -72,6 +72,9 @@ public class ModBlocks {
 		(spectrite_block = new BlockSpectrite())
 			.setHardness(50.0F).setResistance(6000.0F).setLightLevel(0.875F)
 			.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+		(spectrite_sand = new BlockSpectriteSand())
+			.setHardness(22.5F).setResistance(45.0F).setLightLevel(0.5F)
+			.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
 		(spectrite_bricks = new BlockSpectriteBricks())
 			.setHardness(50.0F).setResistance(6000.0F).setLightLevel(0.75F)
 			.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
@@ -101,6 +104,7 @@ public class ModBlocks {
 		registerBlock(blockRegistry, spectrite_chest_trapped_fake, "spectrite_chest_trapped_fake");
 		registerBlock(blockRegistry, spectrite_ore, new ItemBlockMeta(spectrite_ore), "spectrite_ore");
 		registerBlock(blockRegistry, spectrite_block, "spectrite_block");
+		registerBlock(blockRegistry, spectrite_sand, "spectrite_sand");
 		registerBlock(blockRegistry, spectrite_bricks, "spectrite_bricks");
 		registerBlock(blockRegistry, spectrite_bricks_fake, "spectrite_bricks_fake");
 		registerBlock(blockRegistry, spectrite_brick_stairs, "spectrite_brick_stairs");
@@ -108,7 +112,7 @@ public class ModBlocks {
 		registerBlock(blockRegistry, diamond_ladder, "diamond_ladder");
 		registerBlock(blockRegistry, spectrite_ladder, "spectrite_ladder");
 		registerBlock(blockRegistry, spectrite_portal, null, "spectrite_portal");
-		registerBlock(blockRegistry, molten_spectrite, "molten_spectrite");
+		registerBlock(blockRegistry, molten_spectrite, null, "molten_spectrite");
 	}
 	
 	private static void registerBlock(IForgeRegistry<Block> registry, Block block, ItemBlock item, String name)

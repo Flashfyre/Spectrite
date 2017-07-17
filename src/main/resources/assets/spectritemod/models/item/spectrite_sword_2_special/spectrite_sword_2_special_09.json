@@ -1,6 +1,0 @@
-{
-    "parent": "item/handheld",
-    "textures": {
-        "layer0": "spectritemod:items/spectrite_sword_2_special/9"
-    }
-}

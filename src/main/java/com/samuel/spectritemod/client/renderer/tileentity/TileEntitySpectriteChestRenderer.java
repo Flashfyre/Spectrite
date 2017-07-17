@@ -75,6 +75,8 @@ public class TileEntitySpectriteChestRenderer extends TileEntitySpecialRenderer 
 					ResourceLocation texture = null;
 					switch (chestType) {
 						case 0:
+							textureSpectrite[SpectriteHelper.getCurrentSpectriteFrame(tile.getWorld())] = new ResourceLocation(
+									String.format("spectritemod:textures/tileentities/chest_spectrite%s/%d.png", "", SpectriteHelper.getCurrentSpectriteFrame(tile.getWorld())));
 							texture = textureSpectrite[SpectriteHelper.getCurrentSpectriteFrame(tile.getWorld())];
 							break;
 						case 1:

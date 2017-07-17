@@ -1,5 +1,6 @@
 {
 	"variants": {
-		"normal":  { "model": "spectritemod:spectrite_block" }
+		"odd=false": { "model": "spectritemod:spectrite_block" },
+		"odd=true": { "model": "spectritemod:spectrite_block_odd" }
 	}
 }

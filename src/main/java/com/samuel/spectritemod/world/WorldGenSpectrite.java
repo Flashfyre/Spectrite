@@ -3,7 +3,7 @@ package com.samuel.spectritemod.world;
 import java.util.Random;
 
 import com.google.common.base.Predicate;
-import com.samuel.spectritemod.SpectriteMod;
+import com.samuel.spectritemod.SpectriteModConfig;
 import com.samuel.spectritemod.init.ModBiomes;
 import com.samuel.spectritemod.init.ModBlocks;
 
@@ -63,19 +63,19 @@ public class WorldGenSpectrite implements IWorldGenerator {
 	}
 	
 	private void generateEnd(World world, Random random, int chunkX, int chunkZ) {
-		generateOre(ModBlocks.spectrite_ore, world, random, chunkX, chunkZ, SpectriteMod.Config.spectriteCountEnd, SpectriteMod.Config.spectriteMinYEnd,
-			SpectriteMod.Config.spectriteMaxYEnd);
+		generateOre(ModBlocks.spectrite_ore, world, random, chunkX, chunkZ, SpectriteModConfig.spectriteCountEnd, SpectriteModConfig.spectriteMinYEnd,
+			SpectriteModConfig.spectriteMaxYEnd);
 	}
 
 	private void generateSurface(World world, Random random, int chunkX, int chunkZ) {
-		final int chancesToSpawn = SpectriteMod.Config.spectriteCountSurface * (world.getBiome(new BlockPos(chunkX << 4, 0, chunkZ << 4)) == ModBiomes.spectrite_dungeon ? 3 : 1);
-		generateOre(ModBlocks.spectrite_ore, world, random, chunkX, chunkZ, chancesToSpawn, SpectriteMod.Config.spectriteMinYSurface,
-			SpectriteMod.Config.spectriteMaxYEnd);
+		final int chancesToSpawn = SpectriteModConfig.spectriteCountSurface * (world.getBiome(new BlockPos(chunkX << 4, 0, chunkZ << 4)) == ModBiomes.spectrite_dungeon ? 3 : 1);
+		generateOre(ModBlocks.spectrite_ore, world, random, chunkX, chunkZ, chancesToSpawn, SpectriteModConfig.spectriteMinYSurface,
+			SpectriteModConfig.spectriteMaxYEnd);
 	}
 
 	private void generateNether(World world, Random random, int chunkX, int chunkZ) {
-		generateOre(ModBlocks.spectrite_ore, world, random, chunkX, chunkZ, SpectriteMod.Config.spectriteCountNether, SpectriteMod.Config.spectriteMinYNether,
-			SpectriteMod.Config.spectriteMaxYNether);
+		generateOre(ModBlocks.spectrite_ore, world, random, chunkX, chunkZ, SpectriteModConfig.spectriteCountNether, SpectriteModConfig.spectriteMinYNether,
+			SpectriteModConfig.spectriteMaxYNether);
 	}
 	
 	public class WorldGenSpectriteMinable extends WorldGenerator {
@@ -96,10 +96,10 @@ public class WorldGenSpectrite implements IWorldGenerator {
 	    	isEnd = world.provider.getDimension() == 1;
 	    	final Block matchBlock = isSurface ? Blocks.STONE : isNether ? Blocks.NETHERRACK : Blocks.END_STONE;
 	    	final IBlockState oreState = isSurface ? stateSurface : isNether ? stateNether : stateEnd;
-    		final int veinSize = rand.nextInt(rand.nextInt(rand.nextInt((isSurface ? SpectriteMod.Config.spectriteMaxSizeSurface :
-    			isNether ? SpectriteMod.Config.spectriteMaxSizeNether : SpectriteMod.Config.spectriteMaxSizeEnd) + 1) + 1) + 1)
-				+ (isSurface ? SpectriteMod.Config.spectriteMaxSizeSurface : isNether ? SpectriteMod.Config.spectriteMaxSizeNether :
-				SpectriteMod.Config.spectriteMaxSizeEnd);
+    		final int veinSize = rand.nextInt(rand.nextInt(rand.nextInt((isSurface ? SpectriteModConfig.spectriteMaxSizeSurface :
+    			isNether ? SpectriteModConfig.spectriteMaxSizeNether : SpectriteModConfig.spectriteMaxSizeEnd) + 1) + 1) + 1)
+				+ (isSurface ? SpectriteModConfig.spectriteMaxSizeSurface : isNether ? SpectriteModConfig.spectriteMaxSizeNether :
+				SpectriteModConfig.spectriteMaxSizeEnd);
     		new WorldGenMinable(oreState, veinSize, BlockMatcher.forBlock(matchBlock)).generate(world, rand, pos);
     	    return true;
 	    }

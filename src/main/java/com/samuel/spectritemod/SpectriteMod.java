@@ -1,5 +1,6 @@
 package com.samuel.spectritemod;
 
+import com.samuel.spectritemod.SpectriteModConfig.EnumSpectriteDungeonChestMode;
 import com.samuel.spectritemod.etc.CommandSpectriteDungeon;
 import com.samuel.spectritemod.packets.PacketSyncSpectriteBoss;
 import com.samuel.spectritemod.packets.PacketSyncSpectriteDungeonSpawnPos;
@@ -27,21 +28,19 @@ import net.minecraftforge.fml.relauncher.Side;
 public class SpectriteMod {
 	public static final String MOD_NAME = "Spectrite Mod";
 	public static final String MOD_ID = "spectritemod";
-	public static final String VERSION = "1.2.0";
+	public static final String VERSION = "1.3.0";
 
 	@Mod.Instance
 	public static SpectriteMod Instance = new SpectriteMod();
-	public static ArmorMaterial SPECTRITE = new EnumHelper()
+	public static ArmorMaterial SPECTRITE = EnumHelper
 		.addArmorMaterial("spectrite", "spectritemod:spectrite_armor",
 		72, new int[]{3, 6, 8, 3}, 25, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 3);
-	public static ToolMaterial SPECTRITE_TOOL = new EnumHelper()
+	public static ToolMaterial SPECTRITE_TOOL = EnumHelper
 		.addToolMaterial("spectrite_tool", 3, 2400, 10.0F, 4.0F, 15);
-	public static ToolMaterial PERFECT_SPECTRITE_TOOL = new EnumHelper()
+	public static ToolMaterial PERFECT_SPECTRITE_TOOL = EnumHelper
 		.addToolMaterial("perfect_spectrite_tool", 3, 3600, 12.0F, 5.0F, 19);
-	public static ToolMaterial SPECTRITE_2_TOOL = new EnumHelper()
-			.addToolMaterial("spectrite_2_tool", 3, 5825, 12.0F, 6.0F, 22);
-	public static ToolMaterial PERFECT_SPECTRITE_2_TOOL = new EnumHelper()
-			.addToolMaterial("perfect_spectrite_2_tool", 3, 7842, 12.0F, 7.0F, 25);
+	public static ToolMaterial PERFECT_SPECTRITE_2_TOOL = EnumHelper
+			.addToolMaterial("perfect_spectrite_2_tool", 3, 7842, 14.0F, 6.0F, 25);
 	public static IItemPropertyGetter ItemPropertyGetterSpectrite;
 
 	@SidedProxy(clientSide = "com.samuel.spectritemod.proxy.ClientProxy",
@@ -55,30 +54,34 @@ public class SpectriteMod {
 	public static final int SPECTRITE_MAX_SIZE_SURFACE_DEFAULT = 3;
 	public static final int SPECTRITE_MIN_Y_SURFACE_DEFAULT = 1;
 	public static final int SPECTRITE_MAX_Y_SURFACE_DEFAULT = 16;
-	public static final int SPECTRITE_COUNT_NETHER_DEFAULT = 2;
+	public static final int SPECTRITE_COUNT_NETHER_DEFAULT = 1;
 	public static final int SPECTRITE_MIN_SIZE_NETHER_DEFAULT = 1;
-	public static final int SPECTRITE_MAX_SIZE_NETHER_DEFAULT = 5;
+	public static final int SPECTRITE_MAX_SIZE_NETHER_DEFAULT = 4;
 	public static final int SPECTRITE_MIN_Y_NETHER_DEFAULT = 1;
 	public static final int SPECTRITE_MAX_Y_NETHER_DEFAULT = 127;
 	public static final int SPECTRITE_COUNT_END_DEFAULT = 2;
 	public static final int SPECTRITE_MIN_SIZE_END_DEFAULT = 1;
-	public static final int SPECTRITE_MAX_SIZE_END_DEFAULT = 9;
+	public static final int SPECTRITE_MAX_SIZE_END_DEFAULT = 7;
 	public static final int SPECTRITE_MIN_Y_END_DEFAULT = 4;
 	public static final int SPECTRITE_MAX_Y_END_DEFAULT = 55;
-	public static final boolean GENERATE_SPECTRITE_DUNGEON_DEFAULT = true;
 	public static final SpectriteModConfig.EnumSpectriteArmourBonusMode SPECTRITE_ARMOUR_BONUS_MODE_DEFAULT =
 		SpectriteModConfig.EnumSpectriteArmourBonusMode.NORMAL_BONUSES;
 	public static final SpectriteModConfig.EnumSpectriteArrowDamageMode SPECTRITE_ARROW_DAMAGE_MODE_DEFAULT =
-		SpectriteModConfig.EnumSpectriteArrowDamageMode.INSTANT_DAMAGE;
+		SpectriteModConfig.EnumSpectriteArrowDamageMode.SPECTRITE_DAMAGE;
 	public static final double SPECTRITE_TOOL_COOLDOWN_DEFAULT = 1.75d;
-	public static final double SPECTRITE_BOSS_SPAWN_RATE_DEFAULT = 0.4d;
-	public static final double SPECTRITE_BOSS_PERFECT_WEAPON_RATE_DEFAULT = 25.0d;
-	public static final double SPECTRITE_BOSS_LEGEND_SWORD_RATE_DEFAULT = 25.0d;
-	public static final double SPECTRITE_BOSS_ARMOUR_DROP_RATE_DEFAULT = 25.0d;
-	public static final double SPECTRITE_BOSS_SWORD_DROP_RATE_DEFAULT = 50.0d;
-	public static final double SPECTRITE_BOSS_ORB_DROP_RATE_DEFAULT = 50.0d;
-	public static final double SPECTRITE_BOSS_BOW_DROP_RATE_DEFAULT = 50.0d;
-	public static final double SPECTRITE_BOSS_ARROW_DROP_RATE_DEFAULT = 100.0d;
+	public static final double SPECTRITE_MOB_SPAWN_RATE_DEFAULT = 0.4d;
+	public static final double SPECTRITE_MOB_BOSS_SPAWN_RATE_DEFAULT = 0.4d;
+	public static final double SPECTRITE_MOB_PERFECT_WEAPON_RATE_DEFAULT = 2.5d;
+	public static final double SPECTRITE_MOB_LEGEND_SWORD_RATE_DEFAULT = 2.5d;
+	public static final double SPECTRITE_MOB_ARMOUR_DROP_RATE_DEFAULT = 2.5d;
+	public static final double SPECTRITE_MOB_SWORD_DROP_RATE_DEFAULT = 5.0d;
+	public static final double SPECTRITE_MOB_ORB_DROP_RATE_DEFAULT = 5.0d;
+	public static final double SPECTRITE_MOB_BOW_DROP_RATE_DEFAULT = 5.0d;
+	public static final double SPECTRITE_MOB_ARROW_DROP_RATE_DEFAULT = 10.0d;
+	public static final boolean GENERATE_SPECTRITE_DUNGEON_DEFAULT = true;
+	public static final EnumSpectriteDungeonChestMode SPECTRITE_DUNGEON_CHEST_MODE_DEFAULT =
+		SpectriteModConfig.EnumSpectriteDungeonChestMode.HIGH_TIER_ONLY;
+	public static final double SPECTRITE_CHEST_ENCHANT_RATE_DEFAULT = 0.5d;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {

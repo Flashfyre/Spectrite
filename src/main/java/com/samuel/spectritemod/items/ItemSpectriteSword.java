@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.Multimap;
 import com.samuel.spectritemod.SpectriteMod;
+import com.samuel.spectritemod.SpectriteModConfig;
 import com.samuel.spectritemod.etc.SpectriteHelper;
 
 import net.minecraft.block.state.IBlockState;
@@ -29,33 +30,21 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemSpectriteSword extends ItemSword {
 	
-	final boolean isLegendBlade;
 	private final Item.ToolMaterial material;
 	
-	public ItemSpectriteSword(ToolMaterial material, boolean isLegendBlade) {
+	public ItemSpectriteSword(ToolMaterial material) {
 		super(material);
 		this.setCreativeTab(CreativeTabs.COMBAT);
 		this.setMaxStackSize(1);
 		this.addPropertyOverride(new ResourceLocation("time"), SpectriteMod.ItemPropertyGetterSpectrite);
-		this.isLegendBlade = isLegendBlade;
 		this.material = material;
-	}
-	
-	public ItemSpectriteSword(boolean isLegendBlade) {
-		this(!isLegendBlade ? SpectriteMod.SPECTRITE_TOOL : SpectriteMod.SPECTRITE_2_TOOL, isLegendBlade);
 	}
 	
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		
 		String displayName = super.getItemStackDisplayName(stack);
-		if (!isLegendBlade) {
-			displayName = (stack.getItem() instanceof ItemSpectriteSwordSpecial ? TextFormatting.RED :
-				TextFormatting.LIGHT_PURPLE) + displayName;
-		} else {
-			final int startColour = this instanceof ItemSpectriteSwordSpecial ? Math.round((System.currentTimeMillis() >> 7) % 7) : 0;
-			displayName = SpectriteHelper.getMultiColouredString(displayName, startColour);
-		}
+		displayName = stack.getItem() instanceof IPerfectSpectriteItem ? ((IPerfectSpectriteItem) this).getMultiColouredDisplayName(stack, displayName)
+			: (TextFormatting.LIGHT_PURPLE + displayName);
 		return displayName;
 	}
 	
@@ -66,19 +55,6 @@ public class ItemSpectriteSword extends ItemSword {
     public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase playerIn)
     {
         return true;
-    }
-	
-	@Override
-	/**
-     * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
-     * the damage on the stack.
-     *  
-     * @param target The Entity being hit
-     * @param attacker the attacking entity
-     */
-    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
-    {
-		return super.hitEntity(stack, target, attacker);
     }
 
     @Override
@@ -99,10 +75,10 @@ public class ItemSpectriteSword extends ItemSword {
 		String curLine;
 		while (!isLastLine) {
 			isLastLine = (curLine = I18n
-				.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + ".l" +
+				.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + (SpectriteHelper.isStackSpectriteEnhanced(stack) ? "_enhanced" : "") + ".l" +
 				++lineCount))).endsWith("@");
 			if (lineCount == 1) {
-				curLine = curLine.replace("#", String.valueOf(SpectriteMod.Config.spectriteToolCooldown));
+				curLine = curLine.replace("#", String.valueOf(SpectriteModConfig.spectriteToolCooldown));
 			}
 			list.add(!isLastLine ? curLine : curLine
 				.substring(0, curLine.length() - 1));
@@ -160,8 +136,4 @@ public class ItemSpectriteSword extends ItemSword {
 
         return multimap;
     }
-	
-	public boolean isLegendBlade() {
-		return isLegendBlade;
-	}
 }

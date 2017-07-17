@@ -42,15 +42,8 @@ public class LayerSpectriteArmor extends LayerBipedArmor {
 	        ItemSpectriteArmor item = (ItemSpectriteArmor)stack.getItem();
 	        String texture = item.getArmorMaterial().getName();
 	        String domain = SpectriteMod.MOD_ID;
-	        int idx = texture.indexOf(':');
-	        if (idx != -1)
-	        {
-	            domain = texture.substring(0, idx);
-	            texture = texture.substring(idx + 1);
-	        }
 	        int curFrame = SpectriteHelper.getCurrentSpectriteFrame(entity.getEntityWorld());
-	        String s1 = String.format("%s:textures/models/armor/%s/layer_%d/%d.png", domain, texture,
-	        	(isLegSlot(slot) ? 2 : 1), curFrame);
+	        String s1 = String.format("%s:textures/models/armor/spectrite_layer_%d/%d.png", domain, (isLegSlot(slot) ? 2 : 1), curFrame);
 	
 	        s1 = net.minecraftforge.client.ForgeHooksClient.getArmorTexture(entity, stack, s1, slot, type);
 	        ResourceLocation resourceLocation = ARMOR_TEXTURE_RES_MAP.get(s1);

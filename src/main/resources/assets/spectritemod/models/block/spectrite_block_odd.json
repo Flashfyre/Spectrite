@@ -1,0 +1,23 @@
+{
+    "parent": "block/block",
+    "textures": {
+		"bottom": "spectritemod:blocks/spectrite_block_top",
+		"top": "spectritemod:blocks/spectrite_block_bottom",
+        "ew": "spectritemod:blocks/spectrite_block_ns",
+		"ns": "spectritemod:blocks/spectrite_block_ew",
+		"particle": "spectritemod:blocks/spectrite_block_ns"
+    },
+	"elements": [
+        {   "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+            "faces": {
+                "down":  { "uv": [ 0, 0, 16, 16 ], "texture": "#bottom", "cullface": "down" },
+                "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#top", "cullface": "up" },
+                "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#ns", "cullface": "north" },
+                "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#ns", "cullface": "south" },
+                "west":  { "uv": [ 0, 0, 16, 16 ], "texture": "#ew", "cullface": "west" },
+                "east":  { "uv": [ 0, 0, 16, 16 ], "texture": "#ew", "cullface": "east" }
+            }
+        }
+	]
+}

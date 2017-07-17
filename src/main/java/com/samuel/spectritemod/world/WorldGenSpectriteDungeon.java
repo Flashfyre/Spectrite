@@ -9,12 +9,11 @@ import java.util.Random;
 
 import com.google.common.collect.Lists;
 import com.samuel.spectritemod.SpectriteMod;
-import com.samuel.spectritemod.blocks.BlockSpectriteChest;
+import com.samuel.spectritemod.SpectriteModConfig;
 import com.samuel.spectritemod.init.ModBiomes;
 import com.samuel.spectritemod.init.ModBlocks;
 import com.samuel.spectritemod.init.ModLootTables;
 import com.samuel.spectritemod.init.ModWorldGen;
-import com.samuel.spectritemod.tileentity.TileEntitySpectriteChest;
 
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockLadder;
@@ -23,6 +22,7 @@ import net.minecraft.block.BlockStairs;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumFacing.AxisDirection;
@@ -42,6 +42,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class WorldGenSpectriteDungeon implements IWorldGenerator {
 
     protected Random rand = new Random();
+    protected SpectriteDungeonData savedData;
     protected World world;
     protected BlockPos spawnPos;
     protected ChunkPos spawnChunkPos;
@@ -51,8 +52,8 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
 		IChunkProvider chunkProvider) {
-		if (SpectriteMod.Config.generateSpectriteDungeon && spawnPos != null && !world.isRemote && world.provider.isSurfaceWorld()) {
-			if (chunkX == spawnChunkPos.chunkXPos && chunkZ == spawnChunkPos.chunkZPos) {
+		if (SpectriteModConfig.generateSpectriteDungeon && spawnPos != null && !world.isRemote && world.provider.isSurfaceWorld()) {
+			if ((savedData.isDungeonGenerated() && posRoomsMap == null) || chunkX == spawnChunkPos.chunkXPos && chunkZ == spawnChunkPos.chunkZPos) {
 				int y = getGroundY(chunkX, chunkZ, world);
 				int i = 1;
 		        this.rand.setSeed(world.getSeed());
@@ -61,8 +62,8 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 		        
 		        EnumFacing facing = null;
 
-                long j1 = chunkX * j;
-                long k1 = chunkZ * k;
+                long j1 = spawnChunkPos.chunkXPos * j;
+                long k1 = spawnChunkPos.chunkZPos * k;
                 this.rand.setSeed(j1 ^ k1 ^ world.getSeed());
                 if (facing == null) {
                 	facing = EnumFacing.values()[this.rand.nextInt(4) + 2];
@@ -70,14 +71,19 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
                 
                 int baseY = 20;
             	
-            	populateChunkBiome(chunkX, chunkZ, world);
+            	populateChunkBiome(spawnChunkPos.chunkXPos, spawnChunkPos.chunkZPos, world);
             	
             	Map<ChunkPos, Room> posRooms = new HashMap<ChunkPos, Room>();
-            	CoreRoom coreRoom = new CoreRoom(rand, chunkX, 0, chunkZ, (y - 6) - baseY, world, facing);
+            	CoreRoom coreRoom = new CoreRoom(rand, spawnChunkPos.chunkXPos, 0, spawnChunkPos.chunkZPos, (y - 6) - baseY, world, facing);
             	posRoomsMap = coreRoom.chunkPosRooms;
         	
-            	coreRoom.build();
-			} else if (posRoomsMap != null) {
+            	if (!savedData.isDungeonGenerated()) {
+            		coreRoom.build();
+            		savedData.setDungeonGenerated(true);
+            		return;
+            	}
+			}
+			if (posRoomsMap != null) {
 				ChunkPos chunkPos = new ChunkPos(chunkX, chunkZ);
 				boolean biomePopulated = false;
 				for (int f = 0; f <= 2; f++) {
@@ -101,12 +107,21 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public void onWorldLoad(WorldEvent.Load e) {
-		if ((this.world == null || this.world.getSeed() != e.getWorld().getSeed()) && !e.getWorld().isRemote && SpectriteMod.Config.generateSpectriteDungeon) {
-			if (e.getWorld().getWorldType() != WorldType.FLAT && e.getWorld().getActualHeight() >= 30) {
+		if (this.world == null && !e.getWorld().isRemote && SpectriteModConfig.generateSpectriteDungeon) {
+			this.world = e.getWorld();
+			if (this.world.getWorldType() != WorldType.FLAT && this.world.getActualHeight() >= 30) {
 				initSpawnPoint(e.getWorld());
-				int chunkX = spawnPos.getX() >> 4, chunkZ = spawnPos.getZ() >> 4;
-				if (e.getWorld().isChunkGeneratedAt(chunkX, chunkZ) && e.getWorld().getBiome(spawnPos) != ModBiomes.spectrite_dungeon) {
-					generate(e.getWorld().rand, chunkX, chunkZ, e.getWorld(), null, null);
+				savedData = (SpectriteDungeonData) this.world.loadData(
+					SpectriteDungeonData.class, "spectriteDungeon");
+				if (savedData == null) {
+					savedData = new SpectriteDungeonData();
+				}
+				if (!savedData.isDungeonGenerated()) {
+					int chunkX = spawnPos.getX() >> 4, chunkZ = spawnPos.getZ() >> 4;
+					if (e.getWorld().isChunkGeneratedAt(chunkX, chunkZ)) {
+						generate(this.world.rand, chunkX, chunkZ, this.world, null, null);
+						savedData.setDungeonGenerated(true);
+					}
 				}
 			} else {
 				this.spawnPos = null;
@@ -114,19 +129,21 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 		}
 	}
 	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public void onWorldUnload(WorldEvent.Unload e) {
+		this.world = null;
+	}
+	
 	public void initSpawnPoint(World world) {
-		if (this.world == null || this.world.getSeed() != world.getSeed()) {
-			this.rand.setSeed(world.getSeed());
-			int spawnChunkX = 0;
-			int spawnChunkZ = 0;
-			int failedPosAttempts = 0;
-			
-			spawnChunkX = (rand.nextInt(256) + 4) * (rand.nextBoolean() ? 1 : -1);
-			spawnChunkZ = (rand.nextInt(256) + 4) * (rand.nextBoolean() ? 1 : -1);
-			
-			this.spawnPos = new BlockPos((spawnChunkX << 4) + 8, 0, (spawnChunkZ << 4) + 8);
-			this.spawnChunkPos = new ChunkPos(spawnChunkX, spawnChunkZ);
-		}
+		this.rand.setSeed(world.getSeed());
+		int spawnChunkX = 0;
+		int spawnChunkZ = 0;
+		
+		spawnChunkX = 0;//(rand.nextInt(256) + 4) * (rand.nextBoolean() ? 1 : -1);
+		spawnChunkZ = 0;//(rand.nextInt(256) + 4) * (rand.nextBoolean() ? 1 : -1);
+		
+		this.spawnPos = new BlockPos((spawnChunkX << 4) + 8, 0, (spawnChunkZ << 4) + 8);
+		this.spawnChunkPos = new ChunkPos(spawnChunkX, spawnChunkZ);
 	}
 	
 	private static void populateChunkBiome(int chunkX, int chunkZ, World world) {
@@ -186,12 +203,14 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 	    protected static IBlockState slabState = ModBlocks.spectrite_brick_slab_half.getDefaultState();
 	    protected static IBlockState ladderState = ModBlocks.spectrite_ladder.getDefaultState();
 	    protected static IBlockState glassState = Blocks.GLASS.getDefaultState();
-	    protected static IBlockState chestState = ModBlocks.spectrite_chest.getDefaultState();
+	    protected static IBlockState chestState = Blocks.CHEST.getDefaultState();
+	    protected static IBlockState spectriteChestState = ModBlocks.spectrite_chest.getDefaultState();
 	    protected static IBlockState mineralState = ModBlocks.spectrite_block.getDefaultState();
 	    protected static IBlockState fluidState = ModBlocks.molten_spectrite.getDefaultState();
 	    protected static IBlockState portalState = ModBlocks.spectrite_portal.getDefaultState();
 	    protected static IBlockState fakeWallState = ModBlocks.spectrite_bricks_fake.getDefaultState();
-	    protected static IBlockState fakeTrappedChestState = ModBlocks.spectrite_chest_trapped_fake.getDefaultState();
+	    protected static IBlockState fakeTrappedChestState = Blocks.TRAPPED_CHEST.getDefaultState();
+	    protected static IBlockState spectriteFakeTrappedChestState = ModBlocks.spectrite_chest_trapped_fake.getDefaultState();
 	    protected static IBlockState tntState = Blocks.TNT.getDefaultState();
 		protected final Random rand;
 		protected final World world;
@@ -401,7 +420,7 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 					this.size = 10;
 				}
 			}
-			this.hasGlassFloor = rand.nextInt(Math.max(3, 16 - depth)) == 0;
+			this.hasGlassFloor = (sidePath || !mainRoute || floor < 2) && rand.nextInt(Math.max(3, 16 - depth)) == 0;
 			
 			resetSeed();
 		}
@@ -434,7 +453,7 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 		public void build() {
 			int halfSize = size >> 1;
 			
-			this.stairsState = stairsState.withProperty(BlockStairs.FACING, facing);
+			Room.stairsState = stairsState.withProperty(BlockStairs.FACING, facing);
 			
 			fillRange(wallState, 0, 1, 6, 8 - halfSize, 5, 6, false, true, false, facing);
 			fillRange(wallState, 0, 0, 6, 8 - halfSize, 0, 9, false, false, false, facing);
@@ -856,7 +875,7 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 							connRoom.fillRange(wallState, 8 + connHalfSize, 1, 6, 15, 4, 6, false, true, false, connFacing);
 							connRoom.fillRange(wallState, (connHalfSize > 1 ? 8 : 9) + connHalfSize, 5, 6, 15, 6, 9, false, false, false, connFacing);
 							if (connHalfSize == 1) {
-								connRoom.fillRange(connRoom.stairsState.withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP).withProperty(BlockStairs.FACING, connFacing),
+								connRoom.fillRange(Room.stairsState.withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP).withProperty(BlockStairs.FACING, connFacing),
 									8 + connHalfSize, 5, 7, 8 + connHalfSize, 5, 8, false, false, false, connFacing);
 								connRoom.fillRange(airState, 8 + connHalfSize, 4, 7, 8 + connHalfSize, 4, 8, false, false, false, connFacing);
 							}
@@ -932,6 +951,7 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 					if (mainEnd || prevRoom != floorStartRoom) {
 						int xDist = !highChest ? (halfSize > 1 ? 6 : 7) + halfSize : 8;
 						if (floor < 2 || !mainEnd) {
+							boolean midChest = !highChest;
 							int chestY = !highChest ? 1 : 2;
 							ResourceLocation lootTable = null;
 							if (highChest) {
@@ -940,17 +960,20 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 								lootTable = ModLootTables.spectrite_dungeon_high;
 							} else if (sidePath || floor < 2) {
 								int midChestChance = (4 - (!sidePath ? 2 : 0)) - floor;
-								lootTable = midChestChance == 1 || rand.nextInt(midChestChance) == 0 ? ModLootTables.spectrite_dungeon_mid : ModLootTables.spectrite_dungeon_low;
+								midChest = midChestChance == 1 || rand.nextInt(midChestChance) == 0;
+								lootTable = midChest ? ModLootTables.spectrite_dungeon_mid : ModLootTables.spectrite_dungeon_low;
 							}
 							if (!fakeChest) {
-								if (!(getBlockState(xDist, chestY, 7, facing).getBlock() instanceof BlockSpectriteChest)) {
-									fillRange(chestState.withProperty(BlockChest.FACING, facing.getOpposite()),
+								if (!(getBlockState(xDist, chestY, 7, facing).getBlock() instanceof BlockChest)) {
+									fillRange((SpectriteModConfig.spectriteDungeonChestMode.shouldChestTierUseSpectriteChest(highChest ? 2 : midChest ? 1 : 0) ?
+										spectriteChestState : chestState).withProperty(BlockChest.FACING, facing.getOpposite()),
 										xDist, chestY, 7, xDist, chestY, 8, false, false, false, facing);
-									((TileEntitySpectriteChest) getTileEntity(xDist, chestY, 7, facing)).setLootTable(lootTable, rand.nextLong());
-									((TileEntitySpectriteChest) getTileEntity(xDist, chestY, 8, facing)).setLootTable(lootTable, rand.nextLong());
+									((TileEntityChest) getTileEntity(xDist, chestY, 7, facing)).setLootTable(lootTable, rand.nextLong());
+									((TileEntityChest) getTileEntity(xDist, chestY, 8, facing)).setLootTable(lootTable, rand.nextLong());
 								}
 							} else {
-								fillRange(fakeTrappedChestState, xDist, chestY, 7, xDist, chestY, 8, false, false, false, facing);
+								fillRange((SpectriteModConfig.spectriteDungeonChestMode.shouldChestTierUseSpectriteChest(midChest ? 1 : 0) ?
+									spectriteFakeTrappedChestState : fakeTrappedChestState), xDist, chestY, 7, xDist, chestY, 8, false, false, false, facing);
 								fillRange(tntState, xDist, chestY - 1, 7, xDist, chestY - 1, 8, false, false, false, facing);
 								fillRange(fakeWallState, 0, chestY - 1, 7, xDist - 1, chestY - 1, 8, false, false, false, facing);
 								fillRange(tntState, 0, chestY - 2, 7, xDist, chestY - 2, 8, false, false, false, facing);
@@ -990,7 +1013,7 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 					connRoom.fillRange(wallState, 8 + connHalfSize, 1, 6, 15, 4, 6, false, true, false, connFacing);
 					connRoom.fillRange(wallState, (connHalfSize > 1 ? 8 : 9), 5, 6, 15, 5, 9, false, false, false, connFacing);
 					if (connHalfSize == 1) {
-						connRoom.fillRange(connRoom.stairsState.withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP).withProperty(BlockStairs.FACING, connFacing),
+						connRoom.fillRange(Room.stairsState.withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP).withProperty(BlockStairs.FACING, connFacing),
 							8 + connHalfSize, 5, 7, 8 + connHalfSize, 5, 8, false, false, false, connFacing);
 						connRoom.fillRange(airState, 8 + connHalfSize, 4, 7, 8 + connHalfSize, 4, 8, false, false, false, connFacing);
 					}

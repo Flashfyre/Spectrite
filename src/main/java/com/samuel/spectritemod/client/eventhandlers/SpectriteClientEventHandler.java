@@ -7,16 +7,19 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.samuel.spectritemod.SpectriteMod;
+import com.samuel.spectritemod.SpectriteModConfig;
 import com.samuel.spectritemod.capabilities.ISpectriteBossCapability;
 import com.samuel.spectritemod.capabilities.SpectriteBossProvider;
 import com.samuel.spectritemod.client.renderer.entity.layers.LayerSpectriteArmor;
 import com.samuel.spectritemod.etc.ISpectriteTool;
 import com.samuel.spectritemod.etc.SpectriteHelper;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -172,7 +175,7 @@ public class SpectriteClientEventHandler {
 		if (blockpos != null && !player.isSneaking()) {
 			if (playerHeldItem != null && playerHeldItem.getItem() instanceof ISpectriteTool) {
 				float cooldown = player.getCooldownTracker().getCooldown((playerHeldItem.getItem()), 0f);
-				float greenValue = new Double((SpectriteMod.Config.spectriteToolCooldown - (SpectriteMod.Config.spectriteToolCooldown * cooldown)) / SpectriteMod.Config.spectriteToolCooldown).floatValue();
+				float greenValue = new Double((SpectriteModConfig.spectriteToolCooldown - (SpectriteModConfig.spectriteToolCooldown * cooldown)) / SpectriteModConfig.spectriteToolCooldown).floatValue();
 				
 				if (cooldown <= 0.25f) {
 					List<BlockPos> affectedPosList = ((ISpectriteTool) playerHeldItem.getItem())
@@ -216,7 +219,7 @@ public class SpectriteClientEventHandler {
             double d0 = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
             double d1 = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
             double d2 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
-            Minecraft.getMinecraft().renderGlobal.drawSelectionBoundingBox(iblockstate.getSelectedBoundingBox(world, blockpos)
+            RenderGlobal.drawSelectionBoundingBox(iblockstate.getSelectedBoundingBox(world, blockpos)
             	.offset(-d0, -d1, -d2), r, g, b, a);
         }
 

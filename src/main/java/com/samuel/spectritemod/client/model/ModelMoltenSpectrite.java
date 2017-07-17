@@ -76,7 +76,8 @@ public class ModelMoltenSpectrite implements IModel
         return ImmutableSet.of(fluid.getStill(), fluid.getFlowing(), fluid.getStillOdd(), fluid.getFlowingOdd());
     }
 
-    public IBakedModel bake(IModelState state, VertexFormat format,
+    @Override
+	public IBakedModel bake(IModelState state, VertexFormat format,
 		Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         ImmutableMap<TransformType, TRSRTransformation> map = PerspectiveMapWrapper.getTransforms(state);
         return new BakedFluid(state.apply(Optional.<IModelPart>empty()), map, format, fluid.getColor(), bakedTextureGetter.apply(fluid.getStill()),

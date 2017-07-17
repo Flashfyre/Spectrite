@@ -1,7 +1,7 @@
 {
     "textures": {
 		"texture": "spectritemod:blocks/spectrite_chest",
-        "particle": "spectritemod:blocks/spectrite_block"
+        "particle": "spectritemod:blocks/spectrite_block_ew"
     },
 	"elements": [
         {   "from": [ 1, 0, 1 ],

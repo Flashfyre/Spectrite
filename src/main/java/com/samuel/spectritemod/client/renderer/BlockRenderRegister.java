@@ -4,16 +4,13 @@ import java.util.HashMap;
 
 import com.samuel.spectritemod.SpectriteMod;
 import com.samuel.spectritemod.init.ModBlocks;
-import com.samuel.spectritemod.init.ModItems;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -47,6 +44,7 @@ public class BlockRenderRegister {
 		registerItemBlockModel(ModBlocks.spectrite_ore, 1, "spectrite_ore_nether");
 		registerItemBlockModel(ModBlocks.spectrite_ore, 2, "spectrite_ore_end");
 		registerItemBlockModel(ModBlocks.spectrite_block, 0);
+		registerItemBlockModel(ModBlocks.spectrite_sand, 0);
 		registerItemBlockModel(ModBlocks.spectrite_bricks, 0);
 		registerItemBlockModel(ModBlocks.spectrite_brick_stairs, 0);
 		registerItemBlockModel(ModBlocks.spectrite_brick_slab_half, 0);

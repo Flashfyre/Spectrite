@@ -21,32 +21,27 @@ public class PacketSyncSpectriteBoss implements IMessage {
 
 	public UUID uuid;
 	public boolean enabled;
-	public boolean perfectSword;
 
 	public PacketSyncSpectriteBoss() {
 		this.uuid = null;
 		this.enabled = false;
-		this.perfectSword = false;
 	}
 
-	public PacketSyncSpectriteBoss(UUID uuid, boolean enabled, boolean perfectSword) {
+	public PacketSyncSpectriteBoss(UUID uuid, boolean enabled) {
 		this.uuid = uuid;
 		this.enabled = enabled;
-		this.perfectSword = perfectSword;
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		uuid = new PacketBuffer(buf).readUniqueId();
 		enabled = buf.getBoolean(0);
-		perfectSword = buf.getBoolean(1);
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
 		new PacketBuffer(buf).writeUniqueId(uuid);
 		buf.writeBoolean(enabled);
-		buf.writeBoolean(perfectSword);
 	}
 
 	public static class Handler implements
@@ -67,7 +62,6 @@ public class PacketSyncSpectriteBoss implements IMessage {
 							entity.getCapability(SpectriteBossProvider.sbc, null);
 						if (props != null) {
 							props.setEnabled(message.enabled);
-							props.setPerfectWeapon(message.perfectSword);
 						}
 					}
 				}

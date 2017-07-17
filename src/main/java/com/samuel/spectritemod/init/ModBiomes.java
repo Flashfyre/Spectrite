@@ -3,7 +3,6 @@ package com.samuel.spectritemod.init;
 import com.samuel.spectritemod.SpectriteMod;
 import com.samuel.spectritemod.world.BiomeSpectriteDungeon;
 
-import net.minecraft.block.Block;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.BiomeProperties;
 import net.minecraftforge.common.BiomeManager;

@@ -2,7 +2,7 @@ package com.samuel.spectritemod.items;
 
 import javax.annotation.Nullable;
 
-import com.samuel.spectritemod.SpectriteMod;
+import com.samuel.spectritemod.SpectriteModConfig;
 import com.samuel.spectritemod.init.ModWorldGen;
 
 import net.minecraft.entity.Entity;
@@ -50,7 +50,7 @@ public class ItemSpectriteCompass extends ItemCompass {
 
                     double d0;
 
-                    if (worldIn.provider.isSurfaceWorld() && SpectriteMod.Config.generateSpectriteDungeon && worldIn.getWorldType() != WorldType.FLAT && worldIn.getActualHeight() >= 30)
+                    if (worldIn.provider.isSurfaceWorld() && SpectriteModConfig.generateSpectriteDungeon && worldIn.getWorldType() != WorldType.FLAT && worldIn.getActualHeight() >= 30)
                     {
                         double d1 = flag ? (double)entity.rotationYaw : this.getFrameRotation((EntityItemFrame)entity);
                         d1 = MathHelper.positiveModulo(d1 / 360.0D, 1.0D);

@@ -1,8 +1,17 @@
 package com.samuel.spectritemod.tileentity;
 
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import com.samuel.spectritemod.SpectriteMod;
+import com.samuel.spectritemod.SpectriteModConfig;
 import com.samuel.spectritemod.blocks.BlockSpectriteChest;
-import com.samuel.spectritemod.etc.ContainerMineralChest;
-import com.samuel.spectritemod.etc.InventoryLargeMineralChest;
+import com.samuel.spectritemod.etc.ContainerSpectriteChest;
+import com.samuel.spectritemod.etc.InventoryLargeSpectriteChest;
+import com.samuel.spectritemod.etc.SpectriteHelper;
+import com.samuel.spectritemod.init.ModEnchantments;
+import com.samuel.spectritemod.items.IPerfectSpectriteItem;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
@@ -11,14 +20,17 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.WorldServer;
 
 public class TileEntitySpectriteChest extends TileEntityChest {
 	
@@ -182,24 +194,34 @@ public class TileEntitySpectriteChest extends TileEntityChest {
         int k = this.pos.getZ();
         ++this.ticksSinceSync;
 
-        if (!this.world.isRemote && this.numPlayersUsing != 0 && (this.ticksSinceSync + i + j + k) % 200 == 0)
+        if (!this.world.isRemote && (this.ticksSinceSync + i + j + k) % 200 == 0)
         {
-            this.numPlayersUsing = 0;
-            float f = 5.0F;
-
-            for (EntityPlayer entityplayer : this.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(i - 5.0F, j - 5.0F, k - 5.0F, i + 1 + 5.0F, j + 1 + 5.0F, k + 1 + 5.0F)))
-            {
-                if (entityplayer.openContainer instanceof ContainerMineralChest)
-                {
-                    IInventory iinventory = ((ContainerMineralChest)entityplayer.openContainer).getLowerChestInventory();
-
-                    if (iinventory == this || iinventory instanceof InventoryLargeMineralChest &&
-                    	((InventoryLargeMineralChest)iinventory).isPartOfLargeChest(this))
-                    {
-                        ++this.numPlayersUsing;
-                    }
-                }
-            }
+        	if (this.numPlayersUsing != 0) {
+	            this.numPlayersUsing = 0;
+	            float f = 5.0F;
+	
+	            for (EntityPlayer entityplayer : this.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(i - 5.0F, j - 5.0F, k - 5.0F, i + 1 + 5.0F, j + 1 + 5.0F, k + 1 + 5.0F)))
+	            {
+	                if (entityplayer.openContainer instanceof ContainerSpectriteChest)
+	                {
+	                    IInventory iinventory = ((ContainerSpectriteChest)entityplayer.openContainer).getLowerChestInventory();
+	
+	                    if (iinventory == this || iinventory instanceof InventoryLargeSpectriteChest &&
+	                    	((InventoryLargeSpectriteChest)iinventory).isPartOfLargeChest(this))
+	                    {
+	                        ++this.numPlayersUsing;
+	                    }
+	                }
+	            }
+        	}
+        	
+        	if (trySpectriteEnhance()) {
+        		((WorldServer) this.world).spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, EnumParticleTypes.FIREWORKS_SPARK.getShouldIgnoreRange(),
+        				i + 0.5D, j + 1.5D, k + 0.5D, 7, this.world.rand.nextGaussian() * 0.125D, this.world.rand.nextGaussian() * 0.125D,
+        				this.world.rand.nextGaussian() * 0.125D, 0.1D, new int[0]);
+        		this.world.playSound((EntityPlayer)null, i + 0.5D, j + 0.5D, k + 0.5D, SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.BLOCKS,
+    				0.5F, (this.world.rand.nextFloat() * 0.4F + 1.0F));
+        	}
         }
 
         this.prevLidAngle = this.lidAngle;
@@ -302,7 +324,43 @@ public class TileEntitySpectriteChest extends TileEntityChest {
 	public Container createContainer(
 		InventoryPlayer playerInventory,
 		EntityPlayer playerIn) {
-		return new ContainerMineralChest(playerInventory,
+		return new ContainerSpectriteChest(playerInventory,
 			this, playerIn);
+	}
+	
+	private Map<Integer, ItemStack> getPerfectSpectriteItemsAndSlots() {
+		 Map<Integer, ItemStack> ret = new LinkedHashMap<Integer, ItemStack>();
+		 Iterator<ItemStack> inventoryIterator = this.getItems().iterator();
+		 
+		 int i = 0;
+		 
+		 while (inventoryIterator.hasNext()) {
+			 ItemStack s = inventoryIterator.next();
+			 if (!s.isEmpty() && s.getItem() instanceof IPerfectSpectriteItem) {
+				 ret.put(i, s);
+			 }
+			 i++;
+	 	}
+		 
+		 return ret;
+	}
+	
+	public boolean trySpectriteEnhance() {
+		double enchantRate = SpectriteModConfig.spectriteChestEnchantRate;
+		if (enchantRate > 0.0D && this.world.rand.nextInt((int) (100 / enchantRate)) == 0) {
+			int index = this.world.rand.nextInt(this.getSizeInventory());
+			Map<Integer, ItemStack> slotStacks = getPerfectSpectriteItemsAndSlots();
+			
+			if (slotStacks.containsKey(index)) {
+				ItemStack enchantedStack = slotStacks.get(index);
+				if (!SpectriteHelper.isStackSpectriteEnhanced(enchantedStack)) {
+					enchantedStack.addEnchantment(ModEnchantments.spectrite_enhance, 1);
+					this.setInventorySlotContents(index, enchantedStack);
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 }

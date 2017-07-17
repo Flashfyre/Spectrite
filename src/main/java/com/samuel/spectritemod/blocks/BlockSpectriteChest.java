@@ -1,10 +1,11 @@
 package com.samuel.spectritemod.blocks;
 
-import com.samuel.spectritemod.etc.InventoryLargeMineralChest;
+import com.samuel.spectritemod.etc.InventoryLargeSpectriteChest;
 import com.samuel.spectritemod.tileentity.TileEntitySpectriteChest;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -60,6 +61,11 @@ public class BlockSpectriteChest extends BlockChest {
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
     	return source.getBlockState(pos.north()).getBlock() == this ? NORTH_CHEST_AABB : (source.getBlockState(pos.south()).getBlock() == this ? SOUTH_CHEST_AABB : (source.getBlockState(pos.west()).getBlock() == this ? WEST_CHEST_AABB : (source.getBlockState(pos.east()).getBlock() == this ? EAST_CHEST_AABB : NOT_CONNECTED_AABB)));
+    }
+    
+    @Override
+    public Material getMaterial(IBlockState state) {
+    	return Material.IRON;
     }
 
     @Override
@@ -471,13 +477,13 @@ public class BlockSpectriteChest extends BlockChest {
                         {
                             if (enumfacing != EnumFacing.WEST && enumfacing != EnumFacing.NORTH)
                             {
-                                ilockablecontainer = new InventoryLargeMineralChest(
+                                ilockablecontainer = new InventoryLargeSpectriteChest(
                                 	((TileEntitySpectriteChest) tileentity1).getName(),
                                 	ilockablecontainer, (TileEntitySpectriteChest)tileentity1);
                             }
                             else
                             {
-                                ilockablecontainer = new InventoryLargeMineralChest(
+                                ilockablecontainer = new InventoryLargeSpectriteChest(
                                 	((TileEntitySpectriteChest) tileentity1).getName(),
                                 	(TileEntitySpectriteChest)tileentity1, ilockablecontainer);
                             }

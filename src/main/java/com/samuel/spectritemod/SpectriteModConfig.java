@@ -75,7 +75,7 @@ public class SpectriteModConfig {
 	}
 	
 	public static enum EnumSpectriteArrowDamageMode implements IStringSerializable {
-		INSTANT_DAMAGE, EXPLOSION, INSTANT_DAMAGE_EXPLOSION;
+		SPECTRITE_DAMAGE, EXPLOSION, SPECTRITE_DAMAGE_EXPLOSION;
 		
 		@Override
 		public String getName() {
@@ -105,6 +105,41 @@ public class SpectriteModConfig {
 		}
 	}
 	
+	public static enum EnumSpectriteDungeonChestMode implements IStringSerializable {
+		NONE, HIGH_TIER_ONLY, MEDIUM_AND_HIGH_TIER, ALL_TIERS;
+		
+		@Override
+		public String getName() {
+			return I18n.translateToLocal("config.spectrite_dungeon_chest_mode.options." + this.ordinal());
+		}
+		
+		public static String[] getAllNames() {
+			List<String> names = new ArrayList<String>();
+			
+			for (EnumSpectriteDungeonChestMode mode : values()) {
+				names.add(mode.getName());
+			}
+			
+			return names.toArray(new String[0]);
+		}
+		
+		public static EnumSpectriteDungeonChestMode forName(String name) {
+			if (name != null) {
+				for (EnumSpectriteDungeonChestMode mode : values()) {
+					if (name.equals(mode.getName())) {
+						return mode;
+					}
+				}
+			}
+			
+			return SpectriteMod.SPECTRITE_DUNGEON_CHEST_MODE_DEFAULT;
+		}
+		
+		public boolean shouldChestTierUseSpectriteChest(int chestTier) {
+			return (2 - this.ordinal()) - chestTier < 0;
+		}
+	}
+	
 	public static int spectriteCountSurface = SpectriteMod.SPECTRITE_COUNT_SURFACE_DEFAULT;
 	public static int spectriteMinSizeSurface = SpectriteMod.SPECTRITE_MIN_SIZE_SURFACE_DEFAULT;
 	public static int spectriteMaxSizeSurface = SpectriteMod.SPECTRITE_MAX_SIZE_SURFACE_DEFAULT;
@@ -120,18 +155,21 @@ public class SpectriteModConfig {
 	public static int spectriteMaxSizeEnd = SpectriteMod.SPECTRITE_MAX_SIZE_END_DEFAULT;
 	public static int spectriteMinYEnd = SpectriteMod.SPECTRITE_MIN_Y_END_DEFAULT;
 	public static int spectriteMaxYEnd = SpectriteMod.SPECTRITE_MAX_Y_END_DEFAULT;
-	public static boolean generateSpectriteDungeon = SpectriteMod.GENERATE_SPECTRITE_DUNGEON_DEFAULT;
 	public static EnumSpectriteArmourBonusMode spectriteArmourBonusMode = SpectriteMod.SPECTRITE_ARMOUR_BONUS_MODE_DEFAULT;
 	public static EnumSpectriteArrowDamageMode spectriteArrowDamageMode = SpectriteMod.SPECTRITE_ARROW_DAMAGE_MODE_DEFAULT;
 	public static double spectriteToolCooldown = SpectriteMod.SPECTRITE_TOOL_COOLDOWN_DEFAULT;
-	public static double spectriteBossSpawnRate = SpectriteMod.SPECTRITE_BOSS_SPAWN_RATE_DEFAULT;
-	public static double spectriteBossPerfectWeaponRate = SpectriteMod.SPECTRITE_BOSS_PERFECT_WEAPON_RATE_DEFAULT;
-	public static double spectriteBossLegendSwordRate = SpectriteMod.SPECTRITE_BOSS_LEGEND_SWORD_RATE_DEFAULT;
-	public static double spectriteBossArmourDropRate = SpectriteMod.SPECTRITE_BOSS_ARMOUR_DROP_RATE_DEFAULT;
-	public static double spectriteBossSwordDropRate = SpectriteMod.SPECTRITE_BOSS_SWORD_DROP_RATE_DEFAULT;
-	public static double spectriteBossOrbDropRate = SpectriteMod.SPECTRITE_BOSS_ORB_DROP_RATE_DEFAULT;
-	public static double spectriteBossBowDropRate = SpectriteMod.SPECTRITE_BOSS_BOW_DROP_RATE_DEFAULT;
-	public static double spectriteBossArrowDropRate = SpectriteMod.SPECTRITE_BOSS_ARROW_DROP_RATE_DEFAULT;
+	public static double spectriteMobSpawnRate = SpectriteMod.SPECTRITE_MOB_SPAWN_RATE_DEFAULT;
+	public static double spectriteMobBossSpawnRate = SpectriteMod.SPECTRITE_MOB_BOSS_SPAWN_RATE_DEFAULT;
+	public static double spectriteMobPerfectWeaponRate = SpectriteMod.SPECTRITE_MOB_PERFECT_WEAPON_RATE_DEFAULT;
+	public static double spectriteMobLegendSwordRate = SpectriteMod.SPECTRITE_MOB_LEGEND_SWORD_RATE_DEFAULT;
+	public static double spectriteMobArmourDropRate = SpectriteMod.SPECTRITE_MOB_ARMOUR_DROP_RATE_DEFAULT;
+	public static double spectriteMobSwordDropRate = SpectriteMod.SPECTRITE_MOB_SWORD_DROP_RATE_DEFAULT;
+	public static double spectriteMobOrbDropRate = SpectriteMod.SPECTRITE_MOB_ORB_DROP_RATE_DEFAULT;
+	public static double spectriteMobBowDropRate = SpectriteMod.SPECTRITE_MOB_BOW_DROP_RATE_DEFAULT;
+	public static double spectriteMobArrowDropRate = SpectriteMod.SPECTRITE_MOB_ARROW_DROP_RATE_DEFAULT;
+	public static double spectriteChestEnchantRate = SpectriteMod.SPECTRITE_CHEST_ENCHANT_RATE_DEFAULT;
+	public static boolean generateSpectriteDungeon = SpectriteMod.GENERATE_SPECTRITE_DUNGEON_DEFAULT;
+	public static EnumSpectriteDungeonChestMode spectriteDungeonChestMode = SpectriteMod.SPECTRITE_DUNGEON_CHEST_MODE_DEFAULT;
 	
 	public static Property propSpectriteCountSurface = null;
 	public static Property propSpectriteMinSizeSurface = null;
@@ -148,18 +186,21 @@ public class SpectriteModConfig {
 	public static Property propSpectriteMaxSizeEnd = null;
 	public static Property propSpectriteMinYEnd = null;
 	public static Property propSpectriteMaxYEnd = null;
-	public static Property propGenerateSpectriteDungeon = null;
 	public static Property propSpectriteArmourBonusMode = null;
 	public static Property propSpectriteArrowDamageMode = null;
 	public static Property propSpectriteToolCooldown = null;
-	public static Property propSpectriteBossSpawnRate = null;
-	public static Property propSpectriteBossPerfectWeaponRate = null;
-	public static Property propSpectriteBossLegendSwordRate = null;
-	public static Property propSpectriteBossArmourDropRate = null;
-	public static Property propSpectriteBossSwordDropRate = null;
-	public static Property propSpectriteBossOrbDropRate = null;
-	public static Property propSpectriteBossBowDropRate = null;
-	public static Property propSpectriteBossArrowDropRate = null;
+	public static Property propSpectriteMobSpawnRate = null;
+	public static Property propSpectriteMobBossSpawnRate = null;
+	public static Property propSpectriteMobPerfectWeaponRate = null;
+	public static Property propSpectriteMobLegendSwordRate = null;
+	public static Property propSpectriteMobArmourDropRate = null;
+	public static Property propSpectriteMobSwordDropRate = null;
+	public static Property propSpectriteMobOrbDropRate = null;
+	public static Property propSpectriteMobBowDropRate = null;
+	public static Property propSpectriteMobArrowDropRate = null;
+	public static Property propSpectriteChestEnchantRate = null;
+	public static Property propGenerateSpectriteDungeon = null;
+	public static Property propSpectriteDungeonChestMode = null;
 	
 	public static List<String> propertyNames = null;
 	public static List<String> propertyDescriptions = null;
@@ -186,36 +227,42 @@ public class SpectriteModConfig {
 			"spectrite_maxSize_end",
 			"spectrite_minY_end",
 			"spectrite_maxY_end",
-			"generate_spectrite_dungeon",
 			"spectrite_armour_bonus_mode",
 			"spectrite_arrow_damage_mode",
 			"spectrite_tool_cooldown",
-			"spectrite_boss_spawn_rate",
-			"spectrite_boss_perfect_weapon_rate",
-			"spectrite_boss_legend_sword_rate",
-			"spectrite_boss_armour_drop_rate",
-			"spectrite_boss_sword_drop_rate",
-			"spectrite_boss_orb_drop_rate",
-			"spectrite_boss_bow_drop_rate",
-			"spectrite_boss_arrow_drop_rate"
+			"spectrite_mob_spawn_rate",
+			"spectrite_mob_boss_spawn_rate",
+			"spectrite_mob_perfect_weapon_rate",
+			"spectrite_mob_legend_sword_rate",
+			"spectrite_mob_armour_drop_rate",
+			"spectrite_mob_sword_drop_rate",
+			"spectrite_mob_orb_drop_rate",
+			"spectrite_mob_bow_drop_rate",
+			"spectrite_mob_arrow_drop_rate",
+			"spectrite_chest_enchant_rate",
+			"generate_spectrite_dungeon",
+			"spectrite_dungeon_chest_mode"
 		};
 		
-		this.propertyNames = new ArrayList<String>();
-		this.propertyDescriptions = new ArrayList<String>();
+		SpectriteModConfig.propertyNames = new ArrayList<String>();
+		SpectriteModConfig.propertyDescriptions = new ArrayList<String>();
 		
 		for (String k : propertyKeys) {
-			this.propertyNames.add(I18n.translateToLocal("config." + k + ".name"));
-			this.propertyDescriptions.add(I18n.translateToLocal("config." + k + ".desc"));
+			SpectriteModConfig.propertyNames.add(I18n.translateToLocal("config." + k + ".name"));
+			SpectriteModConfig.propertyDescriptions.add(I18n.translateToLocal("config." + k + ".desc"));
 		}
+		
+		configuration.getCategory(Configuration.CATEGORY_GENERAL).keySet().removeIf(p -> !propertyNames.contains(p));
+		
 
 		this.loadConfig();
 		
-		configuration.setCategoryPropertyOrder(configuration.CATEGORY_GENERAL, propertyNames);
+		configuration.setCategoryPropertyOrder(Configuration.CATEGORY_GENERAL, propertyNames);
 	}
 
 	private void loadConfig()
 	{
-		configuration.setCategoryRequiresMcRestart(configuration.CATEGORY_GENERAL, false);
+		configuration.setCategoryRequiresMcRestart(Configuration.CATEGORY_GENERAL, false);
 		propSpectriteCountSurface = configuration.get(
 				Configuration.CATEGORY_GENERAL,
 				propertyNames.get(0), SpectriteMod.SPECTRITE_COUNT_SURFACE_DEFAULT,
@@ -282,81 +329,96 @@ public class SpectriteModConfig {
 				propertyNames.get(14), SpectriteMod.SPECTRITE_MAX_Y_END_DEFAULT,
 				propertyDescriptions.get(14), Math.max(4, propSpectriteMinYEnd.getInt(SpectriteMod.SPECTRITE_MIN_Y_END_DEFAULT)), 70);
 		propSpectriteMinYEnd.setMaxValue(Math.min(55, propSpectriteMaxYEnd.getInt(SpectriteMod.SPECTRITE_MAX_Y_END_DEFAULT)));
-		propGenerateSpectriteDungeon = configuration.get(
-			Configuration.CATEGORY_GENERAL,
-			propertyNames.get(15), SpectriteMod.GENERATE_SPECTRITE_DUNGEON_DEFAULT,
-			propertyDescriptions.get(15));
 		propSpectriteArmourBonusMode = configuration.get(
 				Configuration.CATEGORY_GENERAL,
-				propertyNames.get(16), SpectriteMod.SPECTRITE_ARMOUR_BONUS_MODE_DEFAULT.getName(),
-				propertyDescriptions.get(16), EnumSpectriteArmourBonusMode.getAllNames());
+				propertyNames.get(15), SpectriteMod.SPECTRITE_ARMOUR_BONUS_MODE_DEFAULT.getName(),
+				propertyDescriptions.get(15), EnumSpectriteArmourBonusMode.getAllNames());
 		propSpectriteArrowDamageMode = configuration.get(
 				Configuration.CATEGORY_GENERAL,
-				propertyNames.get(17), SpectriteMod.SPECTRITE_ARROW_DAMAGE_MODE_DEFAULT.getName(),
-				propertyDescriptions.get(17), EnumSpectriteArrowDamageMode.getAllNames());
+				propertyNames.get(16), SpectriteMod.SPECTRITE_ARROW_DAMAGE_MODE_DEFAULT.getName(),
+				propertyDescriptions.get(16), EnumSpectriteArrowDamageMode.getAllNames());
 		propSpectriteToolCooldown = configuration.get(
 				Configuration.CATEGORY_GENERAL,
-				propertyNames.get(18), SpectriteMod.SPECTRITE_TOOL_COOLDOWN_DEFAULT,
-				propertyDescriptions.get(18), 0, 60);
-		propSpectriteBossSpawnRate = configuration.get(
+				propertyNames.get(17), SpectriteMod.SPECTRITE_TOOL_COOLDOWN_DEFAULT,
+				propertyDescriptions.get(17), 0, 60);
+		propSpectriteMobSpawnRate = configuration.get(
 				Configuration.CATEGORY_GENERAL,
-				propertyNames.get(19), SpectriteMod.SPECTRITE_BOSS_SPAWN_RATE_DEFAULT,
+				propertyNames.get(18), SpectriteMod.SPECTRITE_MOB_SPAWN_RATE_DEFAULT,
+				propertyDescriptions.get(18), 0, 100);
+		propSpectriteMobBossSpawnRate = configuration.get(
+				Configuration.CATEGORY_GENERAL,
+				propertyNames.get(19), SpectriteMod.SPECTRITE_MOB_BOSS_SPAWN_RATE_DEFAULT,
 				propertyDescriptions.get(19), 0, 100);
-		propSpectriteBossPerfectWeaponRate = configuration.get(
+		propSpectriteMobPerfectWeaponRate = configuration.get(
 				Configuration.CATEGORY_GENERAL,
-				propertyNames.get(20), SpectriteMod.SPECTRITE_BOSS_PERFECT_WEAPON_RATE_DEFAULT,
+				propertyNames.get(20), SpectriteMod.SPECTRITE_MOB_PERFECT_WEAPON_RATE_DEFAULT,
 				propertyDescriptions.get(20), 0, 100);
-		propSpectriteBossLegendSwordRate = configuration.get(
+		propSpectriteMobLegendSwordRate = configuration.get(
 				Configuration.CATEGORY_GENERAL,
-				propertyNames.get(21), SpectriteMod.SPECTRITE_BOSS_LEGEND_SWORD_RATE_DEFAULT,
+				propertyNames.get(21), SpectriteMod.SPECTRITE_MOB_LEGEND_SWORD_RATE_DEFAULT,
 				propertyDescriptions.get(21), 0, 100);
-		propSpectriteBossArmourDropRate = configuration.get(
+		propSpectriteMobArmourDropRate = configuration.get(
 				Configuration.CATEGORY_GENERAL,
-				propertyNames.get(22), SpectriteMod.SPECTRITE_BOSS_ARMOUR_DROP_RATE_DEFAULT,
+				propertyNames.get(22), SpectriteMod.SPECTRITE_MOB_ARMOUR_DROP_RATE_DEFAULT,
 				propertyDescriptions.get(22), 0, 100);
-		propSpectriteBossSwordDropRate = configuration.get(
+		propSpectriteMobSwordDropRate = configuration.get(
 				Configuration.CATEGORY_GENERAL,
-				propertyNames.get(23), SpectriteMod.SPECTRITE_BOSS_SWORD_DROP_RATE_DEFAULT,
+				propertyNames.get(23), SpectriteMod.SPECTRITE_MOB_SWORD_DROP_RATE_DEFAULT,
 				propertyDescriptions.get(23), 0, 100);
-		propSpectriteBossOrbDropRate = configuration.get(
+		propSpectriteMobOrbDropRate = configuration.get(
 				Configuration.CATEGORY_GENERAL,
-				propertyNames.get(24), SpectriteMod.SPECTRITE_BOSS_ORB_DROP_RATE_DEFAULT,
+				propertyNames.get(24), SpectriteMod.SPECTRITE_MOB_ORB_DROP_RATE_DEFAULT,
 				propertyDescriptions.get(24), 0, 100);
-		propSpectriteBossBowDropRate = configuration.get(
+		propSpectriteMobBowDropRate = configuration.get(
 				Configuration.CATEGORY_GENERAL,
-				propertyNames.get(25), SpectriteMod.SPECTRITE_BOSS_BOW_DROP_RATE_DEFAULT,
+				propertyNames.get(25), SpectriteMod.SPECTRITE_MOB_BOW_DROP_RATE_DEFAULT,
 				propertyDescriptions.get(25), 0, 100);
-		propSpectriteBossArrowDropRate = configuration.get(
+		propSpectriteMobArrowDropRate = configuration.get(
 				Configuration.CATEGORY_GENERAL,
-				propertyNames.get(26), SpectriteMod.SPECTRITE_BOSS_ARROW_DROP_RATE_DEFAULT,
+				propertyNames.get(26), SpectriteMod.SPECTRITE_MOB_ARROW_DROP_RATE_DEFAULT,
 				propertyDescriptions.get(26), 0, 100);
-		this.spectriteCountSurface = propSpectriteCountSurface.getInt(SpectriteMod.SPECTRITE_COUNT_SURFACE_DEFAULT);
-		this.spectriteMinSizeSurface = propSpectriteMinSizeSurface.getInt(SpectriteMod.SPECTRITE_MIN_SIZE_SURFACE_DEFAULT);
-		this.spectriteMaxSizeSurface = propSpectriteMaxSizeSurface.getInt(SpectriteMod.SPECTRITE_MAX_SIZE_SURFACE_DEFAULT);
-		this.spectriteMinYSurface = propSpectriteMinYSurface.getInt(SpectriteMod.SPECTRITE_MIN_Y_SURFACE_DEFAULT);
-		this.spectriteMaxYSurface = propSpectriteMaxYSurface.getInt(SpectriteMod.SPECTRITE_MAX_Y_SURFACE_DEFAULT);
-		this.spectriteCountNether = propSpectriteCountNether.getInt(SpectriteMod.SPECTRITE_COUNT_NETHER_DEFAULT);
-		this.spectriteMinSizeNether = propSpectriteMinSizeNether.getInt(SpectriteMod.SPECTRITE_MIN_SIZE_NETHER_DEFAULT);
-		this.spectriteMaxSizeNether = propSpectriteMaxSizeNether.getInt(SpectriteMod.SPECTRITE_MAX_SIZE_NETHER_DEFAULT);
-		this.spectriteMinYNether = propSpectriteMinYNether.getInt(SpectriteMod.SPECTRITE_MIN_Y_NETHER_DEFAULT);
-		this.spectriteMaxYNether = propSpectriteMaxYNether.getInt(SpectriteMod.SPECTRITE_MAX_Y_NETHER_DEFAULT);
-		this.spectriteCountEnd = propSpectriteCountEnd.getInt(SpectriteMod.SPECTRITE_COUNT_END_DEFAULT);
-		this.spectriteMinSizeEnd = propSpectriteMinSizeEnd.getInt(SpectriteMod.SPECTRITE_MIN_SIZE_END_DEFAULT);
-		this.spectriteMaxSizeEnd = propSpectriteMaxSizeEnd.getInt(SpectriteMod.SPECTRITE_MAX_SIZE_END_DEFAULT);
-		this.spectriteMinYEnd = propSpectriteMinYEnd.getInt(SpectriteMod.SPECTRITE_MIN_Y_END_DEFAULT);
-		this.spectriteMaxYEnd = propSpectriteMaxYEnd.getInt(SpectriteMod.SPECTRITE_MAX_Y_END_DEFAULT);
-		this.generateSpectriteDungeon = propGenerateSpectriteDungeon.getBoolean(SpectriteMod.GENERATE_SPECTRITE_DUNGEON_DEFAULT);
-		this.spectriteArmourBonusMode = EnumSpectriteArmourBonusMode.forName(propSpectriteArmourBonusMode.getString());
-		this.spectriteArrowDamageMode = EnumSpectriteArrowDamageMode.forName(propSpectriteArrowDamageMode.getString());
-		this.spectriteToolCooldown = propSpectriteToolCooldown.getDouble(SpectriteMod.SPECTRITE_TOOL_COOLDOWN_DEFAULT);
-		this.spectriteBossSpawnRate = propSpectriteBossSpawnRate.getDouble(SpectriteMod.SPECTRITE_BOSS_SPAWN_RATE_DEFAULT);
-		this.spectriteBossPerfectWeaponRate = propSpectriteBossPerfectWeaponRate.getDouble(SpectriteMod.SPECTRITE_BOSS_PERFECT_WEAPON_RATE_DEFAULT);
-		this.spectriteBossLegendSwordRate = propSpectriteBossLegendSwordRate.getDouble(SpectriteMod.SPECTRITE_BOSS_LEGEND_SWORD_RATE_DEFAULT);
-		this.spectriteBossArmourDropRate = propSpectriteBossArmourDropRate.getDouble(SpectriteMod.SPECTRITE_BOSS_ARMOUR_DROP_RATE_DEFAULT);
-		this.spectriteBossSwordDropRate = propSpectriteBossSwordDropRate.getDouble(SpectriteMod.SPECTRITE_BOSS_SWORD_DROP_RATE_DEFAULT);
-		this.spectriteBossOrbDropRate = propSpectriteBossOrbDropRate.getDouble(SpectriteMod.SPECTRITE_BOSS_ORB_DROP_RATE_DEFAULT);
-		this.spectriteBossBowDropRate = propSpectriteBossBowDropRate.getDouble(SpectriteMod.SPECTRITE_BOSS_BOW_DROP_RATE_DEFAULT);
-		this.spectriteBossArrowDropRate = propSpectriteBossArrowDropRate.getDouble(SpectriteMod.SPECTRITE_BOSS_ARROW_DROP_RATE_DEFAULT);
+		propSpectriteChestEnchantRate = configuration.get(
+				Configuration.CATEGORY_GENERAL,
+				propertyNames.get(27), SpectriteMod.SPECTRITE_CHEST_ENCHANT_RATE_DEFAULT,
+				propertyDescriptions.get(27), 0, 100);
+		propGenerateSpectriteDungeon = configuration.get(
+				Configuration.CATEGORY_GENERAL,
+				propertyNames.get(28), SpectriteMod.GENERATE_SPECTRITE_DUNGEON_DEFAULT,
+				propertyDescriptions.get(28));
+		propSpectriteDungeonChestMode = configuration.get(
+				Configuration.CATEGORY_GENERAL,
+				propertyNames.get(29), SpectriteMod.SPECTRITE_DUNGEON_CHEST_MODE_DEFAULT.getName(),
+				propertyDescriptions.get(29), EnumSpectriteDungeonChestMode.getAllNames());
+		SpectriteModConfig.spectriteCountSurface = propSpectriteCountSurface.getInt(SpectriteMod.SPECTRITE_COUNT_SURFACE_DEFAULT);
+		SpectriteModConfig.spectriteMinSizeSurface = propSpectriteMinSizeSurface.getInt(SpectriteMod.SPECTRITE_MIN_SIZE_SURFACE_DEFAULT);
+		SpectriteModConfig.spectriteMaxSizeSurface = propSpectriteMaxSizeSurface.getInt(SpectriteMod.SPECTRITE_MAX_SIZE_SURFACE_DEFAULT);
+		SpectriteModConfig.spectriteMinYSurface = propSpectriteMinYSurface.getInt(SpectriteMod.SPECTRITE_MIN_Y_SURFACE_DEFAULT);
+		SpectriteModConfig.spectriteMaxYSurface = propSpectriteMaxYSurface.getInt(SpectriteMod.SPECTRITE_MAX_Y_SURFACE_DEFAULT);
+		SpectriteModConfig.spectriteCountNether = propSpectriteCountNether.getInt(SpectriteMod.SPECTRITE_COUNT_NETHER_DEFAULT);
+		SpectriteModConfig.spectriteMinSizeNether = propSpectriteMinSizeNether.getInt(SpectriteMod.SPECTRITE_MIN_SIZE_NETHER_DEFAULT);
+		SpectriteModConfig.spectriteMaxSizeNether = propSpectriteMaxSizeNether.getInt(SpectriteMod.SPECTRITE_MAX_SIZE_NETHER_DEFAULT);
+		SpectriteModConfig.spectriteMinYNether = propSpectriteMinYNether.getInt(SpectriteMod.SPECTRITE_MIN_Y_NETHER_DEFAULT);
+		SpectriteModConfig.spectriteMaxYNether = propSpectriteMaxYNether.getInt(SpectriteMod.SPECTRITE_MAX_Y_NETHER_DEFAULT);
+		SpectriteModConfig.spectriteCountEnd = propSpectriteCountEnd.getInt(SpectriteMod.SPECTRITE_COUNT_END_DEFAULT);
+		SpectriteModConfig.spectriteMinSizeEnd = propSpectriteMinSizeEnd.getInt(SpectriteMod.SPECTRITE_MIN_SIZE_END_DEFAULT);
+		SpectriteModConfig.spectriteMaxSizeEnd = propSpectriteMaxSizeEnd.getInt(SpectriteMod.SPECTRITE_MAX_SIZE_END_DEFAULT);
+		SpectriteModConfig.spectriteMinYEnd = propSpectriteMinYEnd.getInt(SpectriteMod.SPECTRITE_MIN_Y_END_DEFAULT);
+		SpectriteModConfig.spectriteMaxYEnd = propSpectriteMaxYEnd.getInt(SpectriteMod.SPECTRITE_MAX_Y_END_DEFAULT);
+		SpectriteModConfig.spectriteArmourBonusMode = EnumSpectriteArmourBonusMode.forName(propSpectriteArmourBonusMode.getString());
+		SpectriteModConfig.spectriteArrowDamageMode = EnumSpectriteArrowDamageMode.forName(propSpectriteArrowDamageMode.getString());
+		SpectriteModConfig.spectriteToolCooldown = propSpectriteToolCooldown.getDouble(SpectriteMod.SPECTRITE_TOOL_COOLDOWN_DEFAULT);
+		SpectriteModConfig.spectriteMobSpawnRate = propSpectriteMobSpawnRate.getDouble(SpectriteMod.SPECTRITE_MOB_SPAWN_RATE_DEFAULT);
+		SpectriteModConfig.spectriteMobBossSpawnRate = propSpectriteMobBossSpawnRate.getDouble(SpectriteMod.SPECTRITE_MOB_BOSS_SPAWN_RATE_DEFAULT);
+		SpectriteModConfig.spectriteMobPerfectWeaponRate = propSpectriteMobPerfectWeaponRate.getDouble(SpectriteMod.SPECTRITE_MOB_PERFECT_WEAPON_RATE_DEFAULT);
+		SpectriteModConfig.spectriteMobLegendSwordRate = propSpectriteMobLegendSwordRate.getDouble(SpectriteMod.SPECTRITE_MOB_LEGEND_SWORD_RATE_DEFAULT);
+		SpectriteModConfig.spectriteMobArmourDropRate = propSpectriteMobArmourDropRate.getDouble(SpectriteMod.SPECTRITE_MOB_ARMOUR_DROP_RATE_DEFAULT);
+		SpectriteModConfig.spectriteMobSwordDropRate = propSpectriteMobSwordDropRate.getDouble(SpectriteMod.SPECTRITE_MOB_SWORD_DROP_RATE_DEFAULT);
+		SpectriteModConfig.spectriteMobOrbDropRate = propSpectriteMobOrbDropRate.getDouble(SpectriteMod.SPECTRITE_MOB_ORB_DROP_RATE_DEFAULT);
+		SpectriteModConfig.spectriteMobBowDropRate = propSpectriteMobBowDropRate.getDouble(SpectriteMod.SPECTRITE_MOB_BOW_DROP_RATE_DEFAULT);
+		SpectriteModConfig.spectriteMobArrowDropRate = propSpectriteMobArrowDropRate.getDouble(SpectriteMod.SPECTRITE_MOB_ARROW_DROP_RATE_DEFAULT);
+		SpectriteModConfig.spectriteChestEnchantRate = propSpectriteChestEnchantRate.getDouble(SpectriteMod.SPECTRITE_CHEST_ENCHANT_RATE_DEFAULT);
+		SpectriteModConfig.generateSpectriteDungeon = propGenerateSpectriteDungeon.getBoolean(SpectriteMod.GENERATE_SPECTRITE_DUNGEON_DEFAULT);
+		SpectriteModConfig.spectriteDungeonChestMode = EnumSpectriteDungeonChestMode.forName(propSpectriteDungeonChestMode.getString());
 
 		if (this.configuration.hasChanged())
 		{
@@ -378,35 +440,35 @@ public class SpectriteModConfig {
 			this.loadConfig();
 			
 			int temp = 0;
-			if (this.spectriteMinSizeSurface > this.spectriteMaxSizeSurface) {
-				temp = this.spectriteMinSizeSurface;
-				this.spectriteMinSizeSurface = this.spectriteMaxSizeSurface;
-				this.spectriteMaxSizeSurface = temp;
+			if (SpectriteModConfig.spectriteMinSizeSurface > SpectriteModConfig.spectriteMaxSizeSurface) {
+				temp = SpectriteModConfig.spectriteMinSizeSurface;
+				SpectriteModConfig.spectriteMinSizeSurface = SpectriteModConfig.spectriteMaxSizeSurface;
+				SpectriteModConfig.spectriteMaxSizeSurface = temp;
 			}
-			if (this.spectriteMinYSurface > this.spectriteMaxYSurface) {
-				temp = this.spectriteMinYSurface;
-				this.spectriteMinYSurface = this.spectriteMaxYSurface;
-				this.spectriteMaxYSurface = temp;
+			if (SpectriteModConfig.spectriteMinYSurface > SpectriteModConfig.spectriteMaxYSurface) {
+				temp = SpectriteModConfig.spectriteMinYSurface;
+				SpectriteModConfig.spectriteMinYSurface = SpectriteModConfig.spectriteMaxYSurface;
+				SpectriteModConfig.spectriteMaxYSurface = temp;
 			}
-			if (this.spectriteMinSizeNether > this.spectriteMaxSizeNether) {
-				temp = this.spectriteMinSizeNether;
-				this.spectriteMinSizeNether = this.spectriteMaxSizeNether;
-				this.spectriteMaxSizeNether = temp;
+			if (SpectriteModConfig.spectriteMinSizeNether > SpectriteModConfig.spectriteMaxSizeNether) {
+				temp = SpectriteModConfig.spectriteMinSizeNether;
+				SpectriteModConfig.spectriteMinSizeNether = SpectriteModConfig.spectriteMaxSizeNether;
+				SpectriteModConfig.spectriteMaxSizeNether = temp;
 			}
-			if (this.spectriteMinYNether > this.spectriteMaxYNether) {
-				temp = this.spectriteMinYNether;
-				this.spectriteMinYNether = this.spectriteMaxYNether;
-				this.spectriteMaxYNether = temp;
+			if (SpectriteModConfig.spectriteMinYNether > SpectriteModConfig.spectriteMaxYNether) {
+				temp = SpectriteModConfig.spectriteMinYNether;
+				SpectriteModConfig.spectriteMinYNether = SpectriteModConfig.spectriteMaxYNether;
+				SpectriteModConfig.spectriteMaxYNether = temp;
 			}
-			if (this.spectriteMinSizeEnd > this.spectriteMaxSizeEnd) {
-				temp = this.spectriteMinSizeEnd;
-				this.spectriteMinSizeEnd = this.spectriteMaxSizeEnd;
-				this.spectriteMaxSizeEnd = temp;
+			if (SpectriteModConfig.spectriteMinSizeEnd > SpectriteModConfig.spectriteMaxSizeEnd) {
+				temp = SpectriteModConfig.spectriteMinSizeEnd;
+				SpectriteModConfig.spectriteMinSizeEnd = SpectriteModConfig.spectriteMaxSizeEnd;
+				SpectriteModConfig.spectriteMaxSizeEnd = temp;
 			}
-			if (this.spectriteMinYEnd > this.spectriteMaxYEnd) {
-				temp = this.spectriteMinYEnd;
-				this.spectriteMinYEnd = this.spectriteMaxYEnd;
-				this.spectriteMaxYEnd = temp;
+			if (SpectriteModConfig.spectriteMinYEnd > SpectriteModConfig.spectriteMaxYEnd) {
+				temp = SpectriteModConfig.spectriteMinYEnd;
+				SpectriteModConfig.spectriteMinYEnd = SpectriteModConfig.spectriteMaxYEnd;
+				SpectriteModConfig.spectriteMaxYEnd = temp;
 			}
 		}
 	}

@@ -8,9 +8,11 @@ import com.samuel.spectritemod.init.ModBiomes;
 import com.samuel.spectritemod.init.ModBlocks;
 import com.samuel.spectritemod.init.ModCrafting;
 import com.samuel.spectritemod.init.ModDispenserBehavior;
+import com.samuel.spectritemod.init.ModEnchantments;
 import com.samuel.spectritemod.init.ModEntities;
 import com.samuel.spectritemod.init.ModItems;
 import com.samuel.spectritemod.init.ModLootTables;
+import com.samuel.spectritemod.init.ModPotions;
 import com.samuel.spectritemod.init.ModSounds;
 import com.samuel.spectritemod.init.ModTileEntities;
 import com.samuel.spectritemod.init.ModWorldGen;
@@ -66,7 +68,6 @@ public class CommonProxy {
 	            }
 	        }
 	    };
-		
 		ModBlocks.createBlocks();
 		ModItems.createItems();
 		ModLootTables.registerLootTables();
@@ -78,12 +79,17 @@ public class CommonProxy {
 		ModSounds.initSounds();
 		ModTileEntities.initTileEntities();
 		ModDispenserBehavior.initDispenserBehavior();
+		ModPotions.initPotionEffects();
+		ModEnchantments.initEnchantments();
 		ModBiomes.initBiomes();
 		ModWorldGen.initWorldGen();
 
 		FMLCommonHandler.instance().bus().register(SpectriteMod.Instance);
 		MinecraftForge.EVENT_BUS.register(new ModBlocks());
 		MinecraftForge.EVENT_BUS.register(new ModItems());
+		MinecraftForge.EVENT_BUS.register(new ModBiomes());
+		MinecraftForge.EVENT_BUS.register(new ModPotions());
+		MinecraftForge.EVENT_BUS.register(new ModEnchantments());
 		MinecraftForge.EVENT_BUS.register(new ModSounds());
 		MinecraftForge.EVENT_BUS
 			.register(new SpectriteGeneralEventHandler());
@@ -99,4 +105,6 @@ public class CommonProxy {
 	public void postInit(FMLPostInitializationEvent e) {
 
 	}
+
+	public void spawnSpectriteSpellParticle(World world, double posX, double posY, double posZ, double r, double g, double b, boolean invertColour) { }
 }

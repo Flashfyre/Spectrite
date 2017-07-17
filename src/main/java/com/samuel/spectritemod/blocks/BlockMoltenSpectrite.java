@@ -23,6 +23,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 
@@ -67,7 +68,7 @@ public class BlockMoltenSpectrite extends BlockFluidClassic {
 	    	if (state.getBlock() == ModBlocks.molten_spectrite) {
 	    		if (entityIn instanceof EntityLivingBase) {
 	    			float damageMultiplier = entityIn instanceof EntitySpectriteGolem ? 0.25F : 1F;
-	    			if (((EntityLivingBase) entityIn).attackEntityFrom(damageSource, (32.0F - state.getValue(BlockMoltenSpectrite.LEVEL)) * damageMultiplier)) {
+	    			if (((EntityLivingBase) entityIn).attackEntityFrom(damageSource, (32.0F - state.getValue(BlockFluidBase.LEVEL)) * damageMultiplier)) {
 	    				entityIn.playSound(SoundEvents.ENTITY_GENERIC_BURN, 0.4F, worldIn.rand.nextFloat() * 0.4F);
 	    			}
 	    		} else if (entityIn instanceof EntityItem) {

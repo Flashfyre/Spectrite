@@ -1,8 +1,10 @@
 package com.samuel.spectritemod.blocks;
 
 import com.samuel.spectritemod.SpectriteMod;
+import com.samuel.spectritemod.SpectriteModConfig;
 import com.samuel.spectritemod.init.ModWorldGen;
 import com.samuel.spectritemod.tileentity.TileEntitySpectritePortal;
+import com.samuel.spectritemod.world.WorldGenSpectriteDungeon;
 
 import net.minecraft.block.BlockEndPortal;
 import net.minecraft.block.material.Material;
@@ -34,9 +36,9 @@ public class BlockSpectritePortal extends BlockEndPortal {
     {
         if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss() && !worldIn.isRemote && entityIn.getEntityBoundingBox().intersectsWith(state.getBoundingBox(worldIn, pos).offset(pos)))
         {
-        	BlockPos spawnPos = SpectriteMod.Config.generateSpectriteDungeon ? ModWorldGen.spectriteDungeon.getSpawnPos()
+        	BlockPos spawnPos = SpectriteModConfig.generateSpectriteDungeon ? ModWorldGen.spectriteDungeon.getSpawnPos()
     			: entityIn instanceof EntityPlayer && ((EntityPlayer) entityIn).getBedLocation() != null ? ((EntityPlayer) entityIn).getBedLocation() : worldIn.getSpawnPoint();
-            entityIn.setPositionAndUpdate(spawnPos.getX(), ModWorldGen.spectriteDungeon.getGroundY(spawnPos.getX() >> 4, spawnPos.getZ() >> 4, worldIn) + 5,
+            entityIn.setPositionAndUpdate(spawnPos.getX(), WorldGenSpectriteDungeon.getGroundY(spawnPos.getX() >> 4, spawnPos.getZ() >> 4, worldIn) + 5,
         		spawnPos.getZ());
         }
     }

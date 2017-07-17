@@ -1,4 +1,5 @@
 {
+	"charge": { "category": "block", "sounds": ["spectritemod:charge"] },
 	"explosion": { "category": "block", "sounds": ["spectritemod:explode1", "spectritemod:explode2", "spectritemod:explode3"], "subtitle": "subtitle.explosion" },
 	"fatality": { "category": "block", "sounds": ["spectritemod:fatality"] }
 }

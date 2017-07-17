@@ -5,7 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.samuel.spectritemod.SpectriteMod;
+import com.samuel.spectritemod.SpectriteModConfig;
 import com.samuel.spectritemod.etc.ISpectriteTool;
+import com.samuel.spectritemod.etc.SpectriteHelper;
 import com.samuel.spectritemod.init.ModSounds;
 
 import net.minecraft.block.Block;
@@ -43,8 +45,8 @@ public class ItemSpectriteAxe extends ItemAxe implements ISpectriteTool {
 	public String getItemStackDisplayName(ItemStack stack) {
 		
 		String displayName = super.getItemStackDisplayName(stack);
-		displayName = (stack.getItem() instanceof ItemSpectriteAxeSpecial ? TextFormatting.RED :
-			TextFormatting.LIGHT_PURPLE) + displayName;
+		displayName = stack.getItem() instanceof IPerfectSpectriteItem ? ((IPerfectSpectriteItem) this).getMultiColouredDisplayName(stack, displayName)
+			: (TextFormatting.LIGHT_PURPLE + displayName);
 		return displayName;
 	}
 	
@@ -53,13 +55,17 @@ public class ItemSpectriteAxe extends ItemAxe implements ISpectriteTool {
 		World worldIn, List<String> list, ITooltipFlag adva) {
 		int lineCount = 0;
 		boolean isLastLine = false;
+		double cooldown = SpectriteModConfig.spectriteToolCooldown;
+		if (SpectriteHelper.isStackSpectriteEnhanced(stack)) {
+			cooldown *= 0.5d;
+		}
 		String curLine;
 		while (!isLastLine) {
 			isLastLine = (curLine = I18n
 				.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + ".l" +
 				++lineCount))).endsWith("@");
 			if (lineCount == 1) {
-				curLine = curLine.replace("#", String.valueOf(SpectriteMod.Config.spectriteToolCooldown));
+				curLine = curLine.replace("#", String.format("%.2f", cooldown));
 			}
 			list.add(!isLastLine ? curLine : curLine
 				.substring(0, curLine.length() - 1));
@@ -116,7 +122,8 @@ public class ItemSpectriteAxe extends ItemAxe implements ISpectriteTool {
 							worldIn.rand.nextFloat() * 0.5f, 0.0D, new int[0]);
 					
 					if (!player.isCreative()) {
-						player.getCooldownTracker().setCooldown(this, (int) Math.round(SpectriteMod.Config.spectriteToolCooldown * 20));
+						boolean isEnhanced = SpectriteHelper.isStackSpectriteEnhanced(itemstack);
+						player.getCooldownTracker().setCooldown(this, (int) Math.round(SpectriteModConfig.spectriteToolCooldown * (isEnhanced ? 10 : 20)));
 					}
 				}
     		}

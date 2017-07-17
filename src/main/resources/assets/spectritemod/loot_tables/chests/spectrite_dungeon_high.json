@@ -35,67 +35,297 @@
 				{
 					"type": "item",
                     "name": "spectritemod:spectrite_helmet",
-                    "weight": 32
+                    "weight": 32,
+					"functions": [
+						{
+                            "function": "enchant_randomly",
+							"enchantments": [ "spectritemod:spectrite_enhance" ],
+							"conditions": [
+								{
+									"condition": "random_chance",
+									"chance": 0.25
+								}
+							]
+                        },
+                        {
+                            "function": "enchant_with_levels",
+                            "treasure": true,
+                            "levels": {
+                                "min": 40,
+                                "max": 50
+                            }
+                        }
+                    ]
                 },
 				{
 					"type": "item",
                     "name": "spectritemod:spectrite_chestplate",
-                    "weight": 20
+                    "weight": 20,
+					"functions": [
+						{
+                            "function": "enchant_randomly",
+							"enchantments": [ "spectritemod:spectrite_enhance" ],
+							"conditions": [
+								{
+									"condition": "random_chance",
+									"chance": 0.25
+								}
+							]
+                        },
+                        {
+                            "function": "enchant_with_levels",
+                            "treasure": true,
+                            "levels": {
+                                "min": 40,
+                                "max": 50
+                            }
+                        }
+                    ]
                 },
 				{
 					"type": "item",
                     "name": "spectritemod:spectrite_leggings",
-                    "weight": 28
+                    "weight": 28,
+					"functions": [
+						{
+                            "function": "enchant_randomly",
+							"enchantments": [ "spectritemod:spectrite_enhance" ],
+							"conditions": [
+								{
+									"condition": "random_chance",
+									"chance": 0.25
+								}
+							]
+                        },
+                        {
+                            "function": "enchant_with_levels",
+                            "treasure": true,
+                            "levels": {
+                                "min": 40,
+                                "max": 50
+                            }
+                        }
+                    ]
                 },
 				{
 					"type": "item",
                     "name": "spectritemod:spectrite_boots",
-                    "weight": 40
+                    "weight": 40,
+					"functions": [
+						{
+                            "function": "enchant_randomly",
+							"enchantments": [ "spectritemod:spectrite_enhance" ],
+							"conditions": [
+								{
+									"condition": "random_chance",
+									"chance": 0.25
+								}
+							]
+                        },
+                        {
+                            "function": "enchant_with_levels",
+                            "treasure": true,
+                            "levels": {
+                                "min": 40,
+                                "max": 50
+                            }
+                        }
+                    ]
                 },
 				{
 					"type": "item",
                     "name": "spectritemod:spectrite_shovel_special",
-                    "weight": 60
+                    "weight": 60,
+					"functions": [
+						{
+                            "function": "enchant_randomly",
+							"enchantments": [ "spectritemod:spectrite_enhance" ],
+							"conditions": [
+								{
+									"condition": "random_chance",
+									"chance": 0.25
+								}
+							]
+                        },
+                        {
+                            "function": "enchant_with_levels",
+                            "treasure": true,
+                            "levels": {
+                                "min": 40,
+                                "max": 50
+                            }
+                        }
+                    ]
                 },
 				{
 					"type": "item",
                     "name": "spectritemod:spectrite_pickaxe_special",
-                    "weight": 40
+                    "weight": 40,
+					"functions": [
+						{
+                            "function": "enchant_randomly",
+							"enchantments": [ "spectritemod:spectrite_enhance" ],
+							"conditions": [
+								{
+									"condition": "random_chance",
+									"chance": 0.25
+								}
+							]
+                        },
+                        {
+                            "function": "enchant_with_levels",
+                            "treasure": true,
+                            "levels": {
+                                "min": 40,
+                                "max": 50
+                            }
+                        }
+                    ]
                 },
 				{
 					"type": "item",
                     "name": "spectritemod:spectrite_axe_special",
-                    "weight": 50
+                    "weight": 50,
+					"functions": [
+						{
+                            "function": "enchant_randomly",
+							"enchantments": [ "spectritemod:spectrite_enhance" ],
+							"conditions": [
+								{
+									"condition": "random_chance",
+									"chance": 0.25
+								}
+							]
+                        },
+                        {
+                            "function": "enchant_with_levels",
+                            "treasure": true,
+                            "levels": {
+                                "min": 40,
+                                "max": 50
+                            }
+                        }
+                    ]
                 },
 				{
 					"type": "item",
                     "name": "spectritemod:spectrite_sword_special",
-                    "weight": 40
+                    "weight": 40,
+					"functions": [
+						{
+                            "function": "enchant_randomly",
+							"enchantments": [ "spectritemod:spectrite_enhance" ],
+							"conditions": [
+								{
+									"condition": "random_chance",
+									"chance": 0.25
+								}
+							]
+                        },
+                        {
+                            "function": "enchant_with_levels",
+                            "treasure": true,
+                            "levels": {
+                                "min": 40,
+                                "max": 50
+                            }
+                        }
+                    ]
                 },
 				{
 					"type": "item",
                     "name": "spectritemod:spectrite_bow_special",
-                    "weight": 40
+                    "weight": 40,
+					"functions": [
+						{
+                            "function": "enchant_randomly",
+							"enchantments": [ "spectritemod:spectrite_enhance" ],
+							"conditions": [
+								{
+									"condition": "random_chance",
+									"chance": 0.25
+								}
+							]
+                        },
+                        {
+                            "function": "enchant_with_levels",
+                            "treasure": true,
+                            "levels": {
+                                "min": 40,
+                                "max": 50
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "minecraft:book",
+                    "weight": 20,
+                    "functions": [
+                        {
+                            "function": "enchant_randomly",
+							"enchantments": [ "spectritemod:spectrite_enhance" ]
+                        }
+                    ]
                 },
 				{
 					"type": "item",
                     "name": "spectritemod:spectrite_shield_special",
-                    "weight": 8
+                    "weight": 8,
+					"functions": [
+						{
+                            "function": "enchant_randomly",
+							"enchantments": [ "spectritemod:spectrite_enhance" ],
+							"conditions": [
+								{
+									"condition": "random_chance",
+									"chance": 0.25
+								}
+							]
+                        }
+					]
                 },
 				{
 					"type": "item",
                     "name": "spectritemod:spectrite_sword_2",
-                    "weight": 4
+                    "weight": 4,
+					"functions": [
+						{
+                            "function": "enchant_randomly",
+							"enchantments": [ "spectritemod:spectrite_enhance" ],
+							"conditions": [
+								{
+									"condition": "random_chance",
+									"chance": 0.25
+								}
+							]
+                        },
+                        {
+                            "function": "enchant_with_levels",
+                            "treasure": true,
+                            "levels": {
+                                "min": 40,
+                                "max": 50
+                            }
+                        }
+                    ]
                 },
 				{
 					"type": "item",
                     "name": "spectritemod:spectrite_orb",
-                    "weight": 3
-                },
-				{
-					"type": "item",
-                    "name": "spectritemod:spectrite_sword_2_special",
-                    "weight": 1
+                    "weight": 4,
+					"functions": [
+                        {
+                            "function": "enchant_randomly",
+							"enchantments": [ "spectritemod:spectrite_enhance" ],
+							"conditions": [
+								{
+									"condition": "random_chance",
+									"chance": 0.25
+								}
+							]
+                        }
+                    ]
                 }
 			]
         }
