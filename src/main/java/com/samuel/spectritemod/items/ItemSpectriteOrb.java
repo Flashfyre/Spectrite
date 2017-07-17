@@ -46,9 +46,9 @@ public class ItemSpectriteOrb extends Item implements IPerfectSpectriteItem {
 		String curLine;
 		while (!isLastLine) {
 			isLastLine = (curLine = I18n
-				.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + (SpectriteHelper.isStackSpectriteEnhanced(stack) ? "_enhanced" : "") + ".l" +
+				.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + ".l" +
 				++lineCount))).endsWith("@");
-			curLine = curLine.replace("#", String.valueOf((lineCount == 1 && !SpectriteHelper.isStackSpectriteEnhanced(stack)) ? 30 : 15));
+			curLine = curLine.replace("#", String.valueOf((lineCount == 1 || SpectriteHelper.isStackSpectriteEnhanced(stack)) ? 30 : 15));
 			list.add(!isLastLine ? curLine : curLine
 				.substring(0, curLine.length() - 1));
 		}
