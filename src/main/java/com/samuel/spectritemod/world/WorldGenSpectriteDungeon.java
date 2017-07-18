@@ -139,8 +139,8 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 		int spawnChunkX = 0;
 		int spawnChunkZ = 0;
 		
-		spawnChunkX = 0;//(rand.nextInt(256) + 4) * (rand.nextBoolean() ? 1 : -1);
-		spawnChunkZ = 0;//(rand.nextInt(256) + 4) * (rand.nextBoolean() ? 1 : -1);
+		spawnChunkX = (rand.nextInt(256) + 4) * (rand.nextBoolean() ? 1 : -1);
+		spawnChunkZ = (rand.nextInt(256) + 4) * (rand.nextBoolean() ? 1 : -1);
 		
 		this.spawnPos = new BlockPos((spawnChunkX << 4) + 8, 0, (spawnChunkZ << 4) + 8);
 		this.spawnChunkPos = new ChunkPos(spawnChunkX, spawnChunkZ);
