@@ -20,7 +20,7 @@ public class ModWorldGen {
 		GameRegistry.registerWorldGenerator(spectriteDungeon = new WorldGenSpectriteDungeon(), 1236);
 		
 		// This dimension is incomplete and may never be used due to the high lag of a dimension where all its blocks are animated
-		SPECTRITE = DimensionType.register("", "_dimension", SPECTRITE_DIM_ID, WorldProviderSpectrite.class, true);
-		DimensionManager.registerDimension(SPECTRITE_DIM_ID, SPECTRITE);
+		//SPECTRITE = DimensionType.register("", "_dimension", SPECTRITE_DIM_ID, WorldProviderSpectrite.class, true);
+		//DimensionManager.registerDimension(SPECTRITE_DIM_ID, SPECTRITE);
 	}
 }
