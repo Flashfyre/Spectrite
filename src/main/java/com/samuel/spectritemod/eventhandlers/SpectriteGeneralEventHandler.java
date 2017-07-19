@@ -149,20 +149,22 @@ public class SpectriteGeneralEventHandler {
 			PotionType potionType;
 			try {
 				potionType = (PotionType) potionField.get(entity);
-				Potion potion = potionType.getEffects().get(0).getPotion();
-				if (potion.equals(ModPotions.SPECTRITE_DAMAGE) || potion.equals(ModPotions.SPECTRITE_RESISTANCE)) {
-					e.setCanceled(true);
-					EntitySpectriteAreaEffectCloud newEntity = new EntitySpectriteAreaEffectCloud(e.getWorld(), entity.posX, entity.posY, entity.posZ);
-					
-					newEntity.setOwner(entity.getOwner());
-			        newEntity.setRadius(3.0F);
-			        newEntity.setRadiusOnUse(-0.5F);
-			        newEntity.setWaitTime(10);
-			        newEntity.setRadiusPerTick(-newEntity.getRadius() / newEntity.getDuration());
-			        newEntity.setPotionType(potionType);
-		            newEntity.addEffect(potionType.getEffects().get(0));
-		            
-		            e.getWorld().spawnEntity(newEntity);
+				if (!potionType.getEffects().isEmpty()) {
+					Potion potion = potionType.getEffects().get(0).getPotion();
+					if (potion.equals(ModPotions.SPECTRITE_DAMAGE) || potion.equals(ModPotions.SPECTRITE_RESISTANCE)) {
+						e.setCanceled(true);
+						EntitySpectriteAreaEffectCloud newEntity = new EntitySpectriteAreaEffectCloud(e.getWorld(), entity.posX, entity.posY, entity.posZ);
+						
+						newEntity.setOwner(entity.getOwner());
+				        newEntity.setRadius(3.0F);
+				        newEntity.setRadiusOnUse(-0.5F);
+				        newEntity.setWaitTime(10);
+				        newEntity.setRadiusPerTick(-newEntity.getRadius() / newEntity.getDuration());
+				        newEntity.setPotionType(potionType);
+			            newEntity.addEffect(potionType.getEffects().get(0));
+			            
+			            e.getWorld().spawnEntity(newEntity);
+					}
 				}
 			} catch (Exception e1) {
 				e1.printStackTrace();
