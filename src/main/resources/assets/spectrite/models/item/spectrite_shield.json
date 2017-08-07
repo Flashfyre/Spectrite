@@ -1,0 +1,144 @@
+{
+	"textures": {
+		"shield": "spectrite:entities/spectrite_shield/0"
+	},
+	"display": {
+        "thirdperson_righthand": {
+            "rotation": [ 0, 90, 0 ],
+            "translation": [ 10.51, 6, -4 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [ 0, 90, 0 ],
+            "translation": [ 10.51, 6, 12 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 180, 5 ],
+            "translation": [ -10, 2, -10 ],
+            "scale": [ 1.25, 1.25, 1.25 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ 0, 180, 5 ],
+            "translation": [ 10, 0, -10 ],
+            "scale": [ 1.25, 1.25, 1.25 ]
+        },
+        "gui": {
+            "rotation": [ 15, -25, -5 ],
+            "translation": [ 2, 3, 0 ],
+            "scale": [ 0.65, 0.65, 0.65 ]
+        },
+        "fixed": {
+            "rotation": [ 0, 180, 0 ],
+            "translation": [ -2, 4, -5],
+            "scale":[ 0.5, 0.5, 0.5]
+        },
+        "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 4, 4, 2],
+            "scale":[ 0.25, 0.25, 0.25]
+        }
+    },
+	"overrides": [
+        { "predicate": { "blocking": 0, "time": 0.0000 }, "model": "spectrite:item/spectrite_shield" },
+        { "predicate": { "blocking": 0, "time": 0.0278 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_01" },
+        { "predicate": { "blocking": 0, "time": 0.0556 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_02" },
+        { "predicate": { "blocking": 0, "time": 0.0834 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_03" },
+        { "predicate": { "blocking": 0, "time": 0.1111 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_04" },
+        { "predicate": { "blocking": 0, "time": 0.1389 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_05" },
+        { "predicate": { "blocking": 0, "time": 0.1667 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_06" },
+        { "predicate": { "blocking": 0, "time": 0.1944 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_07" },
+        { "predicate": { "blocking": 0, "time": 0.2222 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_08" },
+        { "predicate": { "blocking": 0, "time": 0.2500 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_09" },
+        { "predicate": { "blocking": 0, "time": 0.2777 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_10" },
+        { "predicate": { "blocking": 0, "time": 0.3055 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_11" },
+        { "predicate": { "blocking": 0, "time": 0.3333 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_12" },
+        { "predicate": { "blocking": 0, "time": 0.3611 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_13" },
+        { "predicate": { "blocking": 0, "time": 0.3888 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_14" },
+        { "predicate": { "blocking": 0, "time": 0.4166 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_15" },
+        { "predicate": { "blocking": 0, "time": 0.4444 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_16" },
+        { "predicate": { "blocking": 0, "time": 0.4721 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_17" },
+        { "predicate": { "blocking": 0, "time": 0.4999 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_18" },
+        { "predicate": { "blocking": 0, "time": 0.5277 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_19" },
+        { "predicate": { "blocking": 0, "time": 0.5554 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_20" },
+        { "predicate": { "blocking": 0, "time": 0.5832 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_21" },
+        { "predicate": { "blocking": 0, "time": 0.6110 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_22" },
+        { "predicate": { "blocking": 0, "time": 0.6388 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_23" },
+        { "predicate": { "blocking": 0, "time": 0.6665 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_24" },
+        { "predicate": { "blocking": 0, "time": 0.6943 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_25" },
+        { "predicate": { "blocking": 0, "time": 0.7221 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_26" },
+        { "predicate": { "blocking": 0, "time": 0.7498 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_27" },
+        { "predicate": { "blocking": 0, "time": 0.7776 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_28" },
+        { "predicate": { "blocking": 0, "time": 0.8054 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_29" },
+        { "predicate": { "blocking": 0, "time": 0.8331 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_30" },
+        { "predicate": { "blocking": 0, "time": 0.8609 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_31" },
+        { "predicate": { "blocking": 0, "time": 0.8887 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_32" },
+        { "predicate": { "blocking": 0, "time": 0.9165 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_33" },
+        { "predicate": { "blocking": 0, "time": 0.9442 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_34" },
+		{ "predicate": { "blocking": 0, "time": 0.9720 }, "model": "spectrite:item/spectrite_shield/spectrite_shield_35" },
+		{ "predicate": { "blocking": 1, "time": 0.0000 }, "model": "spectrite:item/spectrite_shield_blocking" },
+		{ "predicate": { "blocking": 1, "time": 0.0278 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_01" },
+		{ "predicate": { "blocking": 1, "time": 0.0556 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_02" },
+		{ "predicate": { "blocking": 1, "time": 0.0834 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_03" },
+		{ "predicate": { "blocking": 1, "time": 0.1111 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_04" },
+		{ "predicate": { "blocking": 1, "time": 0.1389 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_05" },
+		{ "predicate": { "blocking": 1, "time": 0.1667 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_06" },
+		{ "predicate": { "blocking": 1, "time": 0.1944 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_07" },
+		{ "predicate": { "blocking": 1, "time": 0.2222 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_08" },
+		{ "predicate": { "blocking": 1, "time": 0.2500 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_09" },
+		{ "predicate": { "blocking": 1, "time": 0.2777 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_10" },
+		{ "predicate": { "blocking": 1, "time": 0.3055 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_11" },
+		{ "predicate": { "blocking": 1, "time": 0.3333 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_12" },
+		{ "predicate": { "blocking": 1, "time": 0.3611 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_13" },
+		{ "predicate": { "blocking": 1, "time": 0.3888 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_14" },
+		{ "predicate": { "blocking": 1, "time": 0.4166 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_15" },
+		{ "predicate": { "blocking": 1, "time": 0.4444 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_16" },
+		{ "predicate": { "blocking": 1, "time": 0.4721 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_17" },
+		{ "predicate": { "blocking": 1, "time": 0.4999 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_18" },
+		{ "predicate": { "blocking": 1, "time": 0.5277 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_19" },
+		{ "predicate": { "blocking": 1, "time": 0.5554 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_20" },
+		{ "predicate": { "blocking": 1, "time": 0.5832 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_21" },
+		{ "predicate": { "blocking": 1, "time": 0.6110 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_22" },
+		{ "predicate": { "blocking": 1, "time": 0.6388 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_23" },
+		{ "predicate": { "blocking": 1, "time": 0.6665 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_24" },
+		{ "predicate": { "blocking": 1, "time": 0.6943 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_25" },
+		{ "predicate": { "blocking": 1, "time": 0.7221 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_26" },
+		{ "predicate": { "blocking": 1, "time": 0.7498 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_27" },
+		{ "predicate": { "blocking": 1, "time": 0.7776 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_28" },
+		{ "predicate": { "blocking": 1, "time": 0.8054 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_29" },
+		{ "predicate": { "blocking": 1, "time": 0.8331 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_30" },
+		{ "predicate": { "blocking": 1, "time": 0.8609 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_31" },
+		{ "predicate": { "blocking": 1, "time": 0.8887 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_32" },
+		{ "predicate": { "blocking": 1, "time": 0.9165 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_33" },
+		{ "predicate": { "blocking": 1, "time": 0.9442 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_34" },
+		{ "predicate": { "blocking": 1, "time": 0.9720 }, "model": "spectrite:item/spectrite_shield/blocking/spectrite_shield_blocking_35" }
+    ],
+	"elements": [
+		{
+			"_comment": "plate",
+			"from": [ -6, -11, 1 ],
+			"to": [ 6, 11, 2 ],
+			"faces": {
+				"down": { "texture": "#shield", "uv": [ 3.50, 0.00, 6.25, 0.25 ] },
+				"up": { "texture": "#shield", "uv": [ 0.25, 0.00, 3.25, 0.25 ] },
+				"north": { "texture": "#shield", "uv": [ 3.50, 0.25, 6.50, 5.75 ] },
+				"south": { "texture": "#shield", "uv": [ 0.25, 0.25, 3.25, 5.75 ] },
+				"west": { "texture": "#shield", "uv": [ 0.00, 0.25, 0.25, 5.75 ] },
+				"east": { "texture": "#shield", "uv": [ 3.25, 0.25, 3.50, 5.75 ] }
+			}
+		},
+		{
+			"_comment": "handle",
+			"from": [ -1, -3, -5 ],
+			"to": [ 1, 3, 1 ],
+			"faces": {
+				"down": { "texture": "#shield", "uv": [ 8.50, 0.00, 9.00, 1.50 ] },
+				"up": { "texture": "#shield", "uv": [ 8.00, 0.00, 8.50, 1.50 ] },
+				"north": { "texture": "#shield", "uv": [ 10.00, 1.50, 10.50, 3.00 ] },
+				"south": { "texture": "#shield", "uv": [ 8.00, 1.50, 8.50, 3.00 ] },
+				"west": { "texture": "#shield", "uv": [ 8.50, 1.50, 10.00, 3.00 ] },
+				"east": { "texture": "#shield", "uv": [ 6.50, 1.50, 8.00, 3.00 ] }
+			}
+		}
+	]
+}

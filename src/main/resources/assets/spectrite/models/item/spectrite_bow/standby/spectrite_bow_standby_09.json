@@ -1,0 +1,6 @@
+{
+    "parent": "spectrite:item/spectrite_bow",
+    "textures": {
+        "layer0": "spectrite:items/spectrite_bow/standby/9"
+    }
+}

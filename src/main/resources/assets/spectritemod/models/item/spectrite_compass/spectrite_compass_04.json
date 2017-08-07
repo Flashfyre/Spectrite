@@ -1,6 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "spectritemod:items/spectrite_compass/spectrite_compass_04"
-    }
-}

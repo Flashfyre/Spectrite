@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "spectrite:spectrite_bricks"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "spectrite:spectrite_brick"
+    }
+  }
+}

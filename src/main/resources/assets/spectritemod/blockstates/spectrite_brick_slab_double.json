@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "half=bottom,odd=false": { "model": "spectritemod:spectrite_bricks" },
-        "half=top,odd=false": { "model": "spectritemod:spectrite_bricks" },
-		"half=bottom,odd=true": { "model": "spectritemod:spectrite_bricks_odd" },
-        "half=top,odd=true": { "model": "spectritemod:spectrite_bricks_odd" }
-    }
-}

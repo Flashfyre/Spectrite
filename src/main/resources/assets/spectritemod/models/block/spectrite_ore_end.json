@@ -1,8 +1,0 @@
-{
-	"parent": "spectritemod:block/spectrite_ore",
-	"textures": {
-		"base": "blocks/end_stone",
-        "overlay": "spectritemod:blocks/spectrite_ore",
-		"particle": "blocks/end_stone"
-    }
-}

@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "facing=north,odd=false": { "model": "spectrite:spectrite_ladder" },
+        "facing=east,odd=false":  { "model": "spectrite:spectrite_ladder", "y": 90 },
+        "facing=south,odd=false": { "model": "spectrite:spectrite_ladder", "y": 180 },
+        "facing=west,odd=false":  { "model": "spectrite:spectrite_ladder", "y": 270 },
+		"facing=north,odd=true": { "model": "spectrite:spectrite_ladder_odd" },
+        "facing=east,odd=true":  { "model": "spectrite:spectrite_ladder_odd", "y": 90 },
+        "facing=south,odd=true": { "model": "spectrite:spectrite_ladder_odd", "y": 180 },
+        "facing=west,odd=true":  { "model": "spectrite:spectrite_ladder_odd", "y": 270 }
+    }
+}

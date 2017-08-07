@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "spectrite:spectrite_pickaxe_special"
+  },
+  "pattern": [
+    " XX",
+    " YX",
+    "Y  "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "spectrite:spectrite_gem"
+    },
+    "Y": {
+      "item": "spectrite:spectrite_rod"
+    }
+  }
+}

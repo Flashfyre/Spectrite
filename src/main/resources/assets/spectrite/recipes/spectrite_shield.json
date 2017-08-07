@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "spectrite:spectrite_shield"
+  },
+  "pattern": [
+    "XXX",
+    "XYX",
+    " X "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:diamond"
+    },
+    "Y": {
+      "item": "spectrite:spectrite_block"
+    }
+  }
+}

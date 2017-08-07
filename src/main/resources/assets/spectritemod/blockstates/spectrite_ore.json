@@ -1,7 +1,0 @@
-{
-	"variants": {
-		"type=0":  { "model": "spectritemod:spectrite_ore_surface" },
-		"type=1":  { "model": "spectritemod:spectrite_ore_nether" },
-        "type=2": { "model": "spectritemod:spectrite_ore_end" }
-	}
-}

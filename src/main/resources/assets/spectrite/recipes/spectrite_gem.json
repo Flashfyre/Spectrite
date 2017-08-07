@@ -1,0 +1,12 @@
+{
+  "result": {
+    "item": "spectrite:spectrite_gem",
+	"count": 9
+  },
+  "ingredients": [
+	{
+      "item": "spectrite:spectrite_block"
+	}
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

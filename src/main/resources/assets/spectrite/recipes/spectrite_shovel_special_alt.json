@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "spectrite:spectrite_shovel_special"
+  },
+  "pattern": [
+    "  X",
+    " Y ",
+    "Y  "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "spectrite:spectrite_gem"
+    },
+    "Y": {
+      "item": "spectrite:spectrite_rod"
+    }
+  }
+}

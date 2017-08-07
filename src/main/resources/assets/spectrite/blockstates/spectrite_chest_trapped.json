@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "spectrite:spectrite_chest_trapped" },
+        "facing=east": { "model": "spectrite:spectrite_chest_trapped", "y": 90  },
+        "facing=south": { "model": "spectrite:spectrite_chest_trapped", "y": 180  },
+        "facing=west": { "model": "spectrite:spectrite_chest_trapped", "y": 270  }
+    }
+}

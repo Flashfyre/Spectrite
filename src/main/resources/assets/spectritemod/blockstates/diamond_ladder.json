@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "spectritemod:diamond_ladder" },
-        "facing=east":  { "model": "spectritemod:diamond_ladder", "y": 90 },
-        "facing=south": { "model": "spectritemod:diamond_ladder", "y": 180 },
-        "facing=west":  { "model": "spectritemod:diamond_ladder", "y": 270 }
-    }
-}

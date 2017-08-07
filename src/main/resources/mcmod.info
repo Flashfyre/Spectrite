@@ -1,6 +1,6 @@
 [
 {
-  "modid": "spectritemod",
+  "modid": "spectrite",
   "name": "Spectrite Mod",
   "description": "Adds a new and extremely rare mineral to world generation!",
   "version": "${version}",

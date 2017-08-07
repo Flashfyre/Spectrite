@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "spectrite:spectrite_leggings"
+  },
+  "pattern": [
+    "XXX",
+    "X X",
+    "X X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "spectrite:spectrite_gem"
+    }
+  }
+}

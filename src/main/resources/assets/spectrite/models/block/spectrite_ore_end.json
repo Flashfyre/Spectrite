@@ -1,0 +1,8 @@
+{
+	"parent": "spectrite:block/spectrite_ore",
+	"textures": {
+		"base": "blocks/end_stone",
+        "overlay": "spectrite:blocks/spectrite_ore",
+		"particle": "blocks/end_stone"
+    }
+}

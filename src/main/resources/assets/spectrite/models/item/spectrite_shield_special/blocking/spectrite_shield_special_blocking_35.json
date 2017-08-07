@@ -1,0 +1,6 @@
+{
+    "parent": "spectrite:item/spectrite_shield_special_blocking",
+    "textures": {
+        "shield": "spectrite:entities/spectrite_shield_special/35"
+    }
+}

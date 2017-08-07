@@ -1,6 +1,0 @@
-{
-    "parent": "spectritemod:item/spectrite_shield_blocking",
-    "textures": {
-        "shield": "spectritemod:entities/spectrite_shield/8"
-    }
-}

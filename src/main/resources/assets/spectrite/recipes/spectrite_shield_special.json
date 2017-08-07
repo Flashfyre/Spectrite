@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "spectrite:spectrite_shield_special"
+  },
+  "pattern": [
+    "XXX",
+    "XYX",
+    " X "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "spectrite:spectrite_gem"
+    },
+    "Y": {
+      "item": "spectrite:spectrite_block"
+    }
+  }
+}

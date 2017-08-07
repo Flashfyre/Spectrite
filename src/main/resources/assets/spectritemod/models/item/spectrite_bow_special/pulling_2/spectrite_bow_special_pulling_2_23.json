@@ -1,6 +1,0 @@
-{
-    "parent": "spectritemod:item/spectrite_bow_special",
-    "textures": {
-        "layer0": "spectritemod:items/spectrite_bow_special/pulling_2/23"
-    }
-}
