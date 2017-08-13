@@ -83,7 +83,7 @@ public class EntitySmallSpectriteFireball extends EntitySpectriteFireball {
             
             BlockPos hitPos = new BlockPos(result.hitVec);
             
-            int power = 3;
+            int power = 2;
             List<Entity> surrounding = world.getEntitiesWithinAABBExcludingEntity(this,
 				new AxisAlignedBB(hitPos.north(power).west(power).down(power),
 				hitPos.south(power).east(power).up(power)));
