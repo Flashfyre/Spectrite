@@ -1,0 +1,7 @@
+{
+	"parent": "block/cube_all",
+	"textures": {
+		"all": "spectrite:blocks/molten_spectrite_still_odd/20",
+		"flowing": "spectrite:blocks/molten_spectrite_flow_odd/20"
+	}
+}

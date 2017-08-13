@@ -45,6 +45,8 @@ public class BlockRenderRegister {
 		registerItemBlockModel(ModBlocks.spectrite_ore, 2, "spectrite_ore_end");
 		registerItemBlockModel(ModBlocks.spectrite_block, 0);
 		registerItemBlockModel(ModBlocks.spectrite_sand, 0);
+		registerItemBlockModel(ModBlocks.spectrite_glass, 0);
+		registerItemBlockModel(ModBlocks.spectrite_bone_block, 0);
 		registerItemBlockModel(ModBlocks.spectrite_bricks, 0);
 		registerItemBlockModel(ModBlocks.spectrite_brick_stairs, 0);
 		registerItemBlockModel(ModBlocks.spectrite_brick_slab_half, 0);

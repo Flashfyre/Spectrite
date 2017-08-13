@@ -3,12 +3,16 @@ package com.samuel.spectrite.entities;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.init.ModEnchantments;
 import com.samuel.spectrite.init.ModItems;
+import com.samuel.spectrite.init.ModLootTables;
 import com.samuel.spectrite.init.ModPotions;
+import com.samuel.spectrite.init.ModWorldGen;
 import com.samuel.spectrite.items.ItemSpectriteArmor;
 import com.samuel.spectrite.packets.PacketSyncSpectriteBoss;
 import com.samuel.spectrite.potions.PotionEffectSpectrite;
@@ -23,6 +27,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.BossInfo;
@@ -199,6 +204,13 @@ public class EntitySpectriteWitherSkeleton extends EntityWitherSkeleton implemen
 		}
     }
 	
+	@Override
+	@Nullable
+    protected ResourceLocation getLootTable()
+    {
+		return ModLootTables.spectrite_skeleton;
+    }
+	
 	/**
      * Add the given player to the list of players tracking this entity. For instance, a player may track a boss in
      * order to view its associated boss bar.
@@ -269,6 +281,10 @@ public class EntitySpectriteWitherSkeleton extends EntityWitherSkeleton implemen
     public boolean getCanSpawnHere()
     {
 		BlockPos pos = new BlockPos(this);
+		
+		if (SpectriteConfig.generateSpectriteSkull && ModWorldGen.spectriteSkull.isPosInSkullBounds(pos, this.world.provider.getDimension()))
+			return true;
+		
 		int spawnChance = (pos.getY() + 8) >> 3;
 		boolean shouldSpawn = spawnChance == 1 || (spawnChance == 2 && rand.nextBoolean()) || (spawnChance == 3 && rand.nextInt(3) == 0);
         return shouldSpawn && pos.down().getY() < 28;

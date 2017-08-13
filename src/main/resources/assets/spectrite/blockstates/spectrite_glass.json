@@ -1,0 +1,6 @@
+{
+	"variants": {
+		"odd=false": { "model": "spectrite:spectrite_glass" },
+		"odd=true": { "model": "spectrite:spectrite_glass_odd" }
+	}
+}

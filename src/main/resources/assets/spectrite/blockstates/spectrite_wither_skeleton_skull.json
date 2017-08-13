@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "facing=north,nodrop=false": { "model": "spectrite:spectrite_wither_skeleton_skull" },
+        "facing=east,nodrop=false": { "model": "spectrite:spectrite_wither_skeleton_skull", "y": 90  },
+        "facing=south,nodrop=false": { "model": "spectrite:spectrite_wither_skeleton_skull", "y": 180  },
+        "facing=west,nodrop=false": { "model": "spectrite:spectrite_wither_skeleton_skull", "y": 270  },
+		"facing=up,nodrop=false": { "model": "spectrite:spectrite_wither_skeleton_skull" },
+		"facing=down,nodrop=false": { "model": "spectrite:spectrite_wither_skeleton_skull" },
+		"facing=north,nodrop=true": { "model": "spectrite:spectrite_wither_skeleton_skull" },
+        "facing=east,nodrop=true": { "model": "spectrite:spectrite_wither_skeleton_skull", "y": 90  },
+        "facing=south,nodrop=true": { "model": "spectrite:spectrite_wither_skeleton_skull", "y": 180  },
+        "facing=west,nodrop=true": { "model": "spectrite:spectrite_wither_skeleton_skull", "y": 270  },
+		"facing=up,nodrop=true": { "model": "spectrite:spectrite_wither_skeleton_skull" },
+		"facing=down,nodrop=true": { "model": "spectrite:spectrite_wither_skeleton_skull" }
+    }
+}

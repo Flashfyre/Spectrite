@@ -144,8 +144,8 @@ public class EntitySpectriteAreaEffectCloud extends Entity
 
         if (this.world.isRemote)
         {
-        	boolean invertColour = ModPotions.SPECTRITE_RESISTANCE.equals(this.potion);
-        	float[] colour = SpectriteHelper.getCurrentSpectriteRGBColour(invertColour);
+        	int offsetLevel = this.potionType.equals(ModPotions.SPECTRITE) ? 0 : this.potion.equals(ModPotions.SPECTRITE_DAMAGE) ? 1 : 2;
+        	float[] colour = SpectriteHelper.getCurrentSpectriteRGBColour(offsetLevel);
         	double[] colourRGB = new double[] { colour[0] * 255d, colour[1] * 255d, colour[2] * 255d };
             if (flag)
             {
@@ -159,7 +159,7 @@ public class EntitySpectriteAreaEffectCloud extends Entity
 	                    float f4 = MathHelper.sin(f1) * f2;
 	                    
 	                    Spectrite.Proxy.spawnSpectriteSpellParticle(this.world, this.posX + f3, this.posY, this.posZ + f4,
-                    		colourRGB[0], colourRGB[1], colourRGB[2], invertColour);
+                    		colourRGB[0], colourRGB[1], colourRGB[2], offsetLevel);
 	                }
                 }
             }
@@ -175,7 +175,7 @@ public class EntitySpectriteAreaEffectCloud extends Entity
                     float f9 = MathHelper.sin(f6) * f7;
                     
                     Spectrite.Proxy.spawnSpectriteSpellParticle(this.world, this.posX + f8, this.posY, this.posZ + f9,
-                		colourRGB[0], colourRGB[1], colourRGB[2], invertColour);
+                		colourRGB[0], colourRGB[1], colourRGB[2], offsetLevel);
                 }
             }
         }

@@ -1,0 +1,7 @@
+{
+    "parent": "spectrite:block/spectrite_fire/spectrite_fire_side",
+    "textures": {
+        "particle": "spectrite:blocks/spectrite_fire_layer_1",
+        "fire": "spectrite:blocks/spectrite_fire_layer_1"
+    }
+}

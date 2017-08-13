@@ -2,13 +2,17 @@ package com.samuel.spectrite.client.renderer;
 
 import com.samuel.spectrite.client.renderer.entity.RenderSpectriteAreaEffectCloud;
 import com.samuel.spectrite.client.renderer.entity.RenderSpectriteArrow;
+import com.samuel.spectrite.client.renderer.entity.RenderSpectriteBlaze;
 import com.samuel.spectrite.client.renderer.entity.RenderSpectriteCreeper;
+import com.samuel.spectrite.client.renderer.entity.RenderSpectriteFireball;
 import com.samuel.spectrite.client.renderer.entity.RenderSpectriteGolem;
 import com.samuel.spectrite.client.renderer.entity.RenderSpectriteSkeleton;
 import com.samuel.spectrite.client.renderer.entity.RenderSpectriteTippedArrow;
 import com.samuel.spectrite.client.renderer.entity.RenderSpectriteWitherSkeleton;
+import com.samuel.spectrite.entities.EntitySmallSpectriteFireball;
 import com.samuel.spectrite.entities.EntitySpectriteAreaEffectCloud;
 import com.samuel.spectrite.entities.EntitySpectriteArrow;
+import com.samuel.spectrite.entities.EntitySpectriteBlaze;
 import com.samuel.spectrite.entities.EntitySpectriteCreeper;
 import com.samuel.spectrite.entities.EntitySpectriteGolem;
 import com.samuel.spectrite.entities.EntitySpectriteSkeleton;
@@ -28,7 +32,9 @@ public class EntityRenderRegister {
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteCreeper.class, RenderSpectriteCreeper::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteSkeleton.class, RenderSpectriteSkeleton::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteWitherSkeleton.class, RenderSpectriteWitherSkeleton::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteBlaze.class, RenderSpectriteBlaze::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteTippedArrow.class, RenderSpectriteTippedArrow::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteAreaEffectCloud.class, RenderSpectriteAreaEffectCloud::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySmallSpectriteFireball.class, RenderSpectriteFireball::new);
 	}
 }

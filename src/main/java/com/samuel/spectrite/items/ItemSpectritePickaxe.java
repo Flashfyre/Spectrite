@@ -135,7 +135,8 @@ public class ItemSpectritePickaxe extends ItemPickaxe implements ISpectriteTool 
 	public List<BlockPos> getPlayerBreakableBlocks(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
 		World worldIn = player.world;
 		List<BlockPos> breakableBlocks = new ArrayList<BlockPos>();
-    	if (getStrVsBlock(itemstack,  worldIn.getBlockState(pos)) > 1.0f) {
+		float centerBlockStrVsBlock = getStrVsBlock(itemstack, worldIn.getBlockState(pos));
+    	if (centerBlockStrVsBlock > 1.0f) {
 			Vec3d lookVec = player.getLookVec();
 			EnumFacing facing = EnumFacing.getFacingFromVector((float) lookVec.xCoord,
 				(float) lookVec.yCoord, (float) lookVec.zCoord);
@@ -150,8 +151,8 @@ public class ItemSpectritePickaxe extends ItemPickaxe implements ISpectriteTool 
 			final int posX = pos.getX(), posY = pos.getY(), posZ = pos.getZ();
 			Iterator<BlockPos> targetBlocks;
 			int blockCount = 0;
-			float strengthVsCenterBlock = getStrVsBlock(itemstack, centerState);
-			float strengthVsCurBlock;
+			float centerBlockHardness = centerState.getBlock().getPlayerRelativeBlockHardness(centerState, player, worldIn, pos);
+			float curBlockHardness;
 			
 			if (axis != Axis.Y && posY < player.posY)
 				axis = Axis.Y;
@@ -164,13 +165,13 @@ public class ItemSpectritePickaxe extends ItemPickaxe implements ISpectriteTool 
 			while (targetBlocks.hasNext()) {
 				curPos = targetBlocks.next();
 				curState = worldIn.getBlockState(curPos);
-				strengthVsCurBlock = getStrVsBlock(itemstack, curState);
-				blockCount++;
 				curBlock = curState.getBlock();
+				curBlockHardness = curBlock.getPlayerRelativeBlockHardness(curState, player, worldIn, curPos);
+				blockCount++;
 				if ((!(itemstack.getItem() instanceof ItemSpectritePickaxeSpecial) &&
 					((isDiagonalFacing && (blockCount == 2 || blockCount == 4 || blockCount == 6 || blockCount == 8)) ||
 					(!isDiagonalFacing && (blockCount == 1 || blockCount == 3 || blockCount == 7 || blockCount == 9)))) ||
-					strengthVsCurBlock <= 1.0f || strengthVsCenterBlock < strengthVsCurBlock) {
+					getStrVsBlock(itemstack, curState) < 10.0f || curBlockHardness == -1.0f || centerBlockHardness > curBlockHardness) {
 					continue;
 				} else {
 					boolean isVisible = false;
@@ -189,9 +190,7 @@ public class ItemSpectritePickaxe extends ItemPickaxe implements ISpectriteTool 
 				if (curBlock.canHarvestBlock(worldIn, curPos, player)) {
 					curBlock.onBlockHarvested(worldIn, curPos, curState, player);
 				}
-				if (curBlock.getBlockHardness(curState, worldIn, curPos) > 0.0) {
-					breakableBlocks.add(curPos);
-				}
+				breakableBlocks.add(curPos);
 			}
     	}
     	

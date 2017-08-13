@@ -13,6 +13,7 @@ import com.samuel.spectrite.capabilities.SpectriteBossProvider;
 import com.samuel.spectrite.client.renderer.entity.layers.LayerSpectriteArmor;
 import com.samuel.spectrite.etc.ISpectriteTool;
 import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.init.ModItems;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -37,15 +38,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.entity.EntityEvent.EnteringChunk;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class SpectriteClientEventHandler {
+	
+	private static Field layerRenderers = null;
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public void onRenderEntity(RenderLivingEvent.Post e) {
@@ -109,9 +116,11 @@ public class SpectriteClientEventHandler {
 		if (e.getEntity() instanceof EntityPlayer || e.getEntity() instanceof EntityLiving) {
 			EntityLivingBase entity = (EntityLivingBase) e.getEntity();
 			if (entity instanceof EntityPlayer || entity instanceof EntityZombie || entity instanceof AbstractSkeleton) {
-        		Field layerRenderers = SpectriteHelper.findObfuscatedField(RenderLivingBase.class,
-        	    		"layerRenderers", "field_177097_h");
-    	    	layerRenderers.setAccessible(true);
+				if (layerRenderers == null) {
+		    		layerRenderers = SpectriteHelper.findObfuscatedField(RenderLivingBase.class,
+		    	    		"layerRenderers", "field_177097_h");
+			    	layerRenderers.setAccessible(true);
+				}
     	    	if (!(entity instanceof EntityLiving)) {
     	    		List<RenderPlayer> renderers = (Minecraft.getMinecraft().getRenderManager().getSkinMap().values().stream().filter(r -> {
 						try {
@@ -151,9 +160,11 @@ public class SpectriteClientEventHandler {
 	public void onArmorStandSpawn(EnteringChunk e) {
 		if (e.getEntity().getEntityWorld().isRemote && e.getEntity() instanceof EntityArmorStand) {
 			EntityArmorStand entity = (EntityArmorStand) e.getEntity();
-    		Field layerRenderers = SpectriteHelper.findObfuscatedField(RenderLivingBase.class,
-    	    		"layerRenderers", "field_177097_h");
-	    	layerRenderers.setAccessible(true);
+			if (layerRenderers == null) {
+	    		layerRenderers = SpectriteHelper.findObfuscatedField(RenderLivingBase.class,
+	    	    		"layerRenderers", "field_177097_h");
+		    	layerRenderers.setAccessible(true);
+			}
 	    	try {
 		    	RenderLivingBase<?> renderer = ((RenderLivingBase<?>) Minecraft.getMinecraft().getRenderManager().entityRenderMap.get(entity.getClass()));
 		    	List<LayerRenderer> renderers = (List) layerRenderers.get(renderer);
@@ -163,6 +174,30 @@ public class SpectriteClientEventHandler {
 		    	}
 			} catch (Exception e1) {
 				e1.printStackTrace();
+			}
+		}
+	}
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public void onTextureStitch(TextureStitchEvent e) {
+		for (int l = 0; l <= 1; l++) {
+			for (int f = 0; f < 36; f++) {
+				e.getMap().registerSprite(new ResourceLocation(Spectrite.MOD_ID, String.format("blocks/spectrite_fire_layer_%s/%s", l, f)));
+			}
+		}
+	}
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public void onRenderTooltip(ItemTooltipEvent e) {
+		if (!e.getItemStack().isEmpty() && e.getItemStack().getItem() == ModItems.spectrite_wither_skeleton_skull) {
+			int lineCount = 0;
+			boolean isLastLine = false;
+			String curLine;
+			while (!isLastLine) {
+				isLastLine = (curLine = TextFormatting.RED + I18n
+					.translateToLocal(("iteminfo." + ModItems.spectrite_wither_skeleton_skull.getUnlocalizedName().substring(5) + ".l" + ++lineCount))).endsWith("@");
+				e.getToolTip().add(!isLastLine ? curLine : curLine
+					.substring(0, curLine.length() - 1));
 			}
 		}
 	}
@@ -184,18 +219,21 @@ public class SpectriteClientEventHandler {
 					
 					affectedPosIterator = affectedPosList.iterator();
 					
-					while (affectedPosIterator.hasNext()) {
-						BlockPos curPos = affectedPosIterator.next();
-						if (cooldown > 0f) {
-							drawColoredBlockSelectionBox(player, curPos, e.getTarget(), e.getPartialTicks(), 0.0F, greenValue, 0.0F, 0.5F - (!curPos.equals(blockpos) ? (cooldown * 2f) : 0f));
-						} else {
-							drawColoredBlockSelectionBox(player, curPos, e.getTarget(), e.getPartialTicks(), 0.0F, 1.0F, 0.0F, 0.5F);
-						}
+					if (affectedPosIterator.hasNext()) {
+						do {
+							BlockPos curPos = affectedPosIterator.next();
+							if (cooldown > 0f) {
+								drawColoredBlockSelectionBox(player, curPos, e.getTarget(), e.getPartialTicks(), 0.0F, greenValue, 0.0F, 0.5F - (!curPos.equals(blockpos) ? (cooldown * 2f) : 0f));
+							} else {
+								drawColoredBlockSelectionBox(player, curPos, e.getTarget(), e.getPartialTicks(), 0.0F, 1.0F, 0.0F, 0.5F);
+							}
+						} while (affectedPosIterator.hasNext());
+						e.setCanceled(true);
 					}
 				} else {
 					drawColoredBlockSelectionBox(player, blockpos, e.getTarget(), e.getPartialTicks(), 0.0F, greenValue, 0.0F, 0.5F);
+					e.setCanceled(true);
 				}
-				e.setCanceled(true);
 			}
 		}
 	}

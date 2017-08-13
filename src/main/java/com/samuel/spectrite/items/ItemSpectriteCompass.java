@@ -50,7 +50,8 @@ public class ItemSpectriteCompass extends ItemCompass {
 
                     double d0;
 
-                    if (worldIn.provider.isSurfaceWorld() && SpectriteConfig.generateSpectriteDungeon && worldIn.getWorldType() != WorldType.FLAT && worldIn.getActualHeight() >= 30)
+                    if (worldIn.provider.isSurfaceWorld() && SpectriteConfig.generateSpectriteDungeon && ModWorldGen.spectriteDungeon.getSpawnPos() != null
+                		&& worldIn.getWorldType() != WorldType.FLAT && worldIn.getActualHeight() >= 30)
                     {
                         double d1 = flag ? (double)entity.rotationYaw : this.getFrameRotation((EntityItemFrame)entity);
                         d1 = MathHelper.positiveModulo(d1 / 360.0D, 1.0D);

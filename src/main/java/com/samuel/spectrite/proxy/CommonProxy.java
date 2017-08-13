@@ -16,6 +16,7 @@ import com.samuel.spectrite.init.ModPotions;
 import com.samuel.spectrite.init.ModSounds;
 import com.samuel.spectrite.init.ModTileEntities;
 import com.samuel.spectrite.init.ModWorldGen;
+import com.samuel.spectrite.update.UpdateNotifier;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -87,6 +88,7 @@ public class CommonProxy {
 		FMLCommonHandler.instance().bus().register(Spectrite.Instance);
 		MinecraftForge.EVENT_BUS.register(new ModBlocks());
 		MinecraftForge.EVENT_BUS.register(new ModItems());
+		MinecraftForge.EVENT_BUS.register(new ModEntities());
 		MinecraftForge.EVENT_BUS.register(new ModBiomes());
 		MinecraftForge.EVENT_BUS.register(new ModPotions());
 		MinecraftForge.EVENT_BUS.register(new ModEnchantments());
@@ -95,16 +97,24 @@ public class CommonProxy {
 			.register(new SpectriteGeneralEventHandler());
 		MinecraftForge.EVENT_BUS
 			.register(ModWorldGen.spectriteDungeon);
+		MinecraftForge.EVENT_BUS
+			.register(ModWorldGen.spectriteSkull);
 		MinecraftForge.EVENT_BUS.register(Spectrite.Instance);
+		MinecraftForge.EVENT_BUS.register(new UpdateNotifier());
 	}
 
 	public void init(FMLInitializationEvent e) {
-		ModCrafting.initCrafting();
+		ModCrafting.initSmelting();
+		ModCrafting.initBrewing();
 	}
 
 	public void postInit(FMLPostInitializationEvent e) {
 
 	}
 
-	public void spawnSpectriteSpellParticle(World world, double posX, double posY, double posZ, double r, double g, double b, boolean invertColour) { }
+	public void spawnSpectriteSpellParticle(World world, double posX, double posY, double posZ, double r, double g, double b, int offsetLevel) { }
+	
+	public void spawnSpectriteSmokeNormalParticle(World world, double posX, double posY, double posZ, double xSpeed, double ySpeed, double zSpeed) { }
+
+	public void spawnSpectriteSmokeLargeParticle(World world, double posX, double posY, double posZ, double xSpeed, double ySpeed, double zSpeed) { }
 }

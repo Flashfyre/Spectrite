@@ -170,6 +170,9 @@ public class SpectriteConfig {
 	public static double spectriteChestEnchantRate = Spectrite.SPECTRITE_CHEST_ENCHANT_RATE_DEFAULT;
 	public static boolean generateSpectriteDungeon = Spectrite.GENERATE_SPECTRITE_DUNGEON_DEFAULT;
 	public static EnumSpectriteDungeonChestMode spectriteDungeonChestMode = Spectrite.SPECTRITE_DUNGEON_CHEST_MODE_DEFAULT;
+	public static boolean generateSpectriteSkull = Spectrite.GENERATE_SPECTRITE_SKULL_DEFAULT;
+	public static double spectriteSkullSpawnRate = Spectrite.SPECTRITE_SKULL_SPAWN_RATE_DEFAULT;
+	public static double spectriteSkullSurfaceRate = Spectrite.SPECTRITE_SKULL_SURFACE_RATE_DEFAULT;
 	
 	public static Property propSpectriteCountSurface = null;
 	public static Property propSpectriteMinSizeSurface = null;
@@ -201,6 +204,9 @@ public class SpectriteConfig {
 	public static Property propSpectriteChestEnchantRate = null;
 	public static Property propGenerateSpectriteDungeon = null;
 	public static Property propSpectriteDungeonChestMode = null;
+	public static Property propGenerateSpectriteSkull = null;
+	public static Property propSpectriteSkullSpawnRate = null;
+	public static Property propSpectriteSkullSurfaceRate = null;
 	
 	public static List<String> propertyNames = null;
 	public static List<String> propertyDescriptions = null;
@@ -241,7 +247,10 @@ public class SpectriteConfig {
 			"spectrite_mob_arrow_drop_rate",
 			"spectrite_chest_enchant_rate",
 			"generate_spectrite_dungeon",
-			"spectrite_dungeon_chest_mode"
+			"spectrite_dungeon_chest_mode",
+			"generate_spectrite_skull",
+			"spectrite_skull_spawn_rate",
+			"spectrite_skull_surface_rate"
 		};
 		
 		SpectriteConfig.propertyNames = new ArrayList<String>();
@@ -389,6 +398,19 @@ public class SpectriteConfig {
 				Configuration.CATEGORY_GENERAL,
 				propertyNames.get(29), Spectrite.SPECTRITE_DUNGEON_CHEST_MODE_DEFAULT.getName(),
 				propertyDescriptions.get(29), EnumSpectriteDungeonChestMode.getAllNames());
+		propGenerateSpectriteSkull = configuration.get(
+				Configuration.CATEGORY_GENERAL,
+				propertyNames.get(30), Spectrite.GENERATE_SPECTRITE_SKULL_DEFAULT,
+				propertyDescriptions.get(30));
+		propSpectriteSkullSpawnRate = configuration.get(
+				Configuration.CATEGORY_GENERAL,
+				propertyNames.get(31), Spectrite.SPECTRITE_SKULL_SPAWN_RATE_DEFAULT,
+				propertyDescriptions.get(31), 0, 10);
+		propSpectriteSkullSurfaceRate = configuration.get(
+				Configuration.CATEGORY_GENERAL,
+				propertyNames.get(32), Spectrite.SPECTRITE_SKULL_SURFACE_RATE_DEFAULT,
+				propertyDescriptions.get(32), 0, 100);
+		
 		SpectriteConfig.spectriteCountSurface = propSpectriteCountSurface.getInt(Spectrite.SPECTRITE_COUNT_SURFACE_DEFAULT);
 		SpectriteConfig.spectriteMinSizeSurface = propSpectriteMinSizeSurface.getInt(Spectrite.SPECTRITE_MIN_SIZE_SURFACE_DEFAULT);
 		SpectriteConfig.spectriteMaxSizeSurface = propSpectriteMaxSizeSurface.getInt(Spectrite.SPECTRITE_MAX_SIZE_SURFACE_DEFAULT);
@@ -419,6 +441,9 @@ public class SpectriteConfig {
 		SpectriteConfig.spectriteChestEnchantRate = propSpectriteChestEnchantRate.getDouble(Spectrite.SPECTRITE_CHEST_ENCHANT_RATE_DEFAULT);
 		SpectriteConfig.generateSpectriteDungeon = propGenerateSpectriteDungeon.getBoolean(Spectrite.GENERATE_SPECTRITE_DUNGEON_DEFAULT);
 		SpectriteConfig.spectriteDungeonChestMode = EnumSpectriteDungeonChestMode.forName(propSpectriteDungeonChestMode.getString());
+		SpectriteConfig.generateSpectriteSkull = propGenerateSpectriteSkull.getBoolean(Spectrite.GENERATE_SPECTRITE_SKULL_DEFAULT);
+		SpectriteConfig.spectriteSkullSpawnRate = propSpectriteSkullSpawnRate.getDouble(Spectrite.SPECTRITE_SKULL_SPAWN_RATE_DEFAULT);
+		SpectriteConfig.spectriteSkullSurfaceRate = propSpectriteSkullSurfaceRate.getDouble(Spectrite.SPECTRITE_SKULL_SURFACE_RATE_DEFAULT);
 
 		if (this.configuration.hasChanged())
 		{

@@ -105,8 +105,8 @@ public class EntitySpectriteTippedArrow extends EntityArrow {
 
     private void spawnPotionParticles(int particleCount)
     {
-    	boolean invertColour = this.potionType.equals(ModPotions.SPECTRITE_RESISTANCE);
-        int i = SpectriteHelper.getCurrentSpectriteColour(invertColour);
+    	int offsetLevel = this.potionType.equals(ModPotions.SPECTRITE) ? 0 : this.potion.equals(ModPotions.SPECTRITE_DAMAGE) ? 1 : 2;
+        int i = SpectriteHelper.getCurrentSpectriteColour(offsetLevel);
 
         if (particleCount > 0)
         {
@@ -117,7 +117,7 @@ public class EntitySpectriteTippedArrow extends EntityArrow {
             for (int j = 0; j < particleCount; ++j)
             {
             	Spectrite.Proxy.spawnSpectriteSpellParticle(this.world, this.posX + (this.rand.nextDouble() - 0.5D) * this.width,
-        			this.posY + this.rand.nextDouble() * this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width, d0, d1, d2, invertColour);
+        			this.posY + this.rand.nextDouble() * this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width, d0, d1, d2, offsetLevel);
             }
         }
     }
@@ -216,8 +216,8 @@ public class EntitySpectriteTippedArrow extends EntityArrow {
     {
         if (id == 0)
         {
-        	boolean invertColour = ModPotions.SPECTRITE_RESISTANCE.equals(this.potion);
-            int i = SpectriteHelper.getCurrentSpectriteColour(invertColour);
+        	int offsetLevel = this.potionType.equals(ModPotions.SPECTRITE) ? 0 : this.potion.equals(ModPotions.SPECTRITE_DAMAGE) ? 1 : 2;
+            int i = SpectriteHelper.getCurrentSpectriteColour(offsetLevel);
 
             if (i != -1)
             {
@@ -228,7 +228,7 @@ public class EntitySpectriteTippedArrow extends EntityArrow {
                 for (int j = 0; j < 20; ++j)
                 {
                 	Spectrite.Proxy.spawnSpectriteSpellParticle(this.world,  this.posX + (this.rand.nextDouble() - 0.5D) * this.width,
-            			this.posY + this.rand.nextDouble() * this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width, d0, d1, d2, invertColour);
+            			this.posY + this.rand.nextDouble() * this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width, d0, d1, d2, offsetLevel);
                 }
             }
         }

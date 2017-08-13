@@ -6,9 +6,9 @@ import net.minecraft.world.storage.WorldSavedData;
 public class SpectriteDungeonData extends WorldSavedData {
 	
 	private boolean dungeonGenerated = false;
-
-	public SpectriteDungeonData() {
-		super("spectriteDungeon");
+	
+	public SpectriteDungeonData(String name) {
+		super(name);
 	}
 
 	@Override
