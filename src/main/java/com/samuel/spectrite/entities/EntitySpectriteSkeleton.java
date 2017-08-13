@@ -18,7 +18,6 @@ import com.samuel.spectrite.items.IPerfectSpectriteItem;
 import com.samuel.spectrite.items.ItemSpectriteArmor;
 import com.samuel.spectrite.items.ItemSpectriteBow;
 import com.samuel.spectrite.packets.PacketSyncSpectriteBoss;
-import com.samuel.spectrite.potions.PotionEffectSpectrite;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -39,6 +38,7 @@ import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -297,7 +297,7 @@ public class EntitySpectriteSkeleton extends EntitySkeleton implements ISpectrit
 			}
 			
 			if (this.getActivePotionEffect(ModPotions.SPECTRITE_RESISTANCE) == null) {
-				this.addPotionEffect(new PotionEffectSpectrite(ModPotions.SPECTRITE_RESISTANCE, 16, this.hasSpectriteResistance ? 1 : 0, true, true));
+				this.addPotionEffect(new PotionEffect(ModPotions.SPECTRITE_RESISTANCE, 16, this.hasSpectriteResistance ? 1 : 0, true, true));
 			}
 		}
     }

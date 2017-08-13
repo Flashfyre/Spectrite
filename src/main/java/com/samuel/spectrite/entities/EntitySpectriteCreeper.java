@@ -11,7 +11,6 @@ import com.samuel.spectrite.init.ModPotions;
 import com.samuel.spectrite.init.ModSounds;
 import com.samuel.spectrite.items.ItemSpectriteShield;
 import com.samuel.spectrite.items.ItemSpectriteShieldSpecial;
-import com.samuel.spectrite.potions.PotionEffectSpectrite;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -89,7 +88,7 @@ public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteM
         
         if (!this.world.isRemote) {
 	        if (this.getActivePotionEffect(ModPotions.SPECTRITE_RESISTANCE) == null) {
-				this.addPotionEffect(new PotionEffectSpectrite(ModPotions.SPECTRITE_RESISTANCE, 16, 0, true, true));
+				this.addPotionEffect(new PotionEffect(ModPotions.SPECTRITE_RESISTANCE, 16, 0, true, true));
 			}
         }
     }

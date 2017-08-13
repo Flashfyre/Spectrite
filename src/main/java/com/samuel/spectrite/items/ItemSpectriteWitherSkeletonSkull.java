@@ -3,7 +3,6 @@ package com.samuel.spectrite.items;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.init.ModBlocks;
 import com.samuel.spectrite.init.ModPotions;
-import com.samuel.spectrite.potions.PotionEffectSpectrite;
 import com.samuel.spectrite.tileentity.TileEntitySpectriteWitherSkeletonSkull;
 
 import net.minecraft.advancements.CriteriaTriggers;
@@ -17,6 +16,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -122,7 +122,7 @@ public class ItemSpectriteWitherSkeletonSkull extends ItemArmor {
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
 		if (!world.isRemote) {
 			if (player.getActivePotionEffect(ModPotions.SPECTRITE_RESISTANCE) == null) {
-				player.addPotionEffect(new PotionEffectSpectrite(ModPotions.SPECTRITE_RESISTANCE, 16, 0, true, true));
+				player.addPotionEffect(new PotionEffect(ModPotions.SPECTRITE_RESISTANCE, 16, 0, true, true));
 			}
 		}
     }

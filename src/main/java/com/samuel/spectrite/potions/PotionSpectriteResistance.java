@@ -8,6 +8,7 @@ import com.samuel.spectrite.etc.SpectriteHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -49,4 +50,10 @@ public class PotionSpectriteResistance extends Potion {
 	{
         return 0;
 	}
+	
+	@Override
+	public int getGuiSortColor(PotionEffect potionEffect)
+    {
+        return 0;
+    }
 }

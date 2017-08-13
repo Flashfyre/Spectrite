@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import com.google.common.base.Predicate;
 import com.samuel.spectrite.init.ModLootTables;
 import com.samuel.spectrite.init.ModPotions;
-import com.samuel.spectrite.potions.PotionEffectSpectrite;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -25,6 +24,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.ResourceLocation;
@@ -141,7 +141,7 @@ public class EntitySpectriteGolem extends EntityIronGolem implements ISpectriteM
 	        }
 	        
 	        if (this.getActivePotionEffect(ModPotions.SPECTRITE_RESISTANCE) == null) {
-				this.addPotionEffect(new PotionEffectSpectrite(ModPotions.SPECTRITE_RESISTANCE, 16, 0, true, true));
+				this.addPotionEffect(new PotionEffect(ModPotions.SPECTRITE_RESISTANCE, 16, 0, true, true));
 			}
         }
     }

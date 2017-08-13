@@ -23,12 +23,12 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = Spectrite.MOD_ID, name = Spectrite.MOD_NAME, version = Spectrite.VERSION, guiFactory = "com.samuel."
-	+ Spectrite.MOD_ID + ".client.gui.GUIFactorySpectrite", acceptedMinecraftVersions="[1.12]")
+	+ Spectrite.MOD_ID + ".client.gui.GUIFactorySpectrite", acceptedMinecraftVersions="[1.12.1]")
 public class Spectrite {
 	public static final String MOD_NAME = "Spectrite";
 	public static final String MOD_ID = "spectrite";
 	public static final String VERSION = "1.4.4";
-	public static final String MC_VERSION = "1.12";
+	public static final String MC_VERSION = "1.12.1";
 
 	@Mod.Instance
 	public static Spectrite Instance = new Spectrite();

@@ -8,7 +8,6 @@ import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.init.ModLootTables;
 import com.samuel.spectrite.init.ModPotions;
 import com.samuel.spectrite.init.ModWorldGen;
-import com.samuel.spectrite.potions.PotionEffectSpectrite;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -29,6 +28,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -146,7 +146,7 @@ public class EntitySpectriteBlaze extends EntityMob implements ISpectriteMob {
                 Spectrite.Proxy.spawnSpectriteSmokeLargeParticle(this.world, this.posX + (this.rand.nextDouble() - 0.5D) * this.width, this.posY + this.rand.nextDouble() * this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width, 0.0D, 0.0D, 0.0D);
             }
         } else if (this.getActivePotionEffect(ModPotions.SPECTRITE_RESISTANCE) == null) {
-			this.addPotionEffect(new PotionEffectSpectrite(ModPotions.SPECTRITE_RESISTANCE, 16, 0, true, true));
+			this.addPotionEffect(new PotionEffect(ModPotions.SPECTRITE_RESISTANCE, 16, 0, true, true));
         }
 
         super.onLivingUpdate();

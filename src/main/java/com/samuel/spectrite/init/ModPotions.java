@@ -5,12 +5,12 @@ import java.util.Map;
 
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.etc.SpectriteHelper;
-import com.samuel.spectrite.potions.PotionEffectSpectrite;
 import com.samuel.spectrite.potions.PotionSpectrite;
 import com.samuel.spectrite.potions.PotionSpectriteDamage;
 import com.samuel.spectrite.potions.PotionSpectriteResistance;
 
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -42,15 +42,15 @@ public class ModPotions {
 		SPECTRITE_DAMAGE = new PotionSpectriteDamage().setRegistryName(Spectrite.MOD_ID, "spectrite_damage").setPotionName("effect.spectrite_damage").setBeneficial();
 		SPECTRITE_RESISTANCE = new PotionSpectriteResistance().setRegistryName(Spectrite.MOD_ID, "spectrite_resistance").setPotionName("effect.spectrite_resistance").setBeneficial();
 		
-		SPECTRITE_BASE = new PotionType(new PotionEffectSpectrite(SPECTRITE)).setRegistryName(Spectrite.MOD_ID, "spectrite");
-		SPECTRITE_DAMAGE_I = new PotionType(new PotionEffectSpectrite(SPECTRITE_DAMAGE, 5)).setRegistryName(Spectrite.MOD_ID, "spectrite_damage_1");
-		SPECTRITE_DAMAGE_II = new PotionType(new PotionEffectSpectrite(SPECTRITE_DAMAGE, 5, 1)).setRegistryName(Spectrite.MOD_ID, "spectrite_damage_2");
-		SPECTRITE_DAMAGE_III = new PotionType(new PotionEffectSpectrite(SPECTRITE_DAMAGE, 5, 2)).setRegistryName(Spectrite.MOD_ID, "spectrite_damage_3");
-		SPECTRITE_DAMAGE_IV = new PotionType(new PotionEffectSpectrite(SPECTRITE_DAMAGE, 5, 3)).setRegistryName(Spectrite.MOD_ID, "spectrite_damage_4");
-		SPECTRITE_DAMAGE_V = new PotionType(new PotionEffectSpectrite(SPECTRITE_DAMAGE, 5, 4)).setRegistryName(Spectrite.MOD_ID, "spectrite_damage_5");
-		SPECTRITE_RESISTANCE_SHORT = new PotionType(new PotionEffectSpectrite(SPECTRITE_RESISTANCE, 3600)).setRegistryName(Spectrite.MOD_ID, "spectrite_resistance_short");
-		SPECTRITE_RESISTANCE_LONG = new PotionType(new PotionEffectSpectrite(SPECTRITE_RESISTANCE, 9600)).setRegistryName(Spectrite.MOD_ID, "spectrite_resistance_long");
-		SPECTRITE_RESISTANCE_STRONG = new PotionType(new PotionEffectSpectrite(SPECTRITE_RESISTANCE, 1800, 1)).setRegistryName(Spectrite.MOD_ID, "spectrite_resistance_strong");
+		SPECTRITE_BASE = new PotionType(new PotionEffect(SPECTRITE)).setRegistryName(Spectrite.MOD_ID, "spectrite");
+		SPECTRITE_DAMAGE_I = new PotionType(new PotionEffect(SPECTRITE_DAMAGE, 5)).setRegistryName(Spectrite.MOD_ID, "spectrite_damage_1");
+		SPECTRITE_DAMAGE_II = new PotionType(new PotionEffect(SPECTRITE_DAMAGE, 5, 1)).setRegistryName(Spectrite.MOD_ID, "spectrite_damage_2");
+		SPECTRITE_DAMAGE_III = new PotionType(new PotionEffect(SPECTRITE_DAMAGE, 5, 2)).setRegistryName(Spectrite.MOD_ID, "spectrite_damage_3");
+		SPECTRITE_DAMAGE_IV = new PotionType(new PotionEffect(SPECTRITE_DAMAGE, 5, 3)).setRegistryName(Spectrite.MOD_ID, "spectrite_damage_4");
+		SPECTRITE_DAMAGE_V = new PotionType(new PotionEffect(SPECTRITE_DAMAGE, 5, 4)).setRegistryName(Spectrite.MOD_ID, "spectrite_damage_5");
+		SPECTRITE_RESISTANCE_SHORT = new PotionType(new PotionEffect(SPECTRITE_RESISTANCE, 3600)).setRegistryName(Spectrite.MOD_ID, "spectrite_resistance_short");
+		SPECTRITE_RESISTANCE_LONG = new PotionType(new PotionEffect(SPECTRITE_RESISTANCE, 9600)).setRegistryName(Spectrite.MOD_ID, "spectrite_resistance_long");
+		SPECTRITE_RESISTANCE_STRONG = new PotionType(new PotionEffect(SPECTRITE_RESISTANCE, 1800, 1)).setRegistryName(Spectrite.MOD_ID, "spectrite_resistance_strong");
 	}
 	
 	@SubscribeEvent

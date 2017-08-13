@@ -7,7 +7,6 @@ import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.init.ModPotions;
-import com.samuel.spectrite.potions.PotionEffectSpectrite;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -105,7 +104,7 @@ public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteIt
 						player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 220, Math.max(SpectriteConfig.spectriteArmourBonusMode.ordinal() - 1, 0), true, true));
 					}
 					if (spectriteResistanceLevel >= 0 && player.getActivePotionEffect(ModPotions.SPECTRITE_RESISTANCE) == null) {
-						player.addPotionEffect(new PotionEffectSpectrite(ModPotions.SPECTRITE_RESISTANCE, 16, spectriteResistanceLevel, true, true));
+						player.addPotionEffect(new PotionEffect(ModPotions.SPECTRITE_RESISTANCE, 16, spectriteResistanceLevel, true, true));
 					}
 				}
 			}
