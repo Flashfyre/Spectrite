@@ -561,6 +561,5 @@ Tired of playing fair and want to go on an overpowered rampage? There's a config
 
 * The name of the Spectrite Legend Sword and Perfect Spectrite Legend Sword cannot be changed; this is because the text formatting in the default name would cause of mess of formatting characters translated into text, so this is an intential bug added to prevent a worse bug
 * Changing dimensions with a Spectrite Armour max health boost may not appear to carry over into other dimensions and may cause buggy behaviour when taking damage (this is a Vanilla bug)
-* Due to Potion Effects being sorted by Potion liquid color, the Spectrite Resistance passive effect will frequently change positions in the GUI (I have submitted a pull request to Forge that fixes this, but it has yet to be merged)
-* Due to Potion Effects being sorted by Potion liquid color, the Spectrite Resistance passive effect will frequently change positions in the GUI (I have submitted a pull request to Forge that fixes this, but it has yet to be merged)
+* Due to Potion Effects being sorted by Potion liquid color, the Spectrite Resistance passive effect will frequently change positions in the GUI
 * Double Spectrite Chests have a buggy block breaking texture and, on one side, will disappear from view at a certain angle due to something along the lines of the double chest assuming the single chest's bounds
