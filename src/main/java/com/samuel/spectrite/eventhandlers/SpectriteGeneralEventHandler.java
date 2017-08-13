@@ -92,10 +92,10 @@ public class SpectriteGeneralEventHandler {
 	private static Field potionField_areaEffectCloud = null;
 	private static Method getArrowStackMethod = null;
 	
-	private static Field primaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "primaryEffect" });
-    private static Field secondaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "secondaryEffect" });
-    private static Field paymentField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "payment" });
-    private static Field customNameField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "customName" });
+	private static Field primaryEffectField = null;
+    private static Field secondaryEffectField = null;
+    private static Field paymentField = null;
+    private static Field customNameField = null;
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public void onEntitySpawn(EntityJoinWorldEvent e) {
@@ -381,10 +381,10 @@ public class SpectriteGeneralEventHandler {
 					TileEntity te = world.getTileEntity(pos);
 					if (te.getClass() == TileEntityBeacon.class) {
 						if (primaryEffectField == null) {
-							primaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "primaryEffect" });
-							secondaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "secondaryEffect" });
-							paymentField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "payment" });
-							customNameField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "customName" });
+							primaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "primaryEffect", "field_146013_m" });
+							secondaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "secondaryEffect", "field_146010_n" });
+							paymentField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "payment", "field_146011_o" });
+							customNameField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "customName", "field_146008_p", });
 						}
 						try {
 							Potion primaryEffect = (Potion) primaryEffectField.get(te), secondaryEffect = (Potion) secondaryEffectField.get(te);
@@ -414,10 +414,10 @@ public class SpectriteGeneralEventHandler {
 					TileEntity te = world.getTileEntity(e.getPos());
 					if (te.getClass() == TileEntityBeacon.class) {
 						if (primaryEffectField == null) {
-							primaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "primaryEffect" });
-							secondaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "secondaryEffect" });
-							paymentField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "payment" });
-							customNameField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "customName" });
+							primaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "primaryEffect", "field_146013_m" });
+							secondaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "secondaryEffect", "field_146010_n" });
+							paymentField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "payment", "field_146011_o" });
+							customNameField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "customName", "field_146008_p", });
 						}
 						try {
 							Potion primaryEffect = (Potion) primaryEffectField.get(te), secondaryEffect = (Potion) secondaryEffectField.get(te);
@@ -469,10 +469,10 @@ public class SpectriteGeneralEventHandler {
 				if (pos.getY() == 256) {
 					TileEntity te = world.getTileEntity(beaconPos);
 					if (primaryEffectField == null) {
-						primaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "primaryEffect" });
-						secondaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "secondaryEffect" });
-						paymentField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "payment" });
-						customNameField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "customName" });
+						primaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "primaryEffect", "field_146013_m" });
+						secondaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "secondaryEffect", "field_146010_n" });
+						paymentField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "payment", "field_146011_o" });
+						customNameField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "customName", "field_146008_p", });
 					}
 					try {
 						Potion primaryEffect = (Potion) primaryEffectField.get(te), secondaryEffect = (Potion) secondaryEffectField.get(te);
