@@ -2,6 +2,7 @@ package com.samuel.spectrite.etc;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -39,22 +40,48 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class SpectriteHelper {
 	
 	private static final TextFormatting[] textColours = new TextFormatting[] { TextFormatting.RED, TextFormatting.GOLD, TextFormatting.YELLOW, TextFormatting.GREEN,
 			TextFormatting.BLUE, TextFormatting.AQUA, TextFormatting.LIGHT_PURPLE };
 	
+	private static Map<Class, Map<String, Field>> fieldCache = new HashMap<Class, Map<String, Field>>();
+	private static Map<Class, Map<String, Method>> methodCache = new HashMap<Class, Map<String, Method>>();
+	
 	public static Field findObfuscatedField(Class<?> clazz,
 		String... names) {
-		return ReflectionHelper.findField(clazz,
-			ObfuscationReflectionHelper.remapFieldNames(
-				clazz.getName(), names));
+		boolean containsClass = fieldCache.get(clazz) != null;
+		if (containsClass && fieldCache.get(clazz).containsKey(names[0])) {
+			return fieldCache.get(clazz).get(names[0]);
+		} else {
+			Field field = ReflectionHelper.findField(clazz,
+				ObfuscationReflectionHelper.remapFieldNames(
+					clazz.getName(), names));
+			if (!containsClass) {
+				Map<String, Field> fieldMap = new HashMap<String, Field>();
+				fieldMap.put(names[0], field);
+				fieldCache.put(clazz, fieldMap);
+			}
+			return field;
+		}
 	}
 	
 	public static <E> Method findObfuscatedMethod(Class<? super E> clazz,
 		String name, String obfuscatedName, Class<?>... methodTypes) {
-		return ReflectionHelper.findMethod(clazz, name, obfuscatedName, methodTypes);
+		boolean containsClass = methodCache.get(clazz) != null;
+		if (containsClass && fieldCache.get(clazz).containsKey(obfuscatedName)) {
+			return methodCache.get(clazz).get(obfuscatedName);
+		} else {
+			Method method = ReflectionHelper.findMethod(clazz, name, obfuscatedName, methodTypes);
+			if (!containsClass) {
+				Map<String, Method> methodMap = new HashMap<String, Method>();
+				methodMap.put(obfuscatedName, method);
+				methodCache.put(clazz, methodMap);
+			}
+			return method;
+		}
 	}
 	
 	public static int getCurrentSpectriteFrame(World worldIn) {
@@ -67,31 +94,53 @@ public class SpectriteHelper {
         }
 	}
 	
-	public static float[] getCurrentSpectriteRGBColour(boolean inverted) {
+	public static float[] getCurrentSpectriteRGBColour(float offsetLevel) {
 		int hueFrame = Math.round((System.currentTimeMillis() >> 5) % 180);
 		float r = hueFrame >= 120 && hueFrame < 150 ? (1f / 30) * (hueFrame - 120) : hueFrame < 30 || hueFrame >= 150 ? 1f : hueFrame < 60 ? (1f / 30) * (30 - (hueFrame - 30)) : 0f,
 			g = hueFrame < 30 ? (1f / 30) * hueFrame : hueFrame < 90 ? 1f : hueFrame < 120 ? (1f / 30) * (30 - (hueFrame - 90)) : 0f,
 			b = hueFrame >= 60 && hueFrame < 90 ? (1f / 30) * (hueFrame - 60) : hueFrame >= 90 && hueFrame < 150 ? 1f : hueFrame >= 150 ? (1f / 30) * (30 - (hueFrame - 150)) : 0f;
-			
-		if (inverted) {
-			r = 255f - r;
-			g = 255f - g;
-			b = 255f - b;
+		
+		if (offsetLevel == 1f) {
+			float tempR = r;
+			r = g;
+			g = b;
+			b = tempR;
+		} else if (offsetLevel == 2f) {
+			float tempR = r, tempG = g;
+			r = b;
+			g  = tempR;
+			b = tempG;
+		} else if (offsetLevel == 1.5f) {
+			r = 1.0f - r;
+			g = 1.0f - g;
+			b = 1.0f - b;
 		}
 				
 		return new float[] { r, g, b };
 	}
 	
-	public static int getCurrentSpectriteColour(boolean inverted) {
+	public static int getCurrentSpectriteColour(int offsetLevel) {
 		int hueFrame = Math.round((System.currentTimeMillis() >> 5) % 180);
 		int r = MathHelper.floor(hueFrame >= 120 && hueFrame < 150 ? (255f / 30) * (hueFrame - 120) : hueFrame < 30 || hueFrame >= 150 ? 255f : hueFrame < 60 ? (255f / 30) * (30 - (hueFrame - 30)) : 0f),
 			g = MathHelper.floor(hueFrame < 30 ? (255f / 30) * hueFrame : hueFrame < 90 ? 255f : hueFrame < 120 ? (255f / 30) * (30 - (hueFrame - 90)) : 0f),
 			b = MathHelper.floor(hueFrame >= 60 && hueFrame < 90 ? (255f / 30) * (hueFrame - 60) : hueFrame >= 90 && hueFrame < 150 ? 255f : hueFrame >= 150 ? (255f / 30) * (30 - (hueFrame - 150)) : 0f);
+		
+		int tempR = r;
 			
-		if (inverted) {
-			r = 255 - r;
-			g = 255 - g;
-			b = 255 - b;
+		switch (offsetLevel) {
+			case 1:
+				r = g;
+				g = b;
+				b = tempR;
+				break;
+			case 2:
+				int tempG = g;
+				r = b;
+				g  = tempR;
+				b = tempG;
+				break;
+			default:
+				break;
 		}
 		
 		return (r << 16) + (g << 8) + b + (255 >> 24);
@@ -260,4 +309,11 @@ public class SpectriteHelper {
             }
         }
     }
+	
+	public static void populateRegisteredObjectsList(Map<String, IForgeRegistryEntry> registeredObjects,
+		IForgeRegistryEntry ... objects) {
+		for (IForgeRegistryEntry o : objects) {
+			registeredObjects.put(o.getRegistryName().getResourcePath(), o);
+		}
+	}
 }

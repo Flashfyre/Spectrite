@@ -7,17 +7,19 @@ import net.minecraft.world.World;
 
 public class ParticleSpectriteSpell extends ParticleSpell {
 	
-	boolean invertColour;
+	int offsetLevel;
 
-	public ParticleSpectriteSpell(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double r, double g, double b, boolean invertColour) {
+	public ParticleSpectriteSpell(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double r, double g, double b, int offsetLevel) {
 		super(worldIn, xCoordIn, yCoordIn, zCoordIn, r, g, b);
-		this.invertColour = invertColour;
+		this.offsetLevel = offsetLevel;
+		
+		this.onUpdate();
 	}
 
 	@Override
 	public void onUpdate()
     {
-		float[] c = SpectriteHelper.getCurrentSpectriteRGBColour(invertColour);
+		float[] c = SpectriteHelper.getCurrentSpectriteRGBColour(this.offsetLevel);
 		this.setRBGColorF(c[0], c[1], c[2]);
 		
 		super.onUpdate();

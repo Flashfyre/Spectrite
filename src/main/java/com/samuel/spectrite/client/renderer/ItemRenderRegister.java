@@ -18,6 +18,10 @@ public final class ItemRenderRegister {
 		registerItemModel(ModItems.diamond_rod);
 		registerItemModel(ModItems.spectrite_rod);
 		registerItemModel(ModItems.spectrite_brick);
+		registerItemModel(ModItems.spectrite_bone);
+		registerItemModel(ModItems.spectrite_dust);
+		registerItemModel(ModItems.spectrite_blaze_rod);
+		registerItemModel(ModItems.spectrite_blaze_powder);
 		registerItemModel(ModItems.spectrite_gem);
 		registerItemModel(ModItems.spectrite_orb);
 		registerItemModel(ModItems.spectrite_shovel);
@@ -38,6 +42,7 @@ public final class ItemRenderRegister {
 		registerItemModel(ModItems.spectrite_chestplate);
 		registerItemModel(ModItems.spectrite_leggings);
 		registerItemModel(ModItems.spectrite_boots);
+		registerItemModel(ModItems.spectrite_wither_skeleton_skull);
 		registerItemModel(ModItems.spectrite_compass);
 		
 		ModelLoader.setBucketModelDefinition(ModItems.molten_spectrite_bucket);

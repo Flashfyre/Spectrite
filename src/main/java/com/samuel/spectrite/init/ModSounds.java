@@ -1,16 +1,24 @@
 package com.samuel.spectrite.init;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.samuel.spectrite.etc.SpectriteHelper;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class ModSounds {
 	
 	public static SoundEvent charge, explosion, fatality;
 	public static final ResourceLocation charge_rl = new ResourceLocation("spectrite:charge"), explosion_rl = new ResourceLocation("spectrite:explosion"),
 			fatality_rl = new ResourceLocation("spectrite:fatality");
+	
+	private static Map<String, IForgeRegistryEntry> registeredSoundEvents = new HashMap<String, IForgeRegistryEntry>();
 	
 	public static void initSounds() {
 		charge = new SoundEvent(charge_rl).setRegistryName(charge_rl);
@@ -21,12 +29,26 @@ public class ModSounds {
 	@SubscribeEvent
 	public void onRegisterSounds(RegistryEvent.Register<SoundEvent> event) {
 		IForgeRegistry<SoundEvent> soundRegistry = event.getRegistry();
-		registerSound(soundRegistry, charge);
-		registerSound(soundRegistry, explosion);
-		registerSound(soundRegistry, fatality);
+		registerSoundEvent(soundRegistry, charge);
+		registerSoundEvent(soundRegistry, explosion);
+		registerSoundEvent(soundRegistry, fatality);
 	}
 	
-	private void registerSound(IForgeRegistry<SoundEvent> registry, SoundEvent soundEvent) {
+	@SubscribeEvent
+	public void onMissingMapping(RegistryEvent.MissingMappings<SoundEvent> e) {
+		for (RegistryEvent.MissingMappings.Mapping<SoundEvent> mapping : e.getAllMappings()) {
+			if ("spectritemod".equals(mapping.key.getResourceDomain())) {
+				String resourcePath =  mapping.key.getResourcePath();
+				if (registeredSoundEvents.containsKey(resourcePath)) {
+					mapping.remap((SoundEvent) registeredSoundEvents.get(resourcePath));
+				}
+			}
+		}
+	}
+	
+	private void registerSoundEvent(IForgeRegistry<SoundEvent> registry, SoundEvent soundEvent) {
 		registry.register(soundEvent);
+		
+		SpectriteHelper.populateRegisteredObjectsList(registeredSoundEvents, soundEvent);
 	}
 }

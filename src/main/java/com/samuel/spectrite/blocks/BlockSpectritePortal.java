@@ -1,6 +1,5 @@
 package com.samuel.spectrite.blocks;
 
-import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.init.ModWorldGen;
 import com.samuel.spectrite.tileentity.TileEntitySpectritePortal;

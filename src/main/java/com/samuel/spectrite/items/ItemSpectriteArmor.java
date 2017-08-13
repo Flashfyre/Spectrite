@@ -82,7 +82,7 @@ public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteIt
 				if (player.getMaxHealth() - 20f != healthIncrease) {
 					player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20f + healthIncrease);
 				}
-				if (armourCount == 4) {
+				if (armourCount == 4 && player.getFoodStats().getFoodLevel() > 0) {
 					if (spectriteArmourBonusMode.ordinal() > 2) {
 						if (player.getActivePotionEffect(MobEffects.SPEED) == null) {
 							player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 220, SpectriteConfig.spectriteArmourBonusMode.ordinal() - (!allEnhanced ? 3 : 2), true, true));

@@ -17,13 +17,13 @@ public class PotionSpectriteResistance extends Potion {
 	private static final Map<String, ResourceLocation> SPECTRITE_INVENTORY_TEXTURE_RES_MAP = Maps.<String, ResourceLocation>newHashMap();
 
 	public PotionSpectriteResistance() {
-		super(false, SpectriteHelper.getCurrentSpectriteColour(true));
+		super(false, SpectriteHelper.getCurrentSpectriteColour(2));
 	}
 
 	@Override
 	public int getLiquidColor()
     {
-        return SpectriteHelper.getCurrentSpectriteColour(true);
+        return SpectriteHelper.getCurrentSpectriteColour(2);
     }
 	
 	@Override

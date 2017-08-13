@@ -6,10 +6,12 @@ import com.google.common.collect.Maps;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.items.ItemSpectriteArmor;
+import com.samuel.spectrite.items.ItemSpectriteWitherSkeletonSkull;
 
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,6 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class LayerSpectriteArmor extends LayerBipedArmor {
 	
 	private static final Map<String, ResourceLocation> ARMOR_TEXTURE_RES_MAP = Maps.<String, ResourceLocation>newHashMap();
+	private static final Map<String, ResourceLocation> WITHER_SKELETON_SKULL_TEXTURE_RES_MAP = Maps.<String, ResourceLocation>newHashMap();
 	
 	@SideOnly(Side.CLIENT)
     public LayerSpectriteArmor(RenderLivingBase<?> rendererIn)
@@ -38,22 +41,34 @@ public class LayerSpectriteArmor extends LayerBipedArmor {
      */
     public ResourceLocation getArmorResource(net.minecraft.entity.Entity entity, ItemStack stack, EntityEquipmentSlot slot, String type)
     {
-		if (stack.getItem() instanceof ItemSpectriteArmor) {
-	        ItemSpectriteArmor item = (ItemSpectriteArmor)stack.getItem();
+		boolean spectriteArmor = false;
+		if ((spectriteArmor = stack.getItem() instanceof ItemSpectriteArmor) || stack.getItem() instanceof ItemSpectriteWitherSkeletonSkull) {
+	        ItemArmor item = (ItemArmor)stack.getItem();
 	        String texture = item.getArmorMaterial().getName();
 	        String domain = Spectrite.MOD_ID;
 	        int curFrame = SpectriteHelper.getCurrentSpectriteFrame(entity.getEntityWorld());
-	        String s1 = String.format("%s:textures/models/armor/spectrite_layer_%d/%d.png", domain, (isLegSlot(slot) ? 2 : 1), curFrame);
+	        String s1 = String.format("%s:textures/models/armor/spectrite%s_layer_%d/%d.png", domain, spectriteArmor ? "" : "_wither_skeleton_skull", (isLegSlot(slot) ? 2 : 1), curFrame);
 	
 	        s1 = net.minecraftforge.client.ForgeHooksClient.getArmorTexture(entity, stack, s1, slot, type);
-	        ResourceLocation resourceLocation = ARMOR_TEXTURE_RES_MAP.get(s1);
-	
-	        if (resourceLocation == null)
-	        {
-	            resourceLocation = new ResourceLocation(s1);
-	            ARMOR_TEXTURE_RES_MAP.put(s1, resourceLocation);
+	        ResourceLocation resourceLocation = null;
+	        if (spectriteArmor) {
+		        resourceLocation = ARMOR_TEXTURE_RES_MAP.get(s1);
+		
+		        if (resourceLocation == null)
+		        {
+		            resourceLocation = new ResourceLocation(s1);
+		            ARMOR_TEXTURE_RES_MAP.put(s1, resourceLocation);
+		        }
+	        } else {
+	        	resourceLocation = WITHER_SKELETON_SKULL_TEXTURE_RES_MAP.get(s1);
+	    		
+		        if (resourceLocation == null)
+		        {
+		            resourceLocation = new ResourceLocation(s1);
+		            WITHER_SKELETON_SKULL_TEXTURE_RES_MAP.put(s1, resourceLocation);
+		        }
 	        }
-	
+		
 	        return resourceLocation;
 		}
 		

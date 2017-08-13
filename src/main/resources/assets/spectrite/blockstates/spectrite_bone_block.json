@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "axis=y,odd=false": { "model": "spectrite:spectrite_bone_block_y" },
+        "axis=z,odd=false": { "model": "spectrite:spectrite_bone_block_z" },
+        "axis=x,odd=false": { "model": "spectrite:spectrite_bone_block_x" },
+		"axis=y,odd=true": { "model": "spectrite:spectrite_bone_block_y_odd" },
+        "axis=z,odd=true": { "model": "spectrite:spectrite_bone_block_z_odd" },
+        "axis=x,odd=true": { "model": "spectrite:spectrite_bone_block_x_odd" }
+    }
+}

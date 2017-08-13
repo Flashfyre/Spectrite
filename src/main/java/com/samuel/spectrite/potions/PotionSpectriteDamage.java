@@ -14,13 +14,13 @@ import net.minecraft.util.DamageSource;
 public class PotionSpectriteDamage extends PotionHealth {
 	
 	public PotionSpectriteDamage() {
-		super(true, SpectriteHelper.getCurrentSpectriteColour(false));
+		super(true, SpectriteHelper.getCurrentSpectriteColour(1));
 	}
 
 	@Override
 	public int getLiquidColor()
     {
-        return SpectriteHelper.getCurrentSpectriteColour(false);
+        return SpectriteHelper.getCurrentSpectriteColour(1);
     }
 	
 	@Override

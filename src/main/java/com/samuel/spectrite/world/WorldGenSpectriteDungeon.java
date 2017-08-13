@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Random;
 
 import com.google.common.collect.Lists;
-import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.init.ModBiomes;
 import com.samuel.spectrite.init.ModBlocks;
@@ -111,10 +110,11 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 			this.world = e.getWorld();
 			if (this.world.getWorldType() != WorldType.FLAT && this.world.getActualHeight() >= 30) {
 				initSpawnPoint(e.getWorld());
-				savedData = (SpectriteDungeonData) this.world.loadData(
+				savedData = (SpectriteDungeonData) this.world.getPerWorldStorage().getOrLoadData(
 					SpectriteDungeonData.class, "spectriteDungeon");
 				if (savedData == null) {
-					savedData = new SpectriteDungeonData();
+					savedData = new SpectriteDungeonData("spectriteDungeon");
+					world.getPerWorldStorage().setData(savedData.mapName, savedData);
 				}
 				if (!savedData.isDungeonGenerated()) {
 					int chunkX = spawnPos.getX() >> 4, chunkZ = spawnPos.getZ() >> 4;
@@ -202,7 +202,7 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 	    protected static IBlockState stairsState = ModBlocks.spectrite_brick_stairs.getDefaultState();
 	    protected static IBlockState slabState = ModBlocks.spectrite_brick_slab_half.getDefaultState();
 	    protected static IBlockState ladderState = ModBlocks.spectrite_ladder.getDefaultState();
-	    protected static IBlockState glassState = Blocks.GLASS.getDefaultState();
+	    protected static IBlockState glassState = ModBlocks.spectrite_glass.getDefaultState();
 	    protected static IBlockState chestState = Blocks.CHEST.getDefaultState();
 	    protected static IBlockState spectriteChestState = ModBlocks.spectrite_chest.getDefaultState();
 	    protected static IBlockState mineralState = ModBlocks.spectrite_block.getDefaultState();
@@ -239,7 +239,7 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 		protected abstract void reserveConns();
 		
 		protected void setBlockState(IBlockState state, int x, int y, int z) {
-			world.setBlockState(new BlockPos((chunkX << 4) + x, baseY + y, (chunkZ << 4) + z), state);
+			world.setBlockState(new BlockPos((chunkX << 4) + x, baseY + y, (chunkZ << 4) + z), state, 16);
 		}
 		
 		protected void fillRange(IBlockState state, int minX, int minY, int minZ, int maxX, int maxY, int maxZ,
@@ -327,7 +327,7 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 				new BlockPos((chunkX << 4) + maxX, baseY + maxY, (chunkZ << 4) + maxZ)).iterator();
 			
 			while (posIterator.hasNext()) {
-				world.setBlockState(posIterator.next(), state);
+				world.setBlockState(posIterator.next(), state, 16);
 			}
 		}
 		

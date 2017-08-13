@@ -12,12 +12,15 @@ import com.samuel.spectrite.capabilities.SpectriteBossCapability;
 import com.samuel.spectrite.capabilities.SpectriteBossProvider;
 import com.samuel.spectrite.entities.EntitySpectriteAreaEffectCloud;
 import com.samuel.spectrite.entities.EntitySpectriteArrow;
+import com.samuel.spectrite.entities.EntitySpectriteBlaze;
+import com.samuel.spectrite.entities.EntitySpectriteCreeper;
 import com.samuel.spectrite.entities.EntitySpectriteGolem;
 import com.samuel.spectrite.entities.EntitySpectriteSkeleton;
 import com.samuel.spectrite.entities.EntitySpectriteTippedArrow;
 import com.samuel.spectrite.entities.EntitySpectriteWitherSkeleton;
 import com.samuel.spectrite.entities.ISpectriteBipedMob;
 import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.init.ModBlocks;
 import com.samuel.spectrite.init.ModItems;
 import com.samuel.spectrite.init.ModPotions;
 import com.samuel.spectrite.init.ModSounds;
@@ -34,13 +37,17 @@ import com.samuel.spectrite.packets.PacketSyncSpectriteBoss;
 import com.samuel.spectrite.packets.PacketSyncSpectriteDungeonSpawnPos;
 
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockWorldState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockPattern;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAreaEffectCloud;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.AbstractSkeleton;
+import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityWitherSkeleton;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,6 +61,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTippedArrow;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionType;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
@@ -71,6 +80,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.StartTracking;
 import net.minecraftforge.event.entity.player.PlayerEvent.StopTracking;
+import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -78,6 +88,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class SpectriteGeneralEventHandler {
 	
 	private static boolean skipAttackPlayer = false;
+	private static Field potionField_tippedArrow = null;
+	private static Field potionField_areaEffectCloud = null;
+	private static Method getArrowStackMethod = null;
+	
+	private static Field primaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "primaryEffect" });
+    private static Field secondaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "secondaryEffect" });
+    private static Field paymentField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "payment" });
+    private static Field customNameField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "customName" });
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public void onEntitySpawn(EntityJoinWorldEvent e) {
@@ -93,6 +111,10 @@ public class SpectriteGeneralEventHandler {
 						spectriteEntity = new EntitySpectriteSkeleton(entity.getEntityWorld());
 					} else if (entityClass == EntityWitherSkeleton.class) {
 						spectriteEntity = new EntitySpectriteWitherSkeleton(entity.getEntityWorld());
+					} else if (entityClass == EntityCreeper.class) {
+						spectriteEntity = new EntitySpectriteCreeper(entity.getEntityWorld());
+					} else if (entityClass == EntityBlaze.class) {
+						spectriteEntity = new EntitySpectriteBlaze(entity.getEntityWorld());
 					}
 					
 					if (spectriteEntity != null) {
@@ -105,14 +127,18 @@ public class SpectriteGeneralEventHandler {
 			}
 		} else if (e.getEntity() instanceof EntityTippedArrow) {
 			EntityTippedArrow arrow = (EntityTippedArrow) e.getEntity();
-			Field potionField = SpectriteHelper.findObfuscatedField(EntityTippedArrow.class, new String[] { "potion", "field_184560_g" });
-			Method getArrowStackMethod = SpectriteHelper.findObfuscatedMethod(EntityTippedArrow.class, "getArrowStack", "func_184550_j");
+			if (potionField_tippedArrow == null) {
+				potionField_tippedArrow = SpectriteHelper.findObfuscatedField(EntityTippedArrow.class, new String[] { "potion", "field_184560_g" });
+			}
+			if (getArrowStackMethod == null) {
+				getArrowStackMethod = SpectriteHelper.findObfuscatedMethod(EntityTippedArrow.class, "getArrowStack", "func_184550_j");
+			}
 			PotionType potionType;
 			try {
-				potionType = (PotionType) potionField.get(arrow);
+				potionType = (PotionType) potionField_tippedArrow.get(arrow);
 				Potion potion = null;
-				if (!potionType.getEffects().isEmpty() && ((potion = potionType.getEffects().get(0).getPotion()).equals(ModPotions.SPECTRITE_DAMAGE) 
-					|| potion.equals(ModPotions.SPECTRITE_RESISTANCE))) {
+				if (!potionType.getEffects().isEmpty() && ((potion = potionType.getEffects().get(0).getPotion()).equals(ModPotions.SPECTRITE) 
+					|| potion.equals(ModPotions.SPECTRITE_DAMAGE) || potion.equals(ModPotions.SPECTRITE_RESISTANCE))) {
 					e.setCanceled(true);
 					Object arrowStackObj = getArrowStackMethod.invoke(arrow);
 					if (arrowStackObj != null) {
@@ -145,13 +171,15 @@ public class SpectriteGeneralEventHandler {
 			}
 		} else if (!e.getWorld().isRemote && e.getEntity() instanceof EntityAreaEffectCloud) {
 			EntityAreaEffectCloud entity = (EntityAreaEffectCloud) e.getEntity();
-			Field potionField = SpectriteHelper.findObfuscatedField(EntityAreaEffectCloud.class, new String[] { "potion", "field_184502_e" });
+			if (potionField_areaEffectCloud == null) {
+				potionField_areaEffectCloud = SpectriteHelper.findObfuscatedField(EntityAreaEffectCloud.class, new String[] { "potion", "field_184502_e" });
+			}
 			PotionType potionType;
 			try {
-				potionType = (PotionType) potionField.get(entity);
+				potionType = (PotionType) potionField_areaEffectCloud.get(entity);
 				if (!potionType.getEffects().isEmpty()) {
 					Potion potion = potionType.getEffects().get(0).getPotion();
-					if (potion.equals(ModPotions.SPECTRITE_DAMAGE) || potion.equals(ModPotions.SPECTRITE_RESISTANCE)) {
+					if (potion.equals(ModPotions.SPECTRITE) || potion.equals(ModPotions.SPECTRITE_DAMAGE) || potion.equals(ModPotions.SPECTRITE_RESISTANCE)) {
 						e.setCanceled(true);
 						EntitySpectriteAreaEffectCloud newEntity = new EntitySpectriteAreaEffectCloud(e.getWorld(), entity.posX, entity.posY, entity.posZ);
 						
@@ -300,7 +328,8 @@ public class SpectriteGeneralEventHandler {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public void onBlockPlaced(PlaceEvent e) {
-		if (e.getPlacedBlock().getBlock() == Blocks.PUMPKIN) {
+		Block block = e.getPlacedBlock().getBlock();
+		if (block == Blocks.PUMPKIN) {
 			BlockPattern golemPattern = BlockSpectrite.getGolemPattern();
 			BlockPattern.PatternHelper blockpattern$patternhelper = golemPattern.match(e.getWorld(), e.getPos());
 	
@@ -329,7 +358,7 @@ public class SpectriteGeneralEventHandler {
 	            for (int j1 = 0; j1 < 120; ++j1)
 	            {
 	                Spectrite.Proxy.spawnSpectriteSpellParticle(world, blockpos.getX() + world.rand.nextDouble(), blockpos.getY() + world.rand.nextDouble() * 3.9D,
-	            		blockpos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D, false);
+	            		blockpos.getZ() + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D, 0);
 	            }
 	
 	            for (int k1 = 0; k1 < golemPattern.getPalmLength(); ++k1)
@@ -341,6 +370,125 @@ public class SpectriteGeneralEventHandler {
 	                }
 	            }
 	        }
+		} else if (block == ModBlocks.spectrite_glass) {
+			World world = e.getWorld();
+			BlockPos pos = e.getPos();
+			
+			while (pos.getY() > 0) {
+				pos = pos.down();
+				IBlockState state = world.getBlockState(pos);
+				if (state.getBlock() == Blocks.BEACON) {
+					TileEntity te = world.getTileEntity(pos);
+					if (te.getClass() == TileEntityBeacon.class) {
+						if (primaryEffectField == null) {
+							primaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "primaryEffect" });
+							secondaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "secondaryEffect" });
+							paymentField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "payment" });
+							customNameField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "customName" });
+						}
+						try {
+							Potion primaryEffect = (Potion) primaryEffectField.get(te), secondaryEffect = (Potion) secondaryEffectField.get(te);
+							ItemStack payment = (ItemStack) paymentField.get(te);
+							String customName = (String) customNameField.get(te);
+							world.setBlockState(pos, ModBlocks.fast_updating_beacon.getDefaultState());
+							te = world.getTileEntity(pos);
+							primaryEffectField.set(te, primaryEffect);
+							secondaryEffectField.set(te, secondaryEffect);
+							paymentField.set(te, payment);
+							customNameField.set(te, customName);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+						break;
+					}
+				}
+			}
+		} else if (block == Blocks.BEACON) {
+			World world = e.getWorld();
+			BlockPos pos = e.getPos();
+			
+			while (pos.getY() < 256) {
+				pos = pos.up();
+				IBlockState state = world.getBlockState(pos);
+				if (state.getBlock() == ModBlocks.spectrite_glass) {
+					TileEntity te = world.getTileEntity(e.getPos());
+					if (te.getClass() == TileEntityBeacon.class) {
+						if (primaryEffectField == null) {
+							primaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "primaryEffect" });
+							secondaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "secondaryEffect" });
+							paymentField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "payment" });
+							customNameField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "customName" });
+						}
+						try {
+							Potion primaryEffect = (Potion) primaryEffectField.get(te), secondaryEffect = (Potion) secondaryEffectField.get(te);
+							ItemStack payment = (ItemStack) paymentField.get(te);
+							String customName = (String) customNameField.get(te);
+							world.setBlockState(e.getPos(), ModBlocks.fast_updating_beacon.getDefaultState());
+							te = world.getTileEntity(e.getPos());
+							primaryEffectField.set(te, primaryEffect);
+							secondaryEffectField.set(te, secondaryEffect);
+							paymentField.set(te, payment);
+							customNameField.set(te, customName);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public void onBlockBreak(BreakEvent e) {
+		Block block = e.getState().getBlock();
+		if (block == ModBlocks.spectrite_glass) {
+			World world = e.getWorld();
+			BlockPos beaconPos = e.getPos();
+			boolean hasBeacon = false;
+			
+			while (beaconPos.getY() > 0) {
+				beaconPos = beaconPos.down();
+				IBlockState state = world.getBlockState(beaconPos);
+				if (state.getBlock() == ModBlocks.fast_updating_beacon) {
+					hasBeacon = true;
+					break;
+				} else if (state.getBlock() == ModBlocks.spectrite_glass) {
+					break;
+				}
+			}
+			if (hasBeacon) {
+				BlockPos pos = e.getPos();
+				while (pos.getY() < 256) {
+					pos = pos.up();
+					IBlockState state = world.getBlockState(pos);
+					if (state.getBlock() == ModBlocks.spectrite_glass) {
+						break;
+					}
+				}
+				if (pos.getY() == 256) {
+					TileEntity te = world.getTileEntity(beaconPos);
+					if (primaryEffectField == null) {
+						primaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "primaryEffect" });
+						secondaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "secondaryEffect" });
+						paymentField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "payment" });
+						customNameField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "customName" });
+					}
+					try {
+						Potion primaryEffect = (Potion) primaryEffectField.get(te), secondaryEffect = (Potion) secondaryEffectField.get(te);
+						ItemStack payment = (ItemStack) paymentField.get(te);
+						String customName = (String) customNameField.get(te);
+						world.setBlockState(beaconPos, Blocks.BEACON.getDefaultState());
+						te = world.getTileEntity(beaconPos);
+						primaryEffectField.set(te, primaryEffect);
+						secondaryEffectField.set(te, secondaryEffect);
+						paymentField.set(te, payment);
+						customNameField.set(te, customName);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
 		}
 	}
 	

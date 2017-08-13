@@ -8,8 +8,12 @@ import com.samuel.spectrite.client.renderer.BlockRenderRegister;
 import com.samuel.spectrite.client.renderer.EntityRenderRegister;
 import com.samuel.spectrite.client.renderer.ItemRenderRegister;
 import com.samuel.spectrite.client.renderer.TileEntityRenderRegister;
+import com.samuel.spectrite.etc.SpectriteHelper;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.ParticleSmokeLarge;
+import net.minecraft.client.particle.ParticleSmokeNormal;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
@@ -65,9 +69,26 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	@Override
-	public void spawnSpectriteSpellParticle(World world, double posX, double posY, double posZ, double r, double g, double b, boolean invertColour) {
-		ParticleSpectriteSpell particle = new ParticleSpectriteSpell(world, posX, posY, posZ, r, g, b, invertColour);
-        particle.onUpdate();
+	public void spawnSpectriteSpellParticle(World world, double posX, double posY, double posZ, double r, double g, double b, int offsetLevel) {
+		ParticleSpectriteSpell particle = new ParticleSpectriteSpell(world, posX, posY, posZ, r, g, b, offsetLevel);
+
+        Minecraft.getMinecraft().effectRenderer.addEffect(particle);
+	}
+	
+	@Override
+	public void spawnSpectriteSmokeNormalParticle(World world, double posX, double posY, double posZ, double xSpeed, double ySpeed, double zSpeed) {
+		ParticleSmokeNormal particle = (ParticleSmokeNormal) new ParticleSmokeLarge.Factory().createParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), world, posX, posY, posZ, xSpeed, ySpeed, zSpeed);
+		float[] c = SpectriteHelper.getCurrentSpectriteRGBColour(0);
+		particle.setRBGColorF(c[0], c[1], c[2]);
+
+        Minecraft.getMinecraft().effectRenderer.addEffect(particle);
+	}
+	
+	@Override
+	public void spawnSpectriteSmokeLargeParticle(World world, double posX, double posY, double posZ, double xSpeed, double ySpeed, double zSpeed) {
+		ParticleSmokeLarge particle = (ParticleSmokeLarge) new ParticleSmokeLarge.Factory().createParticle(EnumParticleTypes.SMOKE_LARGE.getParticleID(), world, posX, posY, posZ, xSpeed, ySpeed, zSpeed);
+		float[] c = SpectriteHelper.getCurrentSpectriteRGBColour(0);
+		particle.setRBGColorF(c[0], c[1], c[2]);
 
         Minecraft.getMinecraft().effectRenderer.addEffect(particle);
 	}

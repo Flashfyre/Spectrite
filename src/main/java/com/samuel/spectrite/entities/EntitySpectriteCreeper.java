@@ -3,7 +3,10 @@ package com.samuel.spectrite.entities;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.init.ModLootTables;
 import com.samuel.spectrite.init.ModPotions;
 import com.samuel.spectrite.init.ModSounds;
 import com.samuel.spectrite.items.ItemSpectriteShield;
@@ -17,6 +20,7 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.item.ItemShield;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -26,9 +30,17 @@ import net.minecraft.world.WorldServer;
 public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteMob {
 	
 	private final int explosionRadius = 4;
+	private static Field timeSinceIgnitedField = null;
+	private static Field fuseTimeField = null;
 
 	public EntitySpectriteCreeper(World worldIn) {
 		super(worldIn);
+		if (timeSinceIgnitedField == null) {
+    		timeSinceIgnitedField = SpectriteHelper.findObfuscatedField(EntityCreeper.class, new String[] { "timeSinceIgnited", "field_70833_d" });
+    	}
+    	if (fuseTimeField == null) {
+    		fuseTimeField = SpectriteHelper.findObfuscatedField(EntityCreeper.class, new String[] { "fuseTime", "field_82225_f" });
+    	}
 	}
 	
 	/**
@@ -39,9 +51,6 @@ public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteM
     {
         if (this.isEntityAlive())
         {
-        	Field timeSinceIgnitedField = SpectriteHelper.findObfuscatedField(EntityCreeper.class, new String[] { "timeSinceIgnited", "field_70833_d" });
-        	Field fuseTimeField = SpectriteHelper.findObfuscatedField(EntityCreeper.class, new String[] { "fuseTime", "field_82225_f" });
-        	
         	int i = this.getCreeperState();
         	
             int timeSinceIgnited = 0;
@@ -90,6 +99,13 @@ public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteM
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+    }
+	
+	@Override
+	@Nullable
+    protected ResourceLocation getLootTable()
+    {
+		return ModLootTables.spectrite_creeper;
     }
 
 	/**
@@ -179,13 +195,14 @@ public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteM
 		}
     }
     
-    @Override
 	/**
      * Checks if the entity's current position is a valid location to spawn this entity.
      */
-    public boolean getCanSpawnHere()
+    @Override
+	public boolean getCanSpawnHere()
     {
 		BlockPos pos = new BlockPos(this);
+		
 		int spawnChance = (pos.getY() + 8) >> 3;
 		boolean shouldSpawn = spawnChance == 1 || (spawnChance == 2 && rand.nextBoolean()) || (spawnChance == 3 && rand.nextInt(3) == 0);
         return shouldSpawn && pos.down().getY() < 28;
