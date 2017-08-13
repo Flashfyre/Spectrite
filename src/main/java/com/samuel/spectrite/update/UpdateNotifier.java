@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class UpdateNotifier {
 
-    public static final String DOWNLOAD_URL = "https://minecraft.curseforge.com/projects/spectrite-mod/files";
+    public static final String DOWNLOAD_URL = "https://minecraft.curseforge.com/projects/spectrite/files";
     public static boolean success;
     private static boolean notified = false;
     public static String updateVersion = "";
