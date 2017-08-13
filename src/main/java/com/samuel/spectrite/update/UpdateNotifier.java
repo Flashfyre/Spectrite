@@ -34,10 +34,10 @@ public class UpdateNotifier {
             ticksElapsed++;
             if(ticksElapsed >= 700){
                 EntityPlayer player = Minecraft.getMinecraft().player;
+                String modName = SpectriteHelper.getMultiColouredString(I18n.translateToLocal("spectrite.update.modname"), false);
                 if (!UpdateNotifier.success) {
-                    player.sendMessage(new TextComponentString(String.format(I18n.translateToLocal("spectrite.update.failed"), I18n.translateToLocal("spectrite.update.modname"))));
+                    player.sendMessage(ITextComponent.Serializer.jsonToComponent(String.format(I18n.translateToLocal("spectrite.update.failed"), modName)));
                 } else {
-                	String modName = SpectriteHelper.getMultiColouredString(I18n.translateToLocal("spectrite.update.modname"), false);
                     player.sendMessage(ITextComponent.Serializer.jsonToComponent(String.format(I18n.translateToLocal("spectrite.update.update").replace("{MCVERSION}", Spectrite.MC_VERSION), modName)));
                     player.sendMessage(ITextComponent.Serializer.jsonToComponent(String.format(I18n.translateToLocal("spectrite.update.versions"), Spectrite.VERSION, updateVersion)));
                     player.sendMessage(ITextComponent.Serializer.jsonToComponent(String.format(I18n.translateToLocal("spectrite.update.download"), DOWNLOAD_URL)));

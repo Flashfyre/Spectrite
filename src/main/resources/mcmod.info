@@ -5,10 +5,10 @@
   "description": "Adds a new and extremely rare mineral to world generation!",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
-  "updateUrl": "",
+  "url": "https://minecraft.curseforge.com/projects/spectrite",
+  "updateUrl": "https://minecraft.curseforge.com/projects/spectrite/files",
   "authorList": ["Samuel Harbord"],
-  "credits": "",
+  "credits": "blupilot - Built most of Spectrite Skull structure",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
