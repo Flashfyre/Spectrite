@@ -27,7 +27,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class Spectrite {
 	public static final String MOD_NAME = "Spectrite";
 	public static final String MOD_ID = "spectrite";
-	public static final String VERSION = "1.4.4";
+	public static final String VERSION = "1.4.5";
 	public static final String MC_VERSION = "1.12";
 
 	@Mod.Instance
