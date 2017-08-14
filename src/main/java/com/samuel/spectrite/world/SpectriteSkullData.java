@@ -52,7 +52,7 @@ public class SpectriteSkullData extends WorldSavedData {
 			NBTTagList dataList = new NBTTagList();
 			for (int cp = 0; cp < spawnChunks[d].size(); cp++) {
 				ChunkPos chunkPos = spawnChunks[d].get(cp);
-				dataList.appendTag(new NBTTagIntArray(new int[] { chunkPos.chunkXPos, chunkPos.chunkZPos, baseYCoords[d].get(cp), skullChunksGenerated[d].get(cp) }));
+				dataList.appendTag(new NBTTagIntArray(new int[] { chunkPos.x, chunkPos.z, baseYCoords[d].get(cp), skullChunksGenerated[d].get(cp) }));
 			}
 			
 			compound.setTag("data" + dimensions[d], dataList);

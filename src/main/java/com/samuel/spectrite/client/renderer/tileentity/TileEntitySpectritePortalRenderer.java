@@ -29,7 +29,7 @@ public class TileEntitySpectritePortalRenderer extends TileEntitySpecialRenderer
     private FloatBuffer buffer = GLAllocation.createDirectFloatBuffer(16);
 
     @Override
-    public void func_192841_a(TileEntitySpectritePortal te, double x, double y, double z, float partialTick, int breakStage, float partial) {
+    public void render(TileEntitySpectritePortal te, double x, double y, double z, float partialTick, int breakStage, float partial) {
         GlStateManager.disableLighting();
         RANDOM.setSeed(31100L);
         GlStateManager.getFloat(2982, MODELVIEW);
@@ -58,7 +58,7 @@ public class TileEntitySpectritePortalRenderer extends TileEntitySpecialRenderer
             {
                 this.bindTexture(SPECTRITE_PORTAL_TEXTURE);
                 flag = true;
-                Minecraft.getMinecraft().entityRenderer.func_191514_d(true);
+                Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
             }
 
             if (j == 1)
@@ -165,7 +165,7 @@ public class TileEntitySpectritePortalRenderer extends TileEntitySpecialRenderer
 
         if (flag)
         {
-            Minecraft.getMinecraft().entityRenderer.func_191514_d(false);
+            Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
         }
     }
     

@@ -33,7 +33,7 @@ public class BlockSpectritePortal extends BlockEndPortal {
      */
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
-        if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss() && !worldIn.isRemote && entityIn.getEntityBoundingBox().intersectsWith(state.getBoundingBox(worldIn, pos).offset(pos)))
+        if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss() && !worldIn.isRemote && entityIn.getEntityBoundingBox().intersects(state.getBoundingBox(worldIn, pos).offset(pos)))
         {
         	BlockPos spawnPos = SpectriteConfig.generateSpectriteDungeon ? ModWorldGen.spectriteDungeon.getSpawnPos()
     			: entityIn instanceof EntityPlayer && ((EntityPlayer) entityIn).getBedLocation() != null ? ((EntityPlayer) entityIn).getBedLocation() : worldIn.getSpawnPoint();

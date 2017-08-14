@@ -28,6 +28,6 @@ public final class ModCrafting {
 	}
 	
 	private static void initBrewingRecipe(PotionType basePotionType, Item ingredient, PotionType outputPotionType) {
-		PotionHelper.func_193357_a(basePotionType, ingredient, outputPotionType);
+		PotionHelper.addMix(basePotionType, ingredient, outputPotionType);
 	}
 }

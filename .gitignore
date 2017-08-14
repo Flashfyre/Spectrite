@@ -21,3 +21,5 @@
 *.bak
 *.psd
 gradle.properties
+*.launch
+forge-1.12.1-14.22.0.2452-changelog.txt

@@ -52,7 +52,7 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
 		IChunkProvider chunkProvider) {
 		if (SpectriteConfig.generateSpectriteDungeon && spawnPos != null && !world.isRemote && world.provider.isSurfaceWorld()) {
-			if ((savedData.isDungeonGenerated() && posRoomsMap == null) || chunkX == spawnChunkPos.chunkXPos && chunkZ == spawnChunkPos.chunkZPos) {
+			if ((savedData.isDungeonGenerated() && posRoomsMap == null) || chunkX == spawnChunkPos.x && chunkZ == spawnChunkPos.z) {
 				int y = getGroundY(chunkX, chunkZ, world);
 				int i = 1;
 		        this.rand.setSeed(world.getSeed());
@@ -61,8 +61,8 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 		        
 		        EnumFacing facing = null;
 
-                long j1 = spawnChunkPos.chunkXPos * j;
-                long k1 = spawnChunkPos.chunkZPos * k;
+                long j1 = spawnChunkPos.x * j;
+                long k1 = spawnChunkPos.z * k;
                 this.rand.setSeed(j1 ^ k1 ^ world.getSeed());
                 if (facing == null) {
                 	facing = EnumFacing.values()[this.rand.nextInt(4) + 2];
@@ -70,10 +70,10 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
                 
                 int baseY = 20;
             	
-            	populateChunkBiome(spawnChunkPos.chunkXPos, spawnChunkPos.chunkZPos, world);
+            	populateChunkBiome(spawnChunkPos.x, spawnChunkPos.z, world);
             	
             	Map<ChunkPos, Room> posRooms = new HashMap<ChunkPos, Room>();
-            	CoreRoom coreRoom = new CoreRoom(rand, spawnChunkPos.chunkXPos, 0, spawnChunkPos.chunkZPos, (y - 6) - baseY, world, facing);
+            	CoreRoom coreRoom = new CoreRoom(rand, spawnChunkPos.x, 0, spawnChunkPos.z, (y - 6) - baseY, world, facing);
             	posRoomsMap = coreRoom.chunkPosRooms;
         	
             	if (!savedData.isDungeonGenerated()) {
@@ -591,16 +591,16 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 				
 				if (dirHasConn || connRoom != null) {
 					if (connRoom == null) {
-						if (((!(chunkPos.chunkXPos == this.floorStartRoom.chunkX && (chunkPos.chunkZPos == this.floorStartRoom.chunkZ - 1
-							|| chunkPos.chunkZPos == this.floorStartRoom.chunkZ + 1)) && !(chunkPos.chunkZPos == this.floorStartRoom.chunkZ
-							&& (chunkPos.chunkXPos == this.floorStartRoom.chunkX - 1 || chunkPos.chunkXPos == this.floorStartRoom.chunkX + 1))))
+						if (((!(chunkPos.x == this.floorStartRoom.chunkX && (chunkPos.z == this.floorStartRoom.chunkZ - 1
+							|| chunkPos.z == this.floorStartRoom.chunkZ + 1)) && !(chunkPos.z == this.floorStartRoom.chunkZ
+							&& (chunkPos.x == this.floorStartRoom.chunkX - 1 || chunkPos.x == this.floorStartRoom.chunkX + 1))))
 							|| this == this.floorStartRoom) {
-							ConnectableRoom newRoom = new ConnectableRoom(new Random(), chunkPos.chunkXPos, floor, chunkPos.chunkZPos, this, connsLeft, sidePath, world, dir);
+							ConnectableRoom newRoom = new ConnectableRoom(new Random(), chunkPos.x, floor, chunkPos.z, this, connsLeft, sidePath, world, dir);
 							if (connsLeft <= 1) {
 								newRoom.setDeadEnd(true);
 							} else {
 								boolean newRoomHasConn = false;
-								BlockPos newRoomChunkBlockPos = new BlockPos(chunkPos.chunkXPos << 4, baseY, chunkPos.chunkZPos << 4);
+								BlockPos newRoomChunkBlockPos = new BlockPos(chunkPos.x << 4, baseY, chunkPos.z << 4);
 								EnumFacing[] newRoomDirs = newRoom.getRandomSortedDirs();
 								for (int d2 = newRoomDirs.length; d2 > 0; d2--) {
 									EnumFacing newRoomDir = newRoomDirs[d2 - 1];
@@ -620,7 +620,7 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 								}
 							}
 							childRooms.add(newRoom);
-							if (!world.isChunkGeneratedAt(chunkPos.chunkXPos, chunkPos.chunkZPos)) {
+							if (!world.isChunkGeneratedAt(chunkPos.x, chunkPos.z)) {
 								newRoom.setReserved(true);
 							}
 							newRoom.reserveConns();
@@ -1229,7 +1229,7 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 				EnumFacing dir = baseDirs.get(d - 1);
 				BlockPos pos = chunkBlockPos.offset(dir, 16);
 				ChunkPos chunkPos = new ChunkPos(pos);
-				ConnectableRoom newRoom = new ConnectableRoom(new Random(), chunkPos.chunkXPos, floor, chunkPos.chunkZPos, this, connsLeft, world, dir);
+				ConnectableRoom newRoom = new ConnectableRoom(new Random(), chunkPos.x, floor, chunkPos.z, this, connsLeft, world, dir);
 				childRooms.add(newRoom);
 				newRoom.reserveConns();
 				connsLeft = Math.min(rand.nextInt(connsLeft) + (d << 1), connsLeft - 1);

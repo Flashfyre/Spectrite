@@ -233,23 +233,23 @@ public abstract class EntitySpectriteFireball extends Entity {
         {
             this.setBeenAttacked();
 
-            if (source.getEntity() != null)
+            if (source.getTrueSource() != null)
             {
-                Vec3d vec3d = source.getEntity().getLookVec();
+                Vec3d vec3d = source.getTrueSource().getLookVec();
 
                 if (vec3d != null)
                 {
-                    this.motionX = vec3d.xCoord;
-                    this.motionY = vec3d.yCoord;
-                    this.motionZ = vec3d.zCoord;
+                    this.motionX = vec3d.x;
+                    this.motionY = vec3d.y;
+                    this.motionZ = vec3d.z;
                     this.accelerationX = this.motionX * 0.1D;
                     this.accelerationY = this.motionY * 0.1D;
                     this.accelerationZ = this.motionZ * 0.1D;
                 }
 
-                if (source.getEntity() instanceof EntityLivingBase)
+                if (source.getTrueSource() instanceof EntityLivingBase)
                 {
-                    this.shootingEntity = (EntityLivingBase)source.getEntity();
+                    this.shootingEntity = (EntityLivingBase)source.getTrueSource();
                 }
 
                 return true;

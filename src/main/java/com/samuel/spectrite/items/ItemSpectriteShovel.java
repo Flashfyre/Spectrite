@@ -139,8 +139,8 @@ public class ItemSpectriteShovel extends ItemSpade implements ISpectriteTool {
 		float centerBlockStrVsBlock = getStrVsBlock(itemstack, worldIn.getBlockState(pos));
     	if (centerBlockStrVsBlock > 1.0f) {
 			Vec3d lookVec = player.getLookVec();
-			EnumFacing facing = EnumFacing.getFacingFromVector((float) lookVec.xCoord,
-				(float) lookVec.yCoord, (float) lookVec.zCoord);
+			EnumFacing facing = EnumFacing.getFacingFromVector((float) lookVec.x,
+				(float) lookVec.y, (float) lookVec.z);
 			float relYaw = !worldIn.isRemote ? player.getRotationYawHead() >= 0 ? player.getRotationYawHead() % 90
 				: 90 - Math.abs(player.getRotationYawHead() % 90) : (player.getRotationYawHead() % 90) + (player.getRotationYawHead() >= 0 ? 0 : 90);
 			boolean isDiagonalFacing = relYaw >= 22.5f && relYaw < 67.5f;

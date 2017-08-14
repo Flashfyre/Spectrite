@@ -116,7 +116,7 @@ public interface IPerfectSpectriteItem {
             }
         }
 
-        ItemStack item = entityItem.getEntityItem();
+        ItemStack item = entityItem.getItem();
 
         if (!entityItem.world.isRemote && entityItem.getAge() >= entityItem.lifespan)
         {

@@ -63,7 +63,7 @@ public class WorldGenSpectriteSkull implements IWorldGenerator {
 		} else {
 			for (int d = -1; d < 1; d++) {
 				for (ChunkPos cp : savedData.getSpawnChunks(d)) {
-					int baseY = savedData.getBaseYCoord(cp.chunkXPos, cp.chunkZPos, d);
+					int baseY = savedData.getBaseYCoord(cp.x, cp.z, d);
 					skullBounds[d + 1].add(new AxisAlignedBB(new BlockPos(cp.getXEnd() - OFFSET_X, baseY, cp.getZEnd() - OFFSET_Z),
 						new BlockPos(cp.getXStart() + 16 + OFFSET_X, baseY + 18, cp.getZStart() + 16 + OFFSET_Z)));
 				}
@@ -226,7 +226,7 @@ public class WorldGenSpectriteSkull implements IWorldGenerator {
 		
 		if ((dimId + 1) >> 1 == 0) {
 			for (AxisAlignedBB b : skullBounds[dimId + 1]) {
-				if (b.isVecInside(vec)) {
+				if (b.contains(vec)) {
 					ret = true;
 					break;
 				}

@@ -92,7 +92,7 @@ public class ItemSpectriteWitherSkeletonSkull extends ItemArmor {
 
                     if (player instanceof EntityPlayerMP)
                     {
-                        CriteriaTriggers.field_193137_x.func_193173_a((EntityPlayerMP)player, pos, itemstack);
+                    	CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)player, pos, itemstack);
                     }
 
                     itemstack.shrink(1);

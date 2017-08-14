@@ -213,7 +213,7 @@ public class SpectriteGeneralEventHandler {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled=true)
 	public void onLivingAttack(LivingAttackEvent e) {
-		Entity attacker = e.getSource().getEntity();
+		Entity attacker = e.getSource().getTrueSource();
 		EntityLivingBase target = e.getEntityLiving();
 		if (!target.world.isRemote) {
 			if (target instanceof EntityPlayer && e.getAmount() > 0.0F) {
@@ -350,9 +350,9 @@ public class SpectriteGeneralEventHandler {
 	            entitySpectriteGolem.setLocationAndAngles(blockpos.getX() + 0.5D, blockpos.getY() + 0.05D, blockpos.getZ() + 0.5D, 0.0F, 0.0F);
 	            world.spawnEntity(entitySpectriteGolem);
 	
-	            for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, entitySpectriteGolem.getEntityBoundingBox().expandXyz(5.0D)))
+	            for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, entitySpectriteGolem.getEntityBoundingBox().grow(5.0D)))
 	            {
-	                CriteriaTriggers.field_192133_m.func_192229_a(player, entitySpectriteGolem);
+	                CriteriaTriggers.SUMMONED_ENTITY.trigger(player, entitySpectriteGolem);
 	            }
 	
 	            for (int j1 = 0; j1 < 120; ++j1)

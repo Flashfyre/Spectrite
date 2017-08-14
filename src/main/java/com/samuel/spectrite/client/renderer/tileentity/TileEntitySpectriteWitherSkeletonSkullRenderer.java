@@ -24,7 +24,7 @@ public class TileEntitySpectriteWitherSkeletonSkullRenderer extends TileEntitySk
 	private final ModelSkeletonHead skeletonHead = new ModelSkeletonHead(0, 0, 64, 32);
 	
 	@Override
-	public void func_192841_a(TileEntitySkull p_192841_1_, double p_192841_2_, double p_192841_4_, double p_192841_6_, float p_192841_8_, int p_192841_9_, float p_192841_10_)
+	public void render(TileEntitySkull p_192841_1_, double p_192841_2_, double p_192841_4_, double p_192841_6_, float p_192841_8_, int p_192841_9_, float p_192841_10_)
     {
         EnumFacing enumfacing = EnumFacing.getFront(p_192841_1_.getBlockMetadata() & 7);
         float f = p_192841_1_.getAnimationProgress(p_192841_8_);
