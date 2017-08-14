@@ -31,8 +31,7 @@ public class RenderSpectriteBlaze extends RenderLiving<EntitySpectriteBlaze> {
 	private static final Map<String, ResourceLocation> SPECTRITE_BLAZE_TEXTURE_RES_MAP = Maps.<String, ResourceLocation>newHashMap();
 	private static final Map<String, ResourceLocation> SPECTRITE_FIRE_LAYER_0_TEXTURE_RES_MAP = Maps.<String, ResourceLocation>newHashMap();
 	private static final Map<String, ResourceLocation> SPECTRITE_FIRE_LAYER_1_TEXTURE_RES_MAP = Maps.<String, ResourceLocation>newHashMap();
-	private static final Method renderShadow = SpectriteHelper.findObfuscatedMethod(Render.class, "renderShadow", "func_188299_a",
-		Entity.class, double.class, double.class, double.class, float.class, float.class);
+	private static Method renderShadow = null;
 
     public RenderSpectriteBlaze(RenderManager renderManagerIn)
     {
@@ -73,6 +72,10 @@ public class RenderSpectriteBlaze extends RenderLiving<EntitySpectriteBlaze> {
 
                 if (f > 0.0F)
                 {
+                	if (renderShadow == null) {
+                		renderShadow = SpectriteHelper.findObfuscatedMethod(Render.class, "renderShadow", "field_178638_s",
+            				Entity.class, double.class, double.class, double.class, float.class, float.class);
+                	}
                     try {
 						renderShadow.invoke(this, entityIn, x, y, z, f, partialTicks);
 					} catch (Exception e) {
