@@ -73,7 +73,7 @@ public class RenderSpectriteBlaze extends RenderLiving<EntitySpectriteBlaze> {
                 if (f > 0.0F)
                 {
                 	if (renderShadow == null) {
-                		renderShadow = SpectriteHelper.findObfuscatedMethod(Render.class, "renderShadow", "field_178638_s",
+                		renderShadow = SpectriteHelper.findObfuscatedMethod(Render.class, "renderShadow", "func_76975_c",
             				Entity.class, double.class, double.class, double.class, float.class, float.class);
                 	}
                     try {
