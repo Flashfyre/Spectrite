@@ -46,7 +46,7 @@ import java.util.List;
 
 public class EntitySpectriteWither extends EntityMob implements IRangedAttackMob, ISpectriteMob {
 
-	private static final DataParameter<Integer> FIRST_HEAD_TARGET = EntityDataManager.<Integer>createKey(EntitySpectriteWither.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> FIRST_HEAD_TARGET = EntityDataManager.<Integer>createKey(EntitySpectriteWither.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> SECOND_HEAD_TARGET = EntityDataManager.<Integer>createKey(EntitySpectriteWither.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> THIRD_HEAD_TARGET = EntityDataManager.<Integer>createKey(EntitySpectriteWither.class, DataSerializers.VARINT);
     private static final DataParameter<Integer>[] HEAD_TARGETS = new DataParameter[] {FIRST_HEAD_TARGET, SECOND_HEAD_TARGET, THIRD_HEAD_TARGET};
@@ -334,7 +334,7 @@ public class EntitySpectriteWither extends EntityMob implements IRangedAttackMob
                 }
 
                 if (i == 2 && radial && radialSkullTicks > 20 && ((!this.isRadialSpurts() && radialSkullTicks % 4 == 0)
-                    || (this.isRadialSpurts() && (radialSkullTicks + 4) % 24 < 16))) {
+                        || (this.isRadialSpurts() && (radialSkullTicks + 4) % 24 < 16))) {
                     this.launchRadialWitherSkulls(getInvulTime() > 0);
                     if (needsUpdate) {
                         this.nextHeadUpdate[i - 1] = this.ticksExisted + 40 + this.rand.nextInt(20);
@@ -387,6 +387,7 @@ public class EntitySpectriteWither extends EntityMob implements IRangedAttackMob
                     }
                 } else {
                     this.setRadialSkullTicks(-1);
+                    this.setRadialSpurts(false);
                     this.radialStartYaw = -999;
                 }
             }
@@ -490,7 +491,6 @@ public class EntitySpectriteWither extends EntityMob implements IRangedAttackMob
         boolean ret = this.world.getDifficulty() == EnumDifficulty.HARD || (this.world.getDifficulty() == EnumDifficulty.NORMAL && this.getHealth() <= this.getMaxHealth() * 0.75f);
         if (ret) {
             if (this.getHealth() <= this.getMaxHealth() * 0.25f) {
-                this.setRadialSpurts(true);
                 if (this.world.getDifficulty() == EnumDifficulty.HARD) {
                     this.setInvulTime(84);
                 }
@@ -727,6 +727,7 @@ public class EntitySpectriteWither extends EntityMob implements IRangedAttackMob
 
                     if (success && amount > 20f && this.getRadialSkullTicks() > -1) {
                         this.setRadialSkullTicks(-1);
+                        this.setRadialSpurts(false);
                         this.radialStartYaw = -999;
                     }
 
