@@ -487,7 +487,7 @@ public class EntitySpectriteWither extends EntityMob implements IRangedAttackMob
     }
 
     private boolean startRadialAttack() {
-        boolean ret = this.world.getDifficulty() == EnumDifficulty.HARD || this.getHealth() <= this.getMaxHealth() * 0.75f;
+        boolean ret = this.world.getDifficulty() == EnumDifficulty.HARD || (this.world.getDifficulty() == EnumDifficulty.NORMAL && this.getHealth() <= this.getMaxHealth() * 0.75f);
         if (ret) {
             if (this.getHealth() <= this.getMaxHealth() * 0.25f) {
                 this.setRadialSpurts(true);
