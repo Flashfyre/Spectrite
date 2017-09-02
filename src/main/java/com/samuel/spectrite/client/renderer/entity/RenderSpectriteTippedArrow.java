@@ -1,7 +1,6 @@
 package com.samuel.spectrite.client.renderer.entity;
 
 import com.samuel.spectrite.entities.EntitySpectriteTippedArrow;
-
 import net.minecraft.client.renderer.entity.RenderArrow;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;

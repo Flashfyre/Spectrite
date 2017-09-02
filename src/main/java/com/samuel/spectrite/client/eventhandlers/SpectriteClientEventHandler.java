@@ -1,59 +1,58 @@
 package com.samuel.spectrite.client.eventhandlers;
 
-import java.lang.reflect.Field;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.capabilities.ISpectriteBossCapability;
 import com.samuel.spectrite.capabilities.SpectriteBossProvider;
-import com.samuel.spectrite.client.renderer.entity.layers.LayerSpectriteArmor;
+import com.samuel.spectrite.client.renderer.SpectriteParticleManager;
 import com.samuel.spectrite.etc.ISpectriteTool;
 import com.samuel.spectrite.etc.SpectriteHelper;
-import com.samuel.spectrite.init.ModItems;
-
+import com.samuel.spectrite.items.ICustomTooltipItem;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderGlobal;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityArmorStand;
-import net.minecraft.entity.monster.AbstractSkeleton;
-import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.event.entity.EntityEvent.EnteringChunk;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 
-public class SpectriteClientEventHandler {
-	
-	private static Field layerRenderers = null;
-	
+import javax.annotation.Nonnull;
+import java.lang.reflect.Field;
+import java.util.Iterator;
+import java.util.List;
+
+@SideOnly(Side.CLIENT)
+public class SpectriteClientEventHandler implements IResourceManagerReloadListener {
+
+	private static Field isHittingBlock = null;
+	private static Field currentBlock = null;
+	private static Field blockDamageMP = null;
+	private final TextureAtlasSprite[] blockDamageSprites = new TextureAtlasSprite[10];
+
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public void onRenderEntity(RenderLivingEvent.Post e) {
 		if (e.getEntity().hasCapability(SpectriteBossProvider.sbc, null)) {
@@ -79,8 +78,7 @@ public class SpectriteClientEventHandler {
 				GlStateManager.disableLighting();
 				GlStateManager.depthMask(false);
 				
-				if (!isSneaking)
-				{
+				if (!isSneaking) {
 				    GlStateManager.disableDepth();
 				}
 				
@@ -98,8 +96,7 @@ public class SpectriteClientEventHandler {
 				bufferBuilder.pos(-8.0D, 0.0D, 0.0D).tex(0, 0).endVertex();
 				tessellator.draw();
 				
-				if (!isSneaking)
-				{
+				if (!isSneaking) {
 				    GlStateManager.enableDepth();
 				}
 				
@@ -110,107 +107,146 @@ public class SpectriteClientEventHandler {
 			}
 		}
 	}
-	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public void onEntitySpawn(EntityJoinWorldEvent e) {
-		if (e.getEntity() instanceof EntityPlayer || e.getEntity() instanceof EntityLiving) {
-			EntityLivingBase entity = (EntityLivingBase) e.getEntity();
-			if (entity instanceof EntityPlayer || entity instanceof EntityZombie || entity instanceof AbstractSkeleton) {
-				if (layerRenderers == null) {
-		    		layerRenderers = SpectriteHelper.findObfuscatedField(RenderLivingBase.class,
-		    	    		"layerRenderers", "field_177097_h");
-			    	layerRenderers.setAccessible(true);
+
+	@SubscribeEvent
+	public void onGameTick(TickEvent.ClientTickEvent event) {
+		final EntityPlayer player = Minecraft.getMinecraft().player;
+		if (player == null || event.side.isServer()) {
+			return;
+		}
+
+		SpectriteParticleManager.INSTANCE.updateParticles();
+	}
+
+	@SubscribeEvent
+	public void onRenderBlockBreak(RenderWorldLastEvent event) {
+		EntityPlayer player = Minecraft.getMinecraft().player;
+		PlayerControllerMP playerController = Minecraft.getMinecraft().playerController;
+
+		SpectriteParticleManager.INSTANCE.renderParticles(event.getPartialTicks());
+
+		ItemStack stack = player.getHeldItemMainhand();
+		boolean hittingBlock = false;
+
+		if (isHittingBlock == null) {
+			isHittingBlock = SpectriteHelper.findObfuscatedField(PlayerControllerMP.class, "isHittingBlock", "field_78778_j");
+		}
+
+		try {
+			hittingBlock = (boolean) isHittingBlock.get(playerController);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		if (!stack.isEmpty() && hittingBlock) {
+			if (stack != null && stack.getItem() instanceof ISpectriteTool && !player.isSneaking() && player.getCooldownTracker().getCooldown((stack.getItem()), 0f) == 0f) {
+				if (currentBlock == null) {
+					currentBlock = SpectriteHelper.findObfuscatedField(PlayerControllerMP.class, "currentBlock", "field_178895_c");
 				}
-    	    	if (!(entity instanceof EntityLiving)) {
-    	    		List<RenderPlayer> renderers = (Minecraft.getMinecraft().getRenderManager().getSkinMap().values().stream().filter(r -> {
-						try {
-							return !((List<LayerRenderer>) layerRenderers.get(r)).stream().anyMatch(lr -> lr.getClass() == LayerSpectriteArmor.class);
-						} catch (Exception e1) {
-							e1.printStackTrace();
-						}
-						return true;
-					})).collect(Collectors.toList());
-    	    		for (RenderPlayer rp : renderers) {
-    	    			try {
-							((List<LayerRenderer>) layerRenderers.get(rp)).set(0, new LayerSpectriteArmor(rp));
-						} catch (Exception e1) {
-							e1.printStackTrace();
-						}
-    	    		}
-    	    	} else {
-        	    	try {
-        		    	RenderLivingBase<?> renderer = ((RenderLivingBase<?>) Minecraft.getMinecraft().getRenderManager().entityRenderMap.get(entity.getClass()));
-        		    	List<LayerRenderer> renderers = (List) layerRenderers.get(renderer);
-        		    	
-        		    	if (!(renderers).stream().anyMatch(r -> r.getClass() == LayerSpectriteArmor.class)) {
-        		    		Optional<LayerRenderer> layerToReplace = (renderers).stream().filter(lr -> lr.getClass().getSuperclass() == LayerBipedArmor.class).findFirst();
-        		    		if (layerToReplace.isPresent()) {
-        		    			((List) layerRenderers.get(renderer)).set(renderers.indexOf(layerToReplace.get()), new LayerSpectriteArmor(renderer));
-        		    		}
-        		    	}
-        			} catch (Exception e1) {
-        				e1.printStackTrace();
-        			}
-            	}
+				BlockPos currentBlockPos = null;
+				try {
+					currentBlockPos = (BlockPos) currentBlock.get(playerController);
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
+				if (currentBlockPos != null) {
+					List<BlockPos> affectedPosList = ((ISpectriteTool) stack.getItem()).getPlayerBreakableBlocks(stack, currentBlockPos, player);
+					affectedPosList.remove(currentBlockPos);
+					drawBlockDamageTexture(Tessellator.getInstance(),
+						Tessellator.getInstance().getBuffer(), player, event.getPartialTicks(), affectedPosList);
+				}
 			}
 		}
 	}
-	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public void onArmorStandSpawn(EnteringChunk e) {
-		if (e.getEntity().getEntityWorld().isRemote && e.getEntity() instanceof EntityArmorStand) {
-			EntityArmorStand entity = (EntityArmorStand) e.getEntity();
-			if (layerRenderers == null) {
-	    		layerRenderers = SpectriteHelper.findObfuscatedField(RenderLivingBase.class,
-	    	    		"layerRenderers", "field_177097_h");
-		    	layerRenderers.setAccessible(true);
+
+	private void drawBlockDamageTexture(Tessellator tessellatorIn, BufferBuilder bufferBuilder, Entity entityIn, float partialTicks, List<BlockPos> blocks) {
+		World world = entityIn.getEntityWorld();
+		double d0 = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX) * partialTicks;
+		double d1 = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY) * partialTicks;
+		double d2 = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ) * partialTicks;
+
+		if (blockDamageMP == null) {
+			blockDamageMP = SpectriteHelper.findObfuscatedField(PlayerControllerMP.class, "blockDamageMP", "field_78770_f");
+		}
+
+		float blockDamage = -1f;
+
+		try {
+			blockDamage = (float) blockDamageMP.get(Minecraft.getMinecraft().playerController);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		if (blockDamage >= 0f) {
+			TextureManager renderEngine = Minecraft.getMinecraft().renderEngine;
+			int progress = (int) (blockDamage * 10f) - 1;
+			if (progress < 0) {
+				return;
 			}
-	    	try {
-		    	RenderLivingBase<?> renderer = ((RenderLivingBase<?>) Minecraft.getMinecraft().getRenderManager().entityRenderMap.get(entity.getClass()));
-		    	List<LayerRenderer> renderers = (List) layerRenderers.get(renderer);
-		    	
-		    	if (!(renderers).stream().anyMatch(r -> r.getClass() == LayerSpectriteArmor.class)) {
-	    			((List) layerRenderers.get(renderer)).set(0, new LayerSpectriteArmor(renderer));
-		    	}
-			} catch (Exception e1) {
-				e1.printStackTrace();
+
+			renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+
+			GlStateManager.tryBlendFuncSeparate(774, 768, 1, 0);
+			GlStateManager.enableBlend();
+			GlStateManager.color(1.0F, 1.0F, 1.0F, 0.5F);
+			GlStateManager.doPolygonOffset(-3.0F, -3.0F);
+			GlStateManager.enablePolygonOffset();
+			GlStateManager.alphaFunc(516, 0.1F);
+			GlStateManager.enableAlpha();
+			GlStateManager.pushMatrix();
+
+			bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+			bufferBuilder.setTranslation(-d0, -d1, -d2);
+			bufferBuilder.noColor();
+
+			for (BlockPos blockpos : blocks) {
+				Block block = world.getBlockState(blockpos).getBlock();
+				TileEntity te = world.getTileEntity(blockpos);
+				boolean hasBreak = block instanceof BlockChest || block instanceof BlockEnderChest
+						|| block instanceof BlockSign || block instanceof BlockSkull;
+				if (!hasBreak) {
+					hasBreak = te != null && te.canRenderBreaking();
+				}
+
+				if (!hasBreak) {
+					IBlockState iblockstate = world.getBlockState(blockpos);
+
+					if (iblockstate.getBlock().getMaterial(iblockstate) != Material.AIR) {
+						TextureAtlasSprite textureatlassprite = this.blockDamageSprites[progress];
+						BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+						blockrendererdispatcher.renderBlockDamage(iblockstate, blockpos, textureatlassprite, world);
+					}
+				}
 			}
+
+			tessellatorIn.draw();
+			bufferBuilder.setTranslation(0.0D, 0.0D, 0.0D);
+
+			GlStateManager.disableAlpha();
+			GlStateManager.doPolygonOffset(0.0F, 0.0F);
+			GlStateManager.disablePolygonOffset();
+			GlStateManager.enableAlpha();
+			GlStateManager.depthMask(true);
+			GlStateManager.popMatrix();
 		}
 	}
-	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public void onTextureStitch(TextureStitchEvent e) {
-		for (int l = 0; l <= 1; l++) {
-			for (int f = 0; f < 36; f++) {
-				e.getMap().registerSprite(new ResourceLocation(Spectrite.MOD_ID, String.format("blocks/spectrite_fire_layer_%s/%s", l, f)));
-			}
-		}
-	}
-	
+
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public void onRenderTooltip(ItemTooltipEvent e) {
-		if (!e.getItemStack().isEmpty() && e.getItemStack().getItem() == ModItems.spectrite_wither_skeleton_skull) {
-			int lineCount = 0;
-			boolean isLastLine = false;
-			String curLine;
-			while (!isLastLine) {
-				isLastLine = (curLine = TextFormatting.RED + I18n
-					.translateToLocal(("iteminfo." + ModItems.spectrite_wither_skeleton_skull.getUnlocalizedName().substring(5) + ".l" + ++lineCount))).endsWith("@");
-				e.getToolTip().add(!isLastLine ? curLine : curLine
-					.substring(0, curLine.length() - 1));
-			}
+		if (!e.getItemStack().isEmpty() && e.getItemStack().getItem() instanceof ICustomTooltipItem) {
+			((ICustomTooltipItem) e.getItemStack().getItem()).addTooltipLines(e.getItemStack(), e.getToolTip());
 		}
 	}
-	
+
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public void onDrawBlockHighlight(DrawBlockHighlightEvent e) {
 		EntityPlayer player = e.getPlayer();
 		BlockPos blockpos = e.getTarget().getBlockPos();
 		ItemStack playerHeldItem = player.getHeldItemMainhand();
 		if (blockpos != null && !player.isSneaking()) {
-			if (playerHeldItem != null && playerHeldItem.getItem() instanceof ISpectriteTool) {
+				if (playerHeldItem != null && playerHeldItem.getItem() instanceof ISpectriteTool) {
 				float cooldown = player.getCooldownTracker().getCooldown((playerHeldItem.getItem()), 0f);
-				float greenValue = new Double((SpectriteConfig.spectriteToolCooldown - (SpectriteConfig.spectriteToolCooldown * cooldown)) / SpectriteConfig.spectriteToolCooldown).floatValue();
+				float greenValue = new Double((SpectriteConfig.items.spectriteToolCooldown - (SpectriteConfig.items.spectriteToolCooldown * cooldown)) / SpectriteConfig.items.spectriteToolCooldown).floatValue();
 				
 				if (cooldown <= 0.25f) {
 					List<BlockPos> affectedPosList = ((ISpectriteTool) playerHeldItem.getItem())
@@ -237,7 +273,7 @@ public class SpectriteClientEventHandler {
 			}
 		}
 	}
-	
+
 	private void drawColoredBlockSelectionBox(EntityPlayer player, BlockPos blockpos,
 		RayTraceResult rayTraceResult, float partialTicks,
 		float r, float g, float b, float a) {
@@ -252,8 +288,7 @@ public class SpectriteClientEventHandler {
         
         IBlockState iblockstate = world.getBlockState(blockpos);
 
-        if (iblockstate.getMaterial() != Material.AIR && world.getWorldBorder().contains(blockpos))
-        {
+        if (iblockstate.getMaterial() != Material.AIR && world.getWorldBorder().contains(blockpos)) {
             double d0 = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
             double d1 = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
             double d2 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
@@ -264,5 +299,14 @@ public class SpectriteClientEventHandler {
         GlStateManager.depthMask(true);
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
+	}
+
+	@Override
+	public void onResourceManagerReload(@Nonnull IResourceManager resourceManager) {
+		TextureMap texturemap = Minecraft.getMinecraft().getTextureMapBlocks();
+
+		for (int s = 0; s < this.blockDamageSprites.length; s++) {
+			this.blockDamageSprites[s] = texturemap.getAtlasSprite("minecraft:blocks/destroy_stage_" + s);
+		}
 	}
 }

@@ -1,15 +1,14 @@
 package com.samuel.spectrite.blocks;
 
-import java.util.Random;
-
 import com.samuel.spectrite.tileentity.TileEntityFastUpdatingBeacon;
-
 import net.minecraft.block.BlockBeacon;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import java.util.Random;
 
 public class BlockFastUpdatingBeacon extends BlockBeacon {
 

@@ -1,0 +1,24 @@
+{
+  "result": {
+    "item": "spectrite:spectrite_wither_rod_normal"
+  },
+  "pattern": [
+    "X",
+    "Y",
+    "Z"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "spectrite:spectrite_wither_skull"
+    },
+    "Y": {
+      "item": "spectrite:spectrite_wither_torso",
+	  "data": 0
+    },
+	"Z": {
+      "item": "spectrite:spectrite_wither_tail",
+	  "data": 0
+    }
+  }
+}

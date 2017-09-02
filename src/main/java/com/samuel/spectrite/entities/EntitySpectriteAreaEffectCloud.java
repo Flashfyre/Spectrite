@@ -1,18 +1,9 @@
 package com.samuel.spectrite.entities;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.init.ModPotions;
-
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -30,10 +21,18 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
+import javax.annotation.Nullable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.UUID;
+
 public class EntitySpectriteAreaEffectCloud extends Entity
 {
     private static final DataParameter<Float> RADIUS = EntityDataManager.<Float>createKey(EntitySpectriteAreaEffectCloud.class, DataSerializers.FLOAT);
     private static final DataParameter<Boolean> IGNORE_RADIUS = EntityDataManager.<Boolean>createKey(EntitySpectriteAreaEffectCloud.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> HUE_OFFSET_LEVEL = EntityDataManager.<Integer>createKey(EntitySpectriteAreaEffectCloud.class, DataSerializers.VARINT);
     private PotionType potionType;
     private Potion potion;
     private final List<PotionEffect> effects;
@@ -41,7 +40,6 @@ public class EntitySpectriteAreaEffectCloud extends Entity
     private int duration;
     private int waitTime;
     private int reapplicationDelay;
-    private boolean colorSet;
     private int durationOnUse;
     private float radiusOnUse;
     private float radiusPerTick;
@@ -73,6 +71,7 @@ public class EntitySpectriteAreaEffectCloud extends Entity
     {
         this.getDataManager().register(RADIUS, Float.valueOf(0.5F));
         this.getDataManager().register(IGNORE_RADIUS, Boolean.valueOf(false));
+        this.getDataManager().register(HUE_OFFSET_LEVEL, Integer.valueOf(0));
     }
 
     public void setRadius(float radiusIn)
@@ -98,6 +97,7 @@ public class EntitySpectriteAreaEffectCloud extends Entity
     {
         this.potionType = potionTypeIn;
         this.potion = potionType.getEffects().get(0).getPotion();
+        this.setHueOffsetLevel(ModPotions.SPECTRITE.equals(potionTypeIn) ? 0 : ModPotions.SPECTRITE_DAMAGE.equals(this.potion) ? 1 : 2);
     }
 
     public void addEffect(PotionEffect effect)
@@ -121,6 +121,17 @@ public class EntitySpectriteAreaEffectCloud extends Entity
         return this.getDataManager().get(IGNORE_RADIUS).booleanValue();
     }
 
+    public int getHueOffsetLevel()
+    {
+        return this.getDataManager().get(HUE_OFFSET_LEVEL).intValue();
+    }
+
+
+    public void setHueOffsetLevel(int hueOffsetLevel)
+    {
+        this.getDataManager().set(HUE_OFFSET_LEVEL, Integer.valueOf(hueOffsetLevel));
+    }
+
     public int getDuration()
     {
         return this.duration;
@@ -142,45 +153,36 @@ public class EntitySpectriteAreaEffectCloud extends Entity
         boolean flag = this.shouldIgnoreRadius();
         float f = this.getRadius();
 
-        if (this.world.isRemote)
-        {
-        	int offsetLevel = this.potionType.equals(ModPotions.SPECTRITE) ? 0 : this.potion.equals(ModPotions.SPECTRITE_DAMAGE) ? 1 : 2;
-        	float[] colour = SpectriteHelper.getCurrentSpectriteRGBColour(offsetLevel);
-        	double[] colourRGB = new double[] { colour[0] * 255d, colour[1] * 255d, colour[2] * 255d };
-            if (flag)
-            {
-            	if (this.rand.nextBoolean())
-                {
-	                for (int i = 0; i < 2; ++i)
-	                {
-	                    float f1 = this.rand.nextFloat() * ((float)Math.PI * 2F);
-	                    float f2 = MathHelper.sqrt(this.rand.nextFloat()) * 0.2F;
-	                    float f3 = MathHelper.cos(f1) * f2;
-	                    float f4 = MathHelper.sin(f1) * f2;
-	                    
-	                    Spectrite.Proxy.spawnSpectriteSpellParticle(this.world, this.posX + f3, this.posY, this.posZ + f4,
-                    		colourRGB[0], colourRGB[1], colourRGB[2], offsetLevel);
-	                }
-                }
-            }
-            else
-            {
-                float f5 = (float)Math.PI * f * f;
+        if (this.world.isRemote) {
+            float offsetLevel = this.getHueOffsetLevel() * 120f;
+            float[] colour = SpectriteHelper.getCurrentSpectriteRGBColour(offsetLevel);
+            double[] colourRGB = new double[]{colour[0] * 255d, colour[1] * 255d, colour[2] * 255d};
+            if (flag) {
+                if (this.rand.nextBoolean()) {
+                    for (int i = 0; i < 2; ++i) {
+                        float f1 = this.rand.nextFloat() * ((float) Math.PI * 2F);
+                        float f2 = MathHelper.sqrt(this.rand.nextFloat()) * 0.2F;
+                        float f3 = MathHelper.cos(f1) * f2;
+                        float f4 = MathHelper.sin(f1) * f2;
 
-                for (int k1 = 0; k1 < f5; ++k1)
-                {
-                    float f6 = this.rand.nextFloat() * ((float)Math.PI * 2F);
+                        Spectrite.Proxy.spawnSpectriteSpellParticle(this.world, this.posX + f3, this.posY, this.posZ + f4,
+                                colourRGB[0], colourRGB[1], colourRGB[2], offsetLevel);
+                    }
+                }
+            } else {
+                float f5 = (float) Math.PI * f * f;
+
+                for (int k1 = 0; k1 < f5; ++k1) {
+                    float f6 = this.rand.nextFloat() * ((float) Math.PI * 2F);
                     float f7 = MathHelper.sqrt(this.rand.nextFloat()) * f;
                     float f8 = MathHelper.cos(f6) * f7;
                     float f9 = MathHelper.sin(f6) * f7;
-                    
+
                     Spectrite.Proxy.spawnSpectriteSpellParticle(this.world, this.posX + f8, this.posY, this.posZ + f9,
-                		colourRGB[0], colourRGB[1], colourRGB[2], offsetLevel);
+                            colourRGB[0], colourRGB[1], colourRGB[2], offsetLevel);
                 }
             }
-        }
-        else
-        {
+        } else {
             if (this.ticksExisted >= this.waitTime + this.duration)
             {
                 this.setDead();
@@ -261,7 +263,9 @@ public class EntitySpectriteAreaEffectCloud extends Entity
                                     {
                                         if (potioneffect.getPotion().isInstant())
                                         {
-                                            potioneffect.getPotion().affectEntity(this, this.getOwner(), entitylivingbase, potioneffect.getAmplifier(), 0.5D);
+                                            if (potioneffect.getPotion() != ModPotions.SPECTRITE_DAMAGE || this.getOwner() == null || this.getOwner() != entitylivingbase) {
+                                                potioneffect.getPotion().affectEntity(this, this.getOwner(), entitylivingbase, potioneffect.getAmplifier(), 0.5D);
+                                            }
                                         }
                                         else
                                         {
@@ -349,6 +353,7 @@ public class EntitySpectriteAreaEffectCloud extends Entity
         this.waitTime = compound.getInteger("WaitTime");
         this.reapplicationDelay = compound.getInteger("ReapplicationDelay");
         this.durationOnUse = compound.getInteger("DurationOnUse");
+        this.setHueOffsetLevel(compound.getInteger("HueOffsetLevel"));
         this.radiusOnUse = compound.getFloat("RadiusOnUse");
         this.radiusPerTick = compound.getFloat("RadiusPerTick");
         this.setRadius(compound.getFloat("Radius"));
@@ -387,6 +392,7 @@ public class EntitySpectriteAreaEffectCloud extends Entity
         compound.setInteger("WaitTime", this.waitTime);
         compound.setInteger("ReapplicationDelay", this.reapplicationDelay);
         compound.setInteger("DurationOnUse", this.durationOnUse);
+        compound.setInteger("HueOffsetLevel", this.getHueOffsetLevel());
         compound.setFloat("RadiusOnUse", this.radiusOnUse);
         compound.setFloat("RadiusPerTick", this.radiusPerTick);
         compound.setFloat("Radius", this.getRadius());

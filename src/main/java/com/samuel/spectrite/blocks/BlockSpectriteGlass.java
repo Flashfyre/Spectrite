@@ -1,11 +1,6 @@
 package com.samuel.spectrite.blocks;
 
-import java.util.Random;
-
-import javax.annotation.Nullable;
-
 import com.samuel.spectrite.etc.SpectriteHelper;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBeacon;
 import net.minecraft.block.BlockBreakable;
@@ -23,6 +18,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
+import java.util.Random;
 
 public class BlockSpectriteGlass extends BlockBreakable {
 
@@ -122,6 +120,6 @@ public class BlockSpectriteGlass extends BlockBreakable {
     @Nullable
     public float[] getBeaconColorMultiplier(IBlockState state, World world, BlockPos pos, BlockPos beaconPos)
     {
-        return SpectriteHelper.getCurrentSpectriteRGBColour(1.5f);
+        return SpectriteHelper.getCurrentSpectriteRGBColour(-1F);
     }
 }

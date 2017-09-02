@@ -1,16 +1,11 @@
 package com.samuel.spectrite.world;
 
-import java.util.Random;
-
-import com.google.common.base.Predicate;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.init.ModBiomes;
 import com.samuel.spectrite.init.ModBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockMatcher;
-import net.minecraft.block.state.pattern.BlockStateMatcher;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -19,6 +14,8 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
+
+import java.util.Random;
 
 public class WorldGenSpectrite implements IWorldGenerator {
 	
@@ -63,19 +60,19 @@ public class WorldGenSpectrite implements IWorldGenerator {
 	}
 	
 	private void generateEnd(World world, Random random, int chunkX, int chunkZ) {
-		generateOre(ModBlocks.spectrite_ore, world, random, chunkX, chunkZ, SpectriteConfig.spectriteCountEnd, SpectriteConfig.spectriteMinYEnd,
-			SpectriteConfig.spectriteMaxYEnd);
+		generateOre(ModBlocks.spectrite_ore, world, random, chunkX, chunkZ, SpectriteConfig.spectriteOre.spectriteCountEnd, SpectriteConfig.spectriteOre.spectriteMinYEnd,
+			SpectriteConfig.spectriteOre.spectriteMaxYEnd);
 	}
 
 	private void generateSurface(World world, Random random, int chunkX, int chunkZ) {
-		final int chancesToSpawn = SpectriteConfig.spectriteCountSurface * (world.getBiome(new BlockPos(chunkX << 4, 0, chunkZ << 4)) == ModBiomes.spectrite_dungeon ? 3 : 1);
-		generateOre(ModBlocks.spectrite_ore, world, random, chunkX, chunkZ, chancesToSpawn, SpectriteConfig.spectriteMinYSurface,
-			SpectriteConfig.spectriteMaxYEnd);
+		final int chancesToSpawn = SpectriteConfig.spectriteOre.spectriteCountSurface * (world.getBiome(new BlockPos(chunkX << 4, 0, chunkZ << 4)) == ModBiomes.spectrite_dungeon ? 3 : 1);
+		generateOre(ModBlocks.spectrite_ore, world, random, chunkX, chunkZ, chancesToSpawn, SpectriteConfig.spectriteOre.spectriteMinYSurface,
+			SpectriteConfig.spectriteOre.spectriteMaxYSurface);
 	}
 
 	private void generateNether(World world, Random random, int chunkX, int chunkZ) {
-		generateOre(ModBlocks.spectrite_ore, world, random, chunkX, chunkZ, SpectriteConfig.spectriteCountNether, SpectriteConfig.spectriteMinYNether,
-			SpectriteConfig.spectriteMaxYNether);
+		generateOre(ModBlocks.spectrite_ore, world, random, chunkX, chunkZ, SpectriteConfig.spectriteOre.spectriteCountNether, SpectriteConfig.spectriteOre.spectriteMinYNether,
+			SpectriteConfig.spectriteOre.spectriteMaxYNether);
 	}
 	
 	public class WorldGenSpectriteMinable extends WorldGenerator {
@@ -83,23 +80,19 @@ public class WorldGenSpectrite implements IWorldGenerator {
 		private final IBlockState stateSurface = ModBlocks.spectrite_ore.getDefaultState(),
 		stateNether = ModBlocks.spectrite_ore.getStateFromMeta(1),
 		stateEnd = ModBlocks.spectrite_ore.getStateFromMeta(2);
-	    private final Predicate<IBlockState> targetSurface = BlockStateMatcher.forBlock(Blocks.STONE),
-	    targetNether = BlockStateMatcher.forBlock(Blocks.NETHERRACK),
-	    targetEnd = BlockStateMatcher.forBlock(Blocks.END_STONE);
 
 	    public WorldGenSpectriteMinable() { }
 
 	    @Override
 	    public boolean generate(World world, Random rand, BlockPos pos) {
 	    	final boolean isSurface = world.provider.getDimension() == 0,
-	    	isNether = world.provider.getDimension() == -1,
-	    	isEnd = world.provider.getDimension() == 1;
+	    	isNether = world.provider.getDimension() == -1;
 	    	final Block matchBlock = isSurface ? Blocks.STONE : isNether ? Blocks.NETHERRACK : Blocks.END_STONE;
 	    	final IBlockState oreState = isSurface ? stateSurface : isNether ? stateNether : stateEnd;
-    		final int veinSize = rand.nextInt(rand.nextInt(rand.nextInt((isSurface ? SpectriteConfig.spectriteMaxSizeSurface :
-    			isNether ? SpectriteConfig.spectriteMaxSizeNether : SpectriteConfig.spectriteMaxSizeEnd) + 1) + 1) + 1)
-				+ (isSurface ? SpectriteConfig.spectriteMaxSizeSurface : isNether ? SpectriteConfig.spectriteMaxSizeNether :
-				SpectriteConfig.spectriteMaxSizeEnd);
+    		final int veinSize = rand.nextInt(rand.nextInt(rand.nextInt((isSurface ? SpectriteConfig.spectriteOre.spectriteMaxSizeSurface :
+    			isNether ? SpectriteConfig.spectriteOre.spectriteMaxSizeNether : SpectriteConfig.spectriteOre.spectriteMaxSizeEnd) + 1) + 1) + 1)
+				+ (isSurface ? SpectriteConfig.spectriteOre.spectriteMaxSizeSurface : isNether ? SpectriteConfig.spectriteOre.spectriteMaxSizeNether :
+				SpectriteConfig.spectriteOre.spectriteMaxSizeEnd);
     		new WorldGenMinable(oreState, veinSize, BlockMatcher.forBlock(matchBlock)).generate(world, rand, pos);
     	    return true;
 	    }

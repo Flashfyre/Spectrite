@@ -1,16 +1,14 @@
 package com.samuel.spectrite.tileentity;
 
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntityBeacon;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Set;
 
 public class TileEntityFastUpdatingBeacon extends TileEntityBeacon {
 	

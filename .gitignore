@@ -1,8 +1,10 @@
 /.gradle
+/.idea
 /.settings
 /eclipse
 /bin
 /build
+/classes
 /run
 
 /CREDITS-fml.txt
@@ -23,3 +25,4 @@
 gradle.properties
 *.launch
 forge-1.12.1-14.22.0.2452-changelog.txt
+*.iml

@@ -2,11 +2,9 @@ package com.samuel.spectrite.update;
 
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.etc.SpectriteHelper;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -15,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class UpdateNotifier {
 
-    public static final String DOWNLOAD_URL = "https://minecraft.curseforge.com/projects/spectrite/files";
+    public static final String DOWNLOAD_URL = "https://mods.curse.com/mc-mods/minecraft/268094-spectrite#c21;t1:other-downloads";
     public static boolean success;
     private static boolean notified = false;
     public static String updateVersion = "";

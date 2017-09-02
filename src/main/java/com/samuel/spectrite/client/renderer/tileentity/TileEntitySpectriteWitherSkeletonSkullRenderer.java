@@ -1,15 +1,11 @@
 package com.samuel.spectrite.client.renderer.tileentity;
 
-import javax.annotation.Nullable;
-
-import com.mojang.authlib.GameProfile;
 import com.samuel.spectrite.etc.SpectriteHelper;
-
+import com.samuel.spectrite.items.ItemSpectriteSkull;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelSkeletonHead;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -20,34 +16,47 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class TileEntitySpectriteWitherSkeletonSkullRenderer extends TileEntitySkullRenderer {
 
-	private static final ResourceLocation[] SPECTRITE_WITHER_SKELETON_TEXTURES = getSpectriteResourceLocations();
+	private static final ResourceLocation[][] SPECTRITE_SKULL_ENTITY_TEXTURES;
 	private final ModelSkeletonHead skeletonHead = new ModelSkeletonHead(0, 0, 64, 32);
-	
+    private final ModelSkeletonHead witherHead = new ModelSkeletonHead(0, 0, 64, 64);
+
+	static {
+        SPECTRITE_SKULL_ENTITY_TEXTURES = new ResourceLocation[ItemSpectriteSkull.SKULL_TYPES.length][];
+	    for (int t = 0; t < SPECTRITE_SKULL_ENTITY_TEXTURES.length; t++) {
+	        String type = ItemSpectriteSkull.SKULL_TYPES[t];
+	        if (t == 1) {
+	            type += "/normal";
+            } else if (t == 2) {
+                type = type.replace("wither_", "wither/");
+            }
+            SPECTRITE_SKULL_ENTITY_TEXTURES[t] = getSpectriteResourceLocations(type);
+        }
+    }
+
 	@Override
 	public void render(TileEntitySkull p_192841_1_, double p_192841_2_, double p_192841_4_, double p_192841_6_, float p_192841_8_, int p_192841_9_, float p_192841_10_)
     {
         EnumFacing enumfacing = EnumFacing.getFront(p_192841_1_.getBlockMetadata() & 7);
         float f = p_192841_1_.getAnimationProgress(p_192841_8_);
-        this.renderSkull((float)p_192841_2_, (float)p_192841_4_, (float)p_192841_6_, enumfacing, p_192841_1_.getSkullRotation() * 360 / 16.0F, p_192841_1_.getSkullType(),
-    		p_192841_1_.getPlayerProfile(), p_192841_9_, f, p_192841_1_.getWorld());
+        this.renderSkull((float)p_192841_2_, (float)p_192841_4_, (float)p_192841_6_, enumfacing, p_192841_1_.getSkullRotation() * 360 / 16.0F, p_192841_1_.getSkullType(), p_192841_9_, f, p_192841_1_.getWorld());
     }
-	
-    public void renderSkull(float x, float y, float z, EnumFacing facing, float p_188190_5_, int skullType, @Nullable GameProfile profile, int destroyStage, float animateTicks, World worldIn)
+
+    public void renderSkull(float x, float y, float z, EnumFacing facing, float p_188190_5_, int skullType, int destroyStage, float animateTicks, World worldIn)
     {
-        ModelBase modelbase = this.skeletonHead;
+        ModelBase modelbase = skullType == 0 ? this.skeletonHead : this.witherHead;
 
         if (destroyStage >= 0)
         {
             this.bindTexture(DESTROY_STAGES[destroyStage]);
             GlStateManager.matrixMode(5890);
             GlStateManager.pushMatrix();
-            GlStateManager.scale(4.0F, 2.0F, 1.0F);
+            GlStateManager.scale(4.0F, 2.0,1.0F);
             GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
             GlStateManager.matrixMode(5888);
         }
         else
         {
-            this.bindTexture(SPECTRITE_WITHER_SKELETON_TEXTURES[SpectriteHelper.getCurrentSpectriteFrame(worldIn)]);
+            this.bindTexture(SPECTRITE_SKULL_ENTITY_TEXTURES[skullType][SpectriteHelper.getCurrentSpectriteFrame(worldIn)]);
         }
 
         GlStateManager.pushMatrix();
@@ -79,17 +88,11 @@ public class TileEntitySpectriteWitherSkeletonSkullRenderer extends TileEntitySk
             }
         }
 
-        float f = 0.0625F;
         GlStateManager.enableRescaleNormal();
         GlStateManager.scale(-1.0F, -1.0F, 1.0F);
         GlStateManager.enableAlpha();
 
-        if (skullType == 3)
-        {
-            GlStateManager.enableBlendProfile(GlStateManager.Profile.PLAYER_SKIN);
-        }
-
-        modelbase.render((Entity)null, animateTicks, 0.0F, 0.0F, p_188190_5_, 0.0F, 0.0625F);
+        modelbase.render(null, animateTicks, 0.0F, 0.0F, p_188190_5_, 0.0F, 0.0625F);
         GlStateManager.popMatrix();
 
         if (destroyStage >= 0)
@@ -99,13 +102,13 @@ public class TileEntitySpectriteWitherSkeletonSkullRenderer extends TileEntitySk
             GlStateManager.matrixMode(5888);
         }
     }
-    
-    private static ResourceLocation[] getSpectriteResourceLocations() {
-		ResourceLocation[] resourceLocations = new ResourceLocation[36];
-		for (int s = 0; s < resourceLocations.length; s++) {
-			resourceLocations[s] = new ResourceLocation(
-				String.format("spectrite:textures/entities/spectrite_wither_skeleton/%d.png", s));
-		}
-		return resourceLocations;
-	}
+
+    private static ResourceLocation[] getSpectriteResourceLocations(String skullType) {
+        ResourceLocation[] resourceLocations = new ResourceLocation[36];
+        for (int s = 0; s < resourceLocations.length; s++) {
+            resourceLocations[s] = new ResourceLocation(
+                    String.format("spectrite:textures/entities/spectrite_%s/%d.png", skullType, s));
+        }
+        return resourceLocations;
+    }
 }

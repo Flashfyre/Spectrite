@@ -1,18 +1,13 @@
 package com.samuel.spectrite.world;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.init.ModBlocks;
 import com.samuel.spectrite.init.ModLootTables;
-
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -20,8 +15,8 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
@@ -31,6 +26,11 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 public class WorldGenSpectriteSkull implements IWorldGenerator {
 	
@@ -75,7 +75,8 @@ public class WorldGenSpectriteSkull implements IWorldGenerator {
 	public void generate(Random random, int chunkX, int chunkZ, World worldIn, IChunkGenerator chunkGenerator,
 			IChunkProvider chunkProvider) {
 		int dimId;
-		if (SpectriteConfig.generateSpectriteSkull && (((dimId = worldIn.provider.getDimension()) + 1) >> 1) == 0) {
+		if (SpectriteConfig.spectriteSkull.generateSpectriteSkull && worldIn.getWorldInfo().isMapFeaturesEnabled()
+			&& (((dimId = worldIn.provider.getDimension()) + 1) >> 1) == 0) {
 			if (this.world == null) {
 				initSkullStructure(worldIn);
 			}
@@ -86,8 +87,9 @@ public class WorldGenSpectriteSkull implements IWorldGenerator {
 	        long j1 = (chunkX >> 1) * j;
 	        long k1 = (chunkZ >> 1) * k;
 	        random.setSeed(j1 ^ k1 ^ worldIn.getSeed());
-	        if (SpectriteConfig.spectriteSkullSpawnRate > 0d && random.nextDouble() * 100d < SpectriteConfig.spectriteSkullSpawnRate) {
-	        	boolean isOrigChunkX = chunkX % 2 != 0, isOrigChunkZ = chunkZ % 2 != 0, isOrigChunk = isOrigChunkX && isOrigChunkZ;
+	        if (SpectriteConfig.spectriteSkull.spectriteSkullSpawnRate > 0d
+				&& random.nextDouble() * 100d < SpectriteConfig.spectriteSkull.spectriteSkullSpawnRate) {
+	        	boolean isOrigChunkX = chunkX % 2 != 0, isOrigChunkZ = chunkZ % 2 != 0;
 	        	int origChunkX = chunkX + (isOrigChunkX ? 0 : 1), origChunkZ = chunkZ + (isOrigChunkZ ? 0 : 1);
 				int baseY = savedData.getBaseYCoord(origChunkX, origChunkZ, dimId);
 				if (baseY == -1) {
@@ -115,7 +117,7 @@ public class WorldGenSpectriteSkull implements IWorldGenerator {
 	
 	private void generateSkull(World worldIn, int chunkX, int chunkZ, int baseY, Rotation rotationIn) {
 		int chunkXOffset = (chunkX << 4), chunkZOffset = (chunkZ << 4);
-		IBlockState state = null;
+		//IBlockState state = null;
 		
 		Template template = templateManager.getTemplate(worldIn.getMinecraftServer(), SPECTRITE_SKULL);
 		PlacementSettings settings = new PlacementSettings();
@@ -153,24 +155,26 @@ public class WorldGenSpectriteSkull implements IWorldGenerator {
 		//}
 		
 		ResourceLocation lootTable = ModLootTables.spectrite_dungeon_high;
-		((TileEntityChest) worldIn.getTileEntity(new BlockPos(chestXPos + chunkXOffset, 12 + baseY, chestZPos + chunkZOffset)))
-			.setLootTable(lootTable, rand.nextLong());
-		((TileEntityChest) worldIn.getTileEntity(new BlockPos(chestXPos2 + chunkXOffset, 12 + baseY, chestZPos2 + chunkZOffset)))
-			.setLootTable(lootTable, rand.nextLong());
-		
+		TileEntity te1 = worldIn.getTileEntity(new BlockPos(chestXPos + chunkXOffset, 12 + baseY, chestZPos + chunkZOffset)),
+			te2 = worldIn.getTileEntity(new BlockPos(chestXPos2 + chunkXOffset, 12 + baseY, chestZPos2 + chunkZOffset));
+		if (te1 != null) {
+			((TileEntityChest) te1).setLootTable(lootTable, rand.nextLong());
+		}
+		if (te2 != null) {
+			((TileEntityChest) te2).setLootTable(lootTable, rand.nextLong());
+		}
+
 		buildSupport(worldIn, new BlockPos(chunkXOffset + (16 - (OFFSET_X - 6)), baseY, chunkZOffset + (16 - (OFFSET_Z - 4))));
 		buildSupport(worldIn, new BlockPos(chunkXOffset + (16 + (OFFSET_X - 8)), baseY, chunkZOffset + (16 - (OFFSET_Z - 4))));
 		buildSupport(worldIn, new BlockPos(chunkXOffset + (16 - (OFFSET_X - 6)), baseY, chunkZOffset + (16 + (OFFSET_Z - 4))));
 		buildSupport(worldIn, new BlockPos(chunkXOffset + (16 + (OFFSET_X - 8)), baseY, chunkZOffset + (16 + (OFFSET_Z - 4))));
 	}
-	
+
 	private void buildSupport(World worldIn, BlockPos pos) {
-		IBlockState state;
 		int y = pos.getY();
 		
 		while (pos.getY() > 0 && !worldIn.isBlockFullCube(pos.down())) {
 			pos = pos.down();
-			state = worldIn.getBlockState(pos);
 			worldIn.setBlockState(pos, wallState);
 		}
 		
@@ -207,7 +211,7 @@ public class WorldGenSpectriteSkull implements IWorldGenerator {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public void onWorldLoad(WorldEvent.Load e) {
-		if (this.world == null && !e.getWorld().isRemote && SpectriteConfig.generateSpectriteSkull) {
+		if (this.world == null && !e.getWorld().isRemote && SpectriteConfig.spectriteSkull.generateSpectriteSkull) {
 			initSkullStructure(e.getWorld());
 		}
 	}
@@ -220,31 +224,14 @@ public class WorldGenSpectriteSkull implements IWorldGenerator {
 		}
 	}
 	
-	public boolean isPosInSkullBounds(BlockPos pos, int dimId) {
-		boolean ret = false;
-		Vec3d vec = new Vec3d(pos);
-		
-		if ((dimId + 1) >> 1 == 0) {
-			for (AxisAlignedBB b : skullBounds[dimId + 1]) {
-				if (b.contains(vec)) {
-					ret = true;
-					break;
-				}
-			}
-		}
-		
-		return ret;
-	}
-	
 	public static int getGroundY(World worldIn, int chunkX, int chunkZ, EnumFacing facing, Random rand) {
 		int ret;
 		final int x = (chunkX << 4), z = (chunkZ << 4) + 12;
 		final int dimId = worldIn.provider.getDimension();
-		final int startY = dimId == -1 ? 96 : 128;
 		
-		ret = dimId == -1 ? getGroundYNether(worldIn, x, z, facing, rand) : SpectriteConfig.spectriteSkullSurfaceRate == 0d
-			|| rand.nextDouble() * 100d <= SpectriteConfig.spectriteSkullSurfaceRate ? getGroundYSurfaceGroundLevel(worldIn, x, z, facing, rand)
-			: getGroundYSurfaceUnderground(worldIn, x, z, facing, rand);
+		ret = worldIn.getWorldType() != WorldType.FLAT ? dimId == -1 ? getGroundYNether(worldIn, x, z, facing, rand) : SpectriteConfig.spectriteSkull.spectriteSkullSurfaceRate == 0d
+			|| rand.nextDouble() * 100d <= SpectriteConfig.spectriteSkull.spectriteSkullSurfaceRate ? getGroundYSurfaceGroundLevel(worldIn, x, z, facing, rand)
+			: getGroundYSurfaceUnderground(worldIn, x, z, facing, rand) : 3;
 		
 		if (ret == 0 && dimId == -1) {
 			ret = getGroundYSurfaceUnderground(worldIn, x, z, facing, rand);
@@ -254,7 +241,7 @@ public class WorldGenSpectriteSkull implements IWorldGenerator {
 	}
 	
 	private static int getGroundYSurfaceGroundLevel(World worldIn, int x, int z, EnumFacing facing, Random rand) {
-		int y = Math.min(128, worldIn.getActualHeight()), openY = 0;
+		int y = Math.min(128, worldIn.getActualHeight());
 		
 		for (; y >= 30; y--) {
 			BlockPos pos = new BlockPos(x, y, z);

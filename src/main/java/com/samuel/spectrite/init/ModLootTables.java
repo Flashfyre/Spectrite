@@ -1,7 +1,6 @@
 package com.samuel.spectrite.init;
 
 import com.samuel.spectrite.Spectrite;
-
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTableList;
 

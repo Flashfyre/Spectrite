@@ -1,10 +1,7 @@
 package com.samuel.spectrite.blocks;
 
-import javax.annotation.Nonnull;
-
 import com.samuel.spectrite.entities.EntitySpectriteGolem;
 import com.samuel.spectrite.init.ModBlocks;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -26,6 +23,8 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
+
+import javax.annotation.Nonnull;
 
 public class BlockMoltenSpectrite extends BlockFluidClassic {
 	

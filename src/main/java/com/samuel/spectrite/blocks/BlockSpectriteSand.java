@@ -1,26 +1,49 @@
 package com.samuel.spectrite.blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.World;
 
-public class BlockSpectriteSand extends BlockFalling {
+import javax.annotation.Nullable;
+
+public class BlockSpectriteSand extends Block {
 
 	public static final PropertyBool ODD = PropertyBool.create("odd");
 
+    protected static final AxisAlignedBB SPECTRITE_SAND_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
+
 	public BlockSpectriteSand() {
-		super();
-		setSoundType(SoundType.SAND);
+		super(Material.SAND, MapColor.PURPLE);
+		this.setSoundType(SoundType.SAND);
+        this.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
 	}
+
+	@Override
+    @Nullable
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        return SPECTRITE_SAND_AABB;
+    }
+
+    @Override
+    /**
+     * Called When an Entity Collided with the Block
+     */
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        entityIn.motionX *= 0.4D;
+        entityIn.motionZ *= 0.4D;
+    }
 	
 	@Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
@@ -38,22 +61,5 @@ public class BlockSpectriteSand extends BlockFalling {
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer.Builder(this).add(ODD).build();
-    }
-	
-	@Override
-	public MapColor getMapColor(IBlockState state, IBlockAccess p_180659_2_, BlockPos p_180659_3_)
-    {
-        return MapColor.PURPLE;
-    }
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-    public int getDustColor(IBlockState p_189876_1_)
-    {
-		int hueFrame = Block.RANDOM.nextInt(720);
-		float r = hueFrame >= 480 && hueFrame < 600 ? (1f / 120) * (hueFrame - 480) : hueFrame < 120 || hueFrame >= 600 ? 1f : hueFrame < 240 ? (1f / 120) * (120 - (hueFrame - 120)) : 0f,
-			g = hueFrame < 120 ? (1f / 120) * hueFrame : hueFrame < 360 ? 1f : hueFrame < 480 ? (1f / 120) * (120 - (hueFrame - 360)) : 0f,
-			b = hueFrame >= 240 && hueFrame < 360 ? (1f / 120) * (hueFrame - 240) : hueFrame >= 360 && hueFrame < 600 ? 1f : hueFrame >= 600 ? (1f / 120) * (120 - (hueFrame - 600)) : 0f;
-        return 0xFF000000 | MathHelper.floor(r * 255F) << 16 | MathHelper.floor(g * 255F) << 8 | MathHelper.floor(b * 255F);
     }
 }

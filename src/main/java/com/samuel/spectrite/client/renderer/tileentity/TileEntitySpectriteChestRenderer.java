@@ -1,9 +1,9 @@
 package com.samuel.spectrite.client.renderer.tileentity;
 
+import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.blocks.BlockSpectriteChest;
 import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.tileentity.TileEntitySpectriteChest;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelLargeChest;
@@ -35,6 +35,9 @@ public class TileEntitySpectriteChestRenderer extends TileEntitySpecialRenderer 
 		int breakStage) {
 		int var10;
 
+		GlStateManager.enableDepth();
+		GlStateManager.depthFunc(515);
+		GlStateManager.depthMask(true);
 		if (!tile.hasWorld()) {
 			var10 = 0;
 		} else {
@@ -106,8 +109,9 @@ public class TileEntitySpectriteChestRenderer extends TileEntitySpecialRenderer 
 					GlStateManager.translate(0.0625F,
 						0.0625F, 0.0625F);
 					GlStateManager.matrixMode(5888);
+				} else {
+					this.bindTexture(textureDouble);
 				}
-				this.bindTexture(textureDouble);
 			}
 
 			GlStateManager.pushMatrix();
@@ -205,8 +209,8 @@ public class TileEntitySpectriteChestRenderer extends TileEntitySpecialRenderer 
 	private static ResourceLocation[] getSpectriteResourceLocations(String suffix) {
 		ResourceLocation[] resourceLocations = new ResourceLocation[36];
 		for (int s = 0; s < resourceLocations.length; s++) {
-			resourceLocations[s] = new ResourceLocation(
-				String.format("spectrite:textures/tileentities/chest_spectrite%s/%d.png", suffix, s));
+			resourceLocations[s] = new ResourceLocation(Spectrite.MOD_ID,
+				String.format("textures/tileentities/chest_spectrite%s/%d.png", suffix, s));
 		}
 		return resourceLocations;
 	}

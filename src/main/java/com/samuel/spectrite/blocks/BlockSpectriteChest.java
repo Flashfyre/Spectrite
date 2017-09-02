@@ -2,7 +2,6 @@ package com.samuel.spectrite.blocks;
 
 import com.samuel.spectrite.etc.InventoryLargeSpectriteChest;
 import com.samuel.spectrite.tileentity.TileEntitySpectriteChest;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
@@ -16,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -32,35 +30,26 @@ public class BlockSpectriteChest extends BlockChest {
 		super(chestType);
         this.setCreativeTab(chestType.ordinal() == 0 ? CreativeTabs.DECORATIONS : CreativeTabs.REDSTONE);
 	}
-	
-	@Override
-	/**
-     * Used to determine ambient occlusion and culling when rebuilding chunks for render
-     */
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    /**
-     * The type of render function called. 3 for standard block models, 2 for TESR's, 1 for liquids, -1 is no render
-     */
-    public EnumBlockRenderType getRenderType(IBlockState state)
-    {
-        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
-    }
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-    	return source.getBlockState(pos.north()).getBlock() == this ? NORTH_CHEST_AABB : (source.getBlockState(pos.south()).getBlock() == this ? SOUTH_CHEST_AABB : (source.getBlockState(pos.west()).getBlock() == this ? WEST_CHEST_AABB : (source.getBlockState(pos.east()).getBlock() == this ? EAST_CHEST_AABB : NOT_CONNECTED_AABB)));
+        if (source.getBlockState(pos.north()).getBlock() == this)
+        {
+            return NORTH_CHEST_AABB;
+        }
+        else if (source.getBlockState(pos.south()).getBlock() == this)
+        {
+            return SOUTH_CHEST_AABB;
+        }
+        else if (source.getBlockState(pos.west()).getBlock() == this)
+        {
+            return WEST_CHEST_AABB;
+        }
+        else
+        {
+            return source.getBlockState(pos.east()).getBlock() == this ? EAST_CHEST_AABB : NOT_CONNECTED_AABB;
+        }
     }
     
     @Override

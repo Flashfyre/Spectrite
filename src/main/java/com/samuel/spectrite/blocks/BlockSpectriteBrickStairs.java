@@ -1,7 +1,6 @@
 package com.samuel.spectrite.blocks;
 
 import com.samuel.spectrite.init.ModBlocks;
-
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;

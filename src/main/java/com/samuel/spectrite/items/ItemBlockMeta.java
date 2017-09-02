@@ -1,7 +1,6 @@
 package com.samuel.spectrite.items;
 
 import com.samuel.spectrite.etc.IMetaBlockName;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;

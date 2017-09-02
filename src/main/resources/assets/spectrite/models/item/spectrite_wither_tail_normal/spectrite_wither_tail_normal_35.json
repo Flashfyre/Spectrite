@@ -1,0 +1,6 @@
+{
+    "parent": "spectrite:item/spectrite_wither_tail",
+    "textures": {
+        "tail": "spectrite:entities/spectrite_wither_rod_normal/35"
+    }
+}

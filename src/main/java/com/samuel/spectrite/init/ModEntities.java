@@ -1,19 +1,8 @@
 package com.samuel.spectrite.init;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.samuel.spectrite.Spectrite;
-import com.samuel.spectrite.entities.EntitySpectriteAreaEffectCloud;
-import com.samuel.spectrite.entities.EntitySpectriteArrow;
-import com.samuel.spectrite.entities.EntitySpectriteBlaze;
-import com.samuel.spectrite.entities.EntitySpectriteCreeper;
-import com.samuel.spectrite.entities.EntitySpectriteGolem;
-import com.samuel.spectrite.entities.EntitySpectriteSkeleton;
-import com.samuel.spectrite.entities.EntitySpectriteTippedArrow;
-import com.samuel.spectrite.entities.EntitySpectriteWitherSkeleton;
+import com.samuel.spectrite.entities.*;
 import com.samuel.spectrite.etc.SpectriteHelper;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -22,6 +11,9 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ModEntities {
 	
@@ -36,6 +28,8 @@ public class ModEntities {
 		registerEntity("SpectriteSkeleton", EntitySpectriteSkeleton.class, mod);
 		registerEntity("SpectriteWitherSkeleton", EntitySpectriteWitherSkeleton.class, mod);
 		registerEntity("SpectriteBlaze", EntitySpectriteBlaze.class, mod);
+		registerEntity("SpectriteWither", EntitySpectriteWither.class, mod);
+		registerEntity("SpectriteWitherSkull", EntitySpectriteWitherSkull.class, mod);
 		registerEntity("SpectriteAreaEffectCloud", EntitySpectriteAreaEffectCloud.class, mod);
 		registerEntity("SpectriteTippedArrow", EntitySpectriteTippedArrow.class, mod);
 	}

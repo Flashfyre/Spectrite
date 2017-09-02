@@ -1,17 +1,16 @@
 package com.samuel.spectrite.client.renderer.entity;
 
-import java.util.Map;
-
 import com.google.common.collect.Maps;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.entities.EntitySpectriteArrow;
 import com.samuel.spectrite.etc.SpectriteHelper;
-
 import net.minecraft.client.renderer.entity.RenderArrow;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Map;
 
 @SideOnly(Side.CLIENT)
 public class RenderSpectriteArrow<T extends EntitySpectriteArrow> extends RenderArrow<T> {

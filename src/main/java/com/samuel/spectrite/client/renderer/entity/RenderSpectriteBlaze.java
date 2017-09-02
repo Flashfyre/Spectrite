@@ -1,14 +1,10 @@
 package com.samuel.spectrite.client.renderer.entity;
 
-import java.lang.reflect.Method;
-import java.util.Map;
-
 import com.google.common.collect.Maps;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.client.model.ModelSpectriteBlaze;
 import com.samuel.spectrite.entities.EntitySpectriteBlaze;
 import com.samuel.spectrite.etc.SpectriteHelper;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -24,6 +20,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.lang.reflect.Method;
+import java.util.Map;
 
 @SideOnly(Side.CLIENT)
 public class RenderSpectriteBlaze extends RenderLiving<EntitySpectriteBlaze> {

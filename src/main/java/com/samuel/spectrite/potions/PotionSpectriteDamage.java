@@ -1,15 +1,15 @@
 package com.samuel.spectrite.potions;
 
-import javax.annotation.Nullable;
-
 import com.samuel.spectrite.etc.SpectriteHelper;
-
+import com.samuel.spectrite.init.ModDamageSources;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemShield;
 import net.minecraft.potion.PotionHealth;
 import net.minecraft.util.DamageSource;
+
+import javax.annotation.Nullable;
 
 public class PotionSpectriteDamage extends PotionHealth {
 	
@@ -33,10 +33,10 @@ public class PotionSpectriteDamage extends PotionHealth {
 				amplifier -= SpectriteHelper.getPlayerReceivedSpectriteDamageDecreaseForDifficulty(entityLivingBaseIn.getEntityWorld().getDifficulty());
 			}
 			
-			amplifier = damageShield(DamageSource.MAGIC, entityLivingBaseIn, amplifier);
+			amplifier = damageShield(ModDamageSources.SPECTRITE_DAMAGE, entityLivingBaseIn, amplifier);
 			
 			if (amplifier >= 0) {
-				entityLivingBaseIn.attackEntityFrom(DamageSource.MAGIC, 6 << amplifier);
+				entityLivingBaseIn.attackEntityFrom(ModDamageSources.SPECTRITE_DAMAGE, 6 << amplifier);
 			}
 		}
     }
@@ -51,18 +51,18 @@ public class PotionSpectriteDamage extends PotionHealth {
 				amplifier -= SpectriteHelper.getPlayerReceivedSpectriteDamageDecreaseForDifficulty(entityLivingBaseIn.getEntityWorld().getDifficulty());
 			}
 			
-			amplifier = damageShield(DamageSource.MAGIC, entityLivingBaseIn, amplifier);
+				amplifier = damageShield(ModDamageSources.SPECTRITE_DAMAGE, entityLivingBaseIn, amplifier);
 			
 			if (amplifier >= 0) {
 	            int j = (int)(health * (6 << amplifier) + 0.5D);
 	
 	            if (source == null)
 	            {
-	                entityLivingBaseIn.attackEntityFrom(DamageSource.MAGIC, j);
+	                entityLivingBaseIn.attackEntityFrom(ModDamageSources.SPECTRITE_DAMAGE, j);
 	            }
 	            else
 	            {
-	                entityLivingBaseIn.attackEntityFrom(DamageSource.causeIndirectMagicDamage(source, indirectSource), j);
+	                entityLivingBaseIn.attackEntityFrom(ModDamageSources.causeIndirectSpectriteDamage(source, indirectSource), j);
 	            }
 			}
 		}

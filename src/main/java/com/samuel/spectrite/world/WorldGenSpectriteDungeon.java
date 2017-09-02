@@ -1,19 +1,11 @@
 package com.samuel.spectrite.world;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
 import com.google.common.collect.Lists;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.init.ModBiomes;
 import com.samuel.spectrite.init.ModBlocks;
 import com.samuel.spectrite.init.ModLootTables;
 import com.samuel.spectrite.init.ModWorldGen;
-
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockSlab;
@@ -38,6 +30,8 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.*;
+
 public class WorldGenSpectriteDungeon implements IWorldGenerator {
 
     protected Random rand = new Random();
@@ -46,12 +40,12 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
     protected BlockPos spawnPos;
     protected ChunkPos spawnChunkPos;
     protected Map<ChunkPos, Room>[] posRoomsMap = null;
-    public int deepestDepth = 0;
 	
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
 		IChunkProvider chunkProvider) {
-		if (SpectriteConfig.generateSpectriteDungeon && spawnPos != null && !world.isRemote && world.provider.isSurfaceWorld()) {
+		if (SpectriteConfig.spectriteDungeon.generateSpectriteDungeon && spawnPos != null && !world.isRemote
+			&& world.provider.isSurfaceWorld() && world.getWorldInfo().isMapFeaturesEnabled()) {
 			if ((savedData.isDungeonGenerated() && posRoomsMap == null) || chunkX == spawnChunkPos.x && chunkZ == spawnChunkPos.z) {
 				int y = getGroundY(chunkX, chunkZ, world);
 				int i = 1;
@@ -71,8 +65,7 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
                 int baseY = 20;
             	
             	populateChunkBiome(spawnChunkPos.x, spawnChunkPos.z, world);
-            	
-            	Map<ChunkPos, Room> posRooms = new HashMap<ChunkPos, Room>();
+
             	CoreRoom coreRoom = new CoreRoom(rand, spawnChunkPos.x, 0, spawnChunkPos.z, (y - 6) - baseY, world, facing);
             	posRoomsMap = coreRoom.chunkPosRooms;
         	
@@ -92,9 +85,9 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 								populateChunkBiome(chunkX, chunkZ, world);
 								biomePopulated = true;
 							}
-							ConnectableRoom room = (ConnectableRoom) posRoomsMap[f].get(chunkPos);
-							if (room.isReserved()) {
-								room.setReserved(false);
+							Room room =  posRoomsMap[f].get(chunkPos);
+							if (room instanceof ConnectableRoom && ((ConnectableRoom) room).isReserved()) {
+								((ConnectableRoom) room).setReserved(false);
 								room.build();
 							}
 						}
@@ -106,7 +99,7 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public void onWorldLoad(WorldEvent.Load e) {
-		if (this.world == null && !e.getWorld().isRemote && SpectriteConfig.generateSpectriteDungeon) {
+		if (this.world == null && !e.getWorld().isRemote && SpectriteConfig.spectriteDungeon.generateSpectriteDungeon) {
 			this.world = e.getWorld();
 			if (this.world.getWorldType() != WorldType.FLAT && this.world.getActualHeight() >= 30) {
 				initSpawnPoint(e.getWorld());
@@ -965,14 +958,14 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 							}
 							if (!fakeChest) {
 								if (!(getBlockState(xDist, chestY, 7, facing).getBlock() instanceof BlockChest)) {
-									fillRange((SpectriteConfig.spectriteDungeonChestMode.shouldChestTierUseSpectriteChest(highChest ? 2 : midChest ? 1 : 0) ?
+									fillRange((SpectriteConfig.spectriteDungeon.spectriteDungeonChestMode.shouldChestTierUseSpectriteChest(highChest ? 2 : midChest ? 1 : 0) ?
 										spectriteChestState : chestState).withProperty(BlockChest.FACING, facing.getOpposite()),
 										xDist, chestY, 7, xDist, chestY, 8, false, false, false, facing);
 									((TileEntityChest) getTileEntity(xDist, chestY, 7, facing)).setLootTable(lootTable, rand.nextLong());
 									((TileEntityChest) getTileEntity(xDist, chestY, 8, facing)).setLootTable(lootTable, rand.nextLong());
 								}
 							} else {
-								fillRange((SpectriteConfig.spectriteDungeonChestMode.shouldChestTierUseSpectriteChest(midChest ? 1 : 0) ?
+								fillRange((SpectriteConfig.spectriteDungeon.spectriteDungeonChestMode.shouldChestTierUseSpectriteChest(midChest ? 1 : 0) ?
 									spectriteFakeTrappedChestState : fakeTrappedChestState), xDist, chestY, 7, xDist, chestY, 8, false, false, false, facing);
 								fillRange(tntState, xDist, chestY - 1, 7, xDist, chestY - 1, 8, false, false, false, facing);
 								fillRange(fakeWallState, 0, chestY - 1, 7, xDist - 1, chestY - 1, 8, false, false, false, facing);

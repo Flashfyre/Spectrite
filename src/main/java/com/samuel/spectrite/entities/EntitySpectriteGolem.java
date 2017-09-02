@@ -1,36 +1,27 @@
 package com.samuel.spectrite.entities;
 
-import javax.annotation.Nullable;
-
 import com.google.common.base.Predicate;
+import com.samuel.spectrite.init.ModBiomes;
 import com.samuel.spectrite.init.ModLootTables;
-import com.samuel.spectrite.init.ModPotions;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
-import net.minecraft.entity.ai.EntityAIMoveTowardsTarget;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class EntitySpectriteGolem extends EntityIronGolem implements ISpectriteMob {
 	
@@ -39,12 +30,16 @@ public class EntitySpectriteGolem extends EntityIronGolem implements ISpectriteM
 	public EntitySpectriteGolem(World worldIn) {
 		super(worldIn);
 		this.initEntityAIAttackableTarget(false);
+		this.experienceValue = 77;
 	}
 	
 	public EntitySpectriteGolem(World worldIn, boolean playerCreated) {
 		super(worldIn);
 		this.setPlayerCreated(playerCreated);
 		this.initEntityAIAttackableTarget(playerCreated);
+		if (!playerCreated) {
+			this.experienceValue = 77;
+		}
 	}
 	
 	@Override
@@ -83,7 +78,7 @@ public class EntitySpectriteGolem extends EntityIronGolem implements ISpectriteM
 	protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(150.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.175D);
     }
 	
@@ -139,10 +134,6 @@ public class EntitySpectriteGolem extends EntityIronGolem implements ISpectriteM
 	        	this.heal(1.0f);
 	        	this.healTimer = 50;
 	        }
-	        
-	        if (this.getActivePotionEffect(ModPotions.SPECTRITE_RESISTANCE) == null) {
-				this.addPotionEffect(new PotionEffect(ModPotions.SPECTRITE_RESISTANCE, 16, 0, true, true));
-			}
         }
     }
 	
@@ -153,6 +144,10 @@ public class EntitySpectriteGolem extends EntityIronGolem implements ISpectriteM
     public boolean getCanSpawnHere()
     {
 		BlockPos pos = new BlockPos(this);
+
+		if (this.world.getBiome(pos) != ModBiomes.spectrite_dungeon)
+			return true;
+
 		int spawnChance = (pos.getY() + 8) >> 3;
 		boolean shouldSpawn = spawnChance == 1 || (spawnChance == 2 && rand.nextBoolean()) || (spawnChance == 3 && rand.nextInt(3) == 0);
         return shouldSpawn && pos.down().getY() < 28 && world.getEntitiesWithinAABB(EntitySpectriteGolem.class, new AxisAlignedBB(pos.east(8).south(8).down(), pos.west(8).north(8).up(8)),

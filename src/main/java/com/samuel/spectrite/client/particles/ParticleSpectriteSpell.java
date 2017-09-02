@@ -1,15 +1,17 @@
 package com.samuel.spectrite.client.particles;
 
 import com.samuel.spectrite.etc.SpectriteHelper;
-
 import net.minecraft.client.particle.ParticleSpell;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class ParticleSpectriteSpell extends ParticleSpell {
 	
-	int offsetLevel;
+	private float offsetLevel;
 
-	public ParticleSpectriteSpell(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double r, double g, double b, int offsetLevel) {
+	public ParticleSpectriteSpell(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double r, double g, double b, float offsetLevel) {
 		super(worldIn, xCoordIn, yCoordIn, zCoordIn, r, g, b);
 		this.offsetLevel = offsetLevel;
 		

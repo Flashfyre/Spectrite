@@ -1,8 +1,8 @@
 {
     "parent": "block/block",
     "textures": {
-        "bottom": "spectrite:blocks/spectrite_bricks_bottom",
-		"top": "spectrite:blocks/spectrite_bricks_top",
+        "bottom": "spectrite:blocks/spectrite_bricks_bottom_odd",
+		"top": "spectrite:blocks/spectrite_bricks_top_odd",
         "ew": "spectrite:blocks/spectrite_bricks_ns",
 		"ns": "spectrite:blocks/spectrite_bricks_ew",
 		"particle": "spectrite:blocks/spectrite_bricks_ns"

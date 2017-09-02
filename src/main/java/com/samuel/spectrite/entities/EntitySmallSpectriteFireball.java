@@ -1,24 +1,14 @@
 package com.samuel.spectrite.entities;
 
-import java.util.List;
-
+import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.init.ModBlocks;
-import com.samuel.spectrite.init.ModPotions;
-import com.samuel.spectrite.init.ModSounds;
-
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
 public class EntitySmallSpectriteFireball extends EntitySpectriteFireball {
 
@@ -80,41 +70,9 @@ public class EntitySmallSpectriteFireball extends EntitySpectriteFireball {
                     }
                 }
             }
-            
-            BlockPos hitPos = new BlockPos(result.hitVec);
-            
+
             int power = 2;
-            List<Entity> surrounding = world.getEntitiesWithinAABBExcludingEntity(this,
-				new AxisAlignedBB(hitPos.north(power).west(power).down(power),
-				hitPos.south(power).east(power).up(power)));
-			
-			for (int s = 0; s < surrounding.size(); s++) {
-				if (surrounding.get(s) instanceof EntityLivingBase &&
-					(this.shootingEntity == null || (!((EntityLivingBase) surrounding.get(s)).isOnSameTeam(this.shootingEntity))
-					&& !surrounding.get(s).equals(this.shootingEntity))) {
-					EntityLivingBase curEntity = ((EntityLivingBase) surrounding.get(s));
-					double distance = curEntity.getDistanceSq(hitPos);
-					double health = distance >= 1 ? 1.0D - Math.sqrt(distance) / (power + 2) : 1.0D;
-					if (health > 0.0D) {
-						ModPotions.SPECTRITE_DAMAGE.affectEntity(this, this.shootingEntity, curEntity, power, health);
-					}
-				}
-			}
-			
-			WorldServer worldServer = (WorldServer) this.world;
-			EnumParticleTypes particle = null;
-		
-			world.playSound(null, hitPos, ModSounds.explosion, SoundCategory.PLAYERS, 0.75F,
-					1.0F + (rand.nextFloat()) * 0.4F);
-			double offsetX = rand.nextGaussian() * 0.25D, offsetY = rand.nextGaussian() * 0.25D, offsetZ = rand.nextGaussian() * 0.25D;
-			
-			for (int f = 0; f <= EnumFacing.values().length; f++) {
-				BlockPos particleOffsetPos = f == 0 ? hitPos : hitPos.offset(EnumFacing.values()[f - 1]);
-				particleOffsetPos.add((particleOffsetPos.getX() - hitPos.getX()) * 0.5d, (particleOffsetPos.getY() - hitPos.getY()) * 0.5d,
-					(particleOffsetPos.getZ() - hitPos.getZ()) * 0.5d);
-				worldServer.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, EnumParticleTypes.EXPLOSION_LARGE.getShouldIgnoreRange(), particleOffsetPos.getX(),
-					 particleOffsetPos.getY(), particleOffsetPos.getZ(), 1, offsetX, offsetY, offsetZ, 0.0D, new int[0]);
-			}
+            Spectrite.Proxy.performDispersedSpectriteDamage(this.world, power, -1, result.hitVec, this, this.shootingEntity, this.rand);
 
             this.setDead();
         }

@@ -1,25 +1,12 @@
 package com.samuel.spectrite.entities;
 
-import javax.annotation.Nullable;
-
 import com.samuel.spectrite.Spectrite;
-import com.samuel.spectrite.SpectriteConfig;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.init.ModBiomes;
 import com.samuel.spectrite.init.ModLootTables;
-import com.samuel.spectrite.init.ModPotions;
-import com.samuel.spectrite.init.ModWorldGen;
-
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityMob;
@@ -28,16 +15,16 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
 
 public class EntitySpectriteBlaze extends EntityMob implements ISpectriteMob {
 
@@ -48,13 +35,9 @@ public class EntitySpectriteBlaze extends EntityMob implements ISpectriteMob {
     private static final DataParameter<Byte> ON_FIRE = EntityDataManager.<Byte>createKey(EntityBlaze.class, DataSerializers.BYTE);
 	
 	public EntitySpectriteBlaze(World worldIn) {
-		super(worldIn);
+	    super(worldIn);
+	    this.experienceValue = 35;
 	}
-
-	public static void registerFixesBlaze(DataFixer fixer)
-    {
-        EntityLiving.registerFixesMob(fixer, EntitySpectriteBlaze.class);
-    }
 
 	@Override
     protected void initEntityAI()
@@ -137,16 +120,11 @@ public class EntitySpectriteBlaze extends EntityMob implements ISpectriteMob {
             {
                 this.world.playSound(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, SoundEvents.ENTITY_BLAZE_BURN, this.getSoundCategory(), 1.0F + this.rand.nextFloat(), this.rand.nextFloat() * 0.7F + 0.3F, false);
             }
-            
-            float[] colour = SpectriteHelper.getCurrentSpectriteRGBColour(0);
-        	double[] colourRGB = new double[] { colour[0] * 255d, colour[1] * 255d, colour[2] * 255d };
 
             for (int i = 0; i < 2; ++i)
             {
                 Spectrite.Proxy.spawnSpectriteSmokeLargeParticle(this.world, this.posX + (this.rand.nextDouble() - 0.5D) * this.width, this.posY + this.rand.nextDouble() * this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width, 0.0D, 0.0D, 0.0D);
             }
-        } else if (this.getActivePotionEffect(ModPotions.SPECTRITE_RESISTANCE) == null) {
-			this.addPotionEffect(new PotionEffect(ModPotions.SPECTRITE_RESISTANCE, 16, 0, true, true));
         }
 
         super.onLivingUpdate();
@@ -319,13 +297,13 @@ public class EntitySpectriteBlaze extends EntityMob implements ISpectriteMob {
                     if (this.attackStep > 1)
                     {
                         float f = MathHelper.sqrt(MathHelper.sqrt(d0)) * 0.5F;
-                        this.blaze.world.playEvent((EntityPlayer)null, 1018, new BlockPos((int)this.blaze.posX, (int)this.blaze.posY, (int)this.blaze.posZ), 0);
+                        this.blaze.world.playEvent(null, 1018, new BlockPos((int)this.blaze.posX, (int)this.blaze.posY, (int)this.blaze.posZ), 0);
 
                         for (int i = 0; i < 1; ++i)
                         {
-                            EntitySmallSpectriteFireball entitysmallfireball = new EntitySmallSpectriteFireball(this.blaze.world, this.blaze, d1 + this.blaze.getRNG().nextGaussian() * f, d2, d3 + this.blaze.getRNG().nextGaussian() * f);
-                            entitysmallfireball.posY = this.blaze.posY + this.blaze.height / 2.0F + 0.5D;
-                            this.blaze.world.spawnEntity(entitysmallfireball);
+                            EntitySmallSpectriteFireball entitySmallSpectriteFireball = new EntitySmallSpectriteFireball(this.blaze.world, this.blaze, d1 + this.blaze.getRNG().nextGaussian() * f, d2, d3 + this.blaze.getRNG().nextGaussian() * f);
+                            entitySmallSpectriteFireball.posY = this.blaze.posY + this.blaze.height / 2.0F + 0.5D;
+                            this.blaze.world.spawnEntity(entitySmallSpectriteFireball);
                         }
                     }
                 }
@@ -356,7 +334,7 @@ public class EntitySpectriteBlaze extends EntityMob implements ISpectriteMob {
     {
 		BlockPos pos = new BlockPos(this);
 		
-		if (SpectriteConfig.generateSpectriteSkull && ModWorldGen.spectriteSkull.isPosInSkullBounds(pos, this.world.provider.getDimension()))
+		if (this.world.getBiome(pos) != ModBiomes.spectrite_dungeon)
 			return true;
 		
 		int spawnChance = (pos.getY() + 8) >> 3;

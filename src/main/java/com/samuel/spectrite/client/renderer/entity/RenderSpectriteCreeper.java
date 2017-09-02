@@ -1,15 +1,14 @@
 package com.samuel.spectrite.client.renderer.entity;
 
-import java.util.Map;
-
 import com.google.common.collect.Maps;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.etc.SpectriteHelper;
-
 import net.minecraft.client.renderer.entity.RenderCreeper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.Map;
 
 public class RenderSpectriteCreeper extends RenderCreeper {
 	

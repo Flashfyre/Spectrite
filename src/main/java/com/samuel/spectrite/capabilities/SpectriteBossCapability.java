@@ -1,9 +1,6 @@
 package com.samuel.spectrite.capabilities;
 
-import java.util.concurrent.Callable;
-
 import com.samuel.spectrite.Spectrite;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,6 +8,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
+
+import java.util.concurrent.Callable;
 
 public class SpectriteBossCapability {
 	

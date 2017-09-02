@@ -1,12 +1,7 @@
 package com.samuel.spectrite.packets;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import com.samuel.spectrite.capabilities.ISpectriteBossCapability;
 import com.samuel.spectrite.capabilities.SpectriteBossProvider;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -16,6 +11,10 @@ import net.minecraft.util.IThreadListener;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class PacketSyncSpectriteBoss implements IMessage {
 

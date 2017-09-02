@@ -1,4 +1,5 @@
 {
+	"parent": "spectrite:block/spectrite_skull",
 	"textures": {
         "top": "spectrite:blocks/spectrite_wither_skeleton_skull_top",
 		"bottom": "spectrite:blocks/spectrite_wither_skeleton_skull_bottom",
@@ -7,18 +8,5 @@
 		"east": "spectrite:blocks/spectrite_wither_skeleton_skull_east",
 		"north": "spectrite:blocks/spectrite_wither_skeleton_skull_north",
 		"particle": "spectrite:blocks/spectrite_wither_skeleton_skull_north"
-    },
-    "elements": [
-        {   "from": [ 4, 0, 4 ],
-            "to": [ 12, 8, 12 ],
-            "faces": {
-                "down":  { "uv": [ 4, 4, 12, 12 ], "texture": "#bottom" },
-                "up":    { "uv": [ 4, 4, 12, 12 ], "texture": "#top" },
-                "north": { "uv": [ 4, 4, 12, 12 ], "texture": "#north" },
-                "south": { "uv": [ 4, 4, 12, 12 ], "texture": "#south" },
-                "west":  { "uv": [ 4, 4, 12, 12 ], "texture": "#west" },
-                "east":  { "uv": [ 4, 4, 12, 12 ], "texture": "#east" }
-            }
-        }
-    ]
+    }
 }

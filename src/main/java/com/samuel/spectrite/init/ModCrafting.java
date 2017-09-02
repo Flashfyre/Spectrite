@@ -11,8 +11,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public final class ModCrafting {
 
 	public static void initSmelting() {
-		GameRegistry.addSmelting(ModBlocks.spectrite_chest, new ItemStack(ModBlocks.spectrite_block, 5), 5.0f);
-		GameRegistry.addSmelting(ModBlocks.spectrite_chest_trapped, new ItemStack(ModBlocks.spectrite_block, 5), 5.0f);
+		GameRegistry.addSmelting(ModBlocks.spectrite_ore, new ItemStack(ModItems.spectrite_gem), 2.5f);
+		GameRegistry.addSmelting(ModBlocks.spectrite_chest, new ItemStack(ModBlocks.spectrite_block, 5), 25.0f);
+		GameRegistry.addSmelting(ModBlocks.spectrite_chest_trapped, new ItemStack(ModBlocks.spectrite_block, 5), 25.0f);
+		GameRegistry.addSmelting(ModBlocks.spectrite_sand, new ItemStack(ModBlocks.spectrite_glass), 2.5f);
 	}
 	
 	public static void initBrewing() {

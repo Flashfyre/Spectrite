@@ -1,14 +1,10 @@
 package com.samuel.spectrite.init;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.potions.PotionSpectrite;
 import com.samuel.spectrite.potions.PotionSpectriteDamage;
 import com.samuel.spectrite.potions.PotionSpectriteResistance;
-
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
@@ -16,8 +12,11 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ModPotions {
-	
+
 	public static Potion SPECTRITE;
 	public static Potion SPECTRITE_DAMAGE;
 	public static Potion SPECTRITE_RESISTANCE;

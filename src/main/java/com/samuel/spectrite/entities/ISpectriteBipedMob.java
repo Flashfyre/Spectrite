@@ -2,7 +2,6 @@ package com.samuel.spectrite.entities;
 
 import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.items.ItemSpectriteArmor;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;

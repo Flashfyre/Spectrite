@@ -1,9 +1,5 @@
 package com.samuel.spectrite.tileentity;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.blocks.BlockSpectriteChest;
 import com.samuel.spectrite.etc.ContainerSpectriteChest;
@@ -11,7 +7,6 @@ import com.samuel.spectrite.etc.InventoryLargeSpectriteChest;
 import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.init.ModEnchantments;
 import com.samuel.spectrite.items.IPerfectSpectriteItem;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,6 +26,10 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.WorldServer;
 
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class TileEntitySpectriteChest extends TileEntityChest {
 	
 	private int ticksSinceSync;
@@ -39,10 +38,6 @@ public class TileEntitySpectriteChest extends TileEntityChest {
 
 	public TileEntitySpectriteChest() {
 		this.cachedChestType = null;
-	}
-
-	public TileEntitySpectriteChest(BlockChest.Type chestType) {
-		this.cachedChestType = chestType;
 	}
 
 	@Override
@@ -70,8 +65,6 @@ public class TileEntitySpectriteChest extends TileEntityChest {
 
 	@Override
 	public ITextComponent getDisplayName() {
-		final int chestType = cachedChestType != null ? cachedChestType.ordinal() +
-			(cachedChestType.ordinal() == 0 ? 0 : -1) : 0;
 		if (blockType == null)
 			blockType = getBlockType();
 		String name = blockType.getUnlocalizedName() + ".name";
@@ -151,32 +144,32 @@ public class TileEntitySpectriteChest extends TileEntityChest {
 			this.adjacentChestChecked = false;
 		} else if (this.adjacentChestChecked) {
 			switch (side) {
-			case NORTH:
+				case NORTH:
 
-				if (this.adjacentChestZNeg != chestTe) {
-					this.adjacentChestChecked = false;
-				}
+					if (this.adjacentChestZNeg != chestTe) {
+						this.adjacentChestChecked = false;
+					}
 
-				break;
-			case SOUTH:
+					break;
+				case SOUTH:
 
-				if (this.adjacentChestZPos != chestTe) {
-					this.adjacentChestChecked = false;
-				}
+					if (this.adjacentChestZPos != chestTe) {
+						this.adjacentChestChecked = false;
+					}
 
-				break;
-			case EAST:
+					break;
+				case EAST:
 
-				if (this.adjacentChestXPos != chestTe) {
-					this.adjacentChestChecked = false;
-				}
+					if (this.adjacentChestXPos != chestTe) {
+						this.adjacentChestChecked = false;
+					}
 
-				break;
-			case WEST:
+					break;
+				case WEST:
 
-				if (this.adjacentChestXNeg != chestTe) {
-					this.adjacentChestChecked = false;
-				}
+					if (this.adjacentChestXNeg != chestTe) {
+						this.adjacentChestChecked = false;
+					}
 			}
 		}
 	}
@@ -197,7 +190,6 @@ public class TileEntitySpectriteChest extends TileEntityChest {
         {
         	if (this.numPlayersUsing != 0) {
 	            this.numPlayersUsing = 0;
-	            float f = 5.0F;
 	
 	            for (EntityPlayer entityplayer : this.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(i - 5.0F, j - 5.0F, k - 5.0F, i + 1 + 5.0F, j + 1 + 5.0F, k + 1 + 5.0F)))
 	            {
@@ -224,7 +216,6 @@ public class TileEntitySpectriteChest extends TileEntityChest {
         }
 
         this.prevLidAngle = this.lidAngle;
-        float f1 = 0.1F;
 
         if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
         {
@@ -261,8 +252,6 @@ public class TileEntitySpectriteChest extends TileEntityChest {
             {
                 this.lidAngle = 1.0F;
             }
-
-            float f3 = 0.5F;
 
             if (this.lidAngle < 0.5F && f2 >= 0.5F && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
             {
@@ -345,7 +334,7 @@ public class TileEntitySpectriteChest extends TileEntityChest {
 	}
 	
 	public boolean trySpectriteEnhance() {
-		double enchantRate = SpectriteConfig.spectriteChestEnchantRate;
+		double enchantRate = SpectriteConfig.blocks.spectriteChestEnchantRate;
 		if (enchantRate > 0.0D && this.world.rand.nextInt((int) (100 / enchantRate)) == 0) {
 			int index = this.world.rand.nextInt(this.getSizeInventory());
 			Map<Integer, ItemStack> slotStacks = getPerfectSpectriteItemsAndSlots();

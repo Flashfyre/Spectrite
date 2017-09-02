@@ -1,12 +1,11 @@
 package com.samuel.spectrite.update;
 
+import com.samuel.spectrite.Spectrite;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.samuel.spectrite.Spectrite;
 
 public class UpdateCheckThread extends Thread {
 	
@@ -20,7 +19,7 @@ public class UpdateCheckThread extends Thread {
     public void run() {
         try {
         	String currentMcVersion = Spectrite.MC_VERSION;
-            URL buildFileUrl = new URL(String.format("https://raw.githubusercontent.com/Samuel-Harbord/SpectriteMod/%s/build.gradle", currentMcVersion));
+            URL buildFileUrl = new URL(String.format("https://raw.githubusercontent.com/Samuel-Harbord/Spectrite/%s/build.gradle", currentMcVersion));
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(buildFileUrl.openStream()));
 
