@@ -1,14 +1,10 @@
 package com.samuel.spectrite.items;
 
-import java.util.List;
-
 import com.google.common.collect.Multimap;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.etc.SpectriteHelper;
-
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,7 +13,6 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.ResourceLocation;
@@ -28,16 +23,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemSpectriteSword extends ItemSword {
-	
-	private final Item.ToolMaterial material;
-	
+import java.util.List;
+
+public class ItemSpectriteSword extends ItemSword implements ICustomTooltipItem {
+
 	public ItemSpectriteSword(ToolMaterial material) {
 		super(material);
 		this.setCreativeTab(CreativeTabs.COMBAT);
 		this.setMaxStackSize(1);
 		this.addPropertyOverride(new ResourceLocation("time"), Spectrite.ItemPropertyGetterSpectrite);
-		this.material = material;
 	}
 	
 	@Override
@@ -68,8 +62,7 @@ public class ItemSpectriteSword extends ItemSword {
     }
     
     @Override
-    public void addInformation(ItemStack stack,
-		World worldIn, List<String> list, ITooltipFlag adva) {
+    public void addTooltipLines(ItemStack stack, List<String> list) {
 		int lineCount = 0;
 		boolean isLastLine = false;
 		String curLine;
@@ -78,13 +71,10 @@ public class ItemSpectriteSword extends ItemSword {
 				.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + (SpectriteHelper.isStackSpectriteEnhanced(stack) ? "_enhanced" : "") + ".l" +
 				++lineCount))).endsWith("@");
 			if (lineCount == 1) {
-				curLine = curLine.replace("#", String.valueOf(SpectriteConfig.spectriteToolCooldown));
+				curLine = curLine.replace("#", String.valueOf(SpectriteConfig.items.spectriteToolCooldown));
 			}
 			list.add(!isLastLine ? curLine : curLine
 				.substring(0, curLine.length() - 1));
-		}
-		if (stack.isItemEnchanted()) {
-			list.add("----------");
 		}
 	}
     

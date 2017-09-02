@@ -1,17 +1,5 @@
 package com.samuel.spectrite.client.model;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-
-import javax.vecmath.Matrix4f;
-import javax.vecmath.Vector4f;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -25,14 +13,9 @@ import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.blocks.BlockMoltenSpectrite;
 import com.samuel.spectrite.etc.FluidMoltenSpectrite;
 import com.samuel.spectrite.init.ModBlocks;
-
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
-import net.minecraft.client.renderer.block.model.ItemOverrideList;
-import net.minecraft.client.renderer.block.model.ModelRotation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.resources.IResourceManager;
@@ -52,6 +35,12 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.Pair;
+
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Vector4f;
+import java.util.*;
+import java.util.function.Function;
 
 @SideOnly(Side.CLIENT)
 public class ModelMoltenSpectrite implements IModel

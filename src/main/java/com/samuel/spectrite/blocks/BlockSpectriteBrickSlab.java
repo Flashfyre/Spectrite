@@ -1,9 +1,6 @@
 package com.samuel.spectrite.blocks;
 
-import java.util.Random;
-
 import com.samuel.spectrite.init.ModBlocks;
-
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -15,6 +12,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+
+import java.util.Random;
 
 public abstract class BlockSpectriteBrickSlab extends BlockSlab {
 

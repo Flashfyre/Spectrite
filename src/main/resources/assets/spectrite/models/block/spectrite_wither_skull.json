@@ -1,0 +1,12 @@
+{
+	"parent": "spectrite:block/spectrite_skull",
+	"textures": {
+        "top": "spectrite:blocks/spectrite_wither_skull_top",
+		"bottom": "spectrite:blocks/spectrite_wither_skull_bottom",
+		"west": "spectrite:blocks/spectrite_wither_skull_west",
+		"south": "spectrite:blocks/spectrite_wither_skull_south",
+		"east": "spectrite:blocks/spectrite_wither_skull_east",
+		"north": "spectrite:blocks/spectrite_wither_skull_north",
+		"particle": "spectrite:blocks/spectrite_wither_skull_north"
+    }
+}

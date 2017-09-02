@@ -1,11 +1,6 @@
 package com.samuel.spectrite.world;
 
-import com.samuel.spectrite.entities.EntitySpectriteBlaze;
-import com.samuel.spectrite.entities.EntitySpectriteCreeper;
-import com.samuel.spectrite.entities.EntitySpectriteGolem;
-import com.samuel.spectrite.entities.EntitySpectriteSkeleton;
-import com.samuel.spectrite.entities.EntitySpectriteWitherSkeleton;
-
+import com.samuel.spectrite.entities.*;
 import net.minecraft.world.biome.Biome;
 
 public class BiomeSpectriteDungeon extends Biome {

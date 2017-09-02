@@ -1,28 +1,14 @@
 package com.samuel.spectrite.client.renderer;
 
-import com.samuel.spectrite.client.renderer.entity.RenderSpectriteAreaEffectCloud;
-import com.samuel.spectrite.client.renderer.entity.RenderSpectriteArrow;
-import com.samuel.spectrite.client.renderer.entity.RenderSpectriteBlaze;
-import com.samuel.spectrite.client.renderer.entity.RenderSpectriteCreeper;
-import com.samuel.spectrite.client.renderer.entity.RenderSpectriteFireball;
-import com.samuel.spectrite.client.renderer.entity.RenderSpectriteGolem;
-import com.samuel.spectrite.client.renderer.entity.RenderSpectriteSkeleton;
-import com.samuel.spectrite.client.renderer.entity.RenderSpectriteTippedArrow;
-import com.samuel.spectrite.client.renderer.entity.RenderSpectriteWitherSkeleton;
-import com.samuel.spectrite.entities.EntitySmallSpectriteFireball;
-import com.samuel.spectrite.entities.EntitySpectriteAreaEffectCloud;
-import com.samuel.spectrite.entities.EntitySpectriteArrow;
-import com.samuel.spectrite.entities.EntitySpectriteBlaze;
-import com.samuel.spectrite.entities.EntitySpectriteCreeper;
-import com.samuel.spectrite.entities.EntitySpectriteGolem;
-import com.samuel.spectrite.entities.EntitySpectriteSkeleton;
-import com.samuel.spectrite.entities.EntitySpectriteTippedArrow;
-import com.samuel.spectrite.entities.EntitySpectriteWitherSkeleton;
-
+import com.samuel.spectrite.client.renderer.entity.*;
+import com.samuel.spectrite.entities.*;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class EntityRenderRegister {
 	
 	@SubscribeEvent
@@ -33,6 +19,8 @@ public class EntityRenderRegister {
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteSkeleton.class, RenderSpectriteSkeleton::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteWitherSkeleton.class, RenderSpectriteWitherSkeleton::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteBlaze.class, RenderSpectriteBlaze::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteWither.class, RenderSpectriteWither::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteWitherSkull.class, RenderSpectriteWitherSkull::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteTippedArrow.class, RenderSpectriteTippedArrow::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteAreaEffectCloud.class, RenderSpectriteAreaEffectCloud::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySmallSpectriteFireball.class, RenderSpectriteFireball::new);

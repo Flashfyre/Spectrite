@@ -1,11 +1,9 @@
 package com.samuel.spectrite.items;
 
-import java.util.List;
-
 import com.samuel.spectrite.Spectrite;
+import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.etc.SpectriteHelper;
-
-import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -13,15 +11,13 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
-public class ItemSpectriteOrb extends Item implements IPerfectSpectriteItem {
+import java.util.List;
+
+public class ItemSpectriteOrb extends Item implements IPerfectSpectriteItem, ICustomTooltipItem {
 	
 	public ItemSpectriteOrb() {
 		this.setHasSubtypes(true);
@@ -37,38 +33,46 @@ public class ItemSpectriteOrb extends Item implements IPerfectSpectriteItem {
 		
 		return displayName;
 	}
-	
+
 	@Override
-	public void addInformation(ItemStack stack,
-		World worldIn, List<String> list, ITooltipFlag adva) {
+	public void addTooltipLines(ItemStack stack, List<String> list) {
 		int lineCount = 0;
 		boolean isLastLine = false;
+		double cooldown = SpectriteConfig.items.spectriteOrbCooldown;
+		double duration = SpectriteConfig.items.spectriteOrbDuration;
 		String curLine;
 		while (!isLastLine) {
 			isLastLine = (curLine = I18n
-				.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + ".l" +
-				++lineCount))).endsWith("@");
-			curLine = curLine.replace("#", String.valueOf((lineCount == 1 || SpectriteHelper.isStackSpectriteEnhanced(stack)) ? 30 : 15));
+				.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5)
+				+ (SpectriteHelper.isStackSpectriteEnhanced(stack) ? "_enhanced" : "") + ".l" + ++lineCount))).endsWith("@");
+			if (lineCount == 3) {
+				curLine = curLine.replace("#", String.format("%.2f", cooldown));
+			}
+			if (lineCount == 4) {
+				curLine = curLine.replace("#", String.format("%.2f", duration));
+			}
 			list.add(!isLastLine ? curLine : curLine
-				.substring(0, curLine.length() - 1));
-		}
-		if (stack.isItemEnchanted()) {
-			list.add("----------");
+					.substring(0, curLine.length() - 1));
 		}
 	}
-	
+
+	@Override
+	public boolean onEntityItemUpdate(EntityItem entityItem) {
+		return this.onEntitySpectriteItemUpdate(entityItem);
+	}
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
-    {
-        worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ,
-        	SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 0.5F, (itemRand.nextFloat() * 0.4F + 1.0F));
-        playerIn.getCooldownTracker().setCooldown(this, 600);
-        
-        playerIn.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, SpectriteHelper.isStackSpectriteEnhanced(
-    		playerIn.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND)) ? 600 : 300,
-    		!playerIn.isPotionActive(MobEffects.REGENERATION) ? 
-    		0 : playerIn.getActivePotionEffect(MobEffects.REGENERATION).getAmplifier() + 1));
+	{
+		worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ,
+				SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 0.5F, (itemRand.nextFloat() * 0.4F + 1.0F));
+		playerIn.getCooldownTracker().setCooldown(this, (int) SpectriteConfig.items.spectriteOrbCooldown * 20);
 
-        return new ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(hand));
-    }
+		playerIn.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, (int) SpectriteConfig.items.spectriteOrbDuration * 20,
+			(!playerIn.isPotionActive(MobEffects.REGENERATION) ?
+			0 : playerIn.getActivePotionEffect(MobEffects.REGENERATION).getAmplifier() + 1)
+			+ (SpectriteHelper.isStackSpectriteEnhanced(playerIn.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND)) ? 1 : 0)));
+
+		return new ActionResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(hand));
+	}
 }

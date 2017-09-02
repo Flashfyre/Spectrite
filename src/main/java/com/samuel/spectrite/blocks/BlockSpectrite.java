@@ -1,10 +1,7 @@
 package com.samuel.spectrite.blocks;
 
-import javax.annotation.Nullable;
-
 import com.google.common.base.Predicate;
 import com.samuel.spectrite.init.ModBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -20,6 +17,8 @@ import net.minecraft.block.state.pattern.FactoryBlockPattern;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+
+import javax.annotation.Nullable;
 
 public class BlockSpectrite extends Block {
 

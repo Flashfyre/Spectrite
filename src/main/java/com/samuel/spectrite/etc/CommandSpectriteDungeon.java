@@ -1,15 +1,14 @@
 package com.samuel.spectrite.etc;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.samuel.spectrite.init.ModWorldGen;
-
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommandSpectriteDungeon implements ICommand,
 	Comparable<ICommand> {

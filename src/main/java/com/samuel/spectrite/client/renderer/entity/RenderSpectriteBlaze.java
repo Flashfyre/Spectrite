@@ -1,14 +1,10 @@
 package com.samuel.spectrite.client.renderer.entity;
 
-import java.lang.reflect.Method;
-import java.util.Map;
-
 import com.google.common.collect.Maps;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.client.model.ModelSpectriteBlaze;
 import com.samuel.spectrite.entities.EntitySpectriteBlaze;
 import com.samuel.spectrite.etc.SpectriteHelper;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -25,14 +21,16 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.lang.reflect.Method;
+import java.util.Map;
+
 @SideOnly(Side.CLIENT)
 public class RenderSpectriteBlaze extends RenderLiving<EntitySpectriteBlaze> {
 
 	private static final Map<String, ResourceLocation> SPECTRITE_BLAZE_TEXTURE_RES_MAP = Maps.<String, ResourceLocation>newHashMap();
 	private static final Map<String, ResourceLocation> SPECTRITE_FIRE_LAYER_0_TEXTURE_RES_MAP = Maps.<String, ResourceLocation>newHashMap();
 	private static final Map<String, ResourceLocation> SPECTRITE_FIRE_LAYER_1_TEXTURE_RES_MAP = Maps.<String, ResourceLocation>newHashMap();
-	private static final Method renderShadow = SpectriteHelper.findObfuscatedMethod(Render.class, "renderShadow", "func_76975_c",
-		Entity.class, double.class, double.class, double.class, float.class, float.class);
+	private static Method renderShadow = null;
 
     public RenderSpectriteBlaze(RenderManager renderManagerIn)
     {
@@ -73,6 +71,10 @@ public class RenderSpectriteBlaze extends RenderLiving<EntitySpectriteBlaze> {
 
                 if (f > 0.0F)
                 {
+                	if (renderShadow == null) {
+                		renderShadow = SpectriteHelper.findObfuscatedMethod(Render.class, "renderShadow", "func_76975_c",
+            				Entity.class, double.class, double.class, double.class, float.class, float.class);
+                	}
                     try {
 						renderShadow.invoke(this, entityIn, x, y, z, f, partialTicks);
 					} catch (Exception e) {

@@ -6,13 +6,15 @@ import com.samuel.spectrite.client.renderer.tileentity.TileEntitySpectriteWither
 import com.samuel.spectrite.tileentity.TileEntityFastUpdatingBeacon;
 import com.samuel.spectrite.tileentity.TileEntitySpectriteChest;
 import com.samuel.spectrite.tileentity.TileEntitySpectritePortal;
-import com.samuel.spectrite.tileentity.TileEntitySpectriteWitherSkeletonSkull;
-
+import com.samuel.spectrite.tileentity.TileEntitySpectriteSkull;
 import net.minecraft.client.renderer.tileentity.TileEntityBeaconRenderer;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class TileEntityRenderRegister {
 
 	@SubscribeEvent
@@ -24,7 +26,7 @@ public class TileEntityRenderRegister {
 			TileEntitySpectritePortal.class,
 			new TileEntitySpectritePortalRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(
-			TileEntitySpectriteWitherSkeletonSkull.class,
+			TileEntitySpectriteSkull.class,
 			new TileEntitySpectriteWitherSkeletonSkullRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(
 			TileEntityFastUpdatingBeacon.class,

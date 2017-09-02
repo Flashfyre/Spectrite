@@ -1,14 +1,14 @@
 package com.samuel.spectrite.world;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SpectriteSkullData extends WorldSavedData {
 	
@@ -52,7 +52,7 @@ public class SpectriteSkullData extends WorldSavedData {
 			NBTTagList dataList = new NBTTagList();
 			for (int cp = 0; cp < spawnChunks[d].size(); cp++) {
 				ChunkPos chunkPos = spawnChunks[d].get(cp);
-				dataList.appendTag(new NBTTagIntArray(new int[] { chunkPos.chunkXPos, chunkPos.chunkZPos, baseYCoords[d].get(cp), skullChunksGenerated[d].get(cp) }));
+				dataList.appendTag(new NBTTagIntArray(new int[] { chunkPos.x, chunkPos.z, baseYCoords[d].get(cp), skullChunksGenerated[d].get(cp) }));
 			}
 			
 			compound.setTag("data" + dimensions[d], dataList);

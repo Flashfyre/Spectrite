@@ -1,16 +1,13 @@
 package com.samuel.spectrite.items;
 
-import java.util.Iterator;
-import java.util.List;
-
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.init.ModItems;
 import com.samuel.spectrite.init.ModPotions;
-import com.samuel.spectrite.potions.PotionEffectSpectrite;
-
-import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -22,7 +19,11 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
-public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteItem {
+import javax.annotation.Nullable;
+import java.util.Iterator;
+import java.util.List;
+
+public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteItem, ICustomTooltipItem {
 
 	public ItemSpectriteArmor(EntityEquipmentSlot equipmentSlotIn) {
 		super(Spectrite.SPECTRITE, 0, equipmentSlotIn);
@@ -39,21 +40,32 @@ public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteIt
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack,
-		World worldIn, List<String> list, ITooltipFlag adva) {
+	public void addTooltipLines(ItemStack stack, List<String> list) {
 		int lineCount = 0;
 		boolean isLastLine = false;
 		String curLine;
 		while (!isLastLine) {
 			isLastLine = (curLine = TextFormatting.RED + I18n
 				.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + (SpectriteHelper.isStackSpectriteEnhanced(stack) ? "_enhanced" : "")
-				+ "." + SpectriteConfig.spectriteArmourBonusMode.ordinal()  + ".l" + ++lineCount))).endsWith("@");
+				+ "." + SpectriteConfig.items.spectriteArmourBonusMode.ordinal()  + ".l" + ++lineCount))).endsWith("@");
 			list.add(!isLastLine ? curLine : curLine
 				.substring(0, curLine.length() - 1));
 		}
-		if (stack.isItemEnchanted()) {
-			list.add("----------");
-		}
+	}
+
+	@Override
+	@Nullable
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type)
+	{
+		String domain = Spectrite.MOD_ID;
+		int curFrame = SpectriteHelper.getCurrentSpectriteFrame(entity.getEntityWorld());
+
+		return String.format("%s:textures/models/armor/spectrite_layer_%d/%d.png", domain, slot == EntityEquipmentSlot.LEGS ? 2 : 1, curFrame);
+	}
+
+	@Override
+	public boolean onEntityItemUpdate(EntityItem entityItem) {
+		return this.onEntitySpectriteItemUpdate(entityItem);
 	}
 	
 	@Override
@@ -77,7 +89,7 @@ public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteIt
 				}
 			}
 			if (healthIncrease > 0f) {
-				SpectriteConfig.EnumSpectriteArmourBonusMode spectriteArmourBonusMode = SpectriteConfig.spectriteArmourBonusMode;
+				SpectriteConfig.EnumSpectriteArmourBonusMode spectriteArmourBonusMode = SpectriteConfig.items.spectriteArmourBonusMode;
 				boolean allEnhanced = enhancedCount == 4;
 				if (player.getMaxHealth() - 20f != healthIncrease) {
 					player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20f + healthIncrease);
@@ -85,27 +97,30 @@ public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteIt
 				if (armourCount == 4 && player.getFoodStats().getFoodLevel() > 0) {
 					if (spectriteArmourBonusMode.ordinal() > 2) {
 						if (player.getActivePotionEffect(MobEffects.SPEED) == null) {
-							player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 220, SpectriteConfig.spectriteArmourBonusMode.ordinal() - (!allEnhanced ? 3 : 2), true, true));
+							player.addPotionEffect(new PotionEffect(MobEffects.SPEED, 220, SpectriteConfig.items.spectriteArmourBonusMode.ordinal() - (!allEnhanced ? 3 : 2), true, true));
 						}
 						if (player.getActivePotionEffect(MobEffects.STRENGTH) == null) {
-							player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 220, SpectriteConfig.spectriteArmourBonusMode.ordinal() - (!allEnhanced ? 3 : 2), true, true));
+							player.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 220, SpectriteConfig.items.spectriteArmourBonusMode.ordinal() - (!allEnhanced ? 3 : 2), true, true));
 						}
 						if (player.getActivePotionEffect(MobEffects.RESISTANCE) == null) {
-							player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 220, SpectriteConfig.spectriteArmourBonusMode.ordinal() - (!allEnhanced ? 3 : 2), true, true));
+							player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 220, SpectriteConfig.items.spectriteArmourBonusMode.ordinal() - (!allEnhanced ? 3 : 2), true, true));
 						}
 						if (player.getActivePotionEffect(MobEffects.FIRE_RESISTANCE) == null) {
-							player.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 220, SpectriteConfig.spectriteArmourBonusMode.ordinal() - (!allEnhanced ? 3 : 2), true, true));
+							player.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 220, SpectriteConfig.items.spectriteArmourBonusMode.ordinal() - (!allEnhanced ? 3 : 2), true, true));
 						}
 						spectriteResistanceLevel++;
 					}
 					if (allEnhanced) {
 						spectriteResistanceLevel++;
 					}
-					if (player.getActivePotionEffect(MobEffects.REGENERATION) == null) {
-						player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 220, Math.max(SpectriteConfig.spectriteArmourBonusMode.ordinal() - 1, 0), true, true));
+					if ((!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == ModItems.spectrite_orb)
+						|| (!player.getHeldItemOffhand().isEmpty() && player.getHeldItemOffhand().getItem() == ModItems.spectrite_orb)) {
+						if (player.getActivePotionEffect(MobEffects.REGENERATION) == null) {
+							player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 220, Math.max(SpectriteConfig.items.spectriteArmourBonusMode.ordinal() - 1, 0), true, true));
+						}
 					}
 					if (spectriteResistanceLevel >= 0 && player.getActivePotionEffect(ModPotions.SPECTRITE_RESISTANCE) == null) {
-						player.addPotionEffect(new PotionEffectSpectrite(ModPotions.SPECTRITE_RESISTANCE, 16, spectriteResistanceLevel, true, true));
+						player.addPotionEffect(new PotionEffect(ModPotions.SPECTRITE_RESISTANCE, 16, spectriteResistanceLevel, true, true));
 					}
 				}
 			}
@@ -113,7 +128,7 @@ public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteIt
     }
 	
 	public float getHealthIncreaseValue(boolean ignoreConfig) {
-		float healthIncreaseValue = 0f;
+		float healthIncreaseValue;
 		
 		if (this.armorType == EntityEquipmentSlot.HEAD) {
 			healthIncreaseValue = 4f;
@@ -126,7 +141,7 @@ public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteIt
 		}
 		
 		if (!ignoreConfig) {
-			healthIncreaseValue *= SpectriteConfig.spectriteArmourBonusMode.getHealthIncreaseMultiplier();
+			healthIncreaseValue *= SpectriteConfig.items.spectriteArmourBonusMode.getHealthIncreaseMultiplier();
 		}
 		
 		return healthIncreaseValue;

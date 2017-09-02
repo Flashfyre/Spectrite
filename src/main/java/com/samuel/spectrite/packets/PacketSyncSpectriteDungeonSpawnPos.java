@@ -1,7 +1,6 @@
 package com.samuel.spectrite.packets;
 
 import com.samuel.spectrite.init.ModWorldGen;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;

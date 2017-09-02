@@ -1,29 +1,9 @@
 package com.samuel.spectrite.init;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.samuel.spectrite.blocks.BlockDiamondLadder;
-import com.samuel.spectrite.blocks.BlockFastUpdatingBeacon;
-import com.samuel.spectrite.blocks.BlockMoltenSpectrite;
-import com.samuel.spectrite.blocks.BlockSpectrite;
-import com.samuel.spectrite.blocks.BlockSpectriteBone;
-import com.samuel.spectrite.blocks.BlockSpectriteBrickSlabDouble;
-import com.samuel.spectrite.blocks.BlockSpectriteBrickSlabHalf;
-import com.samuel.spectrite.blocks.BlockSpectriteBrickStairs;
-import com.samuel.spectrite.blocks.BlockSpectriteBricks;
-import com.samuel.spectrite.blocks.BlockSpectriteChest;
-import com.samuel.spectrite.blocks.BlockSpectriteFire;
-import com.samuel.spectrite.blocks.BlockSpectriteGlass;
-import com.samuel.spectrite.blocks.BlockSpectriteLadder;
-import com.samuel.spectrite.blocks.BlockSpectriteOre;
-import com.samuel.spectrite.blocks.BlockSpectritePortal;
-import com.samuel.spectrite.blocks.BlockSpectriteSand;
-import com.samuel.spectrite.blocks.BlockSpectriteWitherSkeletonSkull;
+import com.samuel.spectrite.blocks.*;
 import com.samuel.spectrite.etc.FluidMoltenSpectrite;
 import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.items.ItemBlockMeta;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockSlab;
@@ -39,6 +19,9 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ModBlocks {
 
@@ -57,7 +40,7 @@ public class ModBlocks {
 	public static BlockSpectriteBrickSlabDouble spectrite_brick_slab_double;
 	public static BlockDiamondLadder diamond_ladder;
 	public static BlockSpectriteLadder spectrite_ladder;
-	public static BlockSpectriteWitherSkeletonSkull spectrite_wither_skeleton_skull;
+	public static BlockSpectriteSkull spectrite_skull;
 	public static BlockFastUpdatingBeacon fast_updating_beacon;
 	public static BlockSpectritePortal spectrite_portal;
 	public static BlockSpectriteFire spectrite_fire;
@@ -93,8 +76,7 @@ public class ModBlocks {
 			.setHardness(50.0F).setResistance(6000.0F).setLightLevel(0.875F)
 			.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
 		(spectrite_sand = new BlockSpectriteSand())
-			.setHardness(22.5F).setResistance(45.0F).setLightLevel(0.5F)
-			.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+			.setHardness(22.5F).setResistance(45.0F).setLightLevel(0.5F);
 		(spectrite_glass = new BlockSpectriteGlass())
 			.setHardness(22.5F).setResistance(60.0F).setLightLevel(0.75F)
 			.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
@@ -117,7 +99,7 @@ public class ModBlocks {
 			.setHardness(5.0F).setResistance(30.0F);
 		(spectrite_ladder = new BlockSpectriteLadder())
 			.setHardness(35.0F).setResistance(6000.0F).setLightLevel(0.75F);
-		(spectrite_wither_skeleton_skull = new BlockSpectriteWitherSkeletonSkull()).setHardness(50.0F)
+		(spectrite_skull = new BlockSpectriteSkull()).setHardness(50.0F)
 			.setResistance(6000.0F).setLightLevel(0.75F);
 		(fast_updating_beacon = new BlockFastUpdatingBeacon()).setLightLevel(1.0F);
 		(spectrite_portal = new BlockSpectritePortal()).setHardness(-1.0F).setResistance(6000000.0F);
@@ -143,7 +125,7 @@ public class ModBlocks {
 		registerSlabBlock(blockRegistry, spectrite_brick_slab_half, spectrite_brick_slab_double, "spectrite_brick_slab");
 		registerBlock(blockRegistry, diamond_ladder, "diamond_ladder");
 		registerBlock(blockRegistry, spectrite_ladder, "spectrite_ladder");
-		registerBlock(blockRegistry, spectrite_wither_skeleton_skull, null, "spectrite_wither_skeleton_skull");
+		registerBlock(blockRegistry, spectrite_skull, null, "spectrite_skull");
 		registerBlock(blockRegistry, fast_updating_beacon, null, "fast_updating_beacon");
 		registerBlock(blockRegistry, spectrite_portal, null, "spectrite_portal");
 		registerBlock(blockRegistry, spectrite_fire, null, "spectrite_fire");

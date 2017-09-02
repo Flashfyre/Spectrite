@@ -1,10 +1,7 @@
 package com.samuel.spectrite.client.renderer;
 
-import java.util.HashMap;
-
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.init.ModBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -16,9 +13,13 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.HashMap;
+
+@SideOnly(Side.CLIENT)
 public class BlockRenderRegister {
-	public static String modid = Spectrite.MOD_ID;
 
 	@SubscribeEvent
 	public void onRegisterItemBlockModels(ModelRegistryEvent event) {
@@ -69,6 +70,6 @@ public class BlockRenderRegister {
 		String name) {
 		Item item = Item.getItemFromBlock(block);
 		ModelLoader.setCustomModelResourceLocation(item, meta,
-			new ModelResourceLocation(modid + ":" + name, "inventory"));
+			new ModelResourceLocation(Spectrite.MOD_ID + ":" + name, "inventory"));
 	}
 }

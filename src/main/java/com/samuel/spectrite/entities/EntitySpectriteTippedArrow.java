@@ -1,12 +1,9 @@
 package com.samuel.spectrite.entities;
 
-import java.util.Set;
-
 import com.google.common.collect.Sets;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.init.ModPotions;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityTippedArrow;
@@ -19,10 +16,11 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
-import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Set;
 
 public class EntitySpectriteTippedArrow extends EntityArrow {
 	
@@ -30,7 +28,7 @@ public class EntitySpectriteTippedArrow extends EntityArrow {
 	private Potion potion;
     private final Set<PotionEffect> customPotionEffects = Sets.<PotionEffect>newHashSet();
 	
-	public EntitySpectriteTippedArrow(EntityTippedArrow arrow,  PotionType potionType) {
+	public EntitySpectriteTippedArrow(EntityTippedArrow arrow, PotionType potionType) {
 		super(arrow.getEntityWorld(), arrow.shootingEntity != null ? (EntityLivingBase) arrow.shootingEntity : null);
 		float velocity = Math.min(arrow.getEntityWorld().rand.nextFloat() + 0.25f, 1.0f);
 		if (this.shootingEntity != null) {
@@ -41,13 +39,7 @@ public class EntitySpectriteTippedArrow extends EntityArrow {
 		}
 		this.setPotionEffect(potionType);
 	}
-	
-	public EntitySpectriteTippedArrow(World worldIn, double x, double y, double z)
-    {
-        this(worldIn);
-        this.setPosition(x, y, z);
-    }
-	
+
 	public EntitySpectriteTippedArrow(World worldIn) {
 		super(worldIn);
 	}
@@ -105,7 +97,7 @@ public class EntitySpectriteTippedArrow extends EntityArrow {
 
     private void spawnPotionParticles(int particleCount)
     {
-    	int offsetLevel = this.potionType.equals(ModPotions.SPECTRITE) ? 0 : this.potion.equals(ModPotions.SPECTRITE_DAMAGE) ? 1 : 2;
+    	int offsetLevel = this.potionType == PotionTypes.EMPTY || ModPotions.SPECTRITE.equals(potion) ? 0 : ModPotions.SPECTRITE_DAMAGE.equals(this.potion) ? 1 : 2;
         int i = SpectriteHelper.getCurrentSpectriteColour(offsetLevel);
 
         if (particleCount > 0)
@@ -121,12 +113,6 @@ public class EntitySpectriteTippedArrow extends EntityArrow {
             }
         }
     }
-
-    public static void registerFixesTippedArrow(DataFixer fixer)
-    {
-        EntityArrow.registerFixesArrow(fixer, "TippedArrow");
-    }
-
     
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
@@ -216,7 +202,7 @@ public class EntitySpectriteTippedArrow extends EntityArrow {
     {
         if (id == 0)
         {
-        	int offsetLevel = this.potionType.equals(ModPotions.SPECTRITE) ? 0 : this.potion.equals(ModPotions.SPECTRITE_DAMAGE) ? 1 : 2;
+        	int offsetLevel = this.potionType == PotionTypes.EMPTY || ModPotions.SPECTRITE.equals(this.potion) ? 0 : ModPotions.SPECTRITE_DAMAGE.equals(this.potion) ? 1 : 2;
             int i = SpectriteHelper.getCurrentSpectriteColour(offsetLevel);
 
             if (i != -1)

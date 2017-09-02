@@ -1,0 +1,6 @@
+{
+    "parent": "spectrite:item/spectrite_wither_rod",
+    "textures": {
+        "rod": "spectrite:entities/spectrite_wither_rod_invulnerable/17"
+    }
+}

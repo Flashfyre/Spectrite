@@ -1,35 +1,42 @@
 package com.samuel.spectrite.items;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
 import com.samuel.spectrite.etc.SpectriteHelper;
-
+import com.samuel.spectrite.init.ModItems;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Random;
+
 public interface IPerfectSpectriteItem {
 
 	default String getMultiColouredDisplayName(ItemStack stack, String displayName) {
-		return SpectriteHelper.getMultiColouredString(displayName, this instanceof ItemSpectriteLegendBlade);
+		return SpectriteHelper.getMultiColouredString(displayName,this == ModItems.spectrite_sword_2 || (this == ModItems.spectrite_wither_rod_invulnerable));
 	}
-    
-    public default boolean onEntityItemUpdate(EntityItem entityItem) {
-    	entityItem.onUpdate();
-    	
-    	Field delayBeforeCanPickupField = SpectriteHelper.findObfuscatedField(EntityItem.class, new String[] { "delayBeforeCanPickup", "field_70532_c"});
-    	
+
+    default boolean onEntitySpectriteItemUpdate(EntityItem entityItem) {
+	    Field randomField = SpectriteHelper.findObfuscatedField(Entity.class, "rand", "field_70146_Z");
+    	Field delayBeforeCanPickupField = SpectriteHelper.findObfuscatedField(EntityItem.class, "delayBeforeCanPickup", "field_145804_b");
+
+        Random rand;
+
 		try {
+            rand = (Random) randomField.get(entityItem);
+
 			int delayBeforeCanPickup = delayBeforeCanPickupField.getInt(entityItem);
 			if (delayBeforeCanPickup > 0 && delayBeforeCanPickup != 32767)
 	        {
 	            delayBeforeCanPickupField.set(entityItem, --delayBeforeCanPickup);
 	        }
-			delayBeforeCanPickup = delayBeforeCanPickupField.getInt(entityItem);
 		} catch (Exception e1) {
+		    rand = new Random();
 			e1.printStackTrace();
 		}
 
@@ -51,7 +58,7 @@ public interface IPerfectSpectriteItem {
         }
         else
         {
-        	Method pushOutOfBlocks = SpectriteHelper.findObfuscatedMethod(EntityItem.class, "pushOutOfBlocks", "func_145771_j", double.class, double.class, double.class);
+        	Method pushOutOfBlocks = SpectriteHelper.findObfuscatedMethod(Entity.class, "pushOutOfBlocks", "func_145771_j", double.class, double.class, double.class);
             try {
 				entityItem.noClip = (boolean) pushOutOfBlocks.invoke(entityItem, entityItem.posX, (entityItem.getEntityBoundingBox().minY + entityItem.getEntityBoundingBox().maxY) / 2.0D, entityItem.posZ);
 			} catch (Exception e) {
@@ -64,8 +71,17 @@ public interface IPerfectSpectriteItem {
 
         if (flag || entityItem.ticksExisted % 25 == 0)
         {
+            if (entityItem.world.getBlockState(new BlockPos(entityItem)).getMaterial() == Material.LAVA)
+            {
+                entityItem.motionY = 0.20000000298023224D;
+                entityItem.motionX = (double)((rand.nextFloat() - rand.nextFloat()) * 0.2F);
+                entityItem.motionZ = (double)((rand.nextFloat() - rand.nextFloat()) * 0.2F);
+                entityItem.playSound(SoundEvents.ENTITY_GENERIC_BURN, 0.4F, 2.0F + rand.nextFloat() * 0.4F);
+            }
+
             if (!entityItem.world.isRemote)
             {
+
             	Method searchForOtherItemsNearby = SpectriteHelper.findObfuscatedMethod(EntityItem.class, "searchForOtherItemsNearby", "func_85054_d");
             	try {
 					searchForOtherItemsNearby.invoke(entityItem);
@@ -91,14 +107,15 @@ public interface IPerfectSpectriteItem {
             entityItem.motionY *= -0.5D;
         }
 
-        if (entityItem.getAge() != -32768)
-        {
-        	Field ageField = SpectriteHelper.findObfuscatedField(EntityItem.class, new String[] { "age", "field_174852_ax"});
-            try {
-				ageField.set(entityItem, ageField.getInt(entityItem) + 1);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+        Field ageField = SpectriteHelper.findObfuscatedField(EntityItem.class, "age", "field_70292_b");
+        int age = 0;
+        try {
+            age = ((int) ageField.get(entityItem));
+            if (age != -32768) {
+                ageField.set(entityItem, ageField.getInt(entityItem) + 1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         entityItem.handleWaterMovement();
@@ -116,9 +133,9 @@ public interface IPerfectSpectriteItem {
             }
         }
 
-        ItemStack item = entityItem.getEntityItem();
+        ItemStack item = entityItem.getItem();
 
-        if (!entityItem.world.isRemote && entityItem.getAge() >= entityItem.lifespan)
+        if (!entityItem.world.isRemote && age >= entityItem.lifespan)
         {
             int hook = net.minecraftforge.event.ForgeEventFactory.onItemExpire(entityItem, item);
             if (hook < 0) entityItem.setDead();
@@ -129,5 +146,9 @@ public interface IPerfectSpectriteItem {
             entityItem.setDead();
         }
         return true;
+    }
+
+    default int getEntitySpectriteItemLifespan() {
+        return 1728000;
     }
 }

@@ -1,14 +1,10 @@
 package com.samuel.spectrite.init;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.common.base.Predicate;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.enchantments.EnchantmentSpectriteEnhance;
 import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.items.IPerfectSpectriteItem;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantment.Rarity;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -18,6 +14,9 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ModEnchantments {
 	

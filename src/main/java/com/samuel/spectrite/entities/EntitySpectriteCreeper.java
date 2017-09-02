@@ -1,31 +1,28 @@
 package com.samuel.spectrite.entities;
 
-import java.lang.reflect.Field;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
+import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.init.ModBiomes;
 import com.samuel.spectrite.init.ModLootTables;
 import com.samuel.spectrite.init.ModPotions;
 import com.samuel.spectrite.init.ModSounds;
 import com.samuel.spectrite.items.ItemSpectriteShield;
 import com.samuel.spectrite.items.ItemSpectriteShieldSpecial;
-import com.samuel.spectrite.potions.PotionEffectSpectrite;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.item.ItemShield;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
+
+import javax.annotation.Nullable;
+import java.lang.reflect.Field;
+import java.util.List;
 
 public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteMob {
 	
@@ -41,6 +38,7 @@ public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteM
     	if (fuseTimeField == null) {
     		fuseTimeField = SpectriteHelper.findObfuscatedField(EntityCreeper.class, new String[] { "fuseTime", "field_82225_f" });
     	}
+    	this.experienceValue = 20;
 	}
 	
 	/**
@@ -83,18 +81,6 @@ public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteM
     }
 	
 	@Override
-	public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
-        
-        if (!this.world.isRemote) {
-	        if (this.getActivePotionEffect(ModPotions.SPECTRITE_RESISTANCE) == null) {
-				this.addPotionEffect(new PotionEffectSpectrite(ModPotions.SPECTRITE_RESISTANCE, 16, 0, true, true));
-			}
-        }
-    }
-	
-	@Override
 	protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
@@ -119,7 +105,8 @@ public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteM
             float f = this.getPowered() ? 2.0F : 1.0F;
             this.doSpectriteDamage();
             this.dead = true;
-            this.world.createExplosion(this, this.posX, this.posY, this.posZ, this.explosionRadius * f, flag);
+			Spectrite.Proxy.newSpectriteExplosion(this.world,this, this.posX, this.posY, this.posZ,
+				this.explosionRadius * f, false, flag, false);
             this.setDead();
             this.spawnLingeringCloud();
         }
@@ -131,8 +118,7 @@ public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteM
     	List<Entity> surrounding = world.getEntitiesWithinAABBExcludingEntity(this,
 			new AxisAlignedBB(pos.north(power).west(power).down(power),
 			this.getPosition().south(power).east(power).up(power)));
-	
-		EnumParticleTypes particle = EnumParticleTypes.EXPLOSION_HUGE;
+
 		switch (power) {
 			case 5:
 				world.playSound(null, pos, ModSounds.explosion, SoundCategory.PLAYERS, 0.75F,
@@ -149,15 +135,9 @@ public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteM
 					1.0F);
 		}
 		
-		((WorldServer) this.world).spawnParticle(particle,
-			particle.getShouldIgnoreRange(), pos.getX(),
-			pos.getY(), pos.getZ(), power == 4 ? 3 : 7,
-			world.rand.nextGaussian() * (power - 3), world.rand.nextGaussian() * (power - 3),
-			world.rand.nextGaussian() * (power - 3), 0.0D, new int[0]);
-		
 		for (int s = 0; s < surrounding.size(); s++) {
 			if (surrounding.get(s) instanceof EntityLivingBase &&
-				(!((EntityLivingBase) surrounding.get(s)).isOnSameTeam(this))) {
+				(!(surrounding.get(s)).isOnSameTeam(this))) {
 				EntityLivingBase curEntity = ((EntityLivingBase) surrounding.get(s));
 				double distance = curEntity.getDistanceToEntity(this);
 				int relPower = (int) Math.ceil(power - distance);
@@ -202,6 +182,9 @@ public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteM
 	public boolean getCanSpawnHere()
     {
 		BlockPos pos = new BlockPos(this);
+
+		if (this.world.getBiome(pos) != ModBiomes.spectrite_dungeon)
+			return true;
 		
 		int spawnChance = (pos.getY() + 8) >> 3;
 		boolean shouldSpawn = spawnChance == 1 || (spawnChance == 2 && rand.nextBoolean()) || (spawnChance == 3 && rand.nextInt(3) == 0);
@@ -216,16 +199,16 @@ public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteM
 
     private void spawnLingeringCloud()
     {
-        EntitySpectriteAreaEffectCloud entityareaeffectcloud = new EntitySpectriteAreaEffectCloud(this.world, this.posX, this.posY, this.posZ);
-        entityareaeffectcloud.setRadius((this.explosionRadius - 0.5f) + (this.getPowered() ? 1f : 0f));
-        entityareaeffectcloud.setRadiusOnUse(-0.5F);
-        entityareaeffectcloud.setWaitTime(10);
-        entityareaeffectcloud.setDuration(entityareaeffectcloud.getDuration() / 2);
-        entityareaeffectcloud.setRadiusPerTick(-entityareaeffectcloud.getRadius() / entityareaeffectcloud.getDuration());
+        EntitySpectriteAreaEffectCloud entitySpectriteAreaEffectCloud = new EntitySpectriteAreaEffectCloud(this.world, this.posX, this.posY, this.posZ);
+        entitySpectriteAreaEffectCloud.setRadius((this.explosionRadius - 0.5f) + (this.getPowered() ? 1f : 0f));
+        entitySpectriteAreaEffectCloud.setRadiusOnUse(-0.5F);
+        entitySpectriteAreaEffectCloud.setWaitTime(10);
+        entitySpectriteAreaEffectCloud.setDuration(entitySpectriteAreaEffectCloud.getDuration() / 2);
+        entitySpectriteAreaEffectCloud.setRadiusPerTick(-entitySpectriteAreaEffectCloud.getRadius() / entitySpectriteAreaEffectCloud.getDuration());
 
-        entityareaeffectcloud.setPotionType(this.getPowered() ? ModPotions.SPECTRITE_DAMAGE_IV : ModPotions.SPECTRITE_DAMAGE_V);
-        entityareaeffectcloud.addEffect(new PotionEffect(ModPotions.SPECTRITE_DAMAGE, 25, this.getPowered() ? 4 : 3));
+        entitySpectriteAreaEffectCloud.setPotionType(this.getPowered() ? ModPotions.SPECTRITE_DAMAGE_IV : ModPotions.SPECTRITE_DAMAGE_V);
+        entitySpectriteAreaEffectCloud.addEffect(new PotionEffect(ModPotions.SPECTRITE_DAMAGE, 25, this.getPowered() ? 4 : 3));
         
-        this.world.spawnEntity(entityareaeffectcloud);
+        this.world.spawnEntity(entitySpectriteAreaEffectCloud);
     }
 }

@@ -1,9 +1,9 @@
 package com.samuel.spectrite.entities;
 
 import com.samuel.spectrite.Spectrite;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -14,6 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -77,9 +78,11 @@ public abstract class EntitySpectriteFireball extends Entity {
         this.motionX = 0.0D;
         this.motionY = 0.0D;
         this.motionZ = 0.0D;
-        accelX = accelX + this.rand.nextGaussian() * 0.4D;
-        accelY = accelY + this.rand.nextGaussian() * 0.4D;
-        accelZ = accelZ + this.rand.nextGaussian() * 0.4D;
+        if (!(shootingEntity instanceof EntityPlayer)) {
+            accelX = accelX + this.rand.nextGaussian() * 0.4D;
+            accelY = accelY + this.rand.nextGaussian() * 0.4D;
+            accelZ = accelZ + this.rand.nextGaussian() * 0.4D;
+        }
         double d0 = MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
         this.accelerationX = accelX / d0 * 0.1D;
         this.accelerationY = accelY / d0 * 0.1D;
@@ -119,7 +122,6 @@ public abstract class EntitySpectriteFireball extends Entity {
             {
                 for (int i = 0; i < 4; ++i)
                 {
-                    float f1 = 0.25F;
                     this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * 0.25D, this.posY - this.motionY * 0.25D, this.posZ - this.motionZ * 0.25D, this.motionX, this.motionY, this.motionZ);
                 }
 
@@ -132,8 +134,8 @@ public abstract class EntitySpectriteFireball extends Entity {
             this.motionX *= f;
             this.motionY *= f;
             this.motionZ *= f;
-            Spectrite.Proxy.spawnSpectriteSmokeNormalParticle(world, this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
             this.setPosition(this.posX, this.posY, this.posZ);
+            Spectrite.Proxy.spawnSpectriteSmokeNormalParticle(world, this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
         }
         else
         {
@@ -169,6 +171,9 @@ public abstract class EntitySpectriteFireball extends Entity {
         compound.setTag("direction", this.newDoubleNBTList(new double[] {this.motionX, this.motionY, this.motionZ}));
         compound.setTag("power", this.newDoubleNBTList(new double[] {this.accelerationX, this.accelerationY, this.accelerationZ}));
         compound.setInteger("life", this.ticksAlive);
+        if (this.shootingEntity != null) {
+            compound.setUniqueId("shootingEntity", this.shootingEntity.getUniqueID());
+        }
     }
 
     /**
@@ -190,6 +195,10 @@ public abstract class EntitySpectriteFireball extends Entity {
         }
 
         this.ticksAlive = compound.getInteger("life");
+
+        if (!this.world.isRemote && compound.hasKey("shootingEntity")) {
+            ((WorldServer) this.world).getEntityFromUuid(compound.getUniqueId("shootingEntity"));
+        }
 
         if (compound.hasKey("direction", 9) && compound.getTagList("direction", 6).tagCount() == 3)
         {
@@ -233,23 +242,23 @@ public abstract class EntitySpectriteFireball extends Entity {
         {
             this.setBeenAttacked();
 
-            if (source.getEntity() != null)
+            if (source.getTrueSource() != null)
             {
-                Vec3d vec3d = source.getEntity().getLookVec();
+                Vec3d vec3d = source.getTrueSource().getLookVec();
 
                 if (vec3d != null)
                 {
-                    this.motionX = vec3d.xCoord;
-                    this.motionY = vec3d.yCoord;
-                    this.motionZ = vec3d.zCoord;
+                    this.motionX = vec3d.x;
+                    this.motionY = vec3d.y;
+                    this.motionZ = vec3d.z;
                     this.accelerationX = this.motionX * 0.1D;
                     this.accelerationY = this.motionY * 0.1D;
                     this.accelerationZ = this.motionZ * 0.1D;
                 }
 
-                if (source.getEntity() instanceof EntityLivingBase)
+                if (source.getTrueSource() instanceof EntityLivingBase)
                 {
-                    this.shootingEntity = (EntityLivingBase)source.getEntity();
+                    this.shootingEntity = (EntityLivingBase)source.getTrueSource();
                 }
 
                 return true;

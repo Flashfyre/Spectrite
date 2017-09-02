@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "spectrite:spectrite_sand"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "spectrite:spectrite_dust"
+    }
+  }
+}

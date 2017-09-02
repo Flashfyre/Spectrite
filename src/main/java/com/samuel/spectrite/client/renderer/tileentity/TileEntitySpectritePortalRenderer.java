@@ -1,10 +1,6 @@
 package com.samuel.spectrite.client.renderer.tileentity;
 
-import java.nio.FloatBuffer;
-import java.util.Random;
-
 import com.samuel.spectrite.tileentity.TileEntitySpectritePortal;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GLAllocation;
@@ -16,6 +12,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.nio.FloatBuffer;
+import java.util.Random;
 
 @SideOnly(Side.CLIENT)
 public class TileEntitySpectritePortalRenderer extends TileEntitySpecialRenderer<TileEntitySpectritePortal> {
@@ -29,7 +28,7 @@ public class TileEntitySpectritePortalRenderer extends TileEntitySpecialRenderer
     private FloatBuffer buffer = GLAllocation.createDirectFloatBuffer(16);
 
     @Override
-    public void func_192841_a(TileEntitySpectritePortal te, double x, double y, double z, float partialTick, int breakStage, float partial) {
+    public void render(TileEntitySpectritePortal te, double x, double y, double z, float partialTick, int breakStage, float partial) {
         GlStateManager.disableLighting();
         RANDOM.setSeed(31100L);
         GlStateManager.getFloat(2982, MODELVIEW);
@@ -58,7 +57,7 @@ public class TileEntitySpectritePortalRenderer extends TileEntitySpecialRenderer
             {
                 this.bindTexture(SPECTRITE_PORTAL_TEXTURE);
                 flag = true;
-                Minecraft.getMinecraft().entityRenderer.func_191514_d(true);
+                Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
             }
 
             if (j == 1)
@@ -165,7 +164,7 @@ public class TileEntitySpectritePortalRenderer extends TileEntitySpecialRenderer
 
         if (flag)
         {
-            Minecraft.getMinecraft().entityRenderer.func_191514_d(false);
+            Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
         }
     }
     

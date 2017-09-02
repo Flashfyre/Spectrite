@@ -1,41 +1,20 @@
 package com.samuel.spectrite.eventhandlers;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.List;
-
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.blocks.BlockSpectrite;
 import com.samuel.spectrite.capabilities.ISpectriteBossCapability;
 import com.samuel.spectrite.capabilities.SpectriteBossCapability;
 import com.samuel.spectrite.capabilities.SpectriteBossProvider;
-import com.samuel.spectrite.entities.EntitySpectriteAreaEffectCloud;
-import com.samuel.spectrite.entities.EntitySpectriteArrow;
-import com.samuel.spectrite.entities.EntitySpectriteBlaze;
-import com.samuel.spectrite.entities.EntitySpectriteCreeper;
-import com.samuel.spectrite.entities.EntitySpectriteGolem;
-import com.samuel.spectrite.entities.EntitySpectriteSkeleton;
-import com.samuel.spectrite.entities.EntitySpectriteTippedArrow;
-import com.samuel.spectrite.entities.EntitySpectriteWitherSkeleton;
-import com.samuel.spectrite.entities.ISpectriteBipedMob;
+import com.samuel.spectrite.entities.*;
 import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.init.ModBlocks;
 import com.samuel.spectrite.init.ModItems;
 import com.samuel.spectrite.init.ModPotions;
-import com.samuel.spectrite.init.ModSounds;
 import com.samuel.spectrite.init.ModWorldGen;
-import com.samuel.spectrite.items.IPerfectSpectriteItem;
-import com.samuel.spectrite.items.ItemSpectriteArrow;
-import com.samuel.spectrite.items.ItemSpectriteBow;
-import com.samuel.spectrite.items.ItemSpectriteLegendBlade;
-import com.samuel.spectrite.items.ItemSpectriteOrb;
-import com.samuel.spectrite.items.ItemSpectriteShield;
-import com.samuel.spectrite.items.ItemSpectriteSword;
-import com.samuel.spectrite.items.ItemSpectriteSwordSpecial;
+import com.samuel.spectrite.items.*;
 import com.samuel.spectrite.packets.PacketSyncSpectriteBoss;
 import com.samuel.spectrite.packets.PacketSyncSpectriteDungeonSpawnPos;
-
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockWorldState;
@@ -45,38 +24,34 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAreaEffectCloud;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.AbstractSkeleton;
-import net.minecraft.entity.monster.EntityBlaze;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntityWitherSkeleton;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTippedArrow;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBeacon;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldType;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.StartTracking;
 import net.minecraftforge.event.entity.player.PlayerEvent.StopTracking;
@@ -85,9 +60,17 @@ import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Iterator;
+
 public class SpectriteGeneralEventHandler {
 	
 	private static boolean skipAttackPlayer = false;
+
+	private static Field healthField = null;
+	private static Field immuneToFireField = null;
+
 	private static Field potionField_tippedArrow = null;
 	private static Field potionField_areaEffectCloud = null;
 	private static Method getArrowStackMethod = null;
@@ -102,11 +85,11 @@ public class SpectriteGeneralEventHandler {
 		if (e.getEntity() instanceof EntityLiving) {
 			EntityLivingBase entity = (EntityLivingBase) e.getEntity();
 			if (entity instanceof AbstractSkeleton && !(entity instanceof ISpectriteBipedMob)) {
-				if (!e.getWorld().isRemote && entity instanceof EntityLiving && (SpectriteConfig.spectriteMobSpawnRate > 0d
-						&& (int) entity.getUniqueID().getLeastSignificantBits() % (100 / SpectriteConfig.spectriteMobSpawnRate) == 0)) {
+				if (!e.getWorld().isRemote && entity instanceof EntityLiving && (SpectriteConfig.mobs.spectriteMobSpawnRate > 0d
+						&& (int) entity.getUniqueID().getLeastSignificantBits() % (100 / SpectriteConfig.mobs.spectriteMobSpawnRate) == 0)) {
 					Class entityClass = entity.getClass();
 					EntityLiving spectriteEntity = null;
-					
+
 					if (entityClass == EntitySkeleton.class) {
 						spectriteEntity = new EntitySpectriteSkeleton(entity.getEntityWorld());
 					} else if (entityClass == EntityWitherSkeleton.class) {
@@ -116,7 +99,7 @@ public class SpectriteGeneralEventHandler {
 					} else if (entityClass == EntityBlaze.class) {
 						spectriteEntity = new EntitySpectriteBlaze(entity.getEntityWorld());
 					}
-					
+
 					if (spectriteEntity != null) {
 						e.setCanceled(true);
 						spectriteEntity.setLocationAndAngles(entity.lastTickPosX, entity.lastTickPosY, entity.lastTickPosZ, entity.rotationYaw, entity.rotationPitch);
@@ -125,10 +108,27 @@ public class SpectriteGeneralEventHandler {
 					}
 				}
 			}
+		} else if (e.getEntity() instanceof EntityItem) {
+			EntityItem entityItem = (EntityItem) e.getEntity();
+
+			if (!entityItem.getItem().isEmpty() && entityItem.getItem().getItem() instanceof IPerfectSpectriteItem) {
+				if (healthField == null) {
+					healthField = SpectriteHelper.findObfuscatedField(EntityItem.class, "health", "field_70291_e");
+				}
+				if (immuneToFireField == null) {
+					immuneToFireField = SpectriteHelper.findObfuscatedField(Entity.class, "isImmuneToFire", "field_70178_ae");
+				}
+				try {
+					healthField.set(entityItem, 5000);
+					immuneToFireField.set(entityItem, true);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
 		} else if (e.getEntity() instanceof EntityTippedArrow) {
 			EntityTippedArrow arrow = (EntityTippedArrow) e.getEntity();
 			if (potionField_tippedArrow == null) {
-				potionField_tippedArrow = SpectriteHelper.findObfuscatedField(EntityTippedArrow.class, new String[] { "potion", "field_184560_g" });
+				potionField_tippedArrow = SpectriteHelper.findObfuscatedField(EntityTippedArrow.class, "potion", "field_184560_g");
 			}
 			if (getArrowStackMethod == null) {
 				getArrowStackMethod = SpectriteHelper.findObfuscatedMethod(EntityTippedArrow.class, "getArrowStack", "func_184550_j");
@@ -136,7 +136,7 @@ public class SpectriteGeneralEventHandler {
 			PotionType potionType;
 			try {
 				potionType = (PotionType) potionField_tippedArrow.get(arrow);
-				Potion potion = null;
+				Potion potion;
 				if (!potionType.getEffects().isEmpty() && ((potion = potionType.getEffects().get(0).getPotion()).equals(ModPotions.SPECTRITE) 
 					|| potion.equals(ModPotions.SPECTRITE_DAMAGE) || potion.equals(ModPotions.SPECTRITE_RESISTANCE))) {
 					e.setCanceled(true);
@@ -147,6 +147,9 @@ public class SpectriteGeneralEventHandler {
 						EntitySpectriteTippedArrow newArrow = new EntitySpectriteTippedArrow((EntityTippedArrow) arrowItem.createArrow(e.getWorld(),
 							newStack, arrow.shootingEntity != null ? (EntityLivingBase) arrow.shootingEntity : null), potionType);
 						e.getWorld().spawnEntity(newArrow);
+						if (arrow.shootingEntity != null && arrow.shootingEntity instanceof EntityLivingBase) {
+							SpectriteHelper.damageBow((EntityLivingBase) arrow.shootingEntity, potionType);
+						}
 					}
 				} else if (arrow.shootingEntity != null && arrow.shootingEntity instanceof EntityLivingBase) {
 					EntityLivingBase shootingEntity = (EntityLivingBase) arrow.shootingEntity;
@@ -166,7 +169,7 @@ public class SpectriteGeneralEventHandler {
 				e1.printStackTrace();
 			}
 		} else if (!e.getWorld().isRemote && e.getEntity() instanceof EntityPlayer) {
-			if (e.getWorld().getWorldType() != WorldType.FLAT && e.getWorld().getActualHeight() >= 30 && SpectriteConfig.generateSpectriteDungeon) {
+			if (e.getWorld().getWorldType() != WorldType.FLAT && e.getWorld().getActualHeight() >= 30 && SpectriteConfig.spectriteDungeon.generateSpectriteDungeon) {
 				Spectrite.Network.sendTo(new PacketSyncSpectriteDungeonSpawnPos(ModWorldGen.spectriteDungeon.getSpawnPos()), (EntityPlayerMP) e.getEntity());
 			}
 		} else if (!e.getWorld().isRemote && e.getEntity() instanceof EntityAreaEffectCloud) {
@@ -213,7 +216,7 @@ public class SpectriteGeneralEventHandler {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled=true)
 	public void onLivingAttack(LivingAttackEvent e) {
-		Entity attacker = e.getSource().getEntity();
+		Entity attacker = e.getSource().getTrueSource();
 		EntityLivingBase target = e.getEntityLiving();
 		if (!target.world.isRemote) {
 			if (target instanceof EntityPlayer && e.getAmount() > 0.0F) {
@@ -228,10 +231,8 @@ public class SpectriteGeneralEventHandler {
 				Item heldItem = !heldItemStack.isEmpty() ? heldItemStack.getItem() : null;
 				if (attacker instanceof EntitySpectriteGolem || heldItem instanceof ItemSpectriteSword) {
 					World world = e.getEntityLiving().getEntityWorld();
-					BlockPos pos = new BlockPos(target.getPosition());
 					if (!world.isRemote) {
 						if (!(attacker instanceof EntityPlayer) || (((EntityPlayer) attacker).getCooldownTracker().getCooldown(heldItem, 0) == 0.0f && !attacker.isSneaking())) {
-							WorldServer worldServer = (WorldServer) world;
 							int power;
 							if (!(attacker instanceof EntitySpectriteGolem)) {
 								boolean enhanced = SpectriteHelper.isStackSpectriteEnhanced(heldItemStack);
@@ -240,76 +241,11 @@ public class SpectriteGeneralEventHandler {
 							} else {
 								power = 3;
 							}
-							List<Entity> surrounding = world.getEntitiesWithinAABBExcludingEntity(attacker,
-								new AxisAlignedBB(pos.north(power).west(power).down(power),
-								pos.south(power).east(power).up(power)));
-						
-							EnumParticleTypes particle = null;
-							switch (power) {
-								case 2:
-									particle = EnumParticleTypes.EXPLOSION_LARGE;
-									
-									world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 0.75F,
-										1.0F + (world.rand.nextFloat()) * 0.4F);
-								break;
-								case 3:
-									particle = EnumParticleTypes.EXPLOSION_LARGE;
-									
-									world.playSound(null, pos, ModSounds.explosion, SoundCategory.PLAYERS, 0.75F,
-										1.0F + (world.rand.nextFloat()) * 0.4F);
-								break;
-								case 4:
-									particle = EnumParticleTypes.EXPLOSION_HUGE;
-									
-									world.playSound(null, pos, ModSounds.explosion, SoundCategory.PLAYERS, 0.75F,
-											0.75F + (world.rand.nextFloat()) * 0.4F);
-									
-									world.playSound(null, pos, ModSounds.fatality, SoundCategory.PLAYERS, 1.0F,
-										1.0F);
-									break;
-								default:
-									particle = EnumParticleTypes.EXPLOSION_NORMAL;
-									
-									world.playSound(null, pos, SoundEvents.ENTITY_FIREWORK_LARGE_BLAST, SoundCategory.PLAYERS, 1.0F,
-											1.0F + (world.rand.nextFloat()) * 0.4F);
-							}
-							
-							if (e.getEntityLiving() != null && particle != null) {
-								if (power == 2 || power == 4) {
-									worldServer.spawnParticle(particle,
-										particle.getShouldIgnoreRange(), target.posX,
-										target.getEntityBoundingBox().minY, target.posZ, 1,
-										world.rand.nextGaussian() * 0.25D, world.rand.nextGaussian() * 0.25D,
-										world.rand.nextGaussian() * 0.25D, 0.0D, new int[0]);
-								} else {
-									double offsetX = world.rand.nextGaussian() * 0.25D, offsetY = world.rand.nextGaussian() * 0.25D, offsetZ = world.rand.nextGaussian() * 0.25D;
-									
-									for (int f = 0; f <= EnumFacing.values().length; f++) {
-										BlockPos particleOffsetPos = f == 0 ? pos : pos.offset(EnumFacing.values()[f - 1]);
-										particleOffsetPos.add((particleOffsetPos.getX() - pos.getX()) * 0.5d, (particleOffsetPos.getY() - pos.getY()) * 0.5d,
-											(particleOffsetPos.getZ() - pos.getZ()) * 0.5d);
-										worldServer.spawnParticle(particle, particle.getShouldIgnoreRange(), particleOffsetPos.getX(),
-											 particleOffsetPos.getY(), particleOffsetPos.getZ(), 1, offsetX, offsetY, offsetZ, 0.0D, new int[0]);
-									}
-								}
-							}
-							
-							for (int s = 0; s < surrounding.size(); s++) {
-								if (surrounding.get(s) instanceof EntityLivingBase &&
-									(!((EntityLivingBase) surrounding.get(s)).isOnSameTeam(attacker))) {
-									EntityLivingBase curEntity = ((EntityLivingBase) surrounding.get(s));
-									double distance = curEntity.getDistanceSqToEntity(target);
-									double health = distance >= 1 ? 1.0D - Math.sqrt(distance) / (power + 2) : 1.0D;
-									if (health > 0.0D) {
-										if (SpectriteConfig.spectriteArrowDamageMode != SpectriteConfig.EnumSpectriteArrowDamageMode.EXPLOSION) {
-											ModPotions.SPECTRITE_DAMAGE.affectEntity(attacker, attacker, curEntity, power, health);
-										}
-									}
-								}
-							}
+
+							Spectrite.Proxy.performDispersedSpectriteDamage(world, power, -1, new Vec3d(target.posX, target.getEntityBoundingBox().minY + target.height / 2, target.posZ), attacker, null, world.rand);
 							
 							if (attacker instanceof EntityPlayer && !((EntityPlayer) attacker).isCreative()) {
-								((EntityPlayer) attacker).getCooldownTracker().setCooldown(heldItem, (int) Math.round(SpectriteConfig.spectriteToolCooldown * 20));
+								((EntityPlayer) attacker).getCooldownTracker().setCooldown(heldItem, (int) Math.round(SpectriteConfig.items.spectriteToolCooldown * 20));
 							}
 						}
 					}
@@ -325,15 +261,37 @@ public class SpectriteGeneralEventHandler {
 			}
 		}
 	}
+
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public void onLivingHurt(LivingHurtEvent e) {
+		if (e.getSource().isExplosion()) {
+			if (e.getEntityLiving() instanceof ISpectriteMob) {
+				e.setCanceled(true);
+			} else if (e.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null) {
+				ItemStack helmetStack = e.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+				if (helmetStack.getItem() instanceof ItemSpectriteSkull) {
+					int skullType = ((ItemSpectriteSkull) helmetStack.getItem()).getSkullType();
+					if (skullType > 0) {
+						float damage = e.getAmount() - (skullType * 10);
+						if (damage > 0f) {
+							e.setAmount(damage);
+						} else {
+							e.setCanceled(true);
+						}
+					}
+				}
+			}
+		}
+	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public void onBlockPlaced(PlaceEvent e) {
 		Block block = e.getPlacedBlock().getBlock();
 		if (block == Blocks.PUMPKIN) {
 			BlockPattern golemPattern = BlockSpectrite.getGolemPattern();
-			BlockPattern.PatternHelper blockpattern$patternhelper = golemPattern.match(e.getWorld(), e.getPos());
+			BlockPattern.PatternHelper patternHelper = golemPattern.match(e.getWorld(), e.getPos());
 	
-	        if (blockpattern$patternhelper != null)
+	        if (patternHelper != null)
 	        {
 	        	World world = e.getWorld();
 	        	
@@ -341,18 +299,18 @@ public class SpectriteGeneralEventHandler {
 	            {
 	                for (int k = 0; k < golemPattern.getThumbLength(); ++k)
 	                {
-	                    world.setBlockState(blockpattern$patternhelper.translateOffset(j, k, 0).getPos(), Blocks.AIR.getDefaultState(), 2);
+	                    world.setBlockState(patternHelper.translateOffset(j, k, 0).getPos(), Blocks.AIR.getDefaultState(), 2);
 	                }
 	            }
 	
-	            BlockPos blockpos = blockpattern$patternhelper.translateOffset(1, 2, 0).getPos();
+	            BlockPos blockpos = patternHelper.translateOffset(1, 2, 0).getPos();
 	            EntitySpectriteGolem entitySpectriteGolem = new EntitySpectriteGolem(world, true);
 	            entitySpectriteGolem.setLocationAndAngles(blockpos.getX() + 0.5D, blockpos.getY() + 0.05D, blockpos.getZ() + 0.5D, 0.0F, 0.0F);
 	            world.spawnEntity(entitySpectriteGolem);
 	
-	            for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, entitySpectriteGolem.getEntityBoundingBox().expandXyz(5.0D)))
+	            for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, entitySpectriteGolem.getEntityBoundingBox().grow(5.0D)))
 	            {
-	                CriteriaTriggers.field_192133_m.func_192229_a(player, entitySpectriteGolem);
+	                CriteriaTriggers.SUMMONED_ENTITY.trigger(player, entitySpectriteGolem);
 	            }
 	
 	            for (int j1 = 0; j1 < 120; ++j1)
@@ -365,7 +323,7 @@ public class SpectriteGeneralEventHandler {
 	            {
 	                for (int l1 = 0; l1 < golemPattern.getThumbLength(); ++l1)
 	                {
-	                    BlockWorldState blockworldstate1 = blockpattern$patternhelper.translateOffset(k1, l1, 0);
+	                    BlockWorldState blockworldstate1 = patternHelper.translateOffset(k1, l1, 0);
 	                    world.notifyNeighborsRespectDebug(blockworldstate1.getPos(), Blocks.AIR, false);
 	                }
 	            }
@@ -381,10 +339,10 @@ public class SpectriteGeneralEventHandler {
 					TileEntity te = world.getTileEntity(pos);
 					if (te.getClass() == TileEntityBeacon.class) {
 						if (primaryEffectField == null) {
-							primaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "primaryEffect", "field_146013_m" });
-							secondaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "secondaryEffect", "field_146010_n" });
-							paymentField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "payment", "field_146011_o" });
-							customNameField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "customName", "field_146008_p", });
+							primaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class,  "primaryEffect", "field_146013_m");
+							secondaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, "secondaryEffect", "field_146010_n");
+							paymentField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, "payment", "field_146011_o");
+							customNameField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, "customName", "field_146008_p");
 						}
 						try {
 							Potion primaryEffect = (Potion) primaryEffectField.get(te), secondaryEffect = (Potion) secondaryEffectField.get(te);
@@ -414,10 +372,10 @@ public class SpectriteGeneralEventHandler {
 					TileEntity te = world.getTileEntity(e.getPos());
 					if (te.getClass() == TileEntityBeacon.class) {
 						if (primaryEffectField == null) {
-							primaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "primaryEffect", "field_146013_m" });
-							secondaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "secondaryEffect", "field_146010_n" });
-							paymentField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "payment", "field_146011_o" });
-							customNameField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "customName", "field_146008_p", });
+							primaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class,  "primaryEffect", "field_146013_m");
+							secondaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, "secondaryEffect", "field_146010_n");
+							paymentField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, "payment", "field_146011_o");
+							customNameField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, "customName", "field_146008_p");
 						}
 						try {
 							Potion primaryEffect = (Potion) primaryEffectField.get(te), secondaryEffect = (Potion) secondaryEffectField.get(te);
@@ -469,10 +427,10 @@ public class SpectriteGeneralEventHandler {
 				if (pos.getY() == 256) {
 					TileEntity te = world.getTileEntity(beaconPos);
 					if (primaryEffectField == null) {
-						primaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "primaryEffect", "field_146013_m" });
-						secondaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "secondaryEffect", "field_146010_n" });
-						paymentField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "payment", "field_146011_o" });
-						customNameField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, new String[] { "customName", "field_146008_p", });
+						primaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class,  "primaryEffect", "field_146013_m");
+						secondaryEffectField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, "secondaryEffect", "field_146010_n");
+						paymentField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, "payment", "field_146011_o");
+						customNameField = SpectriteHelper.findObfuscatedField(TileEntityBeacon.class, "customName", "field_146008_p");
 					}
 					try {
 						Potion primaryEffect = (Potion) primaryEffectField.get(te), secondaryEffect = (Potion) secondaryEffectField.get(te);
@@ -493,28 +451,57 @@ public class SpectriteGeneralEventHandler {
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public void onSpectriteBossUpdate(LivingUpdateEvent e) {
+	public void onSpectriteEntityUpdate(LivingUpdateEvent e) {
 		EntityLivingBase entity = e.getEntityLiving();
-		if (entity instanceof ISpectriteBipedMob && ((ISpectriteBipedMob) entity).isBoss()) {
-			final int healRate;
-			final int healingLevel = Math.max(entity.getEntityWorld().getDifficulty().ordinal() - (!entity.getHeldItemOffhand().isEmpty()
-				&& entity.getHeldItemOffhand().getItem().getClass() == ItemSpectriteOrb.class ? 0 : 1), 0);
-			switch (healingLevel) {
-				case 0:
-					healRate = 40;
-					break;
-				case 1:
-					healRate = 20;
-					break;
-				case 2:
-					healRate = 10;
-					break;
-				default:
-					healRate = 5;
-					break;
+		if (entity instanceof ISpectriteMob) {
+			if (entity instanceof ISpectriteBipedMob && ((ISpectriteBipedMob) entity).isBoss()) {
+				final int healRate;
+				final int healingLevel = Math.max(entity.getEntityWorld().getDifficulty().ordinal() - (!entity.getHeldItemOffhand().isEmpty()
+						&& entity.getHeldItemOffhand().getItem().getClass() == ItemSpectriteOrb.class ? 0 : 1), 0);
+				switch (healingLevel) {
+					case 0:
+						healRate = 40;
+						break;
+					case 1:
+						healRate = 20;
+						break;
+					case 2:
+						healRate = 10;
+						break;
+					default:
+						healRate = 5;
+						break;
+				}
+				if (entity.ticksExisted % healRate == 0) {
+					entity.heal(1f);
+				}
 			}
-			if (entity.ticksExisted % healRate == 0) {
-				entity.heal(1f);
+			if (entity.getActivePotionEffect(ModPotions.SPECTRITE_RESISTANCE) == null) {
+				entity.addPotionEffect(new PotionEffect(ModPotions.SPECTRITE_RESISTANCE, 16, entity instanceof ISpectriteBipedMob ?
+					((ISpectriteBipedMob) entity).isHasSpectriteResistance() ? 1 : 0 : 0, true, true));
+			}
+		} else if (entity instanceof EntityPlayer) {
+			ItemStack orbStack = null;
+			boolean hasHealingOrb = (!entity.getHeldItemMainhand().isEmpty() && (orbStack = entity.getHeldItemMainhand()).getItem() == ModItems.spectrite_orb)
+				|| (!entity.getHeldItemOffhand().isEmpty() && (orbStack = entity.getHeldItemOffhand()).getItem() == ModItems.spectrite_orb);
+			int regenLevel = -1;
+			int armourCount = 0;
+			PotionEffect activePotionEffect = entity.getActivePotionEffect(MobEffects.REGENERATION);
+			Iterator<ItemStack> armourIterator = entity.getArmorInventoryList().iterator();
+			while (armourIterator.hasNext()) {
+				ItemStack stack = armourIterator.next();
+				if (stack != null && stack.getItem() instanceof ItemSpectriteArmor) {
+					armourCount++;
+				}
+			}
+			if (armourCount == 4) {
+				regenLevel = (armourCount == 4 ? Math.max(SpectriteConfig.items.spectriteArmourBonusMode.ordinal() - 1, 0) : 0);
+			}
+			if (hasHealingOrb && (((EntityPlayer) entity).getCooldownTracker().getCooldown(orbStack.getItem(), 0) == 0.0f)) {
+				regenLevel += SpectriteHelper.isStackSpectriteEnhanced(orbStack) ? 2 : 1;
+			}
+			if (regenLevel >= 0 && (activePotionEffect == null || activePotionEffect.getAmplifier() < regenLevel)) {
+				entity.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 220, regenLevel, true, true));
 			}
 		}
 	}

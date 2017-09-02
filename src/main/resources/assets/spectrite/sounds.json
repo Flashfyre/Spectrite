@@ -1,5 +1,6 @@
 {
-	"charge": { "category": "block", "sounds": ["spectrite:charge"] },
+	"charge": { "category": "block", "sounds": ["spectrite:charge"], "subtitle": "subtitle.charge" },
 	"explosion": { "category": "block", "sounds": ["spectrite:explode1", "spectrite:explode2", "spectrite:explode3"], "subtitle": "subtitle.explosion" },
-	"fatality": { "category": "block", "sounds": ["spectrite:fatality"] }
+	"fatality": { "category": "block", "sounds": ["spectrite:fatality"] },
+	"preexplosion": { "category": "block", "sounds": ["spectrite:preexplosion"], "subtitle": "subtitle.preexplosion" }
 }

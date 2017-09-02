@@ -1,7 +1,6 @@
 package com.samuel.spectrite.client.renderer.entity;
 
 import com.samuel.spectrite.entities.EntitySpectriteFireball;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;

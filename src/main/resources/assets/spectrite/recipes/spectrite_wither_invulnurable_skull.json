@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "spectrite:spectrite_wither_invulnerable_skull"
+  },
+  "pattern": [
+    " X ",
+    " Y ",
+    "X X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "spectrite:spectrite_wither_skull"
+    },
+    "Y": {
+      "item": "spectrite:spectrite_star"
+    }
+  }
+}

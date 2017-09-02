@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "spectrite:spectrite_wither_torso",
+	"data": 1
+  },
+  "pattern": [
+    " X ",
+    " Y ",
+    "X X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "spectrite:spectrite_wither_torso",
+	  "data": 0
+    },
+    "Y": {
+      "item": "spectrite:spectrite_star"
+    }
+  }
+}

@@ -2,21 +2,16 @@ package com.samuel.spectrite.enchantments;
 
 import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.items.IPerfectSpectriteItem;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 
 public class EnchantmentSpectriteEnhance extends Enchantment {
-	
-	private final EntityEquipmentSlot[] applicableEquipmentTypes;
 
 	public EnchantmentSpectriteEnhance(Rarity rarityIn, EnumEnchantmentType typeIn, EntityEquipmentSlot[] slots) {
 		super(rarityIn, typeIn, slots);
 		this.setName("spectrite_enhance");
-		
-		this.applicableEquipmentTypes = slots;
 	}
 	
 	@Override

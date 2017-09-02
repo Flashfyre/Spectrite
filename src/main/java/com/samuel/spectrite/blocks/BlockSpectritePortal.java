@@ -4,7 +4,6 @@ import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.init.ModWorldGen;
 import com.samuel.spectrite.tileentity.TileEntitySpectritePortal;
 import com.samuel.spectrite.world.WorldGenSpectriteDungeon;
-
 import net.minecraft.block.BlockEndPortal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -33,10 +32,12 @@ public class BlockSpectritePortal extends BlockEndPortal {
      */
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
-        if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss() && !worldIn.isRemote && entityIn.getEntityBoundingBox().intersectsWith(state.getBoundingBox(worldIn, pos).offset(pos)))
+        if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss() && !worldIn.isRemote && entityIn.getEntityBoundingBox().intersects(state.getBoundingBox(worldIn, pos).offset(pos)))
         {
-        	BlockPos spawnPos = SpectriteConfig.generateSpectriteDungeon ? ModWorldGen.spectriteDungeon.getSpawnPos()
-    			: entityIn instanceof EntityPlayer && ((EntityPlayer) entityIn).getBedLocation() != null ? ((EntityPlayer) entityIn).getBedLocation() : worldIn.getSpawnPoint();
+        	BlockPos spawnPos = SpectriteConfig.spectriteDungeon.generateSpectriteDungeon && worldIn.getWorldInfo().isMapFeaturesEnabled()
+                && ModWorldGen.spectriteDungeon.getSpawnPos() != null ? ModWorldGen.spectriteDungeon.getSpawnPos()
+    			: entityIn instanceof EntityPlayer && ((EntityPlayer) entityIn).getBedLocation() != null ?
+                ((EntityPlayer) entityIn).getBedLocation() : worldIn.getSpawnPoint();
             entityIn.setPositionAndUpdate(spawnPos.getX(), WorldGenSpectriteDungeon.getGroundY(spawnPos.getX() >> 4, spawnPos.getZ() >> 4, worldIn) + 5,
         		spawnPos.getZ());
         }
