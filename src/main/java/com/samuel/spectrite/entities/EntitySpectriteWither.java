@@ -387,6 +387,7 @@ public class EntitySpectriteWither extends EntityMob implements IRangedAttackMob
                     }
                 } else {
                     this.setRadialSkullTicks(-1);
+                    this.setRadialSpurts(false);
                     this.radialStartYaw = -999;
                 }
             }
@@ -490,7 +491,6 @@ public class EntitySpectriteWither extends EntityMob implements IRangedAttackMob
         boolean ret = this.world.getDifficulty() == EnumDifficulty.HARD || (this.world.getDifficulty() == EnumDifficulty.NORMAL && this.getHealth() <= this.getMaxHealth() * 0.75f);
         if (ret) {
             if (this.getHealth() <= this.getMaxHealth() * 0.25f) {
-                this.setRadialSpurts(true);
                 if (this.world.getDifficulty() == EnumDifficulty.HARD) {
                     this.setInvulTime(84);
                 }
@@ -727,6 +727,7 @@ public class EntitySpectriteWither extends EntityMob implements IRangedAttackMob
 
                     if (success && amount > 20f && this.getRadialSkullTicks() > -1) {
                         this.setRadialSkullTicks(-1);
+                        this.setRadialSpurts(false);
                         this.radialStartYaw = -999;
                     }
 
