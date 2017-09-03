@@ -480,7 +480,7 @@ public class SpectriteGeneralEventHandler {
 				entity.addPotionEffect(new PotionEffect(ModPotions.SPECTRITE_RESISTANCE, 16, entity instanceof ISpectriteBipedMob ?
 					((ISpectriteBipedMob) entity).isHasSpectriteResistance() ? 1 : 0 : 0, true, true));
 			}
-		} else if (entity instanceof EntityPlayer) {
+		} else if (entity instanceof EntityPlayer && ((EntityPlayer) entity).getFoodStats().getFoodLevel() > 0) {
 			ItemStack orbStack = null;
 			boolean hasHealingOrb = (!entity.getHeldItemMainhand().isEmpty() && (orbStack = entity.getHeldItemMainhand()).getItem() == ModItems.spectrite_orb)
 				|| (!entity.getHeldItemOffhand().isEmpty() && (orbStack = entity.getHeldItemOffhand()).getItem() == ModItems.spectrite_orb);
