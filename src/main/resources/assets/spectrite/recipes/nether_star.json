@@ -1,0 +1,12 @@
+{
+  "result": {
+    "item": "minecraft:nether_star",
+	"count": 5
+  },
+  "ingredients": [
+    {
+      "item": "spectrite:spectrite_star"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}
