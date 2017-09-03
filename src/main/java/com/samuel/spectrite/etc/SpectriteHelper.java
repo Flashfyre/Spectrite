@@ -203,7 +203,7 @@ public class SpectriteHelper {
 				if (!(bowItem instanceof ItemSpectriteBowSpecial)) {
 					bowDamage *= 0.1;
 				} else {
-					bowDamage *= 0.33;
+					bowDamage *= 0.033;
 				}
 			}
 
