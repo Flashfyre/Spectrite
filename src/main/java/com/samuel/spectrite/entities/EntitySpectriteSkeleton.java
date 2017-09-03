@@ -140,7 +140,7 @@ public class EntitySpectriteSkeleton extends EntitySkeleton implements ISpectrit
 			this.setDropChance(EntityEquipmentSlot.HEAD, new Double(SpectriteConfig.mobs.spectriteMobArmourDropRate).floatValue() / (100f / chanceMultiplier));
 			float healthIncrease = helmetItem.getHealthIncreaseValue(true) * (enhanced ? 2f : 1f);
 			maxHealth += healthIncrease;
-			exp += 5 + ((int) healthIncrease >> 1);
+			exp += ((int) healthIncrease >> 1);
 			armourCount++;
 		}
 		if (this.boss || rand.nextInt(4) == 0) {
@@ -157,7 +157,7 @@ public class EntitySpectriteSkeleton extends EntitySkeleton implements ISpectrit
 			this.setDropChance(EntityEquipmentSlot.CHEST, new Double(SpectriteConfig.mobs.spectriteMobArmourDropRate).floatValue() / (100f / chanceMultiplier));
 			float healthIncrease =  chestplateItem.getHealthIncreaseValue(true) * (enhanced ? 2f : 1f);
 			maxHealth += healthIncrease;
-			exp += 5 + ((int) healthIncrease >> 1);
+			exp += ((int) healthIncrease >> 1);
 			armourCount++;
 		}
 		if (this.boss || rand.nextInt(4) == 0) {
@@ -174,7 +174,7 @@ public class EntitySpectriteSkeleton extends EntitySkeleton implements ISpectrit
 			this.setDropChance(EntityEquipmentSlot.LEGS, new Double(SpectriteConfig.mobs.spectriteMobArmourDropRate).floatValue() / (100f / chanceMultiplier));
 			float healthIncrease = leggingsItem.getHealthIncreaseValue(true) * (enhanced ? 2f : 1f);
 			maxHealth += healthIncrease;
-			exp += 5 + ((int) healthIncrease >> 1);
+			exp += ((int) healthIncrease >> 1);
 			armourCount++;
 		}
 		if (this.boss || rand.nextInt(4) == 0) {
@@ -191,14 +191,14 @@ public class EntitySpectriteSkeleton extends EntitySkeleton implements ISpectrit
 			this.setDropChance(EntityEquipmentSlot.FEET, new Double(SpectriteConfig.mobs.spectriteMobArmourDropRate).floatValue() / (100f / chanceMultiplier));
 			float healthIncrease = bootsItem.getHealthIncreaseValue(true) * (enhanced ? 2f : 1f);
 			maxHealth += healthIncrease;
-			exp += 5 + ((int) healthIncrease >> 1);
+			exp += ((int) healthIncrease >> 1);
 			armourCount++;
 		}
 
 		if (armourCount == 4) {
-			exp += 7;
+			exp += 5;
 			if (enhancedCount == 4) {
-				exp += 14;
+				exp += 10;
 				setHasSpectriteResistance(true);
 			}
 		}
