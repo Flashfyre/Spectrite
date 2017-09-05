@@ -19,7 +19,7 @@ There are 2 chances of a Spectrite Ore vein per chunk between height=4 and heigh
 In every world, one Spectrite Dungeon will spawn somewhere, almost always a long journey from the spawn point. It can, however, be tracked down by crafting a Spectrite Compass and following it. The structure of the dungeon is fairly simple, though it should only be entered through its entrance on the surface as every other part of it is surrounded by Molten Spectrite which is much hotter than lava and will likely kill you on contact. This is also a good reason you probably shouldn't break any walls, though there are certain walls with paths on the other side, but none of these paths are exclusively accessed by breaking walls. This dungeon is also, by far, the easiest way to get Spectrite materials and items. The only catch is that it's full of Spectrite mobs. These include Spectrite Skeletons, Spectrite Wither Skeletons, Spectrite Creepers, and Spectrite Golems. These mobs have more health than their regular counterparts, have passive Spectrite Resistance, and will attack with Spectrite Damage which does damage equivalent to an Instant Damage effect of the same level. Spectrite Golems in particular will hit so hard that you need Spectrite Armour to even survive a single hit. Thankfully, unlike the other mobs, they aren't aggressive as long as you don't bump into them, though avoiding them could prove difficult if they are blocking your escape route. There are 3 floors to each dungeon with better loot with every floor. At the very end is a portal that lets you teleport back to the entrance so you don't have to worry about losing all that valuable loot you've collected.
 
 ## Spectrite Skull Structures
-On occasion, a large skull-shaped building made of Spectrite Bone blocks and Spectrite Bricks will spawn, either in the Overworld or the Nether. In the Overworld, they will, by default, usually generate near bedrock level, but they may on rare occasion generate on the surface. In the Nether, they tend to generate at the lowest level that has an accessible space. These structures contain 5 mob spawners: 2 Spectrite Skeleton spawners, 2 Spectrite Wither Skeleton spawners, and 1 Spectrite Blaze spawner. With these mobs, it is quite difficult to get through this small structure on any difficulty, though at the end there is a high tier Spectrite Chest, the same as the best chest at the bottom floor of a Spectrite Dungeon.
+On occasion, a large skull-shaped building made of Spectrite Bone blocks and Spectrite Bricks will spawn, either in the Overworld or the Nether. In the Overworld, they will, by default, usually generate near bedrock level, but they may on rare occasion generate on the surface. In the Nether, they tend to generate at the lowest level that has an accessible space. These structures contain 5 mob spawners: 2 Spectrite Skeleton spawners, 2 Spectrite Wither Skeleton spawners, and 1 Spectrite Blaze spawner. With these mobs, it is quite difficult to get through this small structure on any difficulty, though at the end there is a chest with a loot table of either the mid-tier chest in the Spectrite Dungeon or, sometimes, a high-tier chest. Depending on configuration, this chest may be a Spectrite Chest.
 
 ## Blocks and Items
 
@@ -38,13 +38,18 @@ X　X　X
 X = Spectrite Block;
 Y = Diamond
 
+Smelts Into: Spectrite Block x5
+
 ### Trapped Spectrite Chest
 A Spectrite Chest that functions as a trapped chest.
 
 Crafting Recipe: Spectrite Chest x1, Tripwire Hook x1
+Smelts Into: Spectrite Block x5
 
 ### Spectrite Ore
-An extremely rare ore that can be found in the same place as diamonds in the Overworld, though significantly rarer, but can also be found more commonly in the Nether and The End. 
+An extremely rare ore that can be found in the same place as diamonds in the Overworld, though significantly rarer, but can also be found more commonly in the Nether and The End.
+
+Smelts Into: Spectrite Gem x1
 
 ### Spectrite Block
 A block of pure Spectrite. It can function as a beacon base. It is also used as a component for summoning Spectrite Golems, much like the Iron Golem pattern but with Spectrite Blocks instead of Iron Blocks.
@@ -139,10 +144,21 @@ X　X　X
 X = Spectrite Bone
 
 ### Spectrite Glass
-Glass made of Spectrite Sand. Since Spectrite Sand cannot currently be obtained, the only way to find this is to use a tool with Silk Touch on these blocks in either Spectrite Dungeons or Spectrite Skull structures. Placing this block above an active beacon will result in a hue-changing beacon beam.
+Glass made of Spectrite Sand. Placing this block above an active beacon will result in a hue-changing beacon beam.
 
 ### Spectrite Sand
-A block of granular Spectrite. This block is currently unused and cannot be obtained in survival.
+A block of granular Spectrite. It can be used in place of Soul Sand to summon the Spectrite Wither.
+
+Crafting Recipe:
+
+X　X
+
+X　X
+
+
+X = Spectrite Dust
+
+Smelts Into: Spectrite Glass x1
 
 ### Spectrite Portal
 A portal that takes you to the entrance of the world's Spectrite Dungeon.
@@ -183,10 +199,10 @@ X
 X = Spectrite Gem
 
 ### Spectrite Dust
-A fine powder made of Spectrite found as a drop from Spectrite Creepers. You can use these as an ingredient for Spectrite Damage potions.
+A fine powder made of Spectrite found as a drop from Spectrite Creepers. You can either make Spectrite Sand blocks with these or you can use them as an ingredient for Spectrite Damage potions.
 
 ### Spectrite Bone
-A bone of Spectrite found as a drop from Spectrite Skeletons and Spectrite Wither Skeletons. You can use these to craft Spectrite Bone Blocks which are a very hard building material than cannot be destroyed without a Spectrite Pickaxe.
+A bone of Spectrite found as a drop from Spectrite Skeletons and Spectrite Wither Skeletons. You can use these to craft Spectrite Bone Blocks which are a very hard building material than cannot be destroyed without a Spectrite Pickaxe. They can also be used to repair a Spectrite Wither Rod.
 
 ### Spectrite Brick
 A brick made of Spectrite found as a drop from Spectrite Golems. You can either make Spectrite Bricks blocks with these or you can use them as an ingredient for Spectrite Resistance potions.
@@ -198,6 +214,9 @@ A rod of Spectrite found as a drop from Spectrite Blazes. You can craft these in
 An ingredient for Spectrite Potions.
 
 Crafting Recipe (x2): Spectrite Blaze Rod x1
+
+### Spectrite Star
+The star dropped from a defeated Spectrite Wither. It can be used to create Invulnerable Spectrite Wither parts or can be crafted into 5 Nether Stars.
 
 ### Spectrite Shovel
 An extremely efficient shovel made of Spectrite with a diamond handle. When used on a shovel-effective block, a cross of surrounding weaker or equivalent blocks will also be destroyed, resulting in a maximum of 5 blocks destroyed per use. The surrounding blocks that will be destroyed depend on the player's rotation and perspective. There is a cooldown period (default 1.75s) for destroying 5 shovel-effective blocks and only one block will be destroyed if the shovel is used before this cooldown has finished, though the item will be damaged just as much either way so it is more efficient just to wait for the cooldown to end.
@@ -439,9 +458,9 @@ X = Spectrite Gem;
 Y = Spectrite Block
 
 ### Spectrite Healing Orb
-A prismatic orb filled with healing power that, when used with a right click, will give you 15 seconds of regeneration with a 30 second cooldown (15 seconds between regeneration). If used with full Spectrite Armour, it will enhance your already present regeneration effect. This cannot be crafted and can only be acquired by defeating a Spectrite Boss mob that is holding this orb.
+A prismatic orb filled with healing power that, when used with a right click, will give you 15 seconds of regeneration with a 90 second cooldown (15 seconds between regeneration). If used with full Spectrite Armour, it will enhance your already present regeneration effect. This cannot be crafted and can only be acquired by defeating a Spectrite Boss mob that is holding this orb.
 
-Superchromaticity Effect: Increase regeneration effect time to 30s
+Superchromaticity Effect: Cut cooldown in half
 
 ### Spectrite Compass
 A compass that will direct you towards the Spectrite Dungeon, given that you have the generation of said dungeon enabled in your configuration.
@@ -496,7 +515,93 @@ There are 3 variants: Spectrite Resistance I (0:22), Spectrite Resistance I (1:0
 A tipped arrow that carries a Spectrite Damage effect. It has the same variants as the potions.
 
 ### Spectrite Wither Skeleton Skull
-The skull of a Spectrite Wither Skeleton. In the future, it may be used to summon the (not-yet-existing) Spectrite Wither. For now, it can be used as a decent helmet that, while it cannot be enchanted, never deteriorates.
+The skull of a Spectrite Wither Skeleton. It can be used as part of summoning the Spectrite Wither. It provides passive Spectrite Resistance I when worn.
+
+### Spectrite Wither Skull
+The skull of a Spectrite Wither. It provides passive Spectrite Resistance I and Blast Resistance V when worn.
+
+### Invulnerable Spectrite Wither Skull
+The invulnerable skull of a Spectrite Wither. It provides passive Spectrite Resistance I and Blast Resistance X when worn.
+
+Crafting Recipe:
+
+-　X　-
+
+-　Y　-
+
+X　-　X
+
+
+X = Spectrite Wither Skull;
+Y = Spectrite Star
+
+### Spectrite Wither Torso
+The torso of a Spectrite Wither. Its only use is as a crafting ingredient for a Spectrite Wither Rod.
+
+### Invulnerable Spectrite Wither Torso
+The invulnerable torso of a Spectrite Wither. Its only use is as a crafting ingredient for an Invulnerable Spectrite Wither Rod.
+
+Crafting Recipe:
+
+-　X　-
+
+-　Y　-
+
+X　-　X
+
+
+X = Spectrite Wither Torso;
+Y = Spectrite Star
+
+### Spectrite Wither Tail
+The tail of a Spectrite Wither. Its only use is as a crafting ingredient for a Spectrite Wither Rod.
+
+### Invulnerable Spectrite Wither Tail
+The invulnerable tail of a Spectrite Wither. Its only use is as a crafting ingredient for an Invulnerable Spectrite Wither Rod.
+
+Crafting Recipe:
+
+-　X　-
+
+-　Y　-
+
+X　-　X
+
+
+X = Spectrite Wither Tail;
+Y = Spectrite Star
+
+### Spectrite Wither Rod
+A powerful weapon that can shoot Spectrite Wither skulls with a cooldown. It can be repaired with Spectrite Bones.
+
+Crafting Recipe:
+
+X
+
+Y
+
+Z
+
+
+X = Spectrite Wither Skull;
+Y = Spectrite Wither Torso;
+Z = Spectrite Wither Tail
+
+### Invulnerable Spectrite Wither Rod
+An extremely powerful weapon that can shoot invulnerable Spectrite Wither skulls with a cooldown. Being invulnerable, it does not deteriorate.
+
+Crafting Recipe:
+
+X
+
+Y
+
+Z
+
+
+X = Invulnerable Spectrite Wither Skull;
+Y = Invulnerable Spectrite Wither Torso;
+Z = Invulnerable Spectrite Wither Tail
 
 ### Bucket of Molten Spectrite
 A bucket of deadly Molten Spectrite. Its only practical use is as a last-resort weapon since it cannot be used as a fuel source since it would melt its container. What? You want to know how the bucket can hold it? Well that's obviously becau
@@ -509,13 +614,13 @@ An enchantment that only works on tools and weapons made entirely out of Spectri
 ## Mobs
 
 ### Spectrite Creeper
-A creeper made of Spectrite. It has a bit more health than a regular creeper and its explosion carries a powerful Spectrite Damage effect that leaves behind a lingering cloud of Spectrite Damage. Their Spectrite Damage cloud can be used to create Arrows of Spectrite Damage. They also drop Spectrite Dust which can be used to brew Spectrite Damage potions.
+A creeper made of Spectrite. It has a bit more health than a regular creeper and its explosion carries a powerful Spectrite Damage effect that leaves behind a lingering cloud of Spectrite Damage. They also drop Spectrite Dust which can be used to brew Spectrite Damage potions.
 
 ### Spectrite Skeleton
-A skeleton made of Spectrite. It has a bit more health than a regular skeleton, but it also receives the same health bonuses as a player does from Spectrite Armour. It carries either a Spectrite Bow or Perfect Spectrite Bow and fires Spectrite Arrows. Upon being defeated, it will drop Spectrite Arrows the same as a regular skeleton drops regular arrows. Its armour and weapon each have a very small chance of dropping.
+A skeleton made of Spectrite. It has a bit more health than a regular skeleton, but it also receives the same health bonuses as a player does from Spectrite Armour. It carries either a Spectrite Bow or Perfect Spectrite Bow and fires Spectrite Arrows. Upon being defeated, it will drop Spectrite Arrows the same as a regular skeleton drops regular arrows. It also has a chance to have a Spectrite Sword instead of a bow and arrows. Its armour and weapon each have a very small chance of dropping.
 
 ### Spectrite Wither Skeleton
-A wither skeleton made of Spectrite. It has a bit more health than a regular skeleton, but it also receives the same health bonuses as a player does from Spectrite Armour. It carries a Spectrite Sword, a Perfect Spectrite Sword or, on a very rare occasion, a Spectrite Legend Blade. Upon being defeated, its armour and weapon each have a very small chance of dropping. It also may drop its skull which can be used as a decent helmet.
+A wither skeleton made of Spectrite. It has a bit more health than a regular skeleton, but it also receives the same health bonuses as a player does from Spectrite Armour. It carries a Spectrite Sword, a Perfect Spectrite Sword or, on a very rare occasion, a Spectrite Legend Blade. It also has a chance to have a Spectrite Bow and arrows instead of a sword. Upon being defeated, its armour and weapon each have a very small chance of dropping. It also may drop its skull which can be used as a decent helmet.
 
 ### Spectrite Golem
 A golem made of Spectrite that lives in Spectrite Dungeons. It has a very high amount of health. They are usually quite peaceful, though they do not like to be pushed around. They have extremely high endurance and power, but are somewhat lacking when it comes to speed. They will naturally heal over time.
@@ -527,7 +632,10 @@ Friendly Spectrite Golems can also be summoned by the player using the same patt
 ### Spectrite Blaze
 A blaze made of Spectrite. It has a bit more health than a regular blaze and its fireballs do a lot more damage, Spectrite Damage III to be exact. This is twice as powerful as a Spectrite Arrow fired from a Spectrite Skeleton. They drop Spectrite Blaze Rods which can be used to craft Spectrite Blaze Powder, an ingredient for Spectrite Potions.
 
-## Spectrite Bosses
+### Spectrite Wither
+A wither made of Spectrite. It has a lot more health than a regular wither and its skulls are much more powerful, adding Spectrite Damage and, if invulnerable, lingering clouds of Spectrite Damage. If on normal difficulty or higher, it will occassionally use a special attack where it rises and spins, firing skulls diagonally downward in all directions. After enough damage on hard mode, it will do 3 fast spins instead of 1 slow one. Upon being defeated, he drops a Spectrite Star, a Spectrite Wither Skull, a Spectrite Wither Torso, and a Spectrite Wither Tail.
+
+## Spectrite Skeleton Bosses
 On rare occassions, a Spectrite Skeleton or Spectrite Wither Skeleton, marked with a hue-rotating crown icon above its head, may spawn with full Spectrite Armour. Spectrite Skeletons will also be guaranteed a Perfect Spectrite Bow, while Spectrite Wither Skeletons will have a guaranteed Spectrite Legend Blade along with a Spectrite Healing Orb, which will boost its rate of healing. Depending on the difficulty mode, the mob's armour and/or weapon may also be enchanted with Superchromaticity. These bosses can be very hard to kill due to their high rate of healing and high damage, so it is recommended to avoid them until you have a Perfect Spectrite Sword (at the very least) along with full Spectrite Armour.
 
 ## Screenshots
@@ -561,5 +669,5 @@ Tired of playing fair and want to go on an overpowered rampage? There's a config
 
 * The name of the Spectrite Legend Sword and Perfect Spectrite Legend Sword cannot be changed; this is because the text formatting in the default name would cause of mess of formatting characters translated into text, so this is an intential bug added to prevent a worse bug
 * Changing dimensions with a Spectrite Armour max health boost may not appear to carry over into other dimensions and may cause buggy behaviour when taking damage (this is a Vanilla bug)
-* Due to Potion Effects being sorted by Potion liquid color, the Spectrite Resistance passive effect will frequently change positions in the GUI
-* Double Spectrite Chests have a buggy block breaking texture and, on one side, will disappear from view at a certain angle due to something along the lines of the double chest assuming the single chest's bounds
+* Double Spectrite Chests will disappear from view at a certain angle due to something along the lines of the double chest assuming the single chest's bounds
+* Chests in Spectrite Skull structures that load during initial generation will always be Spectrite Chests regardless of configuration; the reason for the replacement not working during initial generation is unclear
