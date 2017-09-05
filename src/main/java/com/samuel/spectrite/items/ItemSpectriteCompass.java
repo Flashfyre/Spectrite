@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraftforge.fml.relauncher.Side;
@@ -99,4 +100,10 @@ public class ItemSpectriteCompass extends ItemCompass {
             }
         });
 	}
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        String displayName = super.getItemStackDisplayName(stack);
+        return TextFormatting.LIGHT_PURPLE  + displayName;
+    }
 }

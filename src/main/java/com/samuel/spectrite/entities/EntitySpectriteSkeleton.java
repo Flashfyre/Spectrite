@@ -1,100 +1,49 @@
 package com.samuel.spectrite.entities;
 
-import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.etc.SpectriteHelper;
-import com.samuel.spectrite.init.ModBiomes;
 import com.samuel.spectrite.init.ModEnchantments;
 import com.samuel.spectrite.init.ModItems;
 import com.samuel.spectrite.init.ModLootTables;
 import com.samuel.spectrite.items.IPerfectSpectriteItem;
 import com.samuel.spectrite.items.ItemSpectriteArmor;
 import com.samuel.spectrite.items.ItemSpectriteBow;
-import com.samuel.spectrite.packets.PacketSyncSpectriteBoss;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.monster.AbstractSkeleton;
-import net.minecraft.entity.monster.EntityIronGolem;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntitySpectralArrow;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.*;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EntitySpectriteSkeleton extends EntitySkeleton implements ISpectriteMob, ISpectriteBipedMob {
-	
-	protected boolean boss;
-	protected boolean hasSpectriteResistance;
-	protected int chanceMultiplier;
-	protected final EntityAIAttackRangedBow aiArrowAttack = new EntityAIAttackRangedBow(this, 1.0D, 20, 15.0F) {
-		
-		private Field entity = null;
-		
-		@Override
-		protected boolean isBowInMainhand()
-	    {
-			if (entity == null) {
-				entity = SpectriteHelper.findObfuscatedField(EntityAIAttackRangedBow.class, new String[] { "entity", "field_188499_a" });
-			}
-			AbstractSkeleton entityInstance;
-			try {
-				entityInstance = (AbstractSkeleton) entity.get(this);
-				return !entityInstance.getHeldItemMainhand().isEmpty() && entityInstance.getHeldItemMainhand().getItem() instanceof ItemBow;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return false;
-	    }
-	};
-	private BossInfoServer bossInfo;
-	
+public class EntitySpectriteSkeleton extends AbstractSpectriteSkeleton {
+
 	public EntitySpectriteSkeleton(World worldIn) {
 		super(worldIn);
-		
-		setBoss(!this.world.isRemote && SpectriteConfig.mobs.spectriteMobBossSpawnRate > 0d
-			&& (int) getUniqueID().getMostSignificantBits() % (100 / SpectriteConfig.mobs.spectriteMobBossSpawnRate) == 0);
-		
-		setHasSpectriteResistance(isArmorFullEnhanced());
-	}
-
-	@Override
-	protected void initEntityAI()
-	{
-		this.tasks.addTask(1, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAIRestrictSun(this));
-		this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
-		this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
-		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
-		this.tasks.addTask(6, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
-		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
 	}
 	
 	@Override
 	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty)
     {
-		Item spectriteBow;
+		Item spectriteWeapon;
 		boolean hasPerfectWeapon = this.boss || SpectriteConfig.mobs.spectriteMobPerfectWeaponRate > 0d
 			&& rand.nextInt((int) (100 / SpectriteConfig.mobs.spectriteMobPerfectWeaponRate)) < chanceMultiplier;
 		Map<Enchantment, Integer> enchantmentMap = new HashMap<Enchantment, Integer>();
@@ -102,25 +51,31 @@ public class EntitySpectriteSkeleton extends EntitySkeleton implements ISpectrit
 
 		int exp = 15;
 
-		spectriteBow = !hasPerfectWeapon ? ModItems.spectrite_bow : ModItems.spectrite_bow_special;
+		boolean hasBow = this.boss || SpectriteConfig.mobs.spectriteSkeletonSwordRate == 0d ||
+			rand.nextFloat() * 100f >= SpectriteConfig.mobs.spectriteSkeletonSwordRate;
+
+		spectriteWeapon = !hasPerfectWeapon ? hasBow ? ModItems.spectrite_bow : ModItems.spectrite_sword
+			: hasBow ? ModItems.spectrite_bow_special : ModItems.spectrite_sword_special;
 
 		if (hasPerfectWeapon) {
 			exp += 5;
 		}
 
-		ItemStack bowStack = new ItemStack(spectriteBow);
+		ItemStack weaponStack = new ItemStack(spectriteWeapon);
 
 		if (hasPerfectWeapon && ((this.world.getDifficulty() == EnumDifficulty.NORMAL && rand.nextInt(32 / chanceMultiplier) == 0)
 			|| (this.world.getDifficulty() == EnumDifficulty.HARD && (this.boss || rand.nextInt(8) == 0)))) {
-			EnchantmentHelper.setEnchantments(enchantmentMap, bowStack);
+			EnchantmentHelper.setEnchantments(enchantmentMap, weaponStack);
 			exp += 10;
 		}
 
-	    this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, bowStack);
-	    this.setDropChance(EntityEquipmentSlot.MAINHAND, new Double(SpectriteConfig.mobs.spectriteMobBowDropRate).floatValue() / (100f / chanceMultiplier));
+	    this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, weaponStack);
+	    this.setDropChance(EntityEquipmentSlot.MAINHAND, new Double(hasBow ? SpectriteConfig.mobs.spectriteMobBowDropRate : SpectriteConfig.mobs.spectriteMobSwordDropRate).floatValue() / (100f / chanceMultiplier));
 
-		this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, new ItemStack(ModItems.spectrite_arrow, rand.nextInt(4) + 1));
-		this.setDropChance(EntityEquipmentSlot.OFFHAND, new Double(SpectriteConfig.mobs.spectriteMobArrowDropRate).floatValue() / (100f / chanceMultiplier));
+	    if (hasBow) {
+			this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, new ItemStack(ModItems.spectrite_arrow, rand.nextInt(4) + 1));
+			this.setDropChance(EntityEquipmentSlot.OFFHAND, new Double(SpectriteConfig.mobs.spectriteMobArrowDropRate).floatValue() / (100f / chanceMultiplier));
+		}
 
 		int armourCount = 0;
 		int enhancedCount = 0;
@@ -213,6 +168,30 @@ public class EntitySpectriteSkeleton extends EntitySkeleton implements ISpectrit
     }
 
 	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return SoundEvents.ENTITY_SKELETON_AMBIENT;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource p_184601_1_)
+	{
+		return SoundEvents.ENTITY_SKELETON_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound()
+	{
+		return SoundEvents.ENTITY_SKELETON_DEATH;
+	}
+
+	@Override
+	protected SoundEvent getStepSound()
+	{
+		return SoundEvents.ENTITY_SKELETON_STEP;
+	}
+
+	@Override
 	public void setCombatTask()
     {
         if (this.world != null && !this.world.isRemote)
@@ -287,137 +266,9 @@ public class EntitySpectriteSkeleton extends EntitySkeleton implements ISpectrit
     }
 
 	@Override
-	public boolean isBoss() {
-		return boss;
-	}
-
-	@Override
-	public void setBoss(boolean boss) {
-		this.boss = boss;
-
-		if (boss) {
-			this.chanceMultiplier = 10;
-			this.bossInfo = new BossInfoServer(new TextComponentString(SpectriteHelper.getMultiColouredString(this.getDisplayName().getUnformattedText(), true)),
-				BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
-		} else {
-			this.chanceMultiplier = 1;
-			this.bossInfo = null;
-		}
-	}
-
-	@Override
-	public boolean isHasSpectriteResistance() {
-		return this.hasSpectriteResistance;
-	}
-
-	@Override
-	public void setHasSpectriteResistance(boolean hasSpectriteResistance) {
-		this.hasSpectriteResistance = hasSpectriteResistance;
-	}
-
-	@Override
-	public boolean isNonBoss()
-    {
-        return !boss;
-    }
-
-	@Override
-	public void onLivingUpdate()
-    {
-		super.onLivingUpdate();
-
-		if (!this.world.isRemote) {
-			if (this.boss) {
-				this.bossInfo.setName(new TextComponentString(SpectriteHelper.getMultiColouredString(this.getDisplayName().getUnformattedText(), true)));
-				this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
-			}
-		}
-    }
-
-	@Override
 	@Nullable
     protected ResourceLocation getLootTable()
     {
         return ModLootTables.spectrite_skeleton;
     }
-
-	/**
-     * Add the given player to the list of players tracking this entity. For instance, a player may track a boss in
-     * order to view its associated boss bar.
-     */
-	@Override
-    public void addTrackingPlayer(EntityPlayerMP player)
-    {
-        super.addTrackingPlayer(player);
-
-        if (this.boss) {
-        	this.bossInfo.addPlayer(player);
-        	Spectrite.Network.sendTo(new PacketSyncSpectriteBoss(getUniqueID(), true), player);
-        }
-    }
-
-    /**
-     * Removes the given player from the list of players tracking this entity. See {@link Entity#addTrackingPlayer} for
-     * more information on tracking.
-     */
-	@Override
-    public void removeTrackingPlayer(EntityPlayerMP player)
-    {
-        super.removeTrackingPlayer(player);
-
-        if (this.boss) {
-        	this.bossInfo.removePlayer(player);
-        }
-    }
-
-	@Override
-	public void setCustomNameTag(String name)
-    {
-        super.setCustomNameTag(name);
-        this.bossInfo.setName(this.getDisplayName());
-    }
-
-	@Override
-	public void writeEntityToNBT(NBTTagCompound compound)
-    {
-        super.writeEntityToNBT(compound);
-    }
-
-	@Override
-	public void readEntityFromNBT(NBTTagCompound compound)
-    {
-        super.readEntityFromNBT(compound);
-
-        if (this.hasCustomName())
-        {
-            this.bossInfo.setName(this.getDisplayName());
-        }
-
-        setBoss(!this.world.isRemote && SpectriteConfig.mobs.spectriteMobBossSpawnRate > 0d
-			&& (int) getUniqueID().getMostSignificantBits() % (100 / SpectriteConfig.mobs.spectriteMobBossSpawnRate) == 0);
-
-        setHasSpectriteResistance(isArmorFullEnhanced());
-    }
-
-	@Override
-	/**
-     * Checks if the entity's current position is a valid location to spawn this entity.
-     */
-    public boolean getCanSpawnHere()
-    {
-		BlockPos pos = new BlockPos(this);
-
-		if (this.world.getBiome(pos) != ModBiomes.spectrite_dungeon)
-			return true;
-
-		int spawnChance = (pos.getY() + 8) >> 3;
-		boolean shouldSpawn = spawnChance == 1 || (spawnChance == 2 && rand.nextBoolean()) || (spawnChance == 3 && rand.nextInt(3) == 0);
-        return shouldSpawn && pos.down().getY() < 28;
-    }
-
-	@Override
-	public boolean isOnSameTeam(Entity entityIn) {
-		return (entityIn instanceof ISpectriteMob && (entityIn.getClass() != EntitySpectriteGolem.class
-			|| !((EntitySpectriteGolem) entityIn).isPlayerCreated())) || super.isOnSameTeam(entityIn);
-	}
 }

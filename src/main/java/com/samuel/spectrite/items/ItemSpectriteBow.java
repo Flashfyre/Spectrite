@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class ItemSpectriteBow extends ItemBow {
+public class ItemSpectriteBow extends ItemBow implements ICustomTooltipItem {
 	
 	public ItemSpectriteBow() {
 		super();

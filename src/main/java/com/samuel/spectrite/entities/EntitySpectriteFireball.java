@@ -1,12 +1,14 @@
 package com.samuel.spectrite.entities;
 
 import com.samuel.spectrite.Spectrite;
+import com.samuel.spectrite.init.ModPotions;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -161,6 +163,23 @@ public abstract class EntitySpectriteFireball extends Entity {
      * Called when this EntityFireball hits a block or entity.
      */
     protected abstract void onImpact(RayTraceResult result);
+
+    protected void spawnLingeringCloud(int power)
+    {
+        EntitySpectriteAreaEffectCloud entitySpectriteAreaEffectCloud = new EntitySpectriteAreaEffectCloud(this.world, this.posX, this.posY, this.posZ);
+        entitySpectriteAreaEffectCloud.setRadius((power - 0.5f));
+        entitySpectriteAreaEffectCloud.setRadiusOnUse(-0.5F);
+        entitySpectriteAreaEffectCloud.setWaitTime(10);
+        entitySpectriteAreaEffectCloud.setDuration(entitySpectriteAreaEffectCloud.getDuration() / 2);
+        entitySpectriteAreaEffectCloud.setRadiusPerTick(-entitySpectriteAreaEffectCloud.getRadius() / entitySpectriteAreaEffectCloud.getDuration());
+
+        entitySpectriteAreaEffectCloud.setOwner(this.shootingEntity);
+        entitySpectriteAreaEffectCloud.setPotionType(power == 0 ? ModPotions.SPECTRITE_DAMAGE_I : power == 1 ? ModPotions.SPECTRITE_DAMAGE_II
+            : power == 2 ? ModPotions.SPECTRITE_DAMAGE_III : ModPotions.SPECTRITE_DAMAGE_IV);
+        entitySpectriteAreaEffectCloud.addEffect(new PotionEffect(ModPotions.SPECTRITE_DAMAGE, 25, power));
+
+        this.world.spawnEntity(entitySpectriteAreaEffectCloud);
+    }
 
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.

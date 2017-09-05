@@ -1,13 +1,16 @@
 package com.samuel.spectrite.blocks;
 
 import com.samuel.spectrite.Spectrite;
+import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.init.ModBlocks;
 import net.minecraft.block.BlockFire;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -15,6 +18,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Random;
 
 public class BlockSpectriteFire extends BlockFire {
+
+    @Override
+    public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        return SpectriteHelper.getSpectriteMapColour((World) worldIn, pos);
+    }
 
 	@Override
 	@SideOnly(Side.CLIENT)

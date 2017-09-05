@@ -1,6 +1,6 @@
 package com.samuel.spectrite.items;
 
-import net.minecraft.creativetab.CreativeTabs;
+import com.samuel.spectrite.creative.CreativeTabSpectrite;
 import net.minecraftforge.fluids.UniversalBucket;
 
 public class ItemMoltenSpectriteBucket extends UniversalBucket {
@@ -9,6 +9,6 @@ public class ItemMoltenSpectriteBucket extends UniversalBucket {
     {
     	super();
         setMaxStackSize(1);
-        setCreativeTab(CreativeTabs.MISC);
+        setCreativeTab(CreativeTabSpectrite.INSTANCE);
     }
 }

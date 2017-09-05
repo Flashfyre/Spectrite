@@ -10,7 +10,6 @@ import com.samuel.spectrite.tileentity.TileEntitySpectriteSkull;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -36,8 +35,6 @@ public class ItemSpectriteSkull extends ItemArmor implements IPerfectSpectriteIt
 
 	protected ItemSpectriteSkull(int skullType) {
 		super(skullType == 0 ? Spectrite.SPECTRITE_WITHER_SKELETON_SKULL : skullType == 1 ? Spectrite.SPECTRITE_WITHER_SKULL : Spectrite.SPECTRITE_WITHER_INVULNERABLE_SKULL, 4, EntityEquipmentSlot.HEAD);
-		
-		this.setCreativeTab(CreativeTabs.DECORATIONS);
         this.skullType = skullType;
 	}
 

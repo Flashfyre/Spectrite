@@ -120,6 +120,9 @@ public class EntitySpectriteWither extends EntityMob implements IRangedAttackMob
     {
         super.writeEntityToNBT(compound);
         compound.setInteger("Invul", this.getInvulTime());
+        compound.setInteger("SkullCount", this.getSkullCount());
+        compound.setInteger("RadialSkullTicks", this.getRadialSkullTicks());
+        compound.setBoolean("RadialSpurts", this.isRadialSpurts());
     }
 
     /**
@@ -130,6 +133,11 @@ public class EntitySpectriteWither extends EntityMob implements IRangedAttackMob
     {
         super.readEntityFromNBT(compound);
         this.setInvulTime(compound.getInteger("Invul"));
+        if (compound.hasKey("SkullCount")) {
+            this.setSkullCount(compound.getInteger("SkullCount"));
+            this.setRadialSkullTicks(compound.getInteger("RadialSkullTicks"));
+            this.setRadialSpurts(compound.getBoolean("RadialSpurts"));
+        }
 
         if (this.hasCustomName())
         {
@@ -741,13 +749,25 @@ public class EntitySpectriteWither extends EntityMob implements IRangedAttackMob
         }
     }
 
+    @Override
+    protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source)
+    {
+        Entity damageSourceEntity = source.getTrueSource() != null ? source.getTrueSource() : source.getImmediateSource();
+        if (damageSourceEntity == null || !(damageSourceEntity instanceof EntityLivingBase)) {
+            lootingModifier = -1;
+        }
+
+        this.dropFewItems(wasRecentlyHit, lootingModifier);
+    }
+
     /**
      * Drop 0-2 items of this living's type
      */
     @Override
     protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
     {
-        Item[] drops = new Item[] { ModItems.spectrite_star, ModItems.spectrite_wither_skull, ModItems.spectrite_wither_torso, ModItems.spectrite_wither_tail };
+        Item[] drops = lootingModifier > -1 ? new Item[] { ModItems.spectrite_star, ModItems.spectrite_wither_skull,
+            ModItems.spectrite_wither_torso, ModItems.spectrite_wither_tail } : new Item[] { ModItems.spectrite_star };
         for (Item d : drops) {
             EntityItem entityitem = this.dropItem(d, 1);
 

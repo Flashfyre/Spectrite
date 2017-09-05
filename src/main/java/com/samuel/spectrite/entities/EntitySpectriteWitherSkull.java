@@ -3,7 +3,6 @@ package com.samuel.spectrite.entities;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.init.ModDamageSources;
-import com.samuel.spectrite.init.ModPotions;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -183,27 +182,11 @@ public class EntitySpectriteWitherSkull extends EntitySpectriteFireball implemen
             Spectrite.Proxy.performDispersedSpectriteDamage(this.world, spectriteDamagePower, explosionPower, result.hitVec, this, this.shootingEntity, this.rand);
 
             if (this.isInvulnerable() && this.shootingEntity instanceof EntitySpectriteWither) {
-                spawnLingeringCloud(power);
+                this.spawnLingeringCloud(power);
             }
 
             this.setDead();
         }
-    }
-
-    private void spawnLingeringCloud(int power)
-    {
-        EntitySpectriteAreaEffectCloud entitySpectriteAreaEffectCloud = new EntitySpectriteAreaEffectCloud(this.world, this.posX, this.posY, this.posZ);
-        entitySpectriteAreaEffectCloud.setRadius((power - 0.5f));
-        entitySpectriteAreaEffectCloud.setRadiusOnUse(-0.5F);
-        entitySpectriteAreaEffectCloud.setWaitTime(10);
-        entitySpectriteAreaEffectCloud.setDuration(entitySpectriteAreaEffectCloud.getDuration() / 2);
-        entitySpectriteAreaEffectCloud.setRadiusPerTick(-entitySpectriteAreaEffectCloud.getRadius() / entitySpectriteAreaEffectCloud.getDuration());
-
-        entitySpectriteAreaEffectCloud.setOwner(this.shootingEntity);
-        entitySpectriteAreaEffectCloud.setPotionType(ModPotions.SPECTRITE_DAMAGE_IV);
-        entitySpectriteAreaEffectCloud.addEffect(new PotionEffect(ModPotions.SPECTRITE_DAMAGE, 25, power));
-
-        this.world.spawnEntity(entitySpectriteAreaEffectCloud);
     }
 
     @Override

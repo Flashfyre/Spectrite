@@ -1,12 +1,15 @@
 package com.samuel.spectrite.blocks;
 
+import com.samuel.spectrite.etc.SpectriteHelper;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public class BlockSpectriteLadder extends BlockLadder {
 
@@ -15,6 +18,12 @@ public class BlockSpectriteLadder extends BlockLadder {
 	public BlockSpectriteLadder() {
 		super();
 		setSoundType(SoundType.METAL);
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+	{
+		return SpectriteHelper.getSpectriteMapColour((World) worldIn, pos);
 	}
 	
 	@Override

@@ -47,6 +47,15 @@ public class SpectriteConfig {
 		}
 	}
 
+	public enum EnumSpectriteSkullChestMode implements IStringSerializable {
+		NONE, HIGH_TIER_ONLY, BOTH_TIERS;
+
+		@Override
+		public String getName() {
+			return I18n.translateToLocal("config.spectrite_skull_chest_mode.options." + this.ordinal());
+		}
+	}
+
 	public static class SpectriteOre {
 		@Config.LangKey("config.spectrite_count_surface")
 		@Config.RangeInt(min=0, max=20)
@@ -154,6 +163,12 @@ public class SpectriteConfig {
 		@Config.LangKey("config.spectrite_mob_arrow_drop_rate")
 		@Config.RangeDouble(min=0, max=100)
 		public double spectriteMobArrowDropRate = 10.0d;
+		@Config.LangKey("config.spectrite_skeleton_sword_rate")
+		@Config.RangeDouble(min=0, max=80)
+		public double spectriteSkeletonSwordRate = 12.5d;
+		@Config.LangKey("config.spectrite_wither_skeleton_bow_rate")
+		@Config.RangeDouble(min=0, max=80)
+		public double spectriteWitherSkeletonBowRate = 12.5d;
 		@Config.LangKey("config.spectrite_wither_skeleton_use_skeleton_height")
 		public boolean spectriteWitherSkeletonUseSkeletonHeight = false;
 	}
@@ -174,6 +189,14 @@ public class SpectriteConfig {
 		@Config.LangKey("config.spectrite_skull_surface_rate")
 		@Config.RangeDouble(min=0, max=100)
 		public double spectriteSkullSurfaceRate = 6.25d;
+		@Config.LangKey("config.spectrite_skull_mob_creeper_rate")
+		@Config.RangeDouble(min=0, max=80)
+		public double spectriteSkullMobCreeperRate = 6.25d;
+		@Config.LangKey("config.spectrite_skull_high_tier_chest_rate")
+		@Config.RangeDouble(min=0, max=100)
+		public double spectriteSkullHighTierChestRate = 20.0d;
+		@Config.LangKey("config.spectrite_skull_chest_mode")
+		public EnumSpectriteSkullChestMode spectriteSkullChestMode = EnumSpectriteSkullChestMode.HIGH_TIER_ONLY;
 	}
 
 	@Config.LangKey("config.spectriteOre")
@@ -188,6 +211,8 @@ public class SpectriteConfig {
 	public static SpectriteDungeon spectriteDungeon = new SpectriteDungeon();
 	@Config.LangKey("config.spectriteSkull")
 	public static SpectriteSkull spectriteSkull = new SpectriteSkull();
+	@Config.LangKey("config.check_for_updates")
+	public static boolean checkForUpdates = true;
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent e)

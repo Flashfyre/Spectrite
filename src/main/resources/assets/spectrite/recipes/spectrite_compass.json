@@ -3,14 +3,14 @@
     "item": "spectrite:spectrite_compass"
   },
   "pattern": [
-    "XXX",
+    " X ",
     "XYX",
-    "XXX"
+    " X "
   ],
   "type": "minecraft:crafting_shaped",
   "key": {
     "X": {
-      "item": "spectrite:spectrite_gem"
+      "item": "spectrite:spectrite_block"
     },
     "Y": {
       "item": "minecraft:compass"

@@ -229,9 +229,6 @@ public class ItemSpectriteShovel extends ItemSpade implements ISpectriteTool, IC
 						continue;
 					}
 				}
-				if (curBlock.canHarvestBlock(worldIn, curPos, player)) {
-					curBlock.onBlockHarvested(worldIn, curPos, curState, player);
-				}
 				breakableBlocks.add(curPos);
 			}
     	}
