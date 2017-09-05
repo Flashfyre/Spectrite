@@ -2,6 +2,7 @@ package com.samuel.spectrite.blocks;
 
 import com.google.common.base.Predicate;
 import com.samuel.spectrite.entities.EntitySpectriteWither;
+import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.init.ModBlocks;
 import com.samuel.spectrite.init.ModItems;
 import com.samuel.spectrite.items.ItemSpectriteSkull;
@@ -9,6 +10,7 @@ import com.samuel.spectrite.tileentity.TileEntitySpectriteSkull;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockSkull;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -158,6 +160,12 @@ public class BlockSpectriteSkull extends BlockSkull {
                 }
             }
         }
+    }
+
+    @Override
+    public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        return SpectriteHelper.getSpectriteMapColour((World) worldIn, pos);
     }
 
     @Override

@@ -3,12 +3,12 @@ package com.samuel.spectrite.items;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.TextFormatting;
 
 public class ItemSpectriteWitherPart extends ItemSpectriteSimple {
 
     public ItemSpectriteWitherPart() {
         super();
-        this.setCreativeTab(CreativeTabs.MATERIALS);
         this.setMaxDamage(0);
         this.hasSubtypes = true;
     }
@@ -22,6 +22,12 @@ public class ItemSpectriteWitherPart extends ItemSpectriteSimple {
     @Override
     public String getUnlocalizedName(ItemStack stack) {
         return super.getUnlocalizedName(stack) + "_" + (stack.getItemDamage() == 0 ? "normal" : "invulnerable");
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        String displayName = super.getItemStackDisplayName(stack);
+        return TextFormatting.LIGHT_PURPLE  + displayName;
     }
 
     /**

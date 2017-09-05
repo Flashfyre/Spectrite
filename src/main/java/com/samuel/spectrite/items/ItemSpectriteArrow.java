@@ -12,6 +12,7 @@ import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 public class ItemSpectriteArrow extends ItemArrow implements ICustomTooltipItem {
@@ -20,13 +21,11 @@ public class ItemSpectriteArrow extends ItemArrow implements ICustomTooltipItem 
 		super();
 		this.addPropertyOverride(new ResourceLocation("time"), Spectrite.ItemPropertyGetterSpectrite);
 	}
-	
+
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		
 		String displayName = super.getItemStackDisplayName(stack);
-		displayName = SpectriteHelper.getMultiColouredString(displayName, SpectriteHelper.isStackSpectriteEnhanced(stack));
-		return displayName;
+		return TextFormatting.LIGHT_PURPLE  + displayName;
 	}
 	
 	@Override

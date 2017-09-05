@@ -1,13 +1,13 @@
 package com.samuel.spectrite.init;
 
 import com.samuel.spectrite.blocks.*;
+import com.samuel.spectrite.creative.CreativeTabSpectrite;
 import com.samuel.spectrite.etc.FluidMoltenSpectrite;
 import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.items.ItemBlockMeta;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockSlab;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSlab;
@@ -68,31 +68,25 @@ public class ModBlocks {
 			.setHardness(50.0F).setResistance(6000.0F).setLightLevel(0.75F);
 	    (spectrite_chest_trapped = new BlockSpectriteChest(BlockChest.Type.TRAP))
 			.setHardness(50.0F).setResistance(6000.0F).setLightLevel(0.75F);
-	    (spectrite_chest_trapped_fake = new BlockSpectriteChest(BlockChest.Type.TRAP))
-			.setLightLevel(0.75F).setCreativeTab(null);
+		(spectrite_chest_trapped_fake = new BlockSpectriteChest(BlockChest.Type.TRAP)).setLightLevel(0.75F);
 		(spectrite_ore = new BlockSpectriteOre())
 			.setHardness(6.0F).setResistance(500.0F).setLightLevel(0.5F);
 		(spectrite_block = new BlockSpectrite())
-			.setHardness(50.0F).setResistance(6000.0F).setLightLevel(0.875F)
-			.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+			.setHardness(50.0F).setResistance(6000.0F).setLightLevel(0.875F);
 		(spectrite_sand = new BlockSpectriteSand())
 			.setHardness(22.5F).setResistance(45.0F).setLightLevel(0.5F);
 		(spectrite_glass = new BlockSpectriteGlass())
-			.setHardness(22.5F).setResistance(60.0F).setLightLevel(0.75F)
-			.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+			.setHardness(22.5F).setResistance(60.0F).setLightLevel(0.75F);
 		(spectrite_bone_block = new BlockSpectriteBone())
-			.setHardness(50.0F).setResistance(6000.0F).setLightLevel(0.75F)
-			.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+			.setHardness(50.0F).setResistance(6000.0F).setLightLevel(0.75F);
 		(spectrite_bricks = new BlockSpectriteBricks())
-			.setHardness(50.0F).setResistance(6000.0F).setLightLevel(0.75F)
-			.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+			.setHardness(50.0F).setResistance(6000.0F).setLightLevel(0.75F);
 		(spectrite_bricks_fake = new BlockSpectriteBricks())
 			.setLightLevel(0.75F);
 		(spectrite_brick_stairs = new BlockSpectriteBrickStairs())
 			.setHardness(50.0F).setResistance(6000.0F).setLightLevel(0.75F);
 		(spectrite_brick_slab_half = new BlockSpectriteBrickSlabHalf())
-			.setHardness(50.0F).setResistance(6000.0F).setLightLevel(0.75F)
-			.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+			.setHardness(50.0F).setResistance(6000.0F).setLightLevel(0.75F);
 		(spectrite_brick_slab_double = new BlockSpectriteBrickSlabDouble())
 			.setHardness(50.0F).setResistance(6000.0F).setLightLevel(0.75F);
 		(diamond_ladder = new BlockDiamondLadder())
@@ -106,32 +100,35 @@ public class ModBlocks {
 		spectrite_fire = new BlockSpectriteFire();
 		molten_spectrite = new BlockMoltenSpectrite(fluid_molten_spectrite);
 		fluid_molten_spectrite.setUnlocalizedName("moltenspectrite");
+
 	}
 	
 	@SubscribeEvent
 	public void onRegisterBlocks(RegistryEvent.Register<Block> event) {
 		IForgeRegistry<Block> blockRegistry = event.getRegistry();
-		registerBlock(blockRegistry, spectrite_chest, "spectrite_chest");
-		registerBlock(blockRegistry, spectrite_chest_trapped, "spectrite_chest_trapped");
-		registerBlock(blockRegistry, spectrite_chest_trapped_fake, "spectrite_chest_trapped_fake");
-		registerBlock(blockRegistry, spectrite_ore, new ItemBlockMeta(spectrite_ore), "spectrite_ore");
-		registerBlock(blockRegistry, spectrite_block, "spectrite_block");
-		registerBlock(blockRegistry, spectrite_sand, "spectrite_sand");
-		registerBlock(blockRegistry, spectrite_glass, "spectrite_glass");
-		registerBlock(blockRegistry, spectrite_bone_block, "spectrite_bone_block");
-		registerBlock(blockRegistry, spectrite_bricks, "spectrite_bricks");
-		registerBlock(blockRegistry, spectrite_bricks_fake, "spectrite_bricks_fake");
-		registerBlock(blockRegistry, spectrite_brick_stairs, "spectrite_brick_stairs");
+		registerBlock(blockRegistry, spectrite_chest, "spectrite_chest", true);
+		registerBlock(blockRegistry, spectrite_chest_trapped, "spectrite_chest_trapped", true);
+		registerBlock(blockRegistry, spectrite_chest_trapped_fake, "spectrite_chest_trapped_fake", false);
+		registerBlock(blockRegistry, spectrite_ore, new ItemBlockMeta(spectrite_ore), "spectrite_ore", true);
+		registerBlock(blockRegistry, spectrite_block, "spectrite_block", true);
+		registerBlock(blockRegistry, spectrite_sand, "spectrite_sand", true);
+		registerBlock(blockRegistry, spectrite_glass, "spectrite_glass", true);
+		registerBlock(blockRegistry, spectrite_bone_block, "spectrite_bone_block", true);
+		registerBlock(blockRegistry, spectrite_bricks, "spectrite_bricks", true);
+		registerBlock(blockRegistry, spectrite_bricks_fake, "spectrite_bricks_fake", false);
+		registerBlock(blockRegistry, spectrite_brick_stairs, "spectrite_brick_stairs", true);
 		registerSlabBlock(blockRegistry, spectrite_brick_slab_half, spectrite_brick_slab_double, "spectrite_brick_slab");
-		registerBlock(blockRegistry, diamond_ladder, "diamond_ladder");
-		registerBlock(blockRegistry, spectrite_ladder, "spectrite_ladder");
-		registerBlock(blockRegistry, spectrite_skull, null, "spectrite_skull");
-		registerBlock(blockRegistry, fast_updating_beacon, null, "fast_updating_beacon");
-		registerBlock(blockRegistry, spectrite_portal, null, "spectrite_portal");
-		registerBlock(blockRegistry, spectrite_fire, null, "spectrite_fire");
-		registerBlock(blockRegistry, molten_spectrite, null, "molten_spectrite");
+		registerBlock(blockRegistry, diamond_ladder, "diamond_ladder", true);
+		registerBlock(blockRegistry, spectrite_ladder, "spectrite_ladder", true);
+		registerBlock(blockRegistry, spectrite_skull, null, "spectrite_skull", false);
+		registerBlock(blockRegistry, fast_updating_beacon, null, "fast_updating_beacon", false);
+		registerBlock(blockRegistry, spectrite_portal, null, "spectrite_portal", false);
+		registerBlock(blockRegistry, spectrite_fire, null, "spectrite_fire", false);
+		registerBlock(blockRegistry, molten_spectrite, null, "molten_spectrite", false);
 		
-		OreDictionary.registerOre("spectrite_ore", spectrite_ore);
+		OreDictionary.registerOre("oreSpectrite", spectrite_ore);
+		OreDictionary.registerOre("blockSpectrite", spectrite_block);
+		OreDictionary.registerOre("blockGlassSpectrite", spectrite_glass);
 	}
 	
 	@SubscribeEvent
@@ -158,7 +155,7 @@ public class ModBlocks {
 		}
 	}
 	
-	private static void registerBlock(IForgeRegistry<Block> registry, Block block, ItemBlock item, String name)
+	private static void registerBlock(IForgeRegistry<Block> registry, Block block, ItemBlock item, String name, boolean addToCreativeTab)
 	{
 		block.setUnlocalizedName(name);
 		block.setRegistryName(name);
@@ -169,6 +166,11 @@ public class ModBlocks {
 
 		if (item != null)
 		{
+			if (addToCreativeTab) {
+				block.setCreativeTab(CreativeTabSpectrite.INSTANCE);
+			} else {
+				block.setCreativeTab(null);
+			}
 			registerItemBlock(registry, item);
 		}
 	}
@@ -182,16 +184,17 @@ public class ModBlocks {
 
 		registry.register(halfSlab);
 		registry.register(doubleSlab);
-		
+
 		SpectriteHelper.populateRegisteredObjectsList(registeredBlocks, halfSlab);
 		SpectriteHelper.populateRegisteredObjectsList(registeredBlocks, doubleSlab);
 
+		halfSlab.setCreativeTab(CreativeTabSpectrite.INSTANCE);
 		registerItemBlock(registry, new ItemSlab(halfSlab, halfSlab, doubleSlab));
 	}
-	
-	private static void registerBlock(IForgeRegistry<Block> registry, Block block, String name)
+
+	private static void registerBlock(IForgeRegistry<Block> registry, Block block, String name, boolean addToCreativeTab)
 	{
-		registerBlock(registry, block, new ItemBlock(block), name);
+		registerBlock(registry, block, new ItemBlock(block), name, addToCreativeTab);
 	}
 
 	private static void registerItemBlock(IForgeRegistry<Block> registry, ItemBlock item)

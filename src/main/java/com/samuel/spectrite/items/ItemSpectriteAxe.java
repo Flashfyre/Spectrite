@@ -71,153 +71,153 @@ public class ItemSpectriteAxe extends ItemAxe implements ISpectriteTool, ICustom
 			if (lineCount == 1) {
 				curLine = curLine.replace("#", String.format("%.2f", cooldown));
 			}
-			list.add(!isLastLine ? curLine : curLine
-				.substring(0, curLine.length() - 1));
-		}
-	}
-
-	@Override
-	public float getStrVsBlock(ItemStack stack, IBlockState state)
-	{
-		return state.getBlock() instanceof BlockBreakable ? this.efficiencyOnProperMaterial : super.getStrVsBlock(stack, state);
-	}
-
-	@Override
-	/**
-     * Called before a block is broken. Return true to prevent default block harvesting.
-     *
-     * Note: In SMP, this is called on both client and server sides!
-     *
-     * @param itemstack The current ItemStack
-     * @param pos Block's position in world
-     * @param player The Player that is wielding the item
-     * @return True to prevent harvesting, false to continue as normal
-     */
-    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player)
-    {
-		World worldIn = player.world;
-		if (player.getCooldownTracker().getCooldown(this, 0f) == 0f && !player.isSneaking()) {
-			BlockPos curPos;
-			Block curBlock;
-			IBlockState curState;
-			Iterator<BlockPos> targetBlocks = getPlayerBreakableBlocks(itemstack, pos, player).iterator();
-
-			if (targetBlocks.hasNext()) {
-				do {
-					curPos = targetBlocks.next();
-					curState = worldIn.getBlockState(curPos);
-					curBlock = curState.getBlock();
-					boolean canHarvest = !player.isCreative() && ForgeHooks.canHarvestBlock(curBlock, player, worldIn, curPos) && curBlock.canHarvestBlock(worldIn, curPos, player);
-
-					if (player.isCreative()) {
-						curBlock.onBlockHarvested(worldIn, curPos, curState, player);
-					}
-
-					boolean removedByPlayer = curBlock.removedByPlayer(curState, worldIn, curPos, player, canHarvest);
-
-					if (removedByPlayer) {
-						curBlock.onBlockDestroyedByPlayer(worldIn, curPos, curState);
-					}
-
-					itemstack.onBlockDestroyed(worldIn, curState, curPos, player);
-
-					if (!worldIn.isRemote) {
-						if (!player.isCreative()) {
-							int exp = ForgeHooks.onBlockBreakEvent(worldIn, ((EntityPlayerMP) player).interactionManager.getGameType(), (EntityPlayerMP) player, curPos);
-							if (exp > -1 && removedByPlayer) {
-								curBlock.harvestBlock(worldIn, player, curPos, curState, worldIn.getTileEntity(curPos), itemstack);
-								curBlock.dropXpOnBlockBreak(worldIn, curPos, exp);
-							}
-						}
-						((EntityPlayerMP) player).connection.sendPacket(new SPacketBlockChange(worldIn, curPos));
-
-						Spectrite.Proxy.spawnSpectriteExplosionParticle(worldIn, true,curPos.getX() + 0.5F,curPos.getY() + 0.5F, curPos.getZ() + 0.5F, 0, 0, 0);
-					} else {
-						worldIn.playEvent(2001, curPos, Block.getStateId(curState));
-						if (curBlock.removedByPlayer(curState, worldIn, curPos, player, true)) {
-							curBlock.onBlockDestroyedByPlayer(worldIn, curPos, curState);
-						}
-
-						itemstack.onBlockDestroyed(worldIn, curState, curPos, player);
-
-						if (itemstack.isEmpty() && itemstack == player.getHeldItemMainhand()) {
-							ForgeEventFactory.onPlayerDestroyItem(player, itemstack, EnumHand.MAIN_HAND);
-							player.setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
-						}
-
-						NetHandlerPlayClient netHandlerPlayClient = Minecraft.getMinecraft().getConnection();
-						if (netHandlerPlayClient != null) {
-							netHandlerPlayClient.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, curPos, Minecraft
-									.getMinecraft().objectMouseOver.sideHit));
-						}
-					}
-				} while (targetBlocks.hasNext());
-
-				if (!worldIn.isRemote) {
-					if (!(this instanceof IPerfectSpectriteItem)) {
-						worldIn.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 0.75F,
-								1.0F + (worldIn.rand.nextFloat()) * 0.4F);
-					} else {
-						worldIn.playSound(null, pos, ModSounds.explosion, SoundCategory.PLAYERS, 0.75F,
-								1.0F + (worldIn.rand.nextFloat()) * 0.4F);
-					}
-
-					if (!player.isCreative()) {
-						boolean isEnhanced = SpectriteHelper.isStackSpectriteEnhanced(itemstack);
-						player.getCooldownTracker().setCooldown(this, (int) Math.round(SpectriteConfig.items.spectriteToolCooldown * (isEnhanced ? 10 : 20)));
+						list.add(!isLastLine ? curLine : curLine
+								.substring(0, curLine.length() - 1));
 					}
 				}
-			}
-		}
-		return super.onBlockStartBreak(itemstack, pos, player);
-    }
-	
-	@Override
-	public List<BlockPos> getPlayerBreakableBlocks(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
-		World worldIn = player.world;
-		List<BlockPos> breakableBlocks = new ArrayList<BlockPos>();
-		float centerBlockStrVsBlock = getStrVsBlock(itemstack, worldIn.getBlockState(pos));
-    	if (centerBlockStrVsBlock > 1.0f) {
-			Vec3d lookVec = player.getLookVec();
-			EnumFacing facing = EnumFacing.getFacingFromVector((float) lookVec.x,
-				(float) lookVec.y, (float) lookVec.z);
-			float relYaw = !worldIn.isRemote ? player.getRotationYawHead() >= 0 ? player.getRotationYawHead() % 90
-				: 90 - Math.abs(player.getRotationYawHead() % 90) : (player.getRotationYawHead() % 90) + (player.getRotationYawHead() >= 0 ? 0 : 90);
-			boolean isDiagonalFacing = relYaw >= 22.5f && relYaw < 67.5f;
-			Axis axis = facing.getAxis();
-			BlockPos curPos;
-			Block curBlock;
-			IBlockState centerState = worldIn.getBlockState(pos);
-			IBlockState curState;
-			final int posX = pos.getX(), posY = pos.getY(), posZ = pos.getZ();
-			Iterator<BlockPos> targetBlocks;
-			int blockCount = 0;
-			float centerBlockHardness = centerState.getBlock().getPlayerRelativeBlockHardness(centerState, player, worldIn, pos);
-			float curBlockHardness;
-			
-			if (axis != Axis.Y && posY < player.posY)
-				axis = Axis.Y;
-						
-			targetBlocks = BlockPos.getAllInBox(new BlockPos(axis == Axis.X ?
-				posX : posX - 1, axis == Axis.Y ? posY : posY - 1, axis == Axis.Z ?
-				posZ : posZ - 1), new BlockPos(axis == Axis.X ? posX : posX + 1, axis == Axis.Y ?
-				posY : posY + 1, axis == Axis.Z ? posZ : posZ + 1)).iterator();
-			
-			while (targetBlocks.hasNext()) {
-				curPos = targetBlocks.next();
-				curState = worldIn.getBlockState(curPos);
-				curBlock = curState.getBlock();
-				curBlockHardness = curBlock.getPlayerRelativeBlockHardness(curState, player, worldIn, curPos);
-				blockCount++;
-				if ((!(itemstack.getItem() instanceof ItemSpectriteAxeSpecial) &&
-					((isDiagonalFacing && (blockCount == 2 || blockCount == 4 || blockCount == 6 || blockCount == 8)) ||
-					(!isDiagonalFacing && (blockCount == 1 || blockCount == 3 || blockCount == 7 || blockCount == 9)))) ||
-					getStrVsBlock(itemstack, curState) < 10.0f || curBlockHardness == -1.0f || centerBlockHardness > curBlockHardness) {
-					continue;
-				} else {
-					boolean isVisible = false;
-					for (EnumFacing side : EnumFacing.values()) {
-						BlockPos offsetPos = curPos.offset(side);
+
+				@Override
+				public float getStrVsBlock(ItemStack stack, IBlockState state)
+				{
+					return state.getBlock() instanceof BlockBreakable ? this.efficiencyOnProperMaterial : super.getStrVsBlock(stack, state);
+				}
+
+				@Override
+				/**
+				 * Called before a block is broken. Return true to prevent default block harvesting.
+				 *
+				 * Note: In SMP, this is called on both client and server sides!
+				 *
+				 * @param itemstack The current ItemStack
+				 * @param pos Block's position in world
+				 * @param player The Player that is wielding the item
+				 * @return True to prevent harvesting, false to continue as normal
+				 */
+				public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player)
+				{
+					World worldIn = player.world;
+					if (player.getCooldownTracker().getCooldown(this, 0f) == 0f && !player.isSneaking()) {
+						BlockPos curPos;
+						Block curBlock;
+						IBlockState curState;
+						Iterator<BlockPos> targetBlocks = getPlayerBreakableBlocks(itemstack, pos, player).iterator();
+
+						if (targetBlocks.hasNext()) {
+							do {
+								curPos = targetBlocks.next();
+								curState = worldIn.getBlockState(curPos);
+								curBlock = curState.getBlock();
+								boolean canHarvest = !player.isCreative() && ForgeHooks.canHarvestBlock(curBlock, player, worldIn, curPos) && curBlock.canHarvestBlock(worldIn, curPos, player);
+
+								if (player.isCreative()) {
+									curBlock.onBlockHarvested(worldIn, curPos, curState, player);
+								}
+
+								boolean removedByPlayer = curBlock.removedByPlayer(curState, worldIn, curPos, player, canHarvest);
+
+								if (removedByPlayer) {
+									curBlock.onBlockDestroyedByPlayer(worldIn, curPos, curState);
+								}
+
+								itemstack.onBlockDestroyed(worldIn, curState, curPos, player);
+
+								if (!worldIn.isRemote) {
+									if (!player.isCreative()) {
+										int exp = ForgeHooks.onBlockBreakEvent(worldIn, ((EntityPlayerMP) player).interactionManager.getGameType(), (EntityPlayerMP) player, curPos);
+										if (exp > -1 && removedByPlayer) {
+											curBlock.harvestBlock(worldIn, player, curPos, curState, worldIn.getTileEntity(curPos), itemstack);
+											curBlock.dropXpOnBlockBreak(worldIn, curPos, exp);
+										}
+									}
+									((EntityPlayerMP) player).connection.sendPacket(new SPacketBlockChange(worldIn, curPos));
+
+									Spectrite.Proxy.spawnSpectriteExplosionParticle(worldIn, true,curPos.getX() + 0.5F,curPos.getY() + 0.5F, curPos.getZ() + 0.5F, 0, 0, 0);
+								} else {
+									worldIn.playEvent(2001, curPos, Block.getStateId(curState));
+									if (curBlock.removedByPlayer(curState, worldIn, curPos, player, true)) {
+										curBlock.onBlockDestroyedByPlayer(worldIn, curPos, curState);
+									}
+
+									itemstack.onBlockDestroyed(worldIn, curState, curPos, player);
+
+									if (itemstack.isEmpty() && itemstack == player.getHeldItemMainhand()) {
+										ForgeEventFactory.onPlayerDestroyItem(player, itemstack, EnumHand.MAIN_HAND);
+										player.setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
+									}
+
+									NetHandlerPlayClient netHandlerPlayClient = Minecraft.getMinecraft().getConnection();
+									if (netHandlerPlayClient != null) {
+										netHandlerPlayClient.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, curPos, Minecraft
+												.getMinecraft().objectMouseOver.sideHit));
+									}
+								}
+							} while (targetBlocks.hasNext());
+
+							if (!worldIn.isRemote) {
+								if (!(this instanceof IPerfectSpectriteItem)) {
+									worldIn.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 0.75F,
+											1.0F + (worldIn.rand.nextFloat()) * 0.4F);
+								} else {
+									worldIn.playSound(null, pos, ModSounds.explosion, SoundCategory.PLAYERS, 0.75F,
+											1.0F + (worldIn.rand.nextFloat()) * 0.4F);
+								}
+
+								if (!player.isCreative()) {
+									boolean isEnhanced = SpectriteHelper.isStackSpectriteEnhanced(itemstack);
+									player.getCooldownTracker().setCooldown(this, (int) Math.round(SpectriteConfig.items.spectriteToolCooldown * (isEnhanced ? 10 : 20)));
+								}
+							}
+						}
+					}
+					return super.onBlockStartBreak(itemstack, pos, player);
+				}
+
+				@Override
+				public List<BlockPos> getPlayerBreakableBlocks(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
+					World worldIn = player.world;
+					List<BlockPos> breakableBlocks = new ArrayList<BlockPos>();
+					float centerBlockStrVsBlock = getStrVsBlock(itemstack, worldIn.getBlockState(pos));
+					if (centerBlockStrVsBlock > 1.0f) {
+						Vec3d lookVec = player.getLookVec();
+						EnumFacing facing = EnumFacing.getFacingFromVector((float) lookVec.x,
+								(float) lookVec.y, (float) lookVec.z);
+						float relYaw = !worldIn.isRemote ? player.getRotationYawHead() >= 0 ? player.getRotationYawHead() % 90
+								: 90 - Math.abs(player.getRotationYawHead() % 90) : (player.getRotationYawHead() % 90) + (player.getRotationYawHead() >= 0 ? 0 : 90);
+						boolean isDiagonalFacing = relYaw >= 22.5f && relYaw < 67.5f;
+						Axis axis = facing.getAxis();
+						BlockPos curPos;
+						Block curBlock;
+						IBlockState centerState = worldIn.getBlockState(pos);
+						IBlockState curState;
+						final int posX = pos.getX(), posY = pos.getY(), posZ = pos.getZ();
+						Iterator<BlockPos> targetBlocks;
+						int blockCount = 0;
+						float centerBlockHardness = centerState.getBlock().getPlayerRelativeBlockHardness(centerState, player, worldIn, pos);
+						float curBlockHardness;
+
+						if (axis != Axis.Y && posY < player.posY)
+							axis = Axis.Y;
+
+						targetBlocks = BlockPos.getAllInBox(new BlockPos(axis == Axis.X ?
+								posX : posX - 1, axis == Axis.Y ? posY : posY - 1, axis == Axis.Z ?
+								posZ : posZ - 1), new BlockPos(axis == Axis.X ? posX : posX + 1, axis == Axis.Y ?
+								posY : posY + 1, axis == Axis.Z ? posZ : posZ + 1)).iterator();
+
+						while (targetBlocks.hasNext()) {
+							curPos = targetBlocks.next();
+							curState = worldIn.getBlockState(curPos);
+							curBlock = curState.getBlock();
+							curBlockHardness = curBlock.getPlayerRelativeBlockHardness(curState, player, worldIn, curPos);
+							blockCount++;
+							if ((!(itemstack.getItem() instanceof ItemSpectriteAxeSpecial) &&
+									((isDiagonalFacing && (blockCount == 2 || blockCount == 4 || blockCount == 6 || blockCount == 8)) ||
+											(!isDiagonalFacing && (blockCount == 1 || blockCount == 3 || blockCount == 7 || blockCount == 9)))) ||
+									getStrVsBlock(itemstack, curState) < 10.0f || curBlockHardness == -1.0f || centerBlockHardness > curBlockHardness) {
+								continue;
+							} else {
+								boolean isVisible = false;
+								for (EnumFacing side : EnumFacing.values()) {
+									BlockPos offsetPos = curPos.offset(side);
 						if (offsetPos.equals(pos) || worldIn.getBlockState(curPos.offset(side)).getMaterial().equals(Material.AIR)
 							|| !worldIn.getBlockState(curPos.offset(side)).isFullBlock()) {
 							isVisible = true;
@@ -227,9 +227,6 @@ public class ItemSpectriteAxe extends ItemAxe implements ISpectriteTool, ICustom
 					if (!isVisible) {
 						continue;
 					}
-				}
-				if (curBlock.canHarvestBlock(worldIn, curPos, player)) {
-					curBlock.onBlockHarvested(worldIn, curPos, curState, player);
 				}
 				breakableBlocks.add(curPos);
 			}

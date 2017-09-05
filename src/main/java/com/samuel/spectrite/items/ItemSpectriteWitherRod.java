@@ -5,7 +5,6 @@ import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.entities.EntitySpectriteWitherSkull;
 import com.samuel.spectrite.etc.SpectriteHelper;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -36,7 +35,6 @@ public class ItemSpectriteWitherRod extends ItemSpectriteSimple implements IPerf
         this.material = material;
         this.maxStackSize = 1;
         this.setMaxDamage(material.getMaxUses());
-        this.setCreativeTab(CreativeTabs.COMBAT);
         this.attackDamage = 1.0F + material.getDamageVsEntity();
         this.invulnerable = invulnerable;
     }

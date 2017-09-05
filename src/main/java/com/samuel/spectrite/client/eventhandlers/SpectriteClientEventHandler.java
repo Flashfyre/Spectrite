@@ -139,7 +139,8 @@ public class SpectriteClientEventHandler implements IResourceManagerReloadListen
 		}
 
 		if (!stack.isEmpty() && hittingBlock) {
-			if (stack != null && stack.getItem() instanceof ISpectriteTool && !player.isSneaking() && player.getCooldownTracker().getCooldown((stack.getItem()), 0f) == 0f) {
+			if (stack != null && stack.getItem() instanceof ISpectriteTool && !player.isSneaking()
+				&& player.getCooldownTracker().getCooldown((stack.getItem()), 0f) == 0f && !player.isSneaking()) {
 				if (currentBlock == null) {
 					currentBlock = SpectriteHelper.findObfuscatedField(PlayerControllerMP.class, "currentBlock", "field_178895_c");
 				}

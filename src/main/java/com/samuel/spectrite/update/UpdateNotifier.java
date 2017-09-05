@@ -1,6 +1,7 @@
 package com.samuel.spectrite.update;
 
 import com.samuel.spectrite.Spectrite;
+import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.etc.SpectriteHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class UpdateNotifier {
 
-    public static final String DOWNLOAD_URL = "https://mods.curse.com/mc-mods/minecraft/268094-spectrite#c21;t1:other-downloads";
+    public static final String DOWNLOAD_URL = "https://minecraft.curseforge.com/projects/spectrite-mod/files";
     public static boolean success;
     private static boolean notified = false;
     public static String updateVersion = "";
@@ -22,13 +23,15 @@ public class UpdateNotifier {
     private UpdateCheckThread updateCheckThread = null;
 
     public UpdateNotifier() {
-        updateCheckThread = new UpdateCheckThread();
+        if (SpectriteConfig.checkForUpdates) {
+            updateCheckThread = new UpdateCheckThread();
+        }
     }
 
     @SubscribeEvent(receiveCanceled = true)
     @SideOnly(Side.CLIENT)
     public void onTick(TickEvent.ClientTickEvent event) {
-        if(!notified && (UpdateNotifier.newVersion || !UpdateNotifier.success) && Minecraft.getMinecraft().player != null) {
+        if(SpectriteConfig.checkForUpdates && !notified && (UpdateNotifier.newVersion || !UpdateNotifier.success) && Minecraft.getMinecraft().player != null) {
             ticksElapsed++;
             if(ticksElapsed >= 700){
                 EntityPlayer player = Minecraft.getMinecraft().player;

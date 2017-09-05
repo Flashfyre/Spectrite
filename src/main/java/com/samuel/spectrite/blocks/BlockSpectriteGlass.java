@@ -50,10 +50,10 @@ public class BlockSpectriteGlass extends BlockBreakable {
         return new BlockStateContainer(this, new IProperty[] { ODD });
     }
 
-	@Override
-    public MapColor getMapColor(IBlockState state, IBlockAccess p_180659_2_, BlockPos p_180659_3_)
+    @Override
+    public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        return MapColor.PURPLE;
+        return SpectriteHelper.getSpectriteMapColour((World) worldIn, pos);
     }
 
 	@Override

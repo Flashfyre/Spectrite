@@ -1,9 +1,9 @@
 package com.samuel.spectrite.init;
 
 import com.samuel.spectrite.Spectrite;
+import com.samuel.spectrite.creative.CreativeTabSpectrite;
 import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.items.*;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
@@ -66,16 +66,16 @@ public class ModItems {
 	private static Map<String, IForgeRegistryEntry> registeredItems = new HashMap<String, IForgeRegistryEntry>();
 
 	public static void createItems() {
-		(diamond_rod = new Item()).setCreativeTab(CreativeTabs.MATERIALS);
-		(spectrite_rod = new ItemSpectriteSimple()).setCreativeTab(CreativeTabs.MATERIALS);
-		(spectrite_brick = new ItemSpectriteSimple()).setCreativeTab(CreativeTabs.MATERIALS);
-		(spectrite_bone = new ItemSpectriteSimple()).setCreativeTab(CreativeTabs.MATERIALS);
-		(spectrite_dust = new ItemSpectriteSimple()).setCreativeTab(CreativeTabs.BREWING);
-		(spectrite_blaze_rod = new ItemSpectriteSimple()).setCreativeTab(CreativeTabs.MATERIALS);
-		(spectrite_blaze_powder = new ItemSpectriteSimple()).setCreativeTab(CreativeTabs.BREWING);
-		(spectrite_star = new ItemSpectriteSimpleFoiled()).setCreativeTab(CreativeTabs.MATERIALS);
-		(spectrite_gem = new ItemSpectriteSimple()).setCreativeTab(CreativeTabs.MATERIALS);
-		(spectrite_orb = new ItemSpectriteOrb()).setCreativeTab(CreativeTabs.MISC);
+		diamond_rod = new Item();
+		spectrite_rod = new ItemSpectriteSimple();
+		spectrite_brick = new ItemSpectriteSimple();
+		spectrite_bone = new ItemSpectriteSimple();
+		spectrite_dust = new ItemSpectriteSimple();
+		spectrite_blaze_rod = new ItemSpectriteSimple();
+		spectrite_blaze_powder = new ItemSpectriteSimple();
+		spectrite_star = new ItemSpectriteSimpleFoiled();
+		spectrite_gem = new ItemSpectriteSimple();
+		spectrite_orb = new ItemSpectriteOrb();
 		spectrite_shovel = new ItemSpectriteShovel();
 		spectrite_shovel_special = new ItemSpectriteShovelSpecial();
 		spectrite_pickaxe = new ItemSpectritePickaxe();
@@ -94,7 +94,7 @@ public class ModItems {
 		spectrite_chestplate = new ItemSpectriteArmor(EntityEquipmentSlot.CHEST);
 		spectrite_leggings = new ItemSpectriteArmor(EntityEquipmentSlot.LEGS);
 		spectrite_boots = new ItemSpectriteArmor(EntityEquipmentSlot.FEET);
-		(spectrite_compass = new ItemSpectriteCompass()).setCreativeTab(CreativeTabs.TOOLS);
+		spectrite_compass = new ItemSpectriteCompass();
 		spectrite_wither_skeleton_skull = new ItemSpectriteSkull();
 		spectrite_wither_skull = new ItemSpectriteWitherSkull(1);
 		spectrite_wither_invulnerable_skull = new ItemSpectriteWitherSkull(2);
@@ -177,8 +177,12 @@ public class ModItems {
 			"spectrite_wither_rod_normal");
 		registerItem(itemRegistry, spectrite_wither_rod_invulnerable,
 			"spectrite_wither_rod_invulnerable");
-		
-		OreDictionary.registerOre("spectrite_gem", spectrite_gem);
+
+		OreDictionary.registerOre("gemSpectrite", spectrite_gem);
+		OreDictionary.registerOre("stickDiamond", diamond_rod);
+		OreDictionary.registerOre("stickSpectrite", spectrite_rod);
+		OreDictionary.registerOre("dustSpectrite", spectrite_dust);
+		OreDictionary.registerOre("ingotBrickSpectrite", spectrite_brick);
 	}
 
 	public static void populateBowItems() {
@@ -207,6 +211,7 @@ public class ModItems {
 	{
 		item.setUnlocalizedName(name);
 		item.setRegistryName(name);
+		item.setCreativeTab(CreativeTabSpectrite.INSTANCE);
 
 		registry.register(item);
 		

@@ -1,13 +1,14 @@
 package com.samuel.spectrite.blocks;
 
 import com.samuel.spectrite.etc.InventoryLargeSpectriteChest;
+import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.tileentity.TileEntitySpectriteChest;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityOcelot;
@@ -28,7 +29,6 @@ public class BlockSpectriteChest extends BlockChest {
 	
 	public BlockSpectriteChest(Type chestType) {
 		super(chestType);
-        this.setCreativeTab(chestType.ordinal() == 0 ? CreativeTabs.DECORATIONS : CreativeTabs.REDSTONE);
 	}
 
     @Override
@@ -50,6 +50,12 @@ public class BlockSpectriteChest extends BlockChest {
         {
             return source.getBlockState(pos.east()).getBlock() == this ? EAST_CHEST_AABB : NOT_CONNECTED_AABB;
         }
+    }
+
+    @Override
+    public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        return SpectriteHelper.getSpectriteMapColour((World) worldIn, pos);
     }
     
     @Override

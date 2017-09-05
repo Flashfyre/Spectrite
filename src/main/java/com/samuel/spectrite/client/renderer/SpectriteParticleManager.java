@@ -80,6 +80,7 @@ public class SpectriteParticleManager {
             GlStateManager.depthMask(true);
             GlStateManager.disableBlend();
             GlStateManager.alphaFunc(516, 0.1F);
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         }
     }
 

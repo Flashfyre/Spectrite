@@ -1,8 +1,5 @@
 package com.samuel.spectrite.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -10,13 +7,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-public class BlockSpectriteBricks extends Block {
+public class BlockSpectriteBricks extends BlockSpectriteSimple {
 	
 	public static final PropertyBool ODD = PropertyBool.create("odd");
 
 	public BlockSpectriteBricks() {
-		super(Material.IRON, MapColor.PURPLE);
-		setSoundType(SoundType.METAL);
+		super(Material.IRON);
 	}
 	
 	@Override

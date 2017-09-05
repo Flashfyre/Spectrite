@@ -3,6 +3,7 @@ package com.samuel.spectrite.etc;
 import com.samuel.spectrite.init.ModEnchantments;
 import com.samuel.spectrite.init.ModPotions;
 import com.samuel.spectrite.items.*;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,6 +18,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
@@ -34,7 +36,9 @@ import java.util.Map;
 public class SpectriteHelper {
 	
 	private static final TextFormatting[] textColours = new TextFormatting[] { TextFormatting.RED, TextFormatting.GOLD, TextFormatting.YELLOW, TextFormatting.GREEN,
-			TextFormatting.BLUE, TextFormatting.AQUA, TextFormatting.LIGHT_PURPLE };
+		TextFormatting.BLUE, TextFormatting.AQUA, TextFormatting.LIGHT_PURPLE };
+	private static final MapColor[] mapColours = new MapColor[] { MapColor.RED, MapColor.ORANGE_STAINED_HARDENED_CLAY,
+		MapColor.YELLOW, MapColor.LIME, MapColor.BLUE, MapColor.CYAN, MapColor.PURPLE };
 	
 	private static Map<Class, Map<String, Field>> fieldCache = new HashMap<Class, Map<String, Field>>();
 	private static Map<Class, Map<String, Method>> methodCache = new HashMap<Class, Map<String, Method>>();
@@ -137,6 +141,12 @@ public class SpectriteHelper {
 		}
 		
 		return formattedText.toString();
+	}
+
+	public static MapColor getSpectriteMapColour(World worldIn, BlockPos pos) {
+		int posOffset = pos.getX() + pos.getY() + pos.getZ();
+
+		return mapColours[(posOffset + (int) (worldIn.getWorldTime() >> 2)) % 7];
 	}
 	
 	public static boolean isStackSpectriteEnhanced(ItemStack stack) {

@@ -4,6 +4,7 @@ import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.init.ModBlocks;
 import com.samuel.spectrite.init.ModLootTables;
+import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -15,6 +16,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -117,51 +119,49 @@ public class WorldGenSpectriteSkull implements IWorldGenerator {
 	
 	private void generateSkull(World worldIn, int chunkX, int chunkZ, int baseY, Rotation rotationIn) {
 		int chunkXOffset = (chunkX << 4), chunkZOffset = (chunkZ << 4);
-		//IBlockState state = null;
-		
+
 		Template template = templateManager.getTemplate(worldIn.getMinecraftServer(), SPECTRITE_SKULL);
 		PlacementSettings settings = new PlacementSettings();
 		settings.setRotation(rotationIn);
 		template.addBlocksToWorld(worldIn, new BlockPos(1 + chunkXOffset, baseY, 1 + chunkZOffset), settings);
-		/*for (int y = baseY; y < baseY + 18; y++) {
-			for (int z = -31; z < 31; z++) {
-				for (int x = -31; x < 31; x++) {
-					if (worldIn.getBlockState(new BlockPos(x + chunkXOffset, y, z + chunkZOffset)).getBlock() == ModBlocks.spectrite_chest) {
-						x = z;
-						break;
+
+		boolean highTierChest = SpectriteConfig.spectriteSkull.spectriteSkullHighTierChestRate > 0F
+			&& worldIn.rand.nextFloat() * 100F < SpectriteConfig.spectriteSkull.spectriteSkullHighTierChestRate;
+
+		SpectriteConfig.EnumSpectriteSkullChestMode chestMode = SpectriteConfig.spectriteSkull.spectriteSkullChestMode;
+		ResourceLocation lootTable = highTierChest ? ModLootTables.spectrite_dungeon_high : ModLootTables.spectrite_dungeon_mid;
+		BlockPos chestPos1 = new BlockPos(11 + chunkXOffset, 12 + baseY, 12 + chunkZOffset),
+			chestPos2 =  new BlockPos(11 + chunkXOffset, 12 + baseY, 13 + chunkZOffset);
+
+		/*for (int z = -15; z < 15; z++) {
+			for (int x = -15; x < 15; x++) {
+				BlockPos chestPos = new BlockPos(x + chunkXOffset, baseY + 12, z + chunkZOffset);
+				IBlockState chestState = worldIn.getBlockState(chestPos);
+				if (chestState.getBlock() == ModBlocks.spectrite_chest) {
+					if (chestPos1 == null) {
+						chestPos1 = chestPos;
+					} else {
+						chestPos2 = chestPos;
+					}
+					if (chestMode == SpectriteConfig.EnumSpectriteSkullChestMode.NONE
+						|| (!highTierChest && chestMode == SpectriteConfig.EnumSpectriteSkullChestMode.HIGH_TIER_ONLY)) {
+						world.setTileEntity(chestPos, null);
 					}
 				}
 			}
 		}*/
-		
-		//worldIn.setBlockState(new BlockPos(chunkXOffset + 30, baseY + 18, chunkZOffset + 30), Blocks.REDSTONE_BLOCK.getDefaultState());
-		
-		int chestXPos = 11, chestZPos = 12, chestXPos2 = 11, chestZPos2 = 12;
-		
-		/*if (rotationIn.ordinal() == Rotation.CLOCKWISE_90.ordinal()) {
-			chestXPos = (-chestXPos);
-			chestZPos2 = --chestZPos;
-			chestXPos2 = chestXPos + 1;
-		} else if (rotationIn.ordinal() == Rotation.CLOCKWISE_180.ordinal()) {
-			chestXPos2 = chestXPos = (-chestXPos) + 2;
-			chestZPos2 = chestZPos = (-chestZPos) + 2;
-			chestZPos2--;
-		} else if (rotationIn.ordinal() == Rotation.COUNTERCLOCKWISE_90.ordinal()) {
-			chestXPos++;
-			chestZPos2 = chestZPos = (-chestZPos) + 3;
-			chestXPos2 += 2;
-		} else {*/
-			chestZPos2++;
-		//}
-		
-		ResourceLocation lootTable = ModLootTables.spectrite_dungeon_high;
-		TileEntity te1 = worldIn.getTileEntity(new BlockPos(chestXPos + chunkXOffset, 12 + baseY, chestZPos + chunkZOffset)),
-			te2 = worldIn.getTileEntity(new BlockPos(chestXPos2 + chunkXOffset, 12 + baseY, chestZPos2 + chunkZOffset));
-		if (te1 != null) {
-			((TileEntityChest) te1).setLootTable(lootTable, rand.nextLong());
+		if (chestMode == SpectriteConfig.EnumSpectriteSkullChestMode.NONE
+			|| (!highTierChest && chestMode == SpectriteConfig.EnumSpectriteSkullChestMode.HIGH_TIER_ONLY)) {
+			world.setBlockState(chestPos1, Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.EAST));
+			world.setBlockState(chestPos2, Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.EAST));
 		}
-		if (te2 != null) {
-			((TileEntityChest) te2).setLootTable(lootTable, rand.nextLong());
+		TileEntity te = worldIn.getTileEntity(chestPos1);
+		if (te != null) {
+			((TileEntityChest) te).setLootTable(lootTable, rand.nextLong());
+		}
+		te = worldIn.getTileEntity(chestPos2);
+		if (te != null) {
+			((TileEntityChest) te).setLootTable(lootTable, rand.nextLong());
 		}
 
 		buildSupport(worldIn, new BlockPos(chunkXOffset + (16 - (OFFSET_X - 6)), baseY, chunkZOffset + (16 - (OFFSET_Z - 4))));
@@ -222,6 +222,22 @@ public class WorldGenSpectriteSkull implements IWorldGenerator {
 		for (int d = 0; d <= 1; d++) {
 			WorldGenSpectriteSkull.skullBounds[d].clear();
 		}
+	}
+
+	public boolean isPosInSkullBounds(BlockPos pos, int dimId) {
+		boolean ret = false;
+		Vec3d vec = new Vec3d(pos);
+
+		if ((dimId + 1) >> 1 == 0) {
+			for (AxisAlignedBB b : skullBounds[dimId + 1]) {
+				if (b.contains(vec)) {
+					ret = true;
+					break;
+				}
+			}
+		}
+
+		return ret;
 	}
 	
 	public static int getGroundY(World worldIn, int chunkX, int chunkZ, EnumFacing facing, Random rand) {
