@@ -14,23 +14,25 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-@Mod(modid = Spectrite.MOD_ID, name = Spectrite.MOD_NAME, version = Spectrite.VERSION, acceptedMinecraftVersions="[1,12,1.12.1]")
+@Mod(modid = Spectrite.MOD_ID, name = Spectrite.MOD_NAME, version = Spectrite.VERSION, acceptedMinecraftVersions="[1,12,1.12.1]", certificateFingerprint = "@FINGERPRINT@")
 public class Spectrite {
 	public static final String MOD_NAME = "Spectrite";
 	public static final String MOD_ID = "spectrite";
-	public static final String VERSION = "1.5.4";
+	public static final String VERSION = "@VERSION@";
 	public static final String MC_VERSION = "1.12.1";
 
 	@Mod.Instance
 	public static Spectrite Instance = new Spectrite();
+
+	public static final Logger LOGGER = LogManager.getLogger("Spectrite");
+
 	public static ArmorMaterial SPECTRITE = EnumHelper
 		.addArmorMaterial("spectrite", "spectrite:spectrite_armor",
 		72, new int[]{3, 6, 8, 3}, 25, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 3);
@@ -59,7 +61,6 @@ public class Spectrite {
 		serverSide = "com.samuel.spectrite.proxy.CommonProxy")
 	public static CommonProxy Proxy;
 	public static SimpleNetworkWrapper Network;
-	
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
@@ -93,5 +94,10 @@ public class Spectrite {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent e) {
 		Proxy.postInit(e);
+	}
+
+	@EventHandler
+	public void onFingerprintViolation(FMLFingerprintViolationEvent event) {
+		LOGGER.warn("Invalid fingerprint detected! The file " + event.getSource().getName() + " may have been tampered with. This version will NOT be supported by the author!");
 	}
 }
