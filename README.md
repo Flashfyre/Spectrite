@@ -483,7 +483,7 @@ A base potion for creating Spectrite Damage and Spectrite Resistance potions. It
 Brewing Recipe: Water Bottle x1, Spectrite Blaze Powder x1
 
 ### Potion of Spectrite Resistance
-A potion that provides a temporary Spectrite Resistance effect. There is currently no way to obtain any of these in survival.
+A potion that provides a temporary Spectrite Resistance effect.
 
 There are 3 variants for each of the 3 potion types: Spectrite Resistance I (3:00), Spectrite Resistance I (8:00), Spectrite Resistance II (1:30)
 
@@ -494,7 +494,7 @@ Strong: Potion of Spectrite Resistance (Normal) x1, Glowstone Dust x1
 Long: Potion of Spectrite Resistance (Normal) x1, Redstone Dust x1
 
 ### Potion of Spectrite Damage
-A potion that inflicts a Spectrite Damage effect. There is currently no way to obtain any of these in survival.
+A potion that inflicts a Spectrite Damage effect.
 
 There are 5 variants for each of the 3 potion types: Spectrite Damage I, Spectrite Damage II, Spectrite Damage III, Spectrite Damage IV, Spectrite Damage V
 
