@@ -1,7 +1,7 @@
 package com.samuel.spectrite.init;
 
 import com.samuel.spectrite.Spectrite;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.world.BiomeSpectriteDungeon;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.BiomeProperties;

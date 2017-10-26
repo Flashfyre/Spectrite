@@ -1,6 +1,6 @@
 package com.samuel.spectrite.potions;
 
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import net.minecraft.potion.Potion;
 
 public class PotionSpectrite extends Potion {

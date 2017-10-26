@@ -1,9 +1,10 @@
 package com.samuel.spectrite.client.renderer.entity;
 
-import com.google.common.collect.Maps;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.entities.EntitySpectriteWitherSkull;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.model.ModelSkeletonHead;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
@@ -12,13 +13,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Map;
-
 @SideOnly(Side.CLIENT)
 public class RenderSpectriteWitherSkull extends Render<EntitySpectriteWitherSkull>
 {
-    private static final Map<String, ResourceLocation> INVULNERABLE_SPECTRITE_WITHER_TEXTURE_RES_MAP = Maps.newHashMap();
-    private static final Map<String, ResourceLocation> SPECTRITE_WITHER_TEXTURE_RES_MAP = Maps.newHashMap();
+    private static final Int2ObjectMap<ResourceLocation> INVULNERABLE_SPECTRITE_WITHER_TEXTURE_RES_MAP = new Int2ObjectOpenHashMap<>();
+    private static final Int2ObjectMap<ResourceLocation> SPECTRITE_WITHER_TEXTURE_RES_MAP = new Int2ObjectOpenHashMap<>();
     /** The Skeleton's head model. */
     private final ModelSkeletonHead skeletonHeadModel = new ModelSkeletonHead();
 
@@ -83,25 +82,15 @@ public class RenderSpectriteWitherSkull extends Render<EntitySpectriteWitherSkul
     protected ResourceLocation getEntityTexture(EntitySpectriteWitherSkull entity)
     {
         boolean invulnerable = entity.isInvulnerable();
-
         int curFrame = SpectriteHelper.getCurrentSpectriteFrame(entity.getEntityWorld());
-        String textureLoc = "%s:textures/entities/spectrite_wither/%s/%d.png";
+        Int2ObjectMap<ResourceLocation> textureMap = invulnerable ? INVULNERABLE_SPECTRITE_WITHER_TEXTURE_RES_MAP : SPECTRITE_WITHER_TEXTURE_RES_MAP;
         ResourceLocation resourceLocation;
 
-        if (invulnerable) {
-            textureLoc = String.format(textureLoc, Spectrite.MOD_ID, "invulnerable", curFrame);
+        if (textureMap.containsKey(curFrame)) {
+            resourceLocation = textureMap.get(curFrame);
         } else {
-            textureLoc = String.format(textureLoc, Spectrite.MOD_ID, "normal", curFrame);
-        }
-
-        resourceLocation = new ResourceLocation(textureLoc);
-
-        if (resourceLocation == null) {
-            if (invulnerable) {
-                INVULNERABLE_SPECTRITE_WITHER_TEXTURE_RES_MAP.put(textureLoc, resourceLocation);
-            } else {
-                SPECTRITE_WITHER_TEXTURE_RES_MAP.put(textureLoc, resourceLocation);
-            }
+            resourceLocation = new ResourceLocation(String.format("%s:textures/entities/spectrite_wither/%s/%d.png", Spectrite.MOD_ID, invulnerable ? "invulnerable" : "normal", curFrame));
+            textureMap.put(curFrame, resourceLocation);
         }
 
         return resourceLocation;

@@ -17,7 +17,7 @@ public class ParticleSpectriteExplosionHuge extends ParticleExplosionHuge {
     public ParticleSpectriteExplosionHuge(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double strength) {
         super(worldIn, xCoordIn, yCoordIn, zCoordIn, 0d, 0d, 0d);
         this.strength = strength;
-        this.maximumTime = new Double(this.strength).intValue() << 1;
+        this.maximumTime = new Double(this.strength).intValue() << 2;
     }
 
     @Override

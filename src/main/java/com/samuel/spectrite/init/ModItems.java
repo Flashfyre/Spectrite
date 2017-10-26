@@ -2,11 +2,13 @@ package com.samuel.spectrite.init;
 
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.creative.CreativeTabSpectrite;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.items.*;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -31,7 +33,6 @@ public class ModItems {
 	public static ItemSpectriteSimple spectrite_blaze_rod;
 	public static ItemSpectriteSimple spectrite_blaze_powder;
 	public static ItemSpectriteSimple spectrite_gem;
-	public static ItemSpectriteOrb spectrite_orb;
 	public static ItemSpectriteShovel spectrite_shovel;
 	public static ItemSpectriteShovelSpecial spectrite_shovel_special;
 	public static ItemSpectritePickaxe spectrite_pickaxe;
@@ -42,6 +43,7 @@ public class ModItems {
 	public static ItemSpectriteSwordSpecial spectrite_sword_special;
 	public static ItemSpectriteLegendBlade spectrite_sword_2;
 	public static ItemSpectriteArrow spectrite_arrow;
+	public static ItemSpectriteArrow spectrite_arrow_special;
 	public static ItemSpectriteBow spectrite_bow;
 	public static ItemSpectriteBowSpecial spectrite_bow_special;
 	public static ItemSpectriteShield spectrite_shield;
@@ -50,7 +52,7 @@ public class ModItems {
 	public static ItemSpectriteArmor spectrite_chestplate;
 	public static ItemSpectriteArmor spectrite_leggings;
 	public static ItemSpectriteArmor spectrite_boots;
-	public static ItemSpectriteCompass spectrite_compass;
+	public static ItemSpectriteOrb spectrite_orb;
 	public static ItemSpectriteSimpleFoiled spectrite_star;
 	public static ItemSpectriteSkull spectrite_wither_skeleton_skull;
 	public static ItemSpectriteWitherSkull spectrite_wither_skull;
@@ -59,6 +61,7 @@ public class ModItems {
 	public static ItemSpectriteWitherPart spectrite_wither_tail;
 	public static ItemSpectriteWitherRod spectrite_wither_rod;
 	public static ItemSpectriteWitherRod spectrite_wither_rod_invulnerable;
+	public static ItemSpectriteCompass spectrite_compass;
 	public static ItemMoltenSpectriteBucket molten_spectrite_bucket;
 
 	public static List<ItemBow> bowItems = new ArrayList<ItemBow>();
@@ -75,7 +78,6 @@ public class ModItems {
 		spectrite_blaze_powder = new ItemSpectriteSimple();
 		spectrite_star = new ItemSpectriteSimpleFoiled();
 		spectrite_gem = new ItemSpectriteSimple();
-		spectrite_orb = new ItemSpectriteOrb();
 		spectrite_shovel = new ItemSpectriteShovel();
 		spectrite_shovel_special = new ItemSpectriteShovelSpecial();
 		spectrite_pickaxe = new ItemSpectritePickaxe();
@@ -86,6 +88,7 @@ public class ModItems {
 		spectrite_sword_special = new ItemSpectriteSwordSpecial(Spectrite.PERFECT_SPECTRITE_TOOL);
 		spectrite_sword_2 = new ItemSpectriteLegendBlade(Spectrite.PERFECT_SPECTRITE_2_TOOL);
 		spectrite_arrow = new ItemSpectriteArrow();
+		spectrite_arrow_special = new ItemSpectriteArrowSpecial();
 		spectrite_bow = new ItemSpectriteBow();
 		spectrite_bow_special = new ItemSpectriteBowSpecial();
 		spectrite_shield = new ItemSpectriteShield();
@@ -94,7 +97,7 @@ public class ModItems {
 		spectrite_chestplate = new ItemSpectriteArmor(EntityEquipmentSlot.CHEST);
 		spectrite_leggings = new ItemSpectriteArmor(EntityEquipmentSlot.LEGS);
 		spectrite_boots = new ItemSpectriteArmor(EntityEquipmentSlot.FEET);
-		spectrite_compass = new ItemSpectriteCompass();
+		spectrite_orb = new ItemSpectriteOrb();
 		spectrite_wither_skeleton_skull = new ItemSpectriteSkull();
 		spectrite_wither_skull = new ItemSpectriteWitherSkull(1);
 		spectrite_wither_invulnerable_skull = new ItemSpectriteWitherSkull(2);
@@ -102,6 +105,7 @@ public class ModItems {
 		spectrite_wither_tail = new ItemSpectriteWitherPart();
 		spectrite_wither_rod = new ItemSpectriteWitherRod(Spectrite.SPECTRITE_WITHER_TOOL, false);
 		spectrite_wither_rod_invulnerable = new ItemSpectriteWitherRod(Spectrite.SPECTRITE_INVULNERABLE_WITHER_TOOL, true);
+		spectrite_compass = new ItemSpectriteCompass();
 		molten_spectrite_bucket = new ItemMoltenSpectriteBucket();
 
 		Spectrite.SPECTRITE_TOOL.setRepairItem(new ItemStack(spectrite_gem));
@@ -110,6 +114,13 @@ public class ModItems {
 		Spectrite.SPECTRITE.setRepairItem(new ItemStack(spectrite_gem));
 		Spectrite.SPECTRITE_WITHER_SKELETON_SKULL.setRepairItem(new ItemStack(spectrite_bone));
 		Spectrite.SPECTRITE_WITHER_SKULL.setRepairItem(new ItemStack(spectrite_bone));
+
+		Items.SPAWN_EGG.addPropertyOverride(new ResourceLocation("spectrite_egg"), (s, w, e) -> {
+			if (Spectrite.MOD_ID.equals(ItemMonsterPlacer.getNamedIdFrom(s).getResourceDomain())) {
+				return 1.0F;
+			}
+			return 0.0F;
+		});
 	}
 
 	@SubscribeEvent
@@ -146,6 +157,8 @@ public class ModItems {
 			"spectrite_sword_2");
 		registerItem(itemRegistry, spectrite_arrow,
 			"spectrite_arrow");
+		registerItem(itemRegistry, spectrite_arrow_special,
+			"spectrite_arrow_special");
 		registerItem(itemRegistry, spectrite_bow,
 			"spectrite_bow");
 		registerItem(itemRegistry, spectrite_bow_special,
@@ -178,6 +191,7 @@ public class ModItems {
 		registerItem(itemRegistry, spectrite_wither_rod_invulnerable,
 			"spectrite_wither_rod_invulnerable");
 
+		OreDictionary.registerOre("ingotSpectrite", spectrite_gem);
 		OreDictionary.registerOre("gemSpectrite", spectrite_gem);
 		OreDictionary.registerOre("stickDiamond", diamond_rod);
 		OreDictionary.registerOre("stickSpectrite", spectrite_rod);

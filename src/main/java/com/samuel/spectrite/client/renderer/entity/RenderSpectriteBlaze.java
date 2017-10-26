@@ -1,10 +1,11 @@
 package com.samuel.spectrite.client.renderer.entity;
 
-import com.google.common.collect.Maps;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.client.model.ModelSpectriteBlaze;
 import com.samuel.spectrite.entities.EntitySpectriteBlaze;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -18,18 +19,16 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Method;
-import java.util.Map;
 
 @SideOnly(Side.CLIENT)
 public class RenderSpectriteBlaze extends RenderLiving<EntitySpectriteBlaze> {
 
-	private static final Map<String, ResourceLocation> SPECTRITE_BLAZE_TEXTURE_RES_MAP = Maps.<String, ResourceLocation>newHashMap();
-	private static final Map<String, ResourceLocation> SPECTRITE_FIRE_LAYER_0_TEXTURE_RES_MAP = Maps.<String, ResourceLocation>newHashMap();
-	private static final Map<String, ResourceLocation> SPECTRITE_FIRE_LAYER_1_TEXTURE_RES_MAP = Maps.<String, ResourceLocation>newHashMap();
+	private static final Int2ObjectMap<ResourceLocation> SPECTRITE_BLAZE_TEXTURE_RES_MAP = new Int2ObjectOpenHashMap<>();
 	private static Method renderShadow = null;
 
     public RenderSpectriteBlaze(RenderManager renderManagerIn)
@@ -44,13 +43,13 @@ public class RenderSpectriteBlaze extends RenderLiving<EntitySpectriteBlaze> {
 	protected ResourceLocation getEntityTexture(EntitySpectriteBlaze entity)
     {
     	int curFrame = SpectriteHelper.getCurrentSpectriteFrame(entity.getEntityWorld());
-        String textureLoc = String.format("%s:textures/entities/spectrite_blaze/%d.png", Spectrite.MOD_ID, curFrame);
-		ResourceLocation resourceLocation = SPECTRITE_BLAZE_TEXTURE_RES_MAP.get(textureLoc);
-		
-        if (resourceLocation == null)
-        {
-            resourceLocation = new ResourceLocation(textureLoc);
-            SPECTRITE_BLAZE_TEXTURE_RES_MAP.put(textureLoc, resourceLocation);
+		ResourceLocation resourceLocation;
+
+		if (SPECTRITE_BLAZE_TEXTURE_RES_MAP.containsKey(curFrame)) {
+		    resourceLocation = SPECTRITE_BLAZE_TEXTURE_RES_MAP.get(curFrame);
+        } else {
+		    resourceLocation = new ResourceLocation(String.format("%s:textures/entities/spectrite_blaze/%d.png", Spectrite.MOD_ID, curFrame));
+		    SPECTRITE_BLAZE_TEXTURE_RES_MAP.put(curFrame, resourceLocation);
         }
 		
 		return resourceLocation;
@@ -72,7 +71,7 @@ public class RenderSpectriteBlaze extends RenderLiving<EntitySpectriteBlaze> {
                 if (f > 0.0F)
                 {
                 	if (renderShadow == null) {
-                		renderShadow = SpectriteHelper.findObfuscatedMethod(Render.class, "renderShadow", "func_76975_c",
+                		renderShadow = ReflectionHelper.findMethod(Render.class, "renderShadow", "func_76975_c",
             				Entity.class, double.class, double.class, double.class, float.class, float.class);
                 	}
                     try {

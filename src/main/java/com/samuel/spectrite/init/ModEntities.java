@@ -2,7 +2,7 @@ package com.samuel.spectrite.init;
 
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.entities.*;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -22,16 +22,17 @@ public class ModEntities {
 	private static Map<String, IForgeRegistryEntry> registeredEntities = new HashMap<String, IForgeRegistryEntry>();
 
 	public static void initEntities(Spectrite mod) {
-		registerEntity("SpectriteArrow", EntitySpectriteArrow.class, mod);
-		registerEntity("SpectriteGolem", EntitySpectriteGolem.class, mod);
-		registerEntity("SpectriteCreeper", EntitySpectriteCreeper.class, mod);
-		registerEntity("SpectriteSkeleton", EntitySpectriteSkeleton.class, mod);
-		registerEntity("SpectriteWitherSkeleton", EntitySpectriteWitherSkeleton.class, mod);
-		registerEntity("SpectriteBlaze", EntitySpectriteBlaze.class, mod);
-		registerEntity("SpectriteWither", EntitySpectriteWither.class, mod);
-		registerEntity("SpectriteWitherSkull", EntitySpectriteWitherSkull.class, mod);
-		registerEntity("SpectriteAreaEffectCloud", EntitySpectriteAreaEffectCloud.class, mod);
-		registerEntity("SpectriteTippedArrow", EntitySpectriteTippedArrow.class, mod);
+		registerEntity("SpectriteArrow", EntitySpectriteArrow.class, mod, false);
+		registerEntity("SpectriteGolem", EntitySpectriteGolem.class, mod, true);
+		registerEntity("SpectriteCreeper", EntitySpectriteCreeper.class, mod, true);
+		registerEntity("SpectriteSkeleton", EntitySpectriteSkeleton.class, mod, true);
+		registerEntity("SpectriteWitherSkeleton", EntitySpectriteWitherSkeleton.class, mod, true);
+		registerEntity("SpectriteBlaze", EntitySpectriteBlaze.class, mod, true);
+		registerEntity("SpectriteEnderman", EntitySpectriteEnderman.class, mod, true);
+		registerEntity("SpectriteWither", EntitySpectriteWither.class, mod, false);
+		registerEntity("SpectriteWitherSkull", EntitySpectriteWitherSkull.class, mod, false);
+		registerEntity("SpectriteAreaEffectCloud", EntitySpectriteAreaEffectCloud.class, mod, false);
+		registerEntity("SpectriteTippedArrow", EntitySpectriteTippedArrow.class, mod, false);
 	}
 	
 	@SubscribeEvent
@@ -46,9 +47,14 @@ public class ModEntities {
 		}
 	}
 	
-	private static void registerEntity(String name, Class<? extends Entity> clazz, Spectrite mod) {
+	private static void registerEntity(String name, Class<? extends Entity> clazz, Spectrite mod, boolean addSpawnEgg) {
 		ResourceLocation location = new ResourceLocation(String.format("%s:%s", Spectrite.MOD_ID, name));
-		EntityRegistry.registerModEntity(location, clazz, name, entityID++, mod, 128, 1, true);
+		if (addSpawnEgg) {
+			EntityRegistry.registerModEntity(location, clazz, name, entityID++, mod, 128, 1,
+				true, 0, 0);
+		} else {
+			EntityRegistry.registerModEntity(location, clazz, name, entityID++, mod, 128, 1, true);
+		}
 		
 		SpectriteHelper.populateRegisteredObjectsList(registeredEntities, ForgeRegistries.ENTITIES.getValue(location));
 	}

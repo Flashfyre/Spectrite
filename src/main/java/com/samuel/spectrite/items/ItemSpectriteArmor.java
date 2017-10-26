@@ -2,7 +2,7 @@ package com.samuel.spectrite.items;
 
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.init.ModItems;
 import com.samuel.spectrite.init.ModPotions;
 import net.minecraft.entity.Entity;
@@ -13,35 +13,38 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteItem, ICustomTooltipItem {
+public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteItem, ISpectriteCustomTooltipItem {
+
+	private final int orbSlots;
 
 	public ItemSpectriteArmor(EntityEquipmentSlot equipmentSlotIn) {
 		super(Spectrite.SPECTRITE, 0, equipmentSlotIn);
 		
 		this.addPropertyOverride(new ResourceLocation("time"), Spectrite.ItemPropertyGetterSpectrite);
-	}
 
-	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
-		
-		String displayName = super.getItemStackDisplayName(stack);
-		displayName = getMultiColouredDisplayName(stack, displayName);
-		return displayName;
+		this.orbSlots = equipmentSlotIn == EntityEquipmentSlot.HEAD ? 3 : equipmentSlotIn == EntityEquipmentSlot.CHEST ? 2 : 1;
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void addTooltipLines(ItemStack stack, List<String> list) {
 		int lineCount = 0;
+		int potionStartIndex = list.size() - (SpectriteConfig.items.spectriteArmourBonusMode.ordinal() == 0 ? 1 : 0);
 		boolean isLastLine = false;
 		String curLine;
 		while (!isLastLine) {
@@ -51,6 +54,26 @@ public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteIt
 			list.add(!isLastLine ? curLine : curLine
 				.substring(0, curLine.length() - 1));
 		}
+		if (stack.hasTagCompound()) {
+			NBTTagCompound orbEffectsCompound = stack.getSubCompound("OrbEffects");
+			if (orbEffectsCompound != null) {
+				int potionEffectsCount = 0;
+				for (String o : orbEffectsCompound.getKeySet()) {
+					if (orbEffectsCompound.getBoolean(o)) {
+						int c = Integer.parseInt(o);
+						list.add(potionStartIndex + ++potionEffectsCount, SpectriteHelper.textColours[c] + " " + I18n.translateToLocal(ModItems.spectrite_orb.ORB_POTIONS[c].getName())
+								+ I18n.translateToLocal("iteminfo." + ModItems.spectrite_orb.getUnlocalizedName().substring(5) + ".effect.level.1"));
+					}
+				}
+			}
+		}
+		list.set(0, getMultiColouredDisplayName(stack, stack.getDisplayName()));
+	}
+
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, net.minecraft.enchantment.Enchantment enchantment)
+	{
+		return enchantment.type.canEnchantItem(stack.getItem());
 	}
 
 	@Override
@@ -67,6 +90,49 @@ public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteIt
 	public boolean onEntityItemUpdate(EntityItem entityItem) {
 		return this.onEntitySpectriteItemUpdate(entityItem);
 	}
+
+	/**
+	 * Called when an ItemStack with NBT data is read to potentially that ItemStack's NBT data
+	 */
+	@Override
+	public boolean updateItemStackNBT(NBTTagCompound nbt)
+	{
+		if (!nbt.hasKey("OrbEffects")) {
+			NBTTagCompound orbEffectsCompound = new NBTTagCompound();
+			for (int c = 0; c < ItemSpectriteOrb.ORB_COLOURS.length; c++) {
+				if (ItemSpectriteOrb.ORB_EQUIPMENT_SLOTS[c] == this.armorType) {
+					orbEffectsCompound.setBoolean(new Integer(c).toString(), false);
+				}
+			}
+			nbt.setTag("OrbEffects", orbEffectsCompound);
+		}
+
+		return true;
+	}
+
+	public int getNumOrbSlots() {
+		return this.orbSlots;
+	}
+
+	public List<Potion> getPotions(ItemStack stack) {
+		final List<Potion> potions = new ArrayList<>();
+
+		if (!stack.hasTagCompound()) {
+			stack.setTagCompound(new NBTTagCompound());
+		}
+		this.updateItemStackNBT(stack.getTagCompound());
+		NBTTagCompound tagCompound = stack.getSubCompound("OrbEffects");
+
+		int[] orbColours = ItemSpectriteOrb.ORB_COLOURS;
+		for (int c = 0; c < orbColours.length; c++) {
+			String key = new Integer(c).toString();
+			if (tagCompound.hasKey(key) && tagCompound.getBoolean(key)) {
+				potions.add(ModItems.spectrite_orb.ORB_POTIONS[c]);
+			}
+		}
+
+		return potions;
+	}
 	
 	@Override
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
@@ -74,7 +140,7 @@ public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteIt
 			float healthIncrease = 0f;
 			int armourCount = 0;
 			int enhancedCount = 0;
-			int spectriteResistanceLevel = -1;
+			int spectriteResistanceLevel = 0;
 			Iterator<ItemStack> armourIterator = player.getArmorInventoryList().iterator();
 			while (armourIterator.hasNext()) {
 				ItemStack stack = armourIterator.next();
@@ -113,13 +179,7 @@ public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteIt
 					if (allEnhanced) {
 						spectriteResistanceLevel++;
 					}
-					if ((!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == ModItems.spectrite_orb)
-						|| (!player.getHeldItemOffhand().isEmpty() && player.getHeldItemOffhand().getItem() == ModItems.spectrite_orb)) {
-						if (player.getActivePotionEffect(MobEffects.REGENERATION) == null) {
-							player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 220, Math.max(SpectriteConfig.items.spectriteArmourBonusMode.ordinal() - 1, 0), true, true));
-						}
-					}
-					if (spectriteResistanceLevel >= 0 && player.getActivePotionEffect(ModPotions.SPECTRITE_RESISTANCE) == null) {
+					if (player.getActivePotionEffect(ModPotions.SPECTRITE_RESISTANCE) == null) {
 						player.addPotionEffect(new PotionEffect(ModPotions.SPECTRITE_RESISTANCE, 16, spectriteResistanceLevel, true, true));
 					}
 				}

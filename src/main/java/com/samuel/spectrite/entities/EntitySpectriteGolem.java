@@ -3,6 +3,8 @@ package com.samuel.spectrite.entities;
 import com.google.common.base.Predicate;
 import com.samuel.spectrite.init.ModBiomes;
 import com.samuel.spectrite.init.ModLootTables;
+import com.samuel.spectrite.init.ModSounds;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,20 +14,25 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Field;
 
 public class EntitySpectriteGolem extends EntityIronGolem implements ISpectriteMob {
 	
 	private int healTimer;
+	private static Field attackTimerField = null;
 
 	public EntitySpectriteGolem(World worldIn) {
 		super(worldIn);
@@ -78,19 +85,23 @@ public class EntitySpectriteGolem extends EntityIronGolem implements ISpectriteM
 	protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(150.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(250.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.175D);
     }
 	
 	@Override
 	protected void collideWithEntity(Entity entityIn)
     {
-        if (!this.isPlayerCreated() && entityIn instanceof EntityPlayer && !((EntityPlayer) entityIn).isCreative() && this.getRNG().nextInt(20) == 0)
-        {
+        if (!this.isPlayerCreated() && entityIn instanceof EntityPlayer && !((EntityPlayer) entityIn).isCreative()
+			&& this.getRNG().nextInt(20) == 0) {
             this.setAttackTarget((EntityLivingBase)entityIn);
         }
 
-        super.collideWithEntity(entityIn);
+        if (this.isPlayerCreated() || !ISpectriteMob.class.isAssignableFrom(entityIn.getClass())) {
+			super.collideWithEntity(entityIn);
+		} else {
+        	entityIn.applyEntityCollision(this);
+		}
     }
 	
 	@Override
@@ -102,7 +113,8 @@ public class EntitySpectriteGolem extends EntityIronGolem implements ISpectriteM
         }
         else
         {
-            return cls == EntitySpectriteCreeper.class ? false : super.canAttackClass(cls);
+            return cls == EntitySpectriteCreeper.class || (!this.isPlayerCreated()
+				&& ISpectriteMob.class.isAssignableFrom(cls)) ? false : super.canAttackClass(cls);
         }
 	}
 	
@@ -110,7 +122,7 @@ public class EntitySpectriteGolem extends EntityIronGolem implements ISpectriteM
 	public boolean attackEntityAsMob(Entity entityIn)
     {
         this.world.setEntityState(this, (byte)4);
-        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), 6 + this.rand.nextInt(10));
+        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float)(15 + this.rand.nextInt(10)));
 
         if (flag)
         {
@@ -118,9 +130,33 @@ public class EntitySpectriteGolem extends EntityIronGolem implements ISpectriteM
             this.applyEnchantments(this, entityIn);
         }
 
-        this.playSound(SoundEvents.ENTITY_IRONGOLEM_ATTACK, 1.0F, 1.0F);
+        this.playSound(ModSounds.spectrite_golem_attack, 1.0F, 1.0F);
         return flag;
     }
+
+	/**
+	 * Handler for {@link World#setEntityState}
+	 */
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void handleStatusUpdate(byte id)
+	{
+		if (id == 4)
+		{
+			if (attackTimerField == null) {
+				attackTimerField = ReflectionHelper.findField(EntityIronGolem.class, "attackTimer", "field_70855_f");
+			}
+			try {
+				attackTimerField.set(this, 10);
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			this.playSound(ModSounds.spectrite_golem_attack, 1.0F, 1.0F);
+		}
+		else if (id != 11 && id != 34) {
+			super.handleStatusUpdate(id);
+		}
+	}
 	
 	@Override
 	public void onLivingUpdate()
@@ -158,6 +194,24 @@ public class EntitySpectriteGolem extends EntityIronGolem implements ISpectriteM
 	public boolean isOnSameTeam(Entity entityIn) {
 		return (entityIn instanceof ISpectriteMob && (entityIn.getClass() != EntitySpectriteGolem.class
 			|| ((EntitySpectriteGolem) entityIn).isPlayerCreated() == this.isPlayerCreated())) || super.isOnSameTeam(entityIn);
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource p_184601_1_)
+	{
+		return ModSounds.spectrite_golem_hurt;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound()
+	{
+		return ModSounds.spectrite_golem_death;
+	}
+
+	@Override
+	protected void playStepSound(BlockPos pos, Block blockIn)
+	{
+		this.playSound(ModSounds.spectrite_golem_step, 1.0F, 1.0F);
 	}
 	
 	@Override

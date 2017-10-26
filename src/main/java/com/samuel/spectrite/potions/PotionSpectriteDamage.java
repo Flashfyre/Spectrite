@@ -1,13 +1,14 @@
 package com.samuel.spectrite.potions;
 
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.entities.EntitySpectriteEnderman;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.init.ModDamageSources;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemShield;
 import net.minecraft.potion.PotionHealth;
-import net.minecraft.util.DamageSource;
 
 import javax.annotation.Nullable;
 
@@ -22,21 +23,21 @@ public class PotionSpectriteDamage extends PotionHealth {
     {
         return SpectriteHelper.getCurrentSpectriteColour(1);
     }
-	
+
 	@Override
 	public void performEffect(EntityLivingBase entityLivingBaseIn, int amplifier)
     {
 		amplifier = SpectriteHelper.getSpectriteDamageAmplifierAfterResistance(amplifier, entityLivingBaseIn);
-		
-		if (amplifier >= 0) {	
+
+		if (amplifier >= 0) {
 			if (entityLivingBaseIn instanceof EntityPlayer) {
 				amplifier -= SpectriteHelper.getPlayerReceivedSpectriteDamageDecreaseForDifficulty(entityLivingBaseIn.getEntityWorld().getDifficulty());
 			}
-			
-			amplifier = damageShield(ModDamageSources.SPECTRITE_DAMAGE, entityLivingBaseIn, amplifier);
-			
+
+			amplifier = damageShield(entityLivingBaseIn, amplifier);
+
 			if (amplifier >= 0) {
-				entityLivingBaseIn.attackEntityFrom(ModDamageSources.SPECTRITE_DAMAGE, 6 << amplifier);
+				entityLivingBaseIn.attackEntityFrom(ModDamageSources.SPECTRITE_DAMAGE, 3 << amplifier);
 			}
 		}
     }
@@ -45,20 +46,24 @@ public class PotionSpectriteDamage extends PotionHealth {
     public void affectEntity(@Nullable Entity source, @Nullable Entity indirectSource, EntityLivingBase entityLivingBaseIn, int amplifier, double health)
     {
 		amplifier = SpectriteHelper.getSpectriteDamageAmplifierAfterResistance(amplifier, entityLivingBaseIn);
-		
+
 		if (amplifier >= 0) {
 			if (entityLivingBaseIn instanceof EntityPlayer) {
 				amplifier -= SpectriteHelper.getPlayerReceivedSpectriteDamageDecreaseForDifficulty(entityLivingBaseIn.getEntityWorld().getDifficulty());
 			}
-			
-				amplifier = damageShield(ModDamageSources.SPECTRITE_DAMAGE, entityLivingBaseIn, amplifier);
-			
+
+			amplifier = damageShield(entityLivingBaseIn, amplifier);
+
 			if (amplifier >= 0) {
-	            int j = (int)(health * (6 << amplifier) + 0.5D);
-	
-	            if (source == null)
+	            int j = (int)(health * ((2 * amplifier) + (1 << amplifier)) + 0.5D);
+
+	            if (source == null || entityLivingBaseIn.getClass() == EntitySpectriteEnderman.class || entityLivingBaseIn instanceof EntityEnderman)
 	            {
-	                entityLivingBaseIn.attackEntityFrom(ModDamageSources.SPECTRITE_DAMAGE, j);
+	            	if (source != null && source instanceof EntityPlayer) {
+						entityLivingBaseIn.attackEntityFrom(ModDamageSources.causeIndirectPlayerSpectriteDamage((EntityPlayer) source), j);
+					} else {
+						entityLivingBaseIn.attackEntityFrom(ModDamageSources.SPECTRITE_DAMAGE, j);
+					}
 	            }
 	            else
 	            {
@@ -67,15 +72,15 @@ public class PotionSpectriteDamage extends PotionHealth {
 			}
 		}
     }
-	
-	private int damageShield(DamageSource source, EntityLivingBase target, int amplifier) {
-		if (!target.getActiveItemStack().isEmpty() && target.isActiveItemStackBlocking() 
+
+	private int damageShield(EntityLivingBase target, int amplifier) {
+		if (!target.getActiveItemStack().isEmpty() && target.isActiveItemStackBlocking()
 			&& target.getActiveItemStack().getItem() instanceof ItemShield) {
 			int shieldTier = SpectriteHelper.getSpectriteShieldTier(target.getActiveItemStack());
 			int damageLevel = amplifier - shieldTier;
 			if (damageLevel >= 0) {
-				amplifier -= shieldTier + 1;
-				int shieldDamage = 4 << (damageLevel << 1);
+				amplifier -= shieldTier;
+				int shieldDamage = 4 << damageLevel;
 				if (target instanceof EntityPlayer) {
 					SpectriteHelper.damageShield((EntityPlayer) target, shieldDamage);
 					target.world.setEntityState(target, (byte) 29);
@@ -84,7 +89,7 @@ public class PotionSpectriteDamage extends PotionHealth {
 				amplifier = -1;
 			}
 		}
-		
+
 		return amplifier;
 	}
 }

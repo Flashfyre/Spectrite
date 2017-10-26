@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class SpectriteConfig {
 	
 	public enum EnumSpectriteArmourBonusMode implements IStringSerializable {
-		HALF_BONUSES, NORMAL_BONUSES, OVERPOWERED_BONUSES, BEAST_MODE, YGTBK, BROKEN_BONUSES;
+		HALF_BONUSES, NORMAL_BONUSES, OVERPOWERED_BONUSES;
 
 		public float getHealthIncreaseMultiplier() {
 			return Math.max(this.ordinal(), 0.5f);
@@ -114,6 +114,9 @@ public class SpectriteConfig {
 		@Config.LangKey("config.spectrite_tool_cooldown")
 		@Config.RangeDouble(min=0, max=60)
 		public double spectriteToolCooldown = 1.75d;
+		@Config.LangKey("config.spectrite_weapon_cooldown")
+		@Config.RangeDouble(min=0, max=60)
+		public double spectriteWeaponCooldown = 3.5d;
 		@Config.LangKey("config.spectrite_orb_cooldown")
 		@Config.RangeDouble(min=0, max=3600)
 		public double spectriteOrbCooldown = 90.0d;
@@ -154,9 +157,6 @@ public class SpectriteConfig {
 		@Config.LangKey("config.spectrite_mob_sword_drop_rate")
 		@Config.RangeDouble(min=0, max=100)
 		public double spectriteMobSwordDropRate = 5.0d;
-		@Config.LangKey("config.spectrite_mob_orb_drop_rate")
-		@Config.RangeDouble(min=0, max=100)
-		public double spectriteMobOrbDropRate = 5.0d;
 		@Config.LangKey("config.spectrite_mob_bow_drop_rate")
 		@Config.RangeDouble(min=0, max=100)
 		public double spectriteMobBowDropRate = 5.0d;
@@ -171,6 +171,9 @@ public class SpectriteConfig {
 		public double spectriteWitherSkeletonBowRate = 12.5d;
 		@Config.LangKey("config.spectrite_wither_skeleton_use_skeleton_height")
 		public boolean spectriteWitherSkeletonUseSkeletonHeight = false;
+		@Config.LangKey("config.spectrite_enderman_orb_rate")
+		@Config.RangeDouble(min=0, max=100)
+		public double spectriteEndermanOrbDropRate = 100.0d;
 	}
 
 	public static class SpectriteDungeon {
@@ -185,7 +188,7 @@ public class SpectriteConfig {
 		public boolean generateSpectriteSkull = true;
 		@Config.LangKey("config.spectrite_skull_spawn_rate")
 		@Config.RangeDouble(min=0, max=10)
-		public double spectriteSkullSpawnRate = 0.5d;
+		public double spectriteSkullSpawnRate = 0.25d;
 		@Config.LangKey("config.spectrite_skull_surface_rate")
 		@Config.RangeDouble(min=0, max=100)
 		public double spectriteSkullSurfaceRate = 6.25d;

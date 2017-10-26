@@ -2,7 +2,7 @@ package com.samuel.spectrite.client.renderer.tileentity;
 
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.blocks.BlockSpectriteChest;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.tileentity.TileEntitySpectriteChest;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelChest;

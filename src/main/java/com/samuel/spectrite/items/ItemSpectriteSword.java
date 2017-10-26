@@ -3,7 +3,7 @@ package com.samuel.spectrite.items;
 import com.google.common.collect.Multimap;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -24,22 +23,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemSpectriteSword extends ItemSword implements ICustomTooltipItem {
+public class ItemSpectriteSword extends ItemSword implements ISpectriteCustomTooltipItem {
 
 	public ItemSpectriteSword(ToolMaterial material) {
 		super(material);
 		this.setMaxStackSize(1);
 		this.addPropertyOverride(new ResourceLocation("time"), Spectrite.ItemPropertyGetterSpectrite);
 	}
-	
-	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
-		String displayName = super.getItemStackDisplayName(stack);
-		displayName = stack.getItem() instanceof IPerfectSpectriteItem ? ((IPerfectSpectriteItem) this).getMultiColouredDisplayName(stack, displayName)
-			: (TextFormatting.LIGHT_PURPLE + displayName);
-		return displayName;
-	}
-	
+
 	@Override
 	/**
      * Called when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
@@ -60,20 +51,22 @@ public class ItemSpectriteSword extends ItemSword implements ICustomTooltipItem 
     }
     
     @Override
+    @SideOnly(Side.CLIENT)
     public void addTooltipLines(ItemStack stack, List<String> list) {
 		int lineCount = 0;
 		boolean isLastLine = false;
 		String curLine;
 		while (!isLastLine) {
 			isLastLine = (curLine = I18n
-				.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + (SpectriteHelper.isStackSpectriteEnhanced(stack) ? "_enhanced" : "") + ".l" +
+				.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + ".l" +
 				++lineCount))).endsWith("@");
 			if (lineCount == 1) {
-				curLine = curLine.replace("#", String.valueOf(SpectriteConfig.items.spectriteToolCooldown));
+				curLine = curLine.replace("#", String.valueOf(SpectriteConfig.items.spectriteWeaponCooldown * (SpectriteHelper.isStackSpectriteEnhanced(stack) ? 0.5F : 1)));
 			}
 			list.add(!isLastLine ? curLine : curLine
 				.substring(0, curLine.length() - 1));
 		}
+        list.set(0, getMultiColouredDisplayName(stack, stack.getDisplayName()));
 	}
     
     @Override

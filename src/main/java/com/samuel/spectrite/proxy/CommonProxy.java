@@ -4,10 +4,13 @@ import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.capabilities.ISpectriteBossCapability;
 import com.samuel.spectrite.capabilities.SpectriteBossCapability;
+import com.samuel.spectrite.client.gui.GuiHandlerSpectriteRepair;
 import com.samuel.spectrite.client.particles.EnumSpectriteParticleTypes;
+import com.samuel.spectrite.entities.EntitySpectriteEnderman;
 import com.samuel.spectrite.entities.EntitySpectriteWitherSkull;
 import com.samuel.spectrite.etc.SpectriteExplosion;
 import com.samuel.spectrite.eventhandlers.SpectriteGeneralEventHandler;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.init.*;
 import com.samuel.spectrite.packets.PacketSpectriteExplosion;
 import com.samuel.spectrite.packets.PacketSpectriteParticles;
@@ -21,6 +24,7 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -33,8 +37,10 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -72,6 +78,8 @@ public class CommonProxy {
 	            }
 	        }
 	    };
+
+		ModPotions.initPotionEffects();
 		ModBlocks.createBlocks();
 		ModItems.createItems();
 		ModLootTables.registerLootTables();
@@ -83,11 +91,17 @@ public class CommonProxy {
 		ModSounds.initSounds();
 		ModTileEntities.initTileEntities();
 		ModDispenserBehavior.initDispenserBehavior();
-		ModPotions.initPotionEffects();
 		ModEnchantments.initEnchantments();
 		ModDamageSources.initDamageSources();
 		ModBiomes.initBiomes();
 		ModWorldGen.initWorldGen();
+
+		NBTTagCompound tinkersSmelteryTag = new NBTTagCompound();
+		tinkersSmelteryTag.setString("fluid", ModBlocks.fluid_molten_spectrite.getName());
+		tinkersSmelteryTag.setString("ore", "Spectrite");
+		tinkersSmelteryTag.setBoolean("toolforge", true);
+
+		FMLInterModComms.sendMessage("tconstruct", "integrateSmeltery", tinkersSmelteryTag);
 
 		FMLCommonHandler.instance().bus().register(Spectrite.Instance);
 		MinecraftForge.EVENT_BUS.register(new ModBlocks());
@@ -108,15 +122,18 @@ public class CommonProxy {
 	}
 
 	public void init(FMLInitializationEvent e) {
+		NetworkRegistry.INSTANCE.registerGuiHandler(Spectrite.Instance, new GuiHandlerSpectriteRepair());
 		ModCrafting.initSmelting();
 		ModCrafting.initBrewing();
 	}
 
 	public void postInit(FMLPostInitializationEvent e) {
 		ModItems.populateBowItems();
+		EntitySpectriteEnderman.initCarriableBlocks();
 	}
 
-	public void performDispersedSpectriteDamage(World world, int power, int explosionPower, Vec3d hitCoords, Entity source, @Nullable Entity indirectSource, Random rand) {
+	public void performDispersedSpectriteDamage(World world, int power, int explosionPower, Vec3d hitCoords, Entity source,
+		@Nullable Entity indirectSource, Random rand) {
 		if (!world.isRemote) {
 			BlockPos hitPos = new BlockPos(hitCoords);
 			List<Entity> surrounding = world.getEntitiesWithinAABBExcludingEntity(source,
@@ -128,6 +145,8 @@ public class CommonProxy {
 			if (indirectSource == null) {
 				indirectSource = source;
 			}
+
+			power = SpectriteHelper.getSpectriteDamageAmplifierAfterStrength(power, indirectSource);
 
 			if (explosionPower > -1) {
 				boolean allowGriefing;
@@ -146,7 +165,7 @@ public class CommonProxy {
 					(indirectSource == null || (!(surrounding.get(s)).isOnSameTeam(indirectSource))
 					&& !surrounding.get(s).equals(indirectSource))) {
 					EntityLivingBase curEntity = ((EntityLivingBase) surrounding.get(s));
-					double distance = curEntity.getDistanceSq(hitPos);
+					double distance = curEntity.getDistanceSq(hitCoords.x, hitCoords.y - curEntity.height / 2, hitCoords.z);
 					double health = distance >= 1 ? 1.0D - Math.sqrt(distance) / (power + 2) : 1.0D;
 					if (health > 0.0D) {
 						if (!arrow || SpectriteConfig.items.spectriteArrowDamageMode != SpectriteConfig.EnumSpectriteArrowDamageMode.EXPLOSION) {
@@ -162,15 +181,23 @@ public class CommonProxy {
 						1.0F + (rand.nextFloat()) * 0.4F);
 				} else if (power == 2) {
 					world.playSound(null, hitPos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 0.75F + Math.max(explosionPower, 0F),
-						1.0F + (rand.nextFloat()) * 0.4F);
+						1.6F + (rand.nextFloat()) * 0.4F);
 				} else if (power == 3) {
-					world.playSound(null, hitPos, ModSounds.explosion, SoundCategory.PLAYERS, 0.75F + Math.max(explosionPower, 0F),
+					world.playSound(null, hitPos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 0.75F + Math.max(explosionPower, 0F),
 						1.0F + (rand.nextFloat()) * 0.4F);
 				} else if (power == 4) {
+					world.playSound(null, hitPos, ModSounds.explosion, SoundCategory.PLAYERS, 0.75F + Math.max(explosionPower, 0F),
+						1.0F + (rand.nextFloat()) * 0.4F);
+				} else if (power == 5) {
 					world.playSound(null, hitPos, ModSounds.explosion, SoundCategory.PLAYERS, 0.75F + Math.max(explosionPower, 0F),
 						0.75F + (world.rand.nextFloat()) * 0.4F);
 					world.playSound(null, hitPos, ModSounds.fatality, SoundCategory.PLAYERS, 1.0F + Math.max(explosionPower, 0F),
 						1.0F);
+				} else if (power >= 6) {
+					world.playSound(null, hitPos, ModSounds.explosion, SoundCategory.PLAYERS, 0.75F + Math.max(explosionPower, 0F),
+						0.5F + (world.rand.nextFloat()) * 0.4F);
+					world.playSound(null, hitPos, ModSounds.fatality, SoundCategory.PLAYERS, 1.0F + Math.max(explosionPower, 0F),
+					0.75F);
 				}
 
 				if (explosionPower < 0) {
@@ -208,13 +235,17 @@ public class CommonProxy {
 		spawnSpectriteParticle(world, EnumSpectriteParticleTypes.SPECTRITE_SMOKE_LARGE, posX, posY, posZ, xSpeed, ySpeed, zSpeed, 0D);
 	}
 
+	public void spawnSpectritePortalParticle(World world, double posX, double posY, double posZ, double xSpeed, double ySpeed, double zSpeed) {
+		spawnSpectriteParticle(world, EnumSpectriteParticleTypes.SPECTRITE_PORTAL, posX, posY, posZ, xSpeed, ySpeed, zSpeed, 0D);
+	}
+
 	private void spawnSpectriteParticle(World world, EnumSpectriteParticleTypes particleTypes, double posX, double posY, double posZ, double xSpeed, double ySpeed, double zSpeed, double hueOffset) {
 		for (int i = 0; i < world.playerEntities.size(); ++i)
 		{
 			EntityPlayerMP entityPlayerMP = (EntityPlayerMP)world.playerEntities.get(i);
 			if (entityPlayerMP.getPosition().getDistance((int)posX, (int)posY, (int)posZ) <= 1024D) {
 				PacketSpectriteParticles spectriteParticlesPacket = new PacketSpectriteParticles(particleTypes,
-						(float)posX, (float)posY, (float)posZ, (float)xSpeed, (float)ySpeed, (float)zSpeed, (float)0, 1, hueOffset);
+					(float)posX, (float)posY, (float)posZ, (float)xSpeed, (float)ySpeed, (float)zSpeed, (float)0, 1, hueOffset);
 				Spectrite.Network.sendTo(spectriteParticlesPacket, entityPlayerMP);
 			}
 		}

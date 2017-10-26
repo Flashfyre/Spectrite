@@ -3,7 +3,7 @@ package com.samuel.spectrite.entities;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.samuel.spectrite.Spectrite;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.init.ModItems;
 import com.samuel.spectrite.init.ModPotions;
 import com.samuel.spectrite.init.ModSounds;
@@ -18,7 +18,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -158,19 +157,19 @@ public class EntitySpectriteWither extends EntityMob implements IRangedAttackMob
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return SoundEvents.ENTITY_WITHER_AMBIENT;
+        return ModSounds.spectrite_wither_ambient;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource p_184601_1_)
     {
-        return SoundEvents.ENTITY_WITHER_HURT;
+        return ModSounds.spectrite_wither_hurt;
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
-        return SoundEvents.ENTITY_WITHER_DEATH;
+        return ModSounds.spectrite_wither_death;
     }
 
     /**
@@ -496,13 +495,17 @@ public class EntitySpectriteWither extends EntityMob implements IRangedAttackMob
     }
 
     private boolean startRadialAttack() {
-        boolean ret = this.world.getDifficulty() == EnumDifficulty.HARD || (this.world.getDifficulty() == EnumDifficulty.NORMAL && this.getHealth() <= this.getMaxHealth() * 0.75f);
+        EnumDifficulty difficulty = this.world.getDifficulty();
+        boolean ret =  difficulty == EnumDifficulty.HARD || ( difficulty == EnumDifficulty.NORMAL && this.getHealth() <= this.getMaxHealth() * 0.75f);
         if (ret) {
             if (this.getHealth() <= this.getMaxHealth() * 0.25f) {
-                if (this.world.getDifficulty() == EnumDifficulty.HARD) {
+                if (difficulty == EnumDifficulty.HARD) {
                     this.setInvulTime(84);
                 }
-            } else if (this.getHealth() <= this.getMaxHealth() * 0.5f && this.world.getDifficulty() == EnumDifficulty.HARD) {
+                if (rand.nextInt(7) == 0) {
+                    this.setRadialSpurts(true);
+                }
+            } else if ((this.getHealth() <= this.getMaxHealth() * 0.5f && difficulty == EnumDifficulty.HARD)) {
                 this.setRadialSpurts(true);
             }
             this.setRadialSkullTicks(this.getRadialSkullTicks() + 1);
@@ -804,7 +807,8 @@ public class EntitySpectriteWither extends EntityMob implements IRangedAttackMob
     @Override
     public void addPotionEffect(PotionEffect potioneffectIn)
     {
-        if (potioneffectIn.getPotion() == ModPotions.SPECTRITE_RESISTANCE || potioneffectIn.getPotion() == ModPotions.SPECTRITE_DAMAGE) {
+        if (potioneffectIn.getPotion() == ModPotions.SPECTRITE_STRENGTH || potioneffectIn.getPotion() == ModPotions.SPECTRITE_RESISTANCE
+            || potioneffectIn.getPotion() == ModPotions.SPECTRITE_DAMAGE) {
             super.addPotionEffect(potioneffectIn);
         }
     }

@@ -3,7 +3,7 @@ package com.samuel.spectrite.items;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.etc.ISpectriteTool;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.init.ModSounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
@@ -26,17 +26,18 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ItemSpectritePickaxe extends ItemPickaxe implements ISpectriteTool, ICustomTooltipItem {
+public class ItemSpectritePickaxe extends ItemPickaxe implements ISpectriteTool, ISpectriteCustomTooltipItem {
 	
 	public ItemSpectritePickaxe(ToolMaterial material) {
         super(material);
@@ -49,33 +50,28 @@ public class ItemSpectritePickaxe extends ItemPickaxe implements ISpectriteTool,
 	}
 	
 	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
-		
-		String displayName = super.getItemStackDisplayName(stack);
-		displayName = stack.getItem() instanceof IPerfectSpectriteItem ? ((IPerfectSpectriteItem) this).getMultiColouredDisplayName(stack, displayName)
-			: (TextFormatting.LIGHT_PURPLE + displayName);
-		return displayName;
-	}
-	
-	@Override
+	@SideOnly(Side.CLIENT)
 	public void addTooltipLines(ItemStack stack, List<String> list) {
 		int lineCount = 0;
 		boolean isLastLine = false;
-		double cooldown = SpectriteConfig.items.spectriteToolCooldown;
+		double toolCooldown = SpectriteConfig.items.spectriteToolCooldown;
+		double weaponCooldown = SpectriteConfig.items.spectriteWeaponCooldown;
 		if (SpectriteHelper.isStackSpectriteEnhanced(stack)) {
-			cooldown *= 0.5d;
+			toolCooldown *= 0.5d;
+			weaponCooldown *= 0.5d;
 		}
 		String curLine;
 		while (!isLastLine) {
 			isLastLine = (curLine = I18n
 				.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + ".l" +
 				++lineCount))).endsWith("@");
-			if (lineCount == 1) {
-				curLine = curLine.replace("#", String.format("%.2f", cooldown));
+			if (lineCount % 2 == 1) {
+				curLine = curLine.replace("#", String.format("%.2f", lineCount == 1 ? toolCooldown : weaponCooldown));
 			}
 			list.add(!isLastLine ? curLine : curLine
 				.substring(0, curLine.length() - 1));
 		}
+		list.set(0, getMultiColouredDisplayName(stack, stack.getDisplayName()));
 	}
 
 	@Override

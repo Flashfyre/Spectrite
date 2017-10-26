@@ -1,6 +1,5 @@
 package com.samuel.spectrite.client.particles;
 
-import com.samuel.spectrite.etc.SpectriteHelper;
 import net.minecraft.client.particle.ParticleExplosionLarge;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -12,6 +11,7 @@ import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Field;
@@ -34,7 +34,7 @@ public class ParticleSpectriteExplosionLarge extends ParticleExplosionLarge {
         this.textureManager = textureManagerIn;
 
         if (lifeTimeField == null) {
-            lifeTimeField = SpectriteHelper.findObfuscatedField(ParticleExplosionLarge.class, "lifeTime", "field_70584_aq");
+            lifeTimeField = ReflectionHelper.findField(ParticleExplosionLarge.class, "lifeTime", "field_70584_aq");
         }
         try {
             this.lifeTime = (int) lifeTimeField.get(this);

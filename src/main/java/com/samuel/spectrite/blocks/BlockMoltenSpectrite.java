@@ -2,6 +2,7 @@ package com.samuel.spectrite.blocks;
 
 import com.samuel.spectrite.entities.EntitySpectriteGolem;
 import com.samuel.spectrite.init.ModBlocks;
+import com.samuel.spectrite.init.ModDamageSources;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -11,11 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
@@ -29,20 +26,6 @@ import javax.annotation.Nonnull;
 public class BlockMoltenSpectrite extends BlockFluidClassic {
 	
 	public static final PropertyBool ODD = PropertyBool.create("odd");
-	
-	DamageSource damageSource = new DamageSource("molten_spectrite") {
-		@Override
-		/**
-	     * Gets the death message that is displayed when the player dies
-	     */
-	    public ITextComponent getDeathMessage(EntityLivingBase entityLivingBaseIn)
-	    {
-	        EntityLivingBase entitylivingbase = entityLivingBaseIn.getAttackingEntity();
-	        String s = "death.attack." + this.damageType;
-	        String s1 = s + ".player";
-	        return entitylivingbase != null && I18n.canTranslate(s1) ? new TextComponentTranslation(s1, new Object[] {entityLivingBaseIn.getDisplayName(), entitylivingbase.getDisplayName()}): new TextComponentTranslation(s, new Object[] {entityLivingBaseIn.getDisplayName()});
-	    }
-	};
 
 	public BlockMoltenSpectrite(Fluid fluid) {
 		super(fluid, Material.LAVA);
@@ -67,12 +50,12 @@ public class BlockMoltenSpectrite extends BlockFluidClassic {
 	    	if (state.getBlock() == ModBlocks.molten_spectrite) {
 	    		if (entityIn instanceof EntityLivingBase) {
 	    			float damageMultiplier = entityIn instanceof EntitySpectriteGolem ? 0.25F : 1F;
-	    			if (((EntityLivingBase) entityIn).attackEntityFrom(damageSource, (32.0F - state.getValue(BlockFluidBase.LEVEL)) * damageMultiplier)) {
+	    			if (entityIn.attackEntityFrom(ModDamageSources.MOLTEN_SPECTRITE, (32.0F - state.getValue(BlockFluidBase.LEVEL)) * damageMultiplier)) {
 	    				entityIn.playSound(SoundEvents.ENTITY_GENERIC_BURN, 0.4F, worldIn.rand.nextFloat() * 0.4F);
 	    			}
 	    		} else if (entityIn instanceof EntityItem) {
 	    			entityIn.playSound(SoundEvents.ENTITY_GENERIC_BURN, 0.4F, worldIn.rand.nextFloat() * 0.4F);
-	    			entityIn.attackEntityFrom(damageSource, 4.0F);
+	    			entityIn.attackEntityFrom(ModDamageSources.MOLTEN_SPECTRITE, 4.0F);
 	    			entityIn.setFire(15);
 	    		}
 	    	}

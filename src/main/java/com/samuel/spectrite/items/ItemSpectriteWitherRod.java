@@ -3,7 +3,7 @@ package com.samuel.spectrite.items;
 import com.google.common.collect.Multimap;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.entities.EntitySpectriteWitherSkull;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemSpectriteWitherRod extends ItemSpectriteSimple implements IPerfectSpectriteItem, ICustomTooltipItem {
+public class ItemSpectriteWitherRod extends ItemSpectriteSimple implements IPerfectSpectriteItem, ISpectriteCustomTooltipItem {
 
     private final boolean invulnerable;
     private final float attackDamage;
@@ -40,32 +40,28 @@ public class ItemSpectriteWitherRod extends ItemSpectriteSimple implements IPerf
     }
 
     @Override
-    public String getItemStackDisplayName(ItemStack stack) {
-
-        String displayName = super.getItemStackDisplayName(stack);
-        displayName = this.getMultiColouredDisplayName(stack, displayName);
-        return displayName;
-    }
-
-    @Override
+    @SideOnly(Side.CLIENT)
     public void addTooltipLines(ItemStack stack, List<String> list) {
         int lineCount = 0;
         boolean isLastLine = false;
-        double cooldown = SpectriteConfig.items.spectriteWitherRodCooldown;
+        double rodCooldown = SpectriteConfig.items.spectriteWitherRodCooldown;
+        double weaponCooldown = SpectriteConfig.items.spectriteWeaponCooldown;
         if (SpectriteHelper.isStackSpectriteEnhanced(stack)) {
-            cooldown *= 0.5d;
+            rodCooldown *= 0.5d;
+            weaponCooldown *= 0.5d;
         }
         String curLine;
         while (!isLastLine) {
             isLastLine = (curLine = I18n
                     .translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + ".l" +
                             ++lineCount))).endsWith("@");
-            if (lineCount == 1) {
-                curLine = curLine.replace("#", String.format("%.2f", cooldown));
+            if (lineCount % 2 == 1) {
+                curLine = curLine.replace("#", String.format("%.2f", lineCount == 1 ? rodCooldown : weaponCooldown));
             }
             list.add(!isLastLine ? curLine : curLine
                     .substring(0, curLine.length() - 1));
         }
+        list.set(0, getMultiColouredDisplayName(stack, stack.getDisplayName()));
     }
 
     /**

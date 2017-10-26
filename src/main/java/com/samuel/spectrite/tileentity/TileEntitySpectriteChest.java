@@ -2,11 +2,10 @@ package com.samuel.spectrite.tileentity;
 
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.blocks.BlockSpectriteChest;
-import com.samuel.spectrite.etc.ContainerSpectriteChest;
-import com.samuel.spectrite.etc.InventoryLargeSpectriteChest;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.containers.ContainerSpectriteChest;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.init.ModEnchantments;
-import com.samuel.spectrite.items.IPerfectSpectriteItem;
+import com.samuel.spectrite.inventory.InventoryLargeSpectriteChest;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,6 +24,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -124,6 +125,12 @@ public class TileEntitySpectriteChest extends TileEntityChest {
 
         return null;
     }
+
+    @Override
+	@SideOnly(Side.CLIENT)
+	public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
+		return new net.minecraft.util.math.AxisAlignedBB(pos.add(-1, 0, -1), pos.add(2, 2, 2));
+	}
     
     private boolean isChestAt(BlockPos posIn) {
 		if (this.world == null) {
@@ -324,7 +331,7 @@ public class TileEntitySpectriteChest extends TileEntityChest {
 		 
 		 while (inventoryIterator.hasNext()) {
 			 ItemStack s = inventoryIterator.next();
-			 if (!s.isEmpty() && s.getItem() instanceof IPerfectSpectriteItem) {
+			 if (ModEnchantments.spectrite_enhance.canApplyAtSpectriteAnvil(s)) {
 				 ret.put(i, s);
 			 }
 			 i++;

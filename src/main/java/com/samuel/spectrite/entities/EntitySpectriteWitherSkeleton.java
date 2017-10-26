@@ -2,12 +2,13 @@ package com.samuel.spectrite.entities;
 
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.init.ModEnchantments;
 import com.samuel.spectrite.init.ModItems;
 import com.samuel.spectrite.init.ModLootTables;
 import com.samuel.spectrite.items.IPerfectSpectriteItem;
 import com.samuel.spectrite.items.ItemSpectriteArmor;
+import com.samuel.spectrite.items.ItemSpectriteOrb;
 import com.samuel.spectrite.packets.PacketSyncSpectriteBoss;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -26,6 +27,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -64,7 +66,7 @@ public class EntitySpectriteWitherSkeleton extends AbstractSpectriteSkeleton {
 	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
 		Item spectriteWeapon;
 		boolean hasPerfectWeapon = this.boss || SpectriteConfig.mobs.spectriteMobPerfectWeaponRate > 0d
-			&& rand.nextInt((int) (100 / SpectriteConfig.mobs.spectriteMobPerfectWeaponRate)) < chanceMultiplier;
+			&& rand.nextInt((int) (100 / SpectriteConfig.mobs.spectriteMobPerfectWeaponRate)) < 1f;
 		Map<Enchantment, Integer> enchantmentMap = new HashMap<Enchantment, Integer>();
 		enchantmentMap.put(ModEnchantments.spectrite_enhance, 1);
 
@@ -74,7 +76,7 @@ public class EntitySpectriteWitherSkeleton extends AbstractSpectriteSkeleton {
 			rand.nextFloat() * 100f >= SpectriteConfig.mobs.spectriteWitherSkeletonBowRate;
 
 		boolean hasLegendBlade = hasSword && hasPerfectWeapon && (this.boss || SpectriteConfig.mobs.spectriteMobLegendSwordRate > 0d
-			&& rand.nextInt((int) (100 / SpectriteConfig.mobs.spectriteMobLegendSwordRate)) < chanceMultiplier);
+			&& rand.nextInt((int) (100f / SpectriteConfig.mobs.spectriteMobLegendSwordRate)) < 1f);
 
 		if (!hasPerfectWeapon) {
 			spectriteWeapon = hasSword ? ModItems.spectrite_sword : ModItems.spectrite_bow;
@@ -92,16 +94,14 @@ public class EntitySpectriteWitherSkeleton extends AbstractSpectriteSkeleton {
 		}
 
 		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, weaponStack);
-		this.setDropChance(EntityEquipmentSlot.MAINHAND, new Double(hasSword ? SpectriteConfig.mobs.spectriteMobSwordDropRate : SpectriteConfig.mobs.spectriteMobBowDropRate).floatValue() / (100f / chanceMultiplier));
+		this.setDropChance(EntityEquipmentSlot.MAINHAND, new Double(hasSword ? SpectriteConfig.mobs.spectriteMobSwordDropRate : SpectriteConfig.mobs.spectriteMobBowDropRate).floatValue() / 100f);
 
-		if (this.boss) {
-			this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, new ItemStack(ModItems.spectrite_orb));
-			this.setDropChance(EntityEquipmentSlot.OFFHAND, new Double(SpectriteConfig.mobs.spectriteMobOrbDropRate).floatValue() / (100f / chanceMultiplier));
-		} else if (!hasSword) {
-			this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, new ItemStack(ModItems.spectrite_arrow, rand.nextInt(4) + 1));
-			this.setDropChance(EntityEquipmentSlot.OFFHAND, new Double(SpectriteConfig.mobs.spectriteMobArrowDropRate).floatValue() / (100f / chanceMultiplier));
+		if (!hasSword) {
+			this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, new ItemStack(hasPerfectWeapon ? ModItems.spectrite_arrow_special : ModItems.spectrite_arrow, 1));
+			this.setDropChance(EntityEquipmentSlot.OFFHAND, new Double(SpectriteConfig.mobs.spectriteMobArrowDropRate).floatValue() / 100f);
 		}
 
+		EntityEquipmentSlot[] orbEquipmentSlots = ItemSpectriteOrb.ORB_EQUIPMENT_SLOTS;
 		int armourCount = 0;
 		int enhancedCount = 0;
 		double maxHealth = 50.0D;
@@ -116,8 +116,18 @@ public class EntitySpectriteWitherSkeleton extends AbstractSpectriteSkeleton {
 				enhanced = true;
 				enhancedCount++;
 			}
+			if (this.boss) {
+				helmetStack.setTagCompound(new NBTTagCompound());
+				helmetItem.updateItemStackNBT(helmetStack.getTagCompound());
+				for (int o = 0; o < orbEquipmentSlots.length; o++) {
+					if (helmetItem.armorType == orbEquipmentSlots[o] && ((this.world.getDifficulty() == EnumDifficulty.NORMAL
+							&& rand.nextInt(3) == 0) || this.world.getDifficulty() == EnumDifficulty.HARD)) {
+						helmetStack.getSubCompound("OrbEffects").setBoolean(new Integer(o).toString(), Boolean.TRUE);
+					}
+				}
+			}
 			this.setItemStackToSlot(EntityEquipmentSlot.HEAD, helmetStack);
-			this.setDropChance(EntityEquipmentSlot.HEAD, new Double(SpectriteConfig.mobs.spectriteMobArmourDropRate).floatValue() / (100f / chanceMultiplier));
+			this.setDropChance(EntityEquipmentSlot.HEAD, new Double(SpectriteConfig.mobs.spectriteMobArmourDropRate).floatValue() / 100f);
 			float healthIncrease = helmetItem.getHealthIncreaseValue(true) * (enhanced ? 2f : 1f);
 			maxHealth += healthIncrease;
 			exp += ((int) healthIncrease >> 1);
@@ -133,8 +143,18 @@ public class EntitySpectriteWitherSkeleton extends AbstractSpectriteSkeleton {
 				enhanced = true;
 				enhancedCount++;
 			}
+			if (this.boss) {
+				chestplateStack.setTagCompound(new NBTTagCompound());
+				chestplateItem.updateItemStackNBT(chestplateStack.getTagCompound());
+				for (int o = 0; o < orbEquipmentSlots.length; o++) {
+					if (chestplateItem.armorType == orbEquipmentSlots[o] && ((this.world.getDifficulty() == EnumDifficulty.NORMAL
+						&& rand.nextInt(3) == 0) || this.world.getDifficulty() == EnumDifficulty.HARD)) {
+						chestplateStack.getSubCompound("OrbEffects").setBoolean(new Integer(o).toString(), Boolean.TRUE);
+					}
+				}
+			}
 			this.setItemStackToSlot(EntityEquipmentSlot.CHEST, chestplateStack);
-			this.setDropChance(EntityEquipmentSlot.CHEST, new Double(SpectriteConfig.mobs.spectriteMobArmourDropRate).floatValue() / (100f / chanceMultiplier));
+			this.setDropChance(EntityEquipmentSlot.CHEST, new Double(SpectriteConfig.mobs.spectriteMobArmourDropRate).floatValue() / 100f);
 			float healthIncrease = chestplateItem.getHealthIncreaseValue(true) * (enhanced ? 2f : 1f);
 			maxHealth += healthIncrease;
 			exp += ((int) healthIncrease >> 1);
@@ -150,8 +170,18 @@ public class EntitySpectriteWitherSkeleton extends AbstractSpectriteSkeleton {
 				enhanced = true;
 				enhancedCount++;
 			}
+			if (this.boss) {
+				leggingsStack.setTagCompound(new NBTTagCompound());
+				leggingsItem.updateItemStackNBT(leggingsStack.getTagCompound());
+				for (int o = 0; o < orbEquipmentSlots.length; o++) {
+					if (leggingsItem.armorType == orbEquipmentSlots[o] && ((this.world.getDifficulty() == EnumDifficulty.NORMAL
+							&& rand.nextInt(3) == 0) || this.world.getDifficulty() == EnumDifficulty.HARD)) {
+						leggingsStack.getSubCompound("OrbEffects").setBoolean(new Integer(o).toString(), Boolean.TRUE);
+					}
+				}
+			}
 			this.setItemStackToSlot(EntityEquipmentSlot.LEGS, leggingsStack);
-			this.setDropChance(EntityEquipmentSlot.LEGS, new Double(SpectriteConfig.mobs.spectriteMobArmourDropRate).floatValue() / (100f / chanceMultiplier));
+			this.setDropChance(EntityEquipmentSlot.LEGS, new Double(SpectriteConfig.mobs.spectriteMobArmourDropRate).floatValue() / 100f);
 			float healthIncrease = leggingsItem.getHealthIncreaseValue(true) * (enhanced ? 2f : 1f);
 			maxHealth += healthIncrease;
 			exp += ((int) healthIncrease >> 1);
@@ -167,8 +197,18 @@ public class EntitySpectriteWitherSkeleton extends AbstractSpectriteSkeleton {
 				enhanced = true;
 				enhancedCount++;
 			}
+			if (this.boss) {
+				bootsStack.setTagCompound(new NBTTagCompound());
+				bootsItem.updateItemStackNBT(bootsStack.getTagCompound());
+				for (int o = 0; o < orbEquipmentSlots.length; o++) {
+					if (bootsItem.armorType == orbEquipmentSlots[o] && ((this.world.getDifficulty() == EnumDifficulty.NORMAL
+							&& rand.nextInt(3) == 0) || this.world.getDifficulty() == EnumDifficulty.HARD)) {
+						bootsStack.getSubCompound("OrbEffects").setBoolean(new Integer(o).toString(), Boolean.TRUE);
+					}
+				}
+			}
 			this.setItemStackToSlot(EntityEquipmentSlot.FEET, bootsStack);
-			this.setDropChance(EntityEquipmentSlot.FEET, new Double(SpectriteConfig.mobs.spectriteMobArmourDropRate).floatValue() / (100f / chanceMultiplier));
+			this.setDropChance(EntityEquipmentSlot.FEET, new Double(SpectriteConfig.mobs.spectriteMobArmourDropRate).floatValue() / 100f);
 			float healthIncrease = bootsItem.getHealthIncreaseValue(true) * (enhanced ? 2f : 1f);
 			maxHealth += healthIncrease;
 			exp += ((int) healthIncrease >> 1);
@@ -322,7 +362,8 @@ public class EntitySpectriteWitherSkeleton extends AbstractSpectriteSkeleton {
 					}
 				}
 			}
-			EntitySpectriteArrow entityspectritearrow = new EntitySpectriteArrow(this.world, this, enhanced);
+			EntitySpectriteArrow entityspectritearrow = new EntitySpectriteArrow(this.world, this,
+				this.getHeldItemOffhand().getItem() == ModItems.spectrite_arrow_special, enhanced);
 			entityspectritearrow.setEnchantmentEffectsFromEntity(this, p_190726_1_);
 			ret = entityspectritearrow;
 		} else if (itemstack.getItem() == Items.SPECTRAL_ARROW) {

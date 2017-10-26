@@ -53,6 +53,9 @@ public class BlockRenderRegister {
 		registerItemBlockModel(ModBlocks.spectrite_brick_slab_half, 0);
 		registerItemBlockModel(ModBlocks.diamond_ladder, 0);
 		registerItemBlockModel(ModBlocks.spectrite_ladder, 0);
+		registerItemBlockModel(ModBlocks.spectrite_anvil, 0, "spectrite_anvil_undamaged");
+		registerItemBlockModel(ModBlocks.spectrite_anvil, 1, "spectrite_anvil_slightly_damaged");
+		registerItemBlockModel(ModBlocks.spectrite_anvil, 2, "spectrite_anvil_very_damaged");
 	}
 	
 	public static void registerBlockVariants(Block block, ResourceLocation... names) {

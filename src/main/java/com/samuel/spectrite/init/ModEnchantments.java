@@ -3,7 +3,7 @@ package com.samuel.spectrite.init;
 import com.google.common.base.Predicate;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.enchantments.EnchantmentSpectriteEnhance;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.items.IPerfectSpectriteItem;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantment.Rarity;

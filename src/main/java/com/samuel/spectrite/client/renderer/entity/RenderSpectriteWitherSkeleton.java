@@ -1,8 +1,9 @@
 package com.samuel.spectrite.client.renderer.entity;
 
-import com.google.common.collect.Maps;
 import com.samuel.spectrite.Spectrite;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSkeleton;
 import net.minecraft.entity.monster.AbstractSkeleton;
@@ -10,12 +11,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Map;
-
 @SideOnly(Side.CLIENT)
 public class RenderSpectriteWitherSkeleton extends RenderSkeleton {
 
-	private static final Map<String, ResourceLocation> WITHER_SKELETON_TEXTURE_RES_MAP = Maps.<String, ResourceLocation>newHashMap();
+	private static final Int2ObjectMap<ResourceLocation> WITHER_SKELETON_TEXTURE_RES_MAP = new Int2ObjectOpenHashMap<>();
 
     public RenderSpectriteWitherSkeleton(RenderManager renderManager)
     {
@@ -29,13 +28,13 @@ public class RenderSpectriteWitherSkeleton extends RenderSkeleton {
 	protected ResourceLocation getEntityTexture(AbstractSkeleton entity)
     {
     	int curFrame = SpectriteHelper.getCurrentSpectriteFrame(entity.getEntityWorld());
-        String textureLoc = String.format("%s:textures/entities/spectrite_wither_skeleton/%d.png", Spectrite.MOD_ID, curFrame);
-		ResourceLocation resourceLocation = WITHER_SKELETON_TEXTURE_RES_MAP.get(textureLoc);
-		
-        if (resourceLocation == null)
-        {
-            resourceLocation = new ResourceLocation(textureLoc);
-            WITHER_SKELETON_TEXTURE_RES_MAP.put(textureLoc, resourceLocation);
+
+    	ResourceLocation resourceLocation;
+    	if (WITHER_SKELETON_TEXTURE_RES_MAP.containsKey(curFrame)) {
+    	    resourceLocation = WITHER_SKELETON_TEXTURE_RES_MAP.get(curFrame);
+        } else {
+            resourceLocation = new ResourceLocation(String.format("%s:textures/entities/spectrite_wither_skeleton/%d.png", Spectrite.MOD_ID, curFrame));
+            WITHER_SKELETON_TEXTURE_RES_MAP.put(curFrame, resourceLocation);
         }
 		
 		return resourceLocation;

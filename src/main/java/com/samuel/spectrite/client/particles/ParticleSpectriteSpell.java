@@ -1,6 +1,6 @@
 package com.samuel.spectrite.client.particles;
 
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import net.minecraft.client.particle.ParticleSpell;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;

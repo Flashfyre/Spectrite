@@ -25,7 +25,6 @@ public final class ItemRenderRegister {
 		registerItemModel(ModItems.spectrite_blaze_rod);
 		registerItemModel(ModItems.spectrite_blaze_powder);
 		registerItemModel(ModItems.spectrite_gem);
-		registerItemModel(ModItems.spectrite_orb);
 		registerItemModel(ModItems.spectrite_shovel);
 		registerItemModel(ModItems.spectrite_shovel_special);
 		registerItemModel(ModItems.spectrite_pickaxe);
@@ -36,6 +35,7 @@ public final class ItemRenderRegister {
 		registerItemModel(ModItems.spectrite_sword_special);
 		registerItemModel(ModItems.spectrite_sword_2);
 		registerItemModel(ModItems.spectrite_arrow);
+		registerItemModel(ModItems.spectrite_arrow_special);
 		registerItemModel(ModItems.spectrite_bow);
 		registerItemModel(ModItems.spectrite_bow_special);
 		registerItemModel(ModItems.spectrite_shield);
@@ -44,7 +44,8 @@ public final class ItemRenderRegister {
 		registerItemModel(ModItems.spectrite_chestplate);
 		registerItemModel(ModItems.spectrite_leggings);
 		registerItemModel(ModItems.spectrite_boots);
-		registerItemModel(ModItems.spectrite_compass);
+		for (int o = 0; o < 128; o++)
+			registerItemModel(ModItems.spectrite_orb, o);
 		registerItemModel(ModItems.spectrite_star);
 		registerItemModel(ModItems.spectrite_wither_skeleton_skull);
 		registerItemModel(ModItems.spectrite_wither_skull);
@@ -55,6 +56,7 @@ public final class ItemRenderRegister {
 		registerItemModel(ModItems.spectrite_wither_tail, 1);
 		registerItemModel(ModItems.spectrite_wither_rod);
 		registerItemModel(ModItems.spectrite_wither_rod_invulnerable);
+		registerItemModel(ModItems.spectrite_compass);
 		
 		ModelLoader.setBucketModelDefinition(ModItems.molten_spectrite_bucket);
 	}

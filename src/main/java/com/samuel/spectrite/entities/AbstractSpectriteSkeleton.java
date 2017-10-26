@@ -2,25 +2,31 @@ package com.samuel.spectrite.entities;
 
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.init.ModBiomes;
 import com.samuel.spectrite.items.ItemSpectriteBow;
 import com.samuel.spectrite.packets.PacketSyncSpectriteBoss;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.lang.reflect.Field;
 
@@ -37,7 +43,7 @@ public abstract class AbstractSpectriteSkeleton extends AbstractSkeleton impleme
         protected boolean isBowInMainhand()
         {
             if (entity == null) {
-                entity = SpectriteHelper.findObfuscatedField(EntityAIAttackRangedBow.class, new String[] { "entity", "field_188499_a" });
+                entity = ReflectionHelper.findField(EntityAIAttackRangedBow.class, new String[] { "entity", "field_188499_a" });
             }
             AbstractSkeleton entityInstance;
             try {
@@ -83,7 +89,7 @@ public abstract class AbstractSpectriteSkeleton extends AbstractSkeleton impleme
             if (itemstack.getItem() instanceof ItemSpectriteBow)
             {
                 this.tasks.removeTask(this.aiArrowAttack);
-                Field aiAttackOnCollide = SpectriteHelper.findObfuscatedField(AbstractSkeleton.class, new String[] { "aiAttackOnCollide", "field_85038_e" });
+                Field aiAttackOnCollide = ReflectionHelper.findField(AbstractSkeleton.class, new String[] { "aiAttackOnCollide", "field_85038_e" });
                 try {
                     this.tasks.removeTask((EntityAIAttackMelee) aiAttackOnCollide.get(this));
                 } catch (Exception e) {
@@ -152,6 +158,40 @@ public abstract class AbstractSpectriteSkeleton extends AbstractSkeleton impleme
                 this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
             }
         }
+    }
+
+    @Override
+    /**
+     * drops the loot of this entity upon death
+     */
+    protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source)
+    {
+        this.dropFewItems(wasRecentlyHit, lootingModifier);
+
+        Entity damageSourceEntity = source.getTrueSource() != null ? source.getTrueSource() : source.getImmediateSource();
+        if (damageSourceEntity == null || (!(damageSourceEntity instanceof EntityPlayer)
+            && (!(damageSourceEntity instanceof EntityIronGolem) || !((EntityIronGolem) damageSourceEntity).isPlayerCreated()))) {
+            lootingModifier = -1;
+        }
+        if (lootingModifier > -1) {
+            this.dropEquipment(wasRecentlyHit, lootingModifier);
+        }
+    }
+
+    /**
+     * Attack the specified entity using a ranged attack.
+     */
+    @Override
+    public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor)
+    {
+        EntityArrow entityarrow = this.getArrow(distanceFactor);
+        double d0 = target.posX - this.posX;
+        double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entityarrow.posY;
+        double d2 = target.posZ - this.posZ;
+        double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
+        entityarrow.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
+        this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.world.spawnEntity(entityarrow);
     }
 
     /**

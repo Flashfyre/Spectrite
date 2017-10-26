@@ -1,6 +1,6 @@
 package com.samuel.spectrite.blocks;
 
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -45,10 +45,10 @@ public class BlockSpectriteBone extends BlockRotatedPillar {
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World worldIn, BlockPos pos)
     {
 		boolean canBreak = false;
-		Item heldItem = null;
+		Item heldItem;
 		if (!player.getHeldItemMainhand().isEmpty()) {
 			heldItem = player.getHeldItemMainhand().getItem();
-			canBreak = heldItem instanceof ItemTool && ((ItemTool) heldItem).getStrVsBlock(player.getHeldItemMainhand(), state) >= 10.0f;
+			canBreak = heldItem instanceof ItemTool && (heldItem).getStrVsBlock(player.getHeldItemMainhand(), state) >= 10.0f;
 		}
         return canBreak ? net.minecraftforge.common.ForgeHooks.blockStrength(state, player, worldIn, pos) : -1.0f;
     }

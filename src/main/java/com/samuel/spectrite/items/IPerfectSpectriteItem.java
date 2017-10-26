@@ -1,7 +1,5 @@
 package com.samuel.spectrite.items;
 
-import com.samuel.spectrite.etc.SpectriteHelper;
-import com.samuel.spectrite.init.ModItems;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
@@ -10,26 +8,20 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Random;
 
-public interface IPerfectSpectriteItem {
-
-	default String getMultiColouredDisplayName(ItemStack stack, String displayName) {
-		return SpectriteHelper.getMultiColouredString(displayName,this == ModItems.spectrite_sword_2 || (this == ModItems.spectrite_wither_rod_invulnerable));
-	}
+public interface IPerfectSpectriteItem extends ISpectriteItem {
 
     default boolean onEntitySpectriteItemUpdate(EntityItem entityItem) {
-	    Field randomField = SpectriteHelper.findObfuscatedField(Entity.class, "rand", "field_70146_Z");
-    	Field delayBeforeCanPickupField = SpectriteHelper.findObfuscatedField(EntityItem.class, "delayBeforeCanPickup", "field_145804_b");
+    	Field delayBeforeCanPickupField = ReflectionHelper.findField(EntityItem.class, "delayBeforeCanPickup", "field_145804_b");
 
-        Random rand;
+        Random rand = new Random();
 
 		try {
-            rand = (Random) randomField.get(entityItem);
-
 			int delayBeforeCanPickup = delayBeforeCanPickupField.getInt(entityItem);
 			if (delayBeforeCanPickup > 0 && delayBeforeCanPickup != 32767)
 	        {
@@ -58,7 +50,7 @@ public interface IPerfectSpectriteItem {
         }
         else
         {
-        	Method pushOutOfBlocks = SpectriteHelper.findObfuscatedMethod(Entity.class, "pushOutOfBlocks", "func_145771_j", double.class, double.class, double.class);
+        	Method pushOutOfBlocks = ReflectionHelper.findMethod(Entity.class, "pushOutOfBlocks", "func_145771_j", double.class, double.class, double.class);
             try {
 				entityItem.noClip = (boolean) pushOutOfBlocks.invoke(entityItem, entityItem.posX, (entityItem.getEntityBoundingBox().minY + entityItem.getEntityBoundingBox().maxY) / 2.0D, entityItem.posZ);
 			} catch (Exception e) {
@@ -82,7 +74,7 @@ public interface IPerfectSpectriteItem {
             if (!entityItem.world.isRemote)
             {
 
-            	Method searchForOtherItemsNearby = SpectriteHelper.findObfuscatedMethod(EntityItem.class, "searchForOtherItemsNearby", "func_85054_d");
+            	Method searchForOtherItemsNearby = ReflectionHelper.findMethod(EntityItem.class, "searchForOtherItemsNearby", "func_85054_d");
             	try {
 					searchForOtherItemsNearby.invoke(entityItem);
 				} catch (Exception e) {
@@ -107,7 +99,7 @@ public interface IPerfectSpectriteItem {
             entityItem.motionY *= -0.5D;
         }
 
-        Field ageField = SpectriteHelper.findObfuscatedField(EntityItem.class, "age", "field_70292_b");
+        Field ageField = ReflectionHelper.findField(EntityItem.class, "age", "field_70292_b");
         int age = 0;
         try {
             age = ((int) ageField.get(entityItem));

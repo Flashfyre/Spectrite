@@ -71,9 +71,10 @@ public class EntitySmallSpectriteFireball extends EntitySpectriteFireball {
                 }
             }
 
-            int power = 2;
+            int power = 3;
 
-            Spectrite.Proxy.performDispersedSpectriteDamage(this.world, power, -1, result.hitVec, this, this.shootingEntity, this.rand);
+            Spectrite.Proxy.performDispersedSpectriteDamage(this.world, power, -1, result.hitVec,
+                this, this.shootingEntity, this.rand);
             this.spawnLingeringCloud(power);
 
             this.setDead();

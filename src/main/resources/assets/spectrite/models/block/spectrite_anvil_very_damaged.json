@@ -1,0 +1,9 @@
+{
+	"parent": "spectrite:block/spectrite_anvil",
+	"textures": {
+		"base": "spectrite:blocks/spectrite_anvil_base",
+		"top": "spectrite:blocks/spectrite_anvil_top_damaged_2",
+		"bottom": "spectrite:blocks/spectrite_anvil_bottom",
+		"particle": "spectrite:blocks/spectrite_anvil_base"
+	}
+}

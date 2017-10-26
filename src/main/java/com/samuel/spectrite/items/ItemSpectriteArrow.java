@@ -3,7 +3,7 @@ package com.samuel.spectrite.items;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.entities.EntitySpectriteArrow;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.init.ModItems;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,36 +12,30 @@ import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-public class ItemSpectriteArrow extends ItemArrow implements ICustomTooltipItem {
+public class ItemSpectriteArrow extends ItemArrow implements ISpectriteCustomTooltipItem {
 	
 	public ItemSpectriteArrow() {
 		super();
 		this.addPropertyOverride(new ResourceLocation("time"), Spectrite.ItemPropertyGetterSpectrite);
 	}
-
-	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
-		String displayName = super.getItemStackDisplayName(stack);
-		return TextFormatting.LIGHT_PURPLE  + displayName;
-	}
 	
 	@Override
 	public EntityArrow createArrow(World worldIn, ItemStack stack, EntityLivingBase shooter)
     {
-		boolean enhanced = false;
-		if (!shooter.getActiveItemStack().isEmpty() && shooter.getActiveItemStack().getItem() instanceof ItemBow) {
+		ItemStack bowStack = shooter.getActiveItemStack();
+		if (!bowStack.isEmpty() && bowStack.getItem() instanceof ItemBow) {
 			if (shooter instanceof EntityPlayer && !((EntityPlayer) shooter).capabilities.isCreativeMode) {
+				int cooldown = (int) Math.round(SpectriteConfig.items.spectriteToolCooldown * 20 * (SpectriteHelper.isStackSpectriteEnhanced(bowStack) ? 0.5 : 1));
 				for (ItemBow b : ModItems.bowItems) {
-					((EntityPlayer) shooter).getCooldownTracker().setCooldown(b, (int) Math.round(SpectriteConfig.items.spectriteToolCooldown * 20));
+					((EntityPlayer) shooter).getCooldownTracker().setCooldown(b, cooldown);
 				}
 			}
 
-			SpectriteHelper.damageBow(shooter, null);
+			SpectriteHelper.damageBow(shooter, stack, null);
 		}
-        return new EntitySpectriteArrow(worldIn, shooter, enhanced);
+        return new EntitySpectriteArrow(worldIn, shooter, stack.getItem() instanceof IPerfectSpectriteItem, false);
     }
 	
 	@Override

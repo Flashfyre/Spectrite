@@ -2,7 +2,7 @@ package com.samuel.spectrite.potions;
 
 import com.google.common.collect.Maps;
 import com.samuel.spectrite.Spectrite;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -52,6 +52,6 @@ public class PotionSpectriteResistance extends Potion {
 
 	public int getGuiSortColor(PotionEffect potionEffect)
     {
-        return 0;
+        return 1;
     }
 }

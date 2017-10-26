@@ -2,7 +2,7 @@ package com.samuel.spectrite.update;
 
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.ITextComponent;

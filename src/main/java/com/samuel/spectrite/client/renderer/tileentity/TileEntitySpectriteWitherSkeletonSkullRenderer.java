@@ -1,6 +1,6 @@
 package com.samuel.spectrite.client.renderer.tileentity;
 
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.items.ItemSpectriteSkull;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelSkeletonHead;

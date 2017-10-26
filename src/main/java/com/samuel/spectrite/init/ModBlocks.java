@@ -3,11 +3,12 @@ package com.samuel.spectrite.init;
 import com.samuel.spectrite.blocks.*;
 import com.samuel.spectrite.creative.CreativeTabSpectrite;
 import com.samuel.spectrite.etc.FluidMoltenSpectrite;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.items.ItemBlockMeta;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockSlab;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSlab;
@@ -40,6 +41,7 @@ public class ModBlocks {
 	public static BlockSpectriteBrickSlabDouble spectrite_brick_slab_double;
 	public static BlockDiamondLadder diamond_ladder;
 	public static BlockSpectriteLadder spectrite_ladder;
+	public static BlockSpectriteAnvil spectrite_anvil;
 	public static BlockSpectriteSkull spectrite_skull;
 	public static BlockFastUpdatingBeacon fast_updating_beacon;
 	public static BlockSpectritePortal spectrite_portal;
@@ -60,7 +62,7 @@ public class ModBlocks {
 					"spectrite:blocks/molten_spectrite_still_odd"),
 				new ResourceLocation(
 					"spectrite:blocks/molten_spectrite_flow_odd"))
-				.setLuminosity(15).setDensity(200).setViscosity(2000).setTemperature(2000);
+				.setLuminosity(15).setDensity(200).setViscosity(2000).setTemperature(2000).setRarity(EnumRarity.EPIC);
 		FluidRegistry.registerFluid(fluid_molten_spectrite);
 		FluidRegistry.addBucketForFluid(fluid_molten_spectrite);
 		    
@@ -93,6 +95,8 @@ public class ModBlocks {
 			.setHardness(5.0F).setResistance(30.0F);
 		(spectrite_ladder = new BlockSpectriteLadder())
 			.setHardness(35.0F).setResistance(6000.0F).setLightLevel(0.75F);
+		(spectrite_anvil = new BlockSpectriteAnvil())
+			.setHardness(50.0F).setResistance(6000.0F).setLightLevel(0.875F);
 		(spectrite_skull = new BlockSpectriteSkull()).setHardness(50.0F)
 			.setResistance(6000.0F).setLightLevel(0.75F);
 		(fast_updating_beacon = new BlockFastUpdatingBeacon()).setLightLevel(1.0F);
@@ -120,6 +124,7 @@ public class ModBlocks {
 		registerSlabBlock(blockRegistry, spectrite_brick_slab_half, spectrite_brick_slab_double, "spectrite_brick_slab");
 		registerBlock(blockRegistry, diamond_ladder, "diamond_ladder", true);
 		registerBlock(blockRegistry, spectrite_ladder, "spectrite_ladder", true);
+		registerBlock(blockRegistry, spectrite_anvil, "spectrite_anvil", true);
 		registerBlock(blockRegistry, spectrite_skull, null, "spectrite_skull", false);
 		registerBlock(blockRegistry, fast_updating_beacon, null, "fast_updating_beacon", false);
 		registerBlock(blockRegistry, spectrite_portal, null, "spectrite_portal", false);

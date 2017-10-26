@@ -19,6 +19,7 @@ public class EntityRenderRegister {
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteSkeleton.class, RenderSpectriteSkeleton::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteWitherSkeleton.class, RenderSpectriteWitherSkeleton::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteBlaze.class, RenderSpectriteBlaze::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteEnderman.class, RenderSpectriteEnderman::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteWither.class, RenderSpectriteWither::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteWitherSkull.class, RenderSpectriteWitherSkull::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteTippedArrow.class, RenderSpectriteTippedArrow::new);

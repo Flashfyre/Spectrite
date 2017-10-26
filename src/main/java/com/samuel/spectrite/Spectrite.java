@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = Spectrite.MOD_ID, name = Spectrite.MOD_NAME, version = Spectrite.VERSION, acceptedMinecraftVersions="[1,12,1.12.1]", certificateFingerprint = "@FINGERPRINT@")
+@Mod(modid = Spectrite.MOD_ID, name = Spectrite.MOD_NAME, version = Spectrite.VERSION, acceptedMinecraftVersions="[1.12,1.13)", certificateFingerprint = "@FINGERPRINT@")
 public class Spectrite {
 	public static final String MOD_NAME = "Spectrite";
 	public static final String MOD_ID = "spectrite";
@@ -46,15 +46,15 @@ public class Spectrite {
 		.addArmorMaterial("spectrite_wither_invulnerable_skull", "spectrite:spectrite_wither_invulnerable_skull",
 			0, new int[]{0, 0, 0, 3}, 0, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 3);
 	public static ToolMaterial SPECTRITE_TOOL = EnumHelper
-		.addToolMaterial("spectrite_tool", 3, 2400, 10.0F, 4.0F, 15);
+		.addToolMaterial("spectrite_tool", 3, 2400, 10.0F, 6.0F, 15);
 	public static ToolMaterial PERFECT_SPECTRITE_TOOL = EnumHelper
-		.addToolMaterial("perfect_spectrite_tool", 3, 3600, 12.0F, 5.0F, 19);
+		.addToolMaterial("perfect_spectrite_tool", 3, 3600, 12.0F, 10.0F, 19);
 	public static ToolMaterial PERFECT_SPECTRITE_2_TOOL = EnumHelper
-			.addToolMaterial("perfect_spectrite_2_tool", 3, 7842, 14.0F, 6.0F, 25);
+			.addToolMaterial("perfect_spectrite_2_tool", 3, 7842, 14.0F, 16.0F, 25);
 	public static ToolMaterial SPECTRITE_WITHER_TOOL = EnumHelper
-			.addToolMaterial("spectrite_wither_tool", 3, 128, 13.0F, 5.0F, 22);
+			.addToolMaterial("spectrite_wither_tool", 3, 128, 13.0F, 8.0F, 22);
 	public static ToolMaterial SPECTRITE_INVULNERABLE_WITHER_TOOL = EnumHelper
-			.addToolMaterial("spectrite_wither_tool_invulnerable", 3, 0, 14.0F, 6.0F, 25);
+			.addToolMaterial("spectrite_wither_tool_invulnerable", 3, 0, 14.0F, 10.0F, 25);
 	public static IItemPropertyGetter ItemPropertyGetterSpectrite;
 
 	@SidedProxy(clientSide = "com.samuel.spectrite.proxy.ClientProxy",
@@ -98,6 +98,6 @@ public class Spectrite {
 
 	@EventHandler
 	public void onFingerprintViolation(FMLFingerprintViolationEvent event) {
-		LOGGER.warn("Invalid fingerprint detected! The file " + event.getSource().getName() + " may have been tampered with. This version will NOT be supported by the author!");
+		LOGGER.warn("Invalid fingerprint detected! The file may have been tampered with. This version will NOT be supported by the author!", event.getSource().getName());
 	}
 }

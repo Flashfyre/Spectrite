@@ -1,7 +1,7 @@
 package com.samuel.spectrite.blocks;
 
 import com.samuel.spectrite.Spectrite;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.init.ModBlocks;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.material.MapColor;

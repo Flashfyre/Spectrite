@@ -5,10 +5,9 @@ import com.samuel.spectrite.init.ModItems;
 import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 
-public class ItemSpectriteShield extends ItemShield implements ICustomTooltipItem {
+public class ItemSpectriteShield extends ItemShield implements ISpectriteCustomTooltipItem {
 	
 	public ItemSpectriteShield() {
 		super();
@@ -23,9 +22,6 @@ public class ItemSpectriteShield extends ItemShield implements ICustomTooltipIte
 		if (displayName.equals(I18n.translateToLocal("item.shield.name"))) {
 			displayName = I18n.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name").trim();
 		}
-		displayName = stack.getItem() instanceof IPerfectSpectriteItem ? ((IPerfectSpectriteItem) this).getMultiColouredDisplayName(stack, displayName)
-			: (TextFormatting.LIGHT_PURPLE + displayName);
-		
 		return displayName;
 	}
 	

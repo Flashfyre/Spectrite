@@ -2,7 +2,7 @@ package com.samuel.spectrite.entities;
 
 import com.google.common.collect.Sets;
 import com.samuel.spectrite.Spectrite;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.init.ModPotions;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;

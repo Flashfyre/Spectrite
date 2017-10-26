@@ -4,7 +4,7 @@ import com.samuel.spectrite.Spectrite;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
-public class ItemSpectriteSimple extends Item {
+public class ItemSpectriteSimple extends Item implements ISpectriteItem {
 	public ItemSpectriteSimple() {
 		super();
 		this.addPropertyOverride(new ResourceLocation("time"), Spectrite.ItemPropertyGetterSpectrite);

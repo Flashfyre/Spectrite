@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "spectrite:spectrite_arrow_special"
+  },
+  "pattern": [
+    " X ",
+    " Y ",
+    " Z "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "spectrite:spectrite_gem"
+    },
+    "Y": {
+      "item": "spectrite:spectrite_rod"
+    },
+    "Z": {
+      "item": "minecraft:feather"
+    }
+  }
+}

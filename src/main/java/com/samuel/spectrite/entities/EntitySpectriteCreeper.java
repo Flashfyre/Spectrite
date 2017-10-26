@@ -1,7 +1,6 @@
 package com.samuel.spectrite.entities;
 
 import com.samuel.spectrite.Spectrite;
-import com.samuel.spectrite.etc.SpectriteHelper;
 import com.samuel.spectrite.init.ModBiomes;
 import com.samuel.spectrite.init.ModLootTables;
 import com.samuel.spectrite.init.ModPotions;
@@ -14,11 +13,14 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.item.ItemShield;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
@@ -33,12 +35,12 @@ public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteM
 	public EntitySpectriteCreeper(World worldIn) {
 		super(worldIn);
 		if (timeSinceIgnitedField == null) {
-    		timeSinceIgnitedField = SpectriteHelper.findObfuscatedField(EntityCreeper.class, new String[] { "timeSinceIgnited", "field_70833_d" });
+    		timeSinceIgnitedField = ReflectionHelper.findField(EntityCreeper.class, new String[] { "timeSinceIgnited", "field_70833_d" });
     	}
     	if (fuseTimeField == null) {
-    		fuseTimeField = SpectriteHelper.findObfuscatedField(EntityCreeper.class, new String[] { "fuseTime", "field_82225_f" });
+    		fuseTimeField = ReflectionHelper.findField(EntityCreeper.class, new String[] { "fuseTime", "field_82225_f" });
     	}
-    	this.experienceValue = 20;
+    	this.experienceValue = 25;
 	}
 	
 	/**
@@ -84,8 +86,20 @@ public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteM
 	protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50.0D);
     }
+
+    @Override
+	protected SoundEvent getHurtSound(DamageSource p_184601_1_)
+	{
+		return ModSounds.spectrite_creeper_hurt;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound()
+	{
+		return ModSounds.spectrite_creeper_death;
+	}
 	
 	@Override
 	@Nullable
@@ -113,25 +127,25 @@ public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteM
     }
     
     private void doSpectriteDamage() {
-    	int power = 4 + (this.getPowered() ? 1 : 0);
+    	int power = 3 + (this.getPowered() ? 1 : 0);
     	BlockPos pos = this.getPosition();
     	List<Entity> surrounding = world.getEntitiesWithinAABBExcludingEntity(this,
 			new AxisAlignedBB(pos.north(power).west(power).down(power),
 			this.getPosition().south(power).east(power).up(power)));
 
 		switch (power) {
-			case 5:
-				world.playSound(null, pos, ModSounds.explosion, SoundCategory.PLAYERS, 0.75F,
-						0.75F + (world.rand.nextFloat()) * 0.4F);
+			case 4:
+				world.playSound(null, pos, ModSounds.explosion, SoundCategory.PLAYERS, 4.75F,
+					0.75F + (world.rand.nextFloat()) * 0.4F);
 				
-				world.playSound(null, pos, ModSounds.fatality, SoundCategory.PLAYERS, 1.0F,
-					1.0F);
+				world.playSound(null, pos, ModSounds.fatality, SoundCategory.PLAYERS, 5.0F,
+					0.75F);
 				break;
 			default:
-				world.playSound(null, pos, ModSounds.explosion, SoundCategory.PLAYERS, 0.75F,
-						0.75F + (world.rand.nextFloat()) * 0.4F);
+				world.playSound(null, pos, ModSounds.explosion, SoundCategory.PLAYERS, 3.75F,
+					0.75F + (world.rand.nextFloat()) * 0.4F);
 				
-				world.playSound(null, pos, ModSounds.fatality, SoundCategory.PLAYERS, 1.0F,
+				world.playSound(null, pos, ModSounds.fatality, SoundCategory.PLAYERS, 4.0F,
 					1.0F);
 		}
 		

@@ -245,18 +245,18 @@ public class WorldGenSpectriteSkull implements IWorldGenerator {
 		final int x = (chunkX << 4), z = (chunkZ << 4) + 12;
 		final int dimId = worldIn.provider.getDimension();
 		
-		ret = worldIn.getWorldType() != WorldType.FLAT ? dimId == -1 ? getGroundYNether(worldIn, x, z, facing, rand) : SpectriteConfig.spectriteSkull.spectriteSkullSurfaceRate == 0d
-			|| rand.nextDouble() * 100d <= SpectriteConfig.spectriteSkull.spectriteSkullSurfaceRate ? getGroundYSurfaceGroundLevel(worldIn, x, z, facing, rand)
-			: getGroundYSurfaceUnderground(worldIn, x, z, facing, rand) : 3;
+		ret = worldIn.getWorldType() != WorldType.FLAT ? dimId == -1 ? getGroundYNether(worldIn, x, z, facing, rand) : (SpectriteConfig.spectriteSkull.spectriteSkullSurfaceRate > 0d
+			&& rand.nextDouble() * 100d <= SpectriteConfig.spectriteSkull.spectriteSkullSurfaceRate) || worldIn.getBiome(new BlockPos(x, 1, z)).getBiomeClass() == BiomeSpectriteDungeon.class
+			? getGroundYSurfaceGroundLevel(worldIn, x, z, facing) : getGroundYSurfaceUnderground(rand) : 3;
 		
 		if (ret == 0 && dimId == -1) {
-			ret = getGroundYSurfaceUnderground(worldIn, x, z, facing, rand);
+			ret = getGroundYSurfaceUnderground(rand);
 		}
 		
 		return ret;
 	}
 	
-	private static int getGroundYSurfaceGroundLevel(World worldIn, int x, int z, EnumFacing facing, Random rand) {
+	private static int getGroundYSurfaceGroundLevel(World worldIn, int x, int z, EnumFacing facing) {
 		int y = Math.min(128, worldIn.getActualHeight());
 		
 		for (; y >= 30; y--) {
@@ -288,15 +288,15 @@ public class WorldGenSpectriteSkull implements IWorldGenerator {
 				}
 			}
 		}
-		
+
 		if (y == 29) {
 			y = 0;
 		}
 		
 		return y;
 	}
-	
-	private static int getGroundYSurfaceUnderground(World worldIn, int x, int z, EnumFacing facing, Random rand) {
+
+	private static int getGroundYSurfaceUnderground(Random rand) {
 		return rand.nextInt(6) + 5;
 	}
 	

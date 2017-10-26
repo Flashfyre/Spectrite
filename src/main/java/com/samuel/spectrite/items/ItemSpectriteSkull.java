@@ -2,7 +2,7 @@ package com.samuel.spectrite.items;
 
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.blocks.BlockSpectriteSkull;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.init.ModBlocks;
 import com.samuel.spectrite.init.ModItems;
 import com.samuel.spectrite.init.ModPotions;
@@ -28,7 +28,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class ItemSpectriteSkull extends ItemArmor implements IPerfectSpectriteItem, ICustomTooltipItem {
+public class ItemSpectriteSkull extends ItemArmor implements ISpectriteCustomTooltipItem {
 
     public static final String[] SKULL_TYPES = new String[] {"wither_skeleton", "wither", "wither_invulnerable"};
     private final int skullType;

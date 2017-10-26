@@ -1,7 +1,7 @@
 package com.samuel.spectrite.blocks;
 
-import com.samuel.spectrite.etc.InventoryLargeSpectriteChest;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
+import com.samuel.spectrite.inventory.InventoryLargeSpectriteChest;
 import com.samuel.spectrite.tileentity.TileEntitySpectriteChest;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;

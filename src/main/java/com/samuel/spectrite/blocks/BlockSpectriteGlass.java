@@ -1,6 +1,6 @@
 package com.samuel.spectrite.blocks;
 
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBeacon;
 import net.minecraft.block.BlockBreakable;

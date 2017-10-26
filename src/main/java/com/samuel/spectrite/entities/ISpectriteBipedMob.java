@@ -1,6 +1,6 @@
 package com.samuel.spectrite.entities;
 
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.items.ItemSpectriteArmor;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -13,7 +13,11 @@ public interface ISpectriteBipedMob {
 	}
 	
 	public void setBoss(boolean boss);
-	
+
+	public default boolean isHasSpectriteStrength() {
+		return false;
+	}
+
 	public default boolean isHasSpectriteResistance() {
 		return false;
 	}

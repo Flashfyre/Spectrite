@@ -2,7 +2,7 @@ package com.samuel.spectrite.blocks;
 
 import com.google.common.base.Predicate;
 import com.samuel.spectrite.entities.EntitySpectriteWither;
-import com.samuel.spectrite.etc.SpectriteHelper;
+import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.init.ModBlocks;
 import com.samuel.spectrite.init.ModItems;
 import com.samuel.spectrite.items.ItemSpectriteSkull;

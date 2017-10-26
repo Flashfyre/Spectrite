@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "overrides": [
+        { "predicate": { "spectrite_egg": 0 }, "model": "item/spawn_egg_normal" },
+		{ "predicate": { "spectrite_egg": 1 }, "model": "spectrite:item/spawn_egg_spectrite" }
+	]
+}

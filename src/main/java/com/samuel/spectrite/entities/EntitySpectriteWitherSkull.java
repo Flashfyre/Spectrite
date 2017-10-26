@@ -179,7 +179,8 @@ public class EntitySpectriteWitherSkull extends EntitySpectriteFireball implemen
             int spectriteDamagePower = power + (this.shootingEntity instanceof EntitySpectriteWither ? 1 : SpectriteConfig.items.spectriteWitherRodWeakenSpectriteDamage ? 0 : 1);
             int explosionPower = power + (this.shootingEntity instanceof EntitySpectriteWither ? 1 : SpectriteConfig.items.spectriteWitherRodWeakenExplosion ? 0 : 1);
 
-            Spectrite.Proxy.performDispersedSpectriteDamage(this.world, spectriteDamagePower, explosionPower, result.hitVec, this, this.shootingEntity, this.rand);
+            Spectrite.Proxy.performDispersedSpectriteDamage(this.world, spectriteDamagePower, explosionPower, result.hitVec,
+                this, this.shootingEntity, this.rand);
 
             if (this.isInvulnerable() && this.shootingEntity instanceof EntitySpectriteWither) {
                 this.spawnLingeringCloud(power);

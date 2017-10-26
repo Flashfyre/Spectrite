@@ -20,14 +20,14 @@
 				},
 				{
 					"type": "item",
-                    "name": "spectrite:spectrite_arrow",
+                    "name": "spectrite:spectrite_arrow_special",
                     "weight": 40,
 					"functions": [
                         {
                             "function": "set_count",
                             "count": {
-                                "min": 16,
-                                "max": 64
+                                "min": 4,
+                                "max": 16
                             }
                         }
                     ]
@@ -43,7 +43,7 @@
 							"conditions": [
 								{
 									"condition": "random_chance",
-									"chance": 0.25
+									"chance": 0.125
 								}
 							]
                         },
@@ -68,7 +68,7 @@
 							"conditions": [
 								{
 									"condition": "random_chance",
-									"chance": 0.25
+									"chance": 0.125
 								}
 							]
                         },
@@ -93,7 +93,7 @@
 							"conditions": [
 								{
 									"condition": "random_chance",
-									"chance": 0.25
+									"chance": 0.125
 								}
 							]
                         },
@@ -118,7 +118,7 @@
 							"conditions": [
 								{
 									"condition": "random_chance",
-									"chance": 0.25
+									"chance": 0.125
 								}
 							]
                         },
@@ -143,7 +143,7 @@
 							"conditions": [
 								{
 									"condition": "random_chance",
-									"chance": 0.25
+									"chance": 0.125
 								}
 							]
                         },
@@ -168,7 +168,7 @@
 							"conditions": [
 								{
 									"condition": "random_chance",
-									"chance": 0.25
+									"chance": 0.125
 								}
 							]
                         },
@@ -193,7 +193,7 @@
 							"conditions": [
 								{
 									"condition": "random_chance",
-									"chance": 0.25
+									"chance": 0.125
 								}
 							]
                         },
@@ -218,7 +218,7 @@
 							"conditions": [
 								{
 									"condition": "random_chance",
-									"chance": 0.25
+									"chance": 0.125
 								}
 							]
                         },
@@ -243,7 +243,7 @@
 							"conditions": [
 								{
 									"condition": "random_chance",
-									"chance": 0.25
+									"chance": 0.125
 								}
 							]
                         },
@@ -254,17 +254,6 @@
                                 "min": 40,
                                 "max": 50
                             }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "minecraft:book",
-                    "weight": 20,
-                    "functions": [
-                        {
-                            "function": "enchant_randomly",
-							"enchantments": [ "spectrite:spectrite_enhance" ]
                         }
                     ]
                 },
@@ -279,55 +268,255 @@
 							"conditions": [
 								{
 									"condition": "random_chance",
-									"chance": 0.25
+									"chance": 0.125
 								}
 							]
                         }
 					]
                 },
 				{
-					"type": "item",
-                    "name": "spectrite:spectrite_sword_2",
+                    "type": "item",
+                    "name": "minecraft:book",
                     "weight": 4,
-					"functions": [
-						{
-                            "function": "enchant_randomly",
-							"enchantments": [ "spectrite:spectrite_enhance" ],
-							"conditions": [
-								{
-									"condition": "random_chance",
-									"chance": 0.25
-								}
-							]
-                        },
-                        {
-                            "function": "enchant_with_levels",
-                            "treasure": true,
-                            "levels": {
-                                "min": 40,
-                                "max": 50
-                            }
-                        }
-                    ]
-                },
-				{
-					"type": "item",
-                    "name": "spectrite:spectrite_orb",
-                    "weight": 4,
-					"functions": [
+                    "functions": [
                         {
                             "function": "enchant_randomly",
-							"enchantments": [ "spectrite:spectrite_enhance" ],
-							"conditions": [
-								{
-									"condition": "random_chance",
-									"chance": 0.25
-								}
-							]
+							"enchantments": [ "spectrite:spectrite_enhance" ]
                         }
                     ]
                 }
 			]
-        }
+        },
+		{
+			"name": "orb_red",
+            "rolls": 1,
+            "entries": [
+                {
+					"type": "item",
+					"name": "spectrite:spectrite_orb",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+                                "min": 0,
+								"max": 0
+							},
+							"conditions": [
+								{
+									"condition": "minecraft:random_chance",
+									"chance": 0.97
+								}
+							]
+						},
+						{
+							"function": "set_damage",
+							"damage": {
+								"min": 1,
+								"max": 1
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "orb_orange",
+            "rolls": 1,
+            "entries": [
+				{
+					"type": "item",
+					"name": "spectrite:spectrite_orb",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+                                "min": 0,
+								"max": 0
+							},
+							"conditions": [
+								{
+									"condition": "minecraft:random_chance",
+									"chance": 0.97
+								}
+							]
+						},
+						{
+							"function": "set_damage",
+							"damage": {
+								"min": 2,
+								"max": 2
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "orb_yellow",
+            "rolls": 1,
+            "entries": [
+				{
+					"type": "item",
+					"name": "spectrite:spectrite_orb",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+                                "min": 0,
+								"max": 0
+							},
+							"conditions": [
+								{
+									"condition": "minecraft:random_chance",
+									"chance": 0.97
+								}
+							]
+						},
+						{
+							"function": "set_damage",
+							"damage": {
+								"min": 4,
+								"max": 4
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "orb_green",
+            "rolls": 1,
+            "entries": [
+				{
+					"type": "item",
+					"name": "spectrite:spectrite_orb",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+                                "min": 0,
+								"max": 0
+							},
+							"conditions": [
+								{
+									"condition": "minecraft:random_chance",
+									"chance": 0.97
+								}
+							]
+						},
+						{
+							"function": "set_damage",
+							"damage": {
+								"min": 8,
+								"max": 8
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "orb_blue",
+            "rolls": 1,
+            "entries": [
+				{
+					"type": "item",
+					"name": "spectrite:spectrite_orb",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+                                "min": 0,
+								"max": 0
+							},
+							"conditions": [
+								{
+									"condition": "minecraft:random_chance",
+									"chance": 0.97
+								}
+							]
+						},
+						{
+							"function": "set_damage",
+							"damage": {
+								"min": 16,
+								"max": 16
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "orb_indigo",
+            "rolls": 1,
+            "entries": [
+				{
+					"type": "item",
+					"name": "spectrite:spectrite_orb",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+                                "min": 0,
+								"max": 0
+							},
+							"conditions": [
+								{
+									"condition": "minecraft:random_chance",
+									"chance": 0.97
+								}
+							]
+						},
+						{
+							"function": "set_damage",
+							"damage": {
+								"min": 32,
+								"max": 32
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "orb_violet",
+            "rolls": 1,
+            "entries": [
+				{
+					"type": "item",
+					"name": "spectrite:spectrite_orb",
+					"weight": 1,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+                                "min": 0,
+								"max": 0
+							},
+							"conditions": [
+								{
+									"condition": "minecraft:random_chance",
+									"chance": 0.97
+								}
+							]
+						},
+						{
+							"function": "set_damage",
+							"damage": {
+								"min": 64,
+								"max": 64
+							}
+						}
+					]
+				}
+			]
+		}
     ]
 }

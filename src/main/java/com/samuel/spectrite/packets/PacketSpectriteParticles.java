@@ -98,19 +98,23 @@ public class PacketSpectriteParticles implements IMessage {
                         double d8 = rand.nextGaussian() * (double) message.particleSpeed;
                         if (message.particleType == EnumSpectriteParticleTypes.SPECTRITE_SPELL) {
                             Spectrite.Proxy.spawnSpectriteSpellParticle(minecraft.world, message.xCoord + d1,
-                                    message.yCoord + d3, message.zCoord + d5, d6, d7, d8, (float) message.hueOffset);
+                                message.yCoord + d3, message.zCoord + d5, d6, d7, d8, (float) message.hueOffset);
                         } else if (message.particleType == EnumSpectriteParticleTypes.SPECTRITE_EXPLOSION_HUGE) {
                             Spectrite.Proxy.spawnSpectriteExplosionHugeParticle(minecraft.world, message.xCoord + d1,
-                                    message.yCoord + d3, message.zCoord + d5, d6, d7, d8, message.hueOffset);
+                                message.yCoord + d3, message.zCoord + d5, d6, d7, d8, message.hueOffset);
+                        } else if (message.particleType == EnumSpectriteParticleTypes.SPECTRITE_PORTAL) {
+                            Spectrite.Proxy.spawnSpectritePortalParticle(minecraft.world, message.xCoord + d1,
+                                message.yCoord + d3, message.zCoord + d5, d6, d7, d8);
                         } else if (message.particleType == EnumSpectriteParticleTypes.SPECTRITE_SMOKE_NORMAL) {
                             Spectrite.Proxy.spawnSpectriteSmokeNormalParticle(minecraft.world, message.xCoord + d1,
-                                    message.yCoord + d3, message.zCoord + d5, d6, d7, d8);
+                                message.yCoord + d3, message.zCoord + d5, d6, d7, d8);
                         } else if (message.particleType == EnumSpectriteParticleTypes.SPECTRITE_SMOKE_LARGE) {
                             Spectrite.Proxy.spawnSpectriteSmokeLargeParticle(minecraft.world, message.xCoord + d1,
-                                    message.yCoord + d3, message.zCoord + d5, d6, d7, d8);
+                                message.yCoord + d3, message.zCoord + d5, d6, d7, d8);
                         } else {
+
                             Spectrite.Proxy.spawnSpectriteExplosionParticle(minecraft.world, message.particleType == EnumSpectriteParticleTypes.SPECTRITE_EXPLOSION_LARGE,
-                                    message.xCoord + d1, message.yCoord + d3, message.zCoord + d5, d6, d7, d8);
+                                message.xCoord + d1, message.yCoord + d3, message.zCoord + d5, d6, d7, d8);
                         }
                     }
                 }

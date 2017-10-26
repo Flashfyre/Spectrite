@@ -841,7 +841,7 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 				boolean shouldRoomsConnect = false;
 				
 				if (dirHasConn || connRoom != null) {
-					if (childRooms.contains(connRoom) || adoptedRoom == connRoom) {
+					if (childRooms.contains(connRoom) || (adoptedRoom != null && adoptedRoom == connRoom)) {
 						if (!((ConnectableRoom) connRoom).isReserved()) {
 							connRoom.build();
 						}

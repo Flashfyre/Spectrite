@@ -1,12 +1,12 @@
 package com.samuel.spectrite.client.renderer;
 
-import com.samuel.spectrite.etc.SpectriteHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -86,7 +86,7 @@ public class SpectriteParticleManager {
 
     public void addParticle(Particle p) {
         if (calculateParticleLevel == null) {
-            calculateParticleLevel = SpectriteHelper.findObfuscatedMethod(RenderGlobal.class,
+            calculateParticleLevel = ReflectionHelper.findMethod(RenderGlobal.class,
                 "calculateParticleLevel", "func_190572_a", boolean.class);
         }
         int particleLevel = 0;

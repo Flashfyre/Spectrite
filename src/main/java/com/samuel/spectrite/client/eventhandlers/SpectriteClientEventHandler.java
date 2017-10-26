@@ -5,13 +5,15 @@ import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.capabilities.ISpectriteBossCapability;
 import com.samuel.spectrite.capabilities.SpectriteBossProvider;
 import com.samuel.spectrite.client.renderer.SpectriteParticleManager;
+import com.samuel.spectrite.client.sounds.SpectritePositionedMobDeathSound;
+import com.samuel.spectrite.client.sounds.SpectritePositionedSound;
 import com.samuel.spectrite.etc.ISpectriteTool;
-import com.samuel.spectrite.etc.SpectriteHelper;
-import com.samuel.spectrite.items.ICustomTooltipItem;
+import com.samuel.spectrite.items.ISpectriteItem;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSound;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -32,10 +34,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -119,6 +123,15 @@ public class SpectriteClientEventHandler implements IResourceManagerReloadListen
 	}
 
 	@SubscribeEvent
+	public void onPlaySpectriteEntitySound(PlaySoundEvent e) {
+		if (e.getName().startsWith("spectrite")) {
+			PositionedSound sound = (PositionedSound) e.getSound();
+			e.setResultSound(!e.getName().endsWith(".death") ? new SpectritePositionedSound(sound)
+				: new SpectritePositionedMobDeathSound(sound));
+		}
+	}
+
+	@SubscribeEvent
 	public void onRenderBlockBreak(RenderWorldLastEvent event) {
 		EntityPlayer player = Minecraft.getMinecraft().player;
 		PlayerControllerMP playerController = Minecraft.getMinecraft().playerController;
@@ -129,7 +142,7 @@ public class SpectriteClientEventHandler implements IResourceManagerReloadListen
 		boolean hittingBlock = false;
 
 		if (isHittingBlock == null) {
-			isHittingBlock = SpectriteHelper.findObfuscatedField(PlayerControllerMP.class, "isHittingBlock", "field_78778_j");
+			isHittingBlock = ReflectionHelper.findField(PlayerControllerMP.class, "isHittingBlock", "field_78778_j");
 		}
 
 		try {
@@ -142,7 +155,7 @@ public class SpectriteClientEventHandler implements IResourceManagerReloadListen
 			if (stack != null && stack.getItem() instanceof ISpectriteTool && !player.isSneaking()
 				&& player.getCooldownTracker().getCooldown((stack.getItem()), 0f) == 0f && !player.isSneaking()) {
 				if (currentBlock == null) {
-					currentBlock = SpectriteHelper.findObfuscatedField(PlayerControllerMP.class, "currentBlock", "field_178895_c");
+					currentBlock = ReflectionHelper.findField(PlayerControllerMP.class, "currentBlock", "field_178895_c");
 				}
 				BlockPos currentBlockPos = null;
 				try {
@@ -167,7 +180,7 @@ public class SpectriteClientEventHandler implements IResourceManagerReloadListen
 		double d2 = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ) * partialTicks;
 
 		if (blockDamageMP == null) {
-			blockDamageMP = SpectriteHelper.findObfuscatedField(PlayerControllerMP.class, "blockDamageMP", "field_78770_f");
+			blockDamageMP = ReflectionHelper.findField(PlayerControllerMP.class, "curBlockDamageMP", "field_78770_f");
 		}
 
 		float blockDamage = -1f;
@@ -234,8 +247,8 @@ public class SpectriteClientEventHandler implements IResourceManagerReloadListen
 
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public void onRenderTooltip(ItemTooltipEvent e) {
-		if (!e.getItemStack().isEmpty() && e.getItemStack().getItem() instanceof ICustomTooltipItem) {
-			((ICustomTooltipItem) e.getItemStack().getItem()).addTooltipLines(e.getItemStack(), e.getToolTip());
+		if (!e.getItemStack().isEmpty() && e.getItemStack().getItem() instanceof ISpectriteItem) {
+			((ISpectriteItem) e.getItemStack().getItem()).addTooltipLines(e.getItemStack(), e.getToolTip());
 		}
 	}
 

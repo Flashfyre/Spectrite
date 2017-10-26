@@ -3,6 +3,7 @@ package com.samuel.spectrite.entities;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.init.ModBiomes;
 import com.samuel.spectrite.init.ModLootTables;
+import com.samuel.spectrite.init.ModSounds;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -17,6 +18,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -55,7 +57,7 @@ public class EntitySpectriteBlaze extends EntityMob implements ISpectriteMob {
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(48.0D);
@@ -71,19 +73,19 @@ public class EntitySpectriteBlaze extends EntityMob implements ISpectriteMob {
 	@Override
     protected SoundEvent getAmbientSound()
     {
-        return SoundEvents.ENTITY_BLAZE_AMBIENT;
+        return ModSounds.spectrite_blaze_ambient;
     }
 
 	@Override
     protected SoundEvent getHurtSound(DamageSource p_184601_1_)
     {
-        return SoundEvents.ENTITY_BLAZE_HURT;
+        return ModSounds.spectrite_blaze_hurt;
     }
 
 	@Override
     protected SoundEvent getDeathSound()
     {
-        return SoundEvents.ENTITY_BLAZE_DEATH;
+        return ModSounds.spectrite_blaze_death;
     }
 
     @SideOnly(Side.CLIENT)
@@ -297,6 +299,7 @@ public class EntitySpectriteBlaze extends EntityMob implements ISpectriteMob {
                     if (this.attackStep > 1)
                     {
                         float f = MathHelper.sqrt(MathHelper.sqrt(d0)) * 0.5F;
+                        this.blaze.world.playSound(this.blaze.posX, this.blaze.posY, this.blaze.posZ, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 2.0F, (this.blaze.rand.nextFloat() - this.blaze.rand.nextFloat()) * 0.2F + 1.0F, false);
                         this.blaze.world.playEvent(null, 1018, new BlockPos((int)this.blaze.posX, (int)this.blaze.posY, (int)this.blaze.posZ), 0);
 
                         for (int i = 0; i < 1; ++i)
