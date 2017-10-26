@@ -160,6 +160,23 @@ X = Spectrite Dust
 
 Smelts Into: Spectrite Glass x1
 
+### Spectrite Anvil
+An anvil made of Spectrite. It can be used as a much more durable anvil but, unlike a normal anvil, it can also be used to fuse Spectrite Orbs in any combination and fuse Spectrite Orbs with Spectrite Armour pieces.
+
+Crafting Recipe:
+
+X　X　X
+
+-　Y　-
+
+Y　Y　Y
+
+
+X = Spectrite Block;
+Y = Spectrite Gem
+
+Smelts Into: Spectrite Anvil x1
+
 ### Spectrite Portal
 A portal that takes you to the entrance of the world's Spectrite Dungeon.
 
@@ -199,13 +216,13 @@ X
 X = Spectrite Gem
 
 ### Spectrite Dust
-A fine powder made of Spectrite found as a drop from Spectrite Creepers. You can either make Spectrite Sand blocks with these or you can use them as an ingredient for Spectrite Damage potions.
+A fine powder made of Spectrite found as a drop from Spectrite Creepers. You can either make Spectrite Sand blocks with these or you can use them as an ingredient for Spectrite Power potions.
 
 ### Spectrite Bone
-A bone of Spectrite found as a drop from Spectrite Skeletons and Spectrite Wither Skeletons. You can use these to craft Spectrite Bone Blocks which are a very hard building material than cannot be destroyed without a Spectrite Pickaxe. They can also be used to repair a Spectrite Wither Rod.
+A bone of Spectrite found as a drop from Spectrite Skeletons and Spectrite Wither Skeletons. You can use these to craft Spectrite Bone Blocks which are a very hard building material than cannot be destroyed without a Spectrite Pickaxe. They can also be used to repair a Spectrite Wither Rod and to brew Spectrite Resistance potions.
 
 ### Spectrite Brick
-A brick made of Spectrite found as a drop from Spectrite Golems. You can either make Spectrite Bricks blocks with these or you can use them as an ingredient for Spectrite Resistance potions.
+A brick made of Spectrite found as a drop from Spectrite Golems. You can either make Spectrite Bricks blocks with these or you can use them as an ingredient for Spectrite Damage potions.
 
 ### Spectrite Blaze Rod
 A rod of Spectrite found as a drop from Spectrite Blazes. You can craft these into 2 Spectrite Blaze Powder to make Spectrite Potions.
@@ -219,7 +236,7 @@ Crafting Recipe (x2): Spectrite Blaze Rod x1
 The star dropped from a defeated Spectrite Wither. It can be used to create Invulnerable Spectrite Wither parts or can be crafted into 5 Nether Stars.
 
 ### Diamond Spectrite Shovel
-An extremely efficient shovel made of Spectrite with a diamond handle. When used on a shovel-effective block, a cross of surrounding weaker or equivalent blocks will also be destroyed, resulting in a maximum of 5 blocks destroyed per use. The surrounding blocks that will be destroyed depend on the player's rotation and perspective. There is a cooldown period (default 1.75s) for destroying 5 shovel-effective blocks and only one block will be destroyed if the shovel is used before this cooldown has finished, though the item will be damaged just as much either way so it is more efficient just to wait for the cooldown to end.
+An extremely efficient shovel made of Spectrite with a diamond handle. When used on a shovel-effective block, a cross of surrounding weaker or equivalent blocks will also be destroyed, resulting in a maximum of 5 blocks destroyed per use. The surrounding blocks that will be destroyed depend on the player's rotation and perspective. There is a cooldown period (default 1.75s) for destroying 5 shovel-effective blocks and only one block will be destroyed if the shovel is used before this cooldown has finished. If used to attack an entity, it will inflict Spectrite Damage I with a longer cooldown (default 3.5s).
 
 Crafting Recipes:
 
@@ -234,7 +251,7 @@ X = Spectrite Gem;
 Y = Diamond Rod
 
 ### Spectrite Shovel
-A ridiculously efficient shovel made entirely of Spectrite. When used on a shovel-effective block, a square of surrounding weaker or equivalent blocks will also be destroyed, resulting in a maximum of 9 blocks destroyed per use. The surrounding blocks that will be destroyed depend on the player's rotation and perspective. There is a cooldown period (default 1.75s) for destroying 9 shovel-effective blocks and only one block will be destroyed if the shovel is used before this cooldown has finished, though the item will be damaged just as much either way so it is more efficient just to wait for the cooldown to end.
+A ridiculously efficient shovel made entirely of Spectrite. When used on a shovel-effective block, a square of surrounding weaker or equivalent blocks will also be destroyed, resulting in a maximum of 9 blocks destroyed per use. The surrounding blocks that will be destroyed depend on the player's rotation and perspective. There is a cooldown period (default 1.75s) for destroying 9 shovel-effective blocks and only one block will be destroyed if the shovel is used before this cooldown has finished. If used to attack an entity, it will inflict Spectrite Damage II with a longer cooldown (default 3.5s).
 
 Superchromaticity Effect: Cooldown is cut in half
 
@@ -251,7 +268,7 @@ X = Spectrite Gem;
 Y = Spectrite Rod
 
 ### Diamond Spectrite Pickaxe
-An extremely efficient pickaxe made of Spectrite with a diamond handle. When used on a pickaxe-effective block, a cross of surrounding weaker or equivalent blocks will also be destroyed, resulting in a maximum of 5 blocks destroyed per use. The surrounding blocks that will be destroyed depend on the player's rotation and perspective. There is a cooldown period (default 1.75s) for destroying 5 pickaxe-effective blocks and only one block will be destroyed if the pickaxe is used before this cooldown has finished, though the item will be damaged just as much either way so it is more efficient just to wait for the cooldown to end.
+An extremely efficient pickaxe made of Spectrite with a diamond handle. When used on a pickaxe-effective block, a cross of surrounding weaker or equivalent blocks will also be destroyed, resulting in a maximum of 5 blocks destroyed per use. The surrounding blocks that will be destroyed depend on the player's rotation and perspective. There is a cooldown period (default 1.75s) for destroying 5 pickaxe-effective blocks and only one block will be destroyed if the pickaxe is used before this cooldown has finished. If used to attack an entity, it will inflict Spectrite Damage I with a longer cooldown (default 3.5s).
 
 Crafting Recipes:
 
@@ -266,7 +283,7 @@ X = Spectrite Gem;
 Y = Diamond Rod
 
 ### Spectrite Pickaxe
-A ridiculously efficient pickaxe made entirely of Spectrite. When used on a pickaxe-effective block, a square of surrounding weaker or equivalent blocks will also be destroyed, resulting in a maximum of 9 blocks destroyed per use. The surrounding blocks that will be destroyed depend on the player's rotation and perspective. There is a cooldown period (default 1.75s) for destroying 9 pickaxe-effective blocks and only one block will be destroyed if the pickaxe is used before this cooldown has finished, though the item will be damaged just as much either way so it is more efficient just to wait for the cooldown to end.
+A ridiculously efficient pickaxe made entirely of Spectrite. When used on a pickaxe-effective block, a square of surrounding weaker or equivalent blocks will also be destroyed, resulting in a maximum of 9 blocks destroyed per use. The surrounding blocks that will be destroyed depend on the player's rotation and perspective. There is a cooldown period (default 1.75s) for destroying 9 pickaxe-effective blocks and only one block will be destroyed if the pickaxe is used before this cooldown has finished. If used to attack an entity, it will inflict Spectrite Damage II with a longer cooldown (default 3.5s).
 
 Superchromaticity Effect: Cooldown is cut in half
 
@@ -283,7 +300,7 @@ X = Spectrite Gem;
 Y = Spectrite Rod
 
 ### Diamond Spectrite Axe
-An extremely efficient axe made of Spectrite with a diamond handle. When used on an axe-effective block, a cross of surrounding weaker or equivalent blocks will also be destroyed, resulting in a maximum of 5 blocks destroyed per use. The surrounding blocks that will be destroyed depend on the player's rotation and perspective. There is a cooldown period (default 1.75s) for destroying 5 axe-effective blocks and only one block will be destroyed if the axe is used before this cooldown has finished, though the item will be damaged just as much either way so it is more efficient just to wait for the cooldown to end.
+An extremely efficient axe made of Spectrite with a diamond handle. When used on an axe-effective block, a cross of surrounding weaker or equivalent blocks will also be destroyed, resulting in a maximum of 5 blocks destroyed per use. The surrounding blocks that will be destroyed depend on the player's rotation and perspective. There is a cooldown period (default 1.75s) for destroying 5 axe-effective blocks and only one block will be destroyed if the axe is used before this cooldown has finished. If used to attack an entity, it will inflict Spectrite Damage I with a longer cooldown (default 3.5s).
 
 Crafting Recipes:
 
@@ -298,7 +315,7 @@ X = Spectrite Gem;
 Y = Diamond Rod
 
 ### Spectrite Axe
-A ridiculously efficient axe made entirely of Spectrite. When used on an axe-effective block, a square of surrounding weaker or equivalent blocks will also be destroyed, resulting in a maximum of 9 blocks destroyed per use. The surrounding blocks that will be destroyed depend on the player's rotation and perspective. There is a cooldown period (default 1.75s) for destroying 9 axe-effective blocks and only one block will be destroyed if the axe is used before this cooldown has finished, though the item will be damaged just as much either way so it is more efficient just to wait for the cooldown to end.
+A ridiculously efficient axe made entirely of Spectrite. When used on an axe-effective block, a square of surrounding weaker or equivalent blocks will also be destroyed, resulting in a maximum of 9 blocks destroyed per use. The surrounding blocks that will be destroyed depend on the player's rotation and perspective. There is a cooldown period (default 1.75s) for destroying 9 axe-effective blocks and only one block will be destroyed if the axe is used before this cooldown has finished. If used to attack an entity, it will inflict Spectrite Damage II with a longer cooldown (default 3.5s).
 
 Superchromaticity Effect: Cooldown is cut in half
 
@@ -315,7 +332,7 @@ X = Spectrite Gem;
 Y = Spectrite Rod
 
 ### Diamond Spectrite Sword
-A powerful sword made of Spectrite with a diamond handle. It not only has a high attack, but inflicts a Spectrite Damage effect on its target. It also inflicts Spectrite Damage on enemy entities adjacent to the target but has no affect on blocks nor allies. There is a cooldown period (default 1.75s) for hitting an entity with Spectrite Damage and no Spectrite Damage will be applied if the sword is used before this cooldown has finished, though the item will be damaged just as much either way so it is more efficient just to wait for the cooldown to end. The Spectrite Damage effect will deal higher than normal damage to non-Spectrite shields.
+A ridiculously powerful sword made entirely of Spectrite. This sword inflicts dispersed Spectrite Damage II with a cooldown. Neither allies nor blocks are affected by this damage. There is a cooldown period (default 3.5s) for hitting an entity with Spectrite Damage and no Spectrite Damage will be applied if the sword is used before this cooldown has finished.
 
 Crafting Recipes:
 
@@ -330,9 +347,9 @@ X = Spectrite Gem;
 Y = Diamond Rod
 
 ### Spectrite Sword
-A ridiculously powerful sword made entirely of Spectrite. This sword creates a small explosion when used on an entity and inflicts a stronger and wider spread Spectrite Damage effect than the diamond handle version. Neither allies nor blocks are affected by this explosion. There is a cooldown period (default 1.75s) for hitting an entity with Spectrite Damage and no Spectrite Damage will be applied if the sword is used before this cooldown has finished, though the item will be damaged just as much either way so it is more efficient just to wait for the cooldown to end. The Spectrite Damage effect will deal high damage to non-Spectrite shields.
+A ridiculously powerful sword made entirely of Spectrite. This sword inflicts dispersed Spectrite Damage III with a cooldown. Neither allies nor blocks are affected by this damage. There is a cooldown period (default 3.5s) for hitting an entity with Spectrite Damage and no Spectrite Damage will be applied if the sword is used before this cooldown has finished.
 
-Superchromaticity Effect: Spectrite Damage level increases from II to III
+Superchromaticity Effect: Cut cooldown in half
 
 Crafting Recipes:
 
@@ -347,9 +364,9 @@ X = Spectrite Gem;
 Y = Spectrite Rod
 
 ### Spectrite Legend Blade
-A special sword made entirely of Spectrite that is capable of even higher and more widely spread damage than a Spectrite Sword. This sword cannot be crafted and can only be obtained by defeating a Spectrite mob that uses this sword. There is a cooldown period (default 1.75s) for hitting an entity with Spectrite Damage and no Spectrite Damage will be applied if the sword is used before this cooldown has finished, though the item will be damaged just as much either way so it is more efficient just to wait for the cooldown to end. The Spectrite Damage effect will deal heavy damage to non-Spectrite shields.
+A special sword made entirely of Spectrite. This sword inflicts dispersed Spectrite Damage IV with a cooldown and it cannot be crafted and can only be obtained either by finding it in a chest in a Spectrite Skull Structure or Spectrite Dungeon or as a rare drop from a Spectrite mob that uses this sword. There is a cooldown period (default 3.5s) for hitting an entity with Spectrite Damage and no Spectrite Damage will be applied if the sword is used before this cooldown has finished.
 
-Superchromaticity Effect: Spectrite Damage level increases from III to IV
+Superchromaticity Effect: Cut cooldown in half
 
 ### Spectrite Arrow
 An arrow made of Spectrite. On collision, they explode with a similar Spectrite Damage effect to a Spectrite Sword, or a Spectrite Legend Sword effect for critical arrows. This effect can also be configured to be replaced with an ordinary explosion (damages terrain and self/allies), or to keep the Spectrite Damage effect while also adding an explosion. These arrows are extremely expensive to craft, therefore it is recommended they only be used with Spectrite bows with the infinity enchantment. These arrows can be fired from an ordinary bow, but they will do heavy damage to it and a fully repaired bow without unbreaking will be destroyed after just 4 Spectrite Arrows. Spectrite Bows are able to fire these arrows while taking significantly less damage.
@@ -386,7 +403,7 @@ Z = Spectrite Rod
 ### Spectrite Bow
 A bow made entirely of Spectrite. It is even more durable than a Spectrite Bow and takes 66% less damage than a Spectrite Bow when shooting Spectrite Arrows.
 
-Superchromaticity Effect: Spectrite Damage level of a fired Spectrite Arrow increases by one level
+Superchromaticity Effect: Spectrite Arrow cooldown is cut in half
 
 Crafting Recipe:
 
@@ -401,11 +418,11 @@ X = Spectrite Rod;
 Y = String
 
 ### Spectrite Armour (Helmet, Chestplate, Leggings, Boots)
-A set of armour made of spectrite. It's just as protective as diamond but lasts a lot longer. In addition, the player's max health is increased with every piece with more health given for pieces that require more Spectrite Gems to craft. The total max health increase is 10 hearts by default but, depending on the value of the 'Spectrite Armour Bonus Mode' configuration option, the increase could be up to 50 hearts, though this setting is not recommended.
+A set of armour made of spectrite. It's just as protective as diamond but lasts a lot longer. In addition, the player's max health is increased with every piece with more health given for pieces that require more Spectrite Gems to craft. The total max health increase, without Superchromaticity, is 10 hearts by default but, depending on the value of the 'Spectrite Armour Bonus Mode' configuration option, this could also be halved to 5 hearts or doubled to 20 hearts (Superchromaticity is always double). Using a Spectrite Anvil, certain passive Spectrite Orb effects can be added to each armour piece.
 
 Superchromaticity Effect: Health increase is doubled
-Set Bonus: Passive Regeneration I
-Superchromaticity Set Bonus: Passive Spectrite Resistance I
+Set Bonus: Passive Spectrite Resistance I
+Superchromaticity Set Bonus: Passive Spectrite Resistance II
 
 Crafting Recipes:
 
@@ -443,7 +460,7 @@ Y = Spectrite Block
 ### Spectrite Shield
 A shield made entirely of Spectrite. It is even more durable than a Spectrite Shield and defends even better against Spectrite Weapons, decreasing received Spectrite Damage level by 2 when blocking.
 
-Superchromaticity Effect: Decrease Spectrite Damage level by 3 when blocking
+Superchromaticity Effect: Increased Spectrite Damage levels blocked by 1
 
 Crafting Recipe:
 
@@ -457,10 +474,19 @@ X　Y　X
 X = Spectrite Gem;
 Y = Spectrite Block
 
-### Spectrite Healing Orb
-A prismatic orb filled with healing power that, when used with a right click, will give you 15 seconds of regeneration with a 90 second cooldown (15 seconds between regeneration). If used with full Spectrite Armour, it will enhance your already present regeneration effect. This cannot be crafted and can only be acquired by defeating a Spectrite Boss mob that is holding this orb.
+### Spectrite Orb
+A mysterious orb known to be held by Spectrite Endermen. It provides one or more passive potion effects with level 1 but, when activated, a level 2 effect is activated for a limited duration (default 15s) with a cooldown (default 90s). During this cooldown, the passive effect will not be provided. Orbs can be combined in any combination using a Spectrite Anvil, though it becomes more expensive with every orb added. Orbs can also be fused with Spectrite Armour to provide passive effects when wearing the armour, though this is also expensive. Each orb effect has a specific armour type it can be applied to.
 
-Superchromaticity Effect: Cut cooldown in half
+Berserk (red) - Chestplate
+Lightweight (orange) - Boots
+Prosperity (yellow) - Helmet
+Agility (green) - Leggings
+Amphibious (blue) - Helmet
+Endurance (indigo) - Chestplate
+Resilience (violet) - Helmet
+
+### Perfect Spectrite Orb
+The result of combining all 7 Spectrite Orbs together. It works the same way as a regular Spectrite Orb, but provides Spectrite Power in addition to the other 7 effects. If an imperfect Spectrite Orb is combined with Spectrite Orb fused Spectrite Armour to provide all 7 effects, Spectrite Power will also be provided.
 
 ### Spectrite Compass
 A compass that will direct you towards the Spectrite Dungeon, given that you have the generation of said dungeon enabled in your configuration.
@@ -489,7 +515,18 @@ There are 3 variants for each of the 3 potion types: Spectrite Resistance I (3:0
 
 Brewing Recipes:
 
-Normal: Spectrite Potion x1, Spectrite Brick x1
+Normal: Spectrite Potion x1, Spectrite Bone x1
+Strong: Potion of Spectrite Resistance (Normal) x1, Glowstone Dust x1
+Long: Potion of Spectrite Resistance (Normal) x1, Redstone Dust x1
+
+### Potion of Spectrite Power
+A potion that provides a temporary Spectrite Power effect.
+
+There are 3 variants for each of the 3 potion types: Spectrite Power I (3:00), Spectrite Power I (8:00), Spectrite Power II (1:30)
+
+Brewing Recipes:
+
+Normal: Spectrite Potion x1, Spectrite Dust x1
 Strong: Potion of Spectrite Resistance (Normal) x1, Glowstone Dust x1
 Long: Potion of Spectrite Resistance (Normal) x1, Redstone Dust x1
 
@@ -500,7 +537,7 @@ There are 5 variants for each of the 3 potion types: Spectrite Damage I, Spectri
 
 Brewing Recipes:
 
-I: Spectrite Potion x1, Spectrite Dust x1
+I: Spectrite Potion x1, Spectrite Brick x1
 II: Potion of Spectrite Damage I x1, Spectrite Dust x1
 III: Potion of Spectrite Damage II x1, Spectrite Dust x1
 IV: Potion of Spectrite Damage III x1, Spectrite Dust x1
@@ -510,6 +547,11 @@ V: Potion of Spectrite Damage IV x1, Spectrite Dust x1
 A tipped arrow that carries a Spectrite Resistance effect.
 
 There are 3 variants: Spectrite Resistance I (0:22), Spectrite Resistance I (1:00), Spectrite Resistance II (0:11)
+
+### Arrow of Spectrite Resistance
+A tipped arrow that carries a Spectrite Power effect.
+
+There are 3 variants: Spectrite Power I (0:22), Spectrite Power I (1:00), Spectrite Power II (0:11)
 
 ### Arrow of Spectrite Damage 
 A tipped arrow that carries a Spectrite Damage effect. It has the same variants as the potions.
@@ -574,6 +616,8 @@ Y = Spectrite Star
 ### Spectrite Wither Rod
 A powerful weapon that can shoot Spectrite Wither skulls with a cooldown. It can be repaired with Spectrite Bones.
 
+Superchromaticity Effect: Cut cooldown in half
+
 Crafting Recipe:
 
 X
@@ -589,6 +633,8 @@ Z = Spectrite Wither Tail
 
 ### Invulnerable Spectrite Wither Rod
 An extremely powerful weapon that can shoot invulnerable Spectrite Wither skulls with a cooldown. Being invulnerable, it does not deteriorate.
+
+Superchromaticity Effect: Cut cooldown in half
 
 Crafting Recipe:
 
@@ -606,37 +652,83 @@ Z = Invulnerable Spectrite Wither Tail
 ### Bucket of Molten Spectrite
 A bucket of deadly Molten Spectrite. Its only practical use is as a last-resort weapon since it cannot be used as a fuel source since it would melt its container. What? You want to know how the bucket can hold it? Well that's obviously becau
 
-## Enchantments
-
-### Superchromaticity
-An enchantment that only works on tools and weapons made entirely out of Spectrite. These items will always have a multicoloured name. The enchantment will have a different effect based on the type of item, but this effect is always be a significant enhancement. These compatible items can be enchanted either by a Spectrite Chest or by using an enchantment book found in a Spectrite Dungeon.
-
 ## Mobs
 
 ### Spectrite Creeper
-A creeper made of Spectrite. It has a bit more health than a regular creeper and its explosion carries a powerful Spectrite Damage effect that leaves behind a lingering cloud of Spectrite Damage. They also drop Spectrite Dust which can be used to brew Spectrite Damage potions.
+A creeper made of Spectrite. It has 2.5x the health of a regular creeper and its explosion inflicts a massive Spectrite Damage effect that leaves behind a lingering cloud of Spectrite Damage. They also drop Spectrite Dust which can be used to brew Spectrite Power potions.
 
 ### Spectrite Skeleton
-A skeleton made of Spectrite. It has a bit more health than a regular skeleton, but it also receives the same health bonuses as a player does from Spectrite Armour. It carries either a Diamond Spectrite Bow with Diamond Spectrite Arrows or Spectrite Bow with Spectrite Arrows. Upon being defeated, it may drop a single Spectrite Arrow of the same type as the one it holds. It also has a chance to have a Spectrite Sword instead of a bow and arrows. Its armour and weapon each have a very small chance of dropping.
+A skeleton made of Spectrite.It has 2.5x the health of a regular skeleton, but it also receives the same health bonuses as a player does from Spectrite Armour. It carries either a Diamond Spectrite Bow with Diamond Spectrite Arrows or Spectrite Bow with Spectrite Arrows. Upon being defeated, it may drop a single Spectrite Arrow of the same type as the one it holds. It also has a chance to have a Spectrite Sword instead of a bow and arrows. Its armour and weapon each have a very small chance of dropping. The bones it drops can be used to brew Spectrite Resistance potions.
 
 ### Spectrite Wither Skeleton
-A wither skeleton made of Spectrite. It has a bit more health than a regular skeleton, but it also receives the same health bonuses as a player does from Spectrite Armour. It carries a Diamond Spectrite Sword, a Spectrite Sword or, on a very rare occasion, a Spectrite Legend Blade. It also has a chance to have a Spectrite Bow and arrows instead of a sword. Upon being defeated, its armour and weapon each have a very small chance of dropping. It also may drop its skull which can be used as a decent helmet.
+A wither skeleton made of Spectrite. It has 2.5x the health of a regular skeleton, but it also receives the same health bonuses as a player does from Spectrite Armour. It carries a Diamond Spectrite Sword, a Spectrite Sword or, on a very rare occasion, a Spectrite Legend Blade. It also has a chance to have a Spectrite Bow and arrows instead of a sword. Upon being defeated, its armour and weapon each have a very small chance of dropping. It also may drop its skull which can be used as a decent helmet. The bones it drops can be used to brew Spectrite Resistance potions.
 
 ### Spectrite Golem
-A golem made of Spectrite that lives in Spectrite Dungeons. It has a very high amount of health. They are usually quite peaceful, though they do not like to be pushed around. They have extremely high endurance and power, but are somewhat lacking when it comes to speed. They will naturally heal over time.
+A golem made of Spectrite that lives in Spectrite Dungeons. It has 2.5x the health of an iron golem. They are usually quite peaceful, though they do not like to be pushed around. They have extremely high endurance and inflict massive Spectrite Damage, but are somewhat lacking when it comes to speed. They will naturally heal over time. The bricks it drops can be used to brew Spectrite Damage potions.
 
 Spectrite Golems have unique drops: Spectrite Brick (common), Spectrite Gem (uncommon), Diamond Spectrite Shield (very rare), Spectrite Shield (extremely rare)
 
 Friendly Spectrite Golems can also be summoned by the player using the same pattern as the Iron Golem, but with Spectrite Blocks instead of Iron Blocks.
 
 ### Spectrite Blaze
-A blaze made of Spectrite. It has a bit more health than a regular blaze and its fireballs do a lot more damage, Spectrite Damage III to be exact. This is twice as powerful as a Spectrite Arrow fired from a Spectrite Skeleton. They drop Spectrite Blaze Rods which can be used to craft Spectrite Blaze Powder, an ingredient for Spectrite Potions.
+A blaze made of Spectrite. It has 2.5x the health of a regular blaze and its fireballs inflict heavy Spectrite Damage. This is twice as powerful as a Spectrite Arrow fired from a Spectrite Skeleton. They drop Spectrite Blaze Rods which can be used to craft Spectrite Blaze Powder, an ingredient for Spectrite Potions.
+
+### Spectrite Enderman
+An enderman made of Spectrite. It has 2.5x the health of a regular enderman and it inflicts massive Spectrite Damage. In place of a pumpkin, any Spectrite mob skull will prevent them from attacking when looked at. It will avoid any damage less than 5 hearts by teleporting. With the already high rarity of endermen, Spectrite Endermen are exceedingly rare. The best chance of finding one is in The End or in the Spectrite Dungeon. Upon being defeated, it will drop a random Spectrite Orb with one effect.
 
 ### Spectrite Wither
-A wither made of Spectrite. It has a lot more health than a regular wither and its skulls are much more powerful, adding Spectrite Damage and, if invulnerable, lingering clouds of Spectrite Damage. If on normal difficulty or higher, it will occassionally use a special attack where it rises and spins, firing skulls diagonally downward in all directions. After enough damage on hard mode, it will do 3 fast spins instead of 1 slow one. Upon being defeated, he drops a Spectrite Star, a Spectrite Wither Skull, a Spectrite Wither Torso, and a Spectrite Wither Tail.
+A wither made of Spectrite. It has 2.5x the health of a regular wither and its skulls are much more powerful, adding Spectrite Damage and, if invulnerable, lingering clouds of Spectrite Damage. If on normal difficulty or higher, it will occassionally use a special attack where it rises and spins, firing skulls diagonally downward in all directions. After enough damage on hard mode, it will do 3 fast spins instead of 1 slow one. Upon being defeated, he drops a Spectrite Star, a Spectrite Wither Skull, a Spectrite Wither Torso, and a Spectrite Wither Tail.
 
 ## Spectrite Skeleton Bosses
-On rare occassions, a Spectrite Skeleton or Spectrite Wither Skeleton, marked with a hue-rotating crown icon above its head, may spawn with full Spectrite Armour. Spectrite Skeletons will also be guaranteed a Spectrite Bow, while Spectrite Wither Skeletons will have a guaranteed Spectrite Legend Blade along with a Spectrite Healing Orb, which will boost its rate of healing. Depending on the difficulty mode, the mob's armour and/or weapon may also be enchanted with Superchromaticity. These bosses can be very hard to kill due to their high rate of healing and high damage, so it is recommended to avoid them until you have a Spectrite Sword (at the very least) along with full Spectrite Armour.
+On rare occassions, a Spectrite Skeleton or Spectrite Wither Skeleton, marked with a hue-rotating crown icon above its head, may spawn with full Spectrite Armour. Spectrite Skeletons will also be guaranteed a Spectrite Bow, while Spectrite Wither Skeletons will have a guaranteed Spectrite Legend Blade. Depending on the difficulty mode, the mob's armour and/or weapon may also be enchanted with Superchromaticity and have Spectrite Orb effects on the armour. These bosses can be very hard to kill due to their high rate of healing and high damage, so it is recommended to avoid them until you have a Spectrite Sword (at the very least) along with full Spectrite Armour.
+
+## Enchantments
+
+### Superchromaticity
+An enchantment that only works on tools and weapons made entirely out of Spectrite. These items will always have a multicoloured name. The enchantment will have a different effect based on the type of item, but this effect is always be a significant enhancement. The most common effect is to cut the item's cooldown in half. These compatible items can be enchanted either by a Spectrite Chest or by using an enchantment book found in a Spectrite Dungeon.
+
+## Potion Effects
+
+### Spectrite Resistance
+Lowers the level of Spectrite Damage received level for level.
+
+### Spectrite Power
+Increases the level of Spectrite Damage inflicted level for level. When all Spectrite Orb effects are present, this effect will be applied.
+
+### Spectrite Damage
+Applies special magic damage though, unlike other types of magic damage, it can be reduced with armour. It is often inflicted with dispersed damage, doing one less level of damage for every block of distance. The maximum level possible without commands is 6. It inflicts high to shields with an exponential increase with every level.
+
+Damage is calculated with the following formula: (2 * level) + (2 ^ level) + 0.5
+
+This translates into the following damage amounts for each level:
+
+I - 4.5
+II - 8.5
+III - 14.5
+IV - 24.5
+V - 42.5
+VI - 76.5
+
+### Berserk
+A Spectrite Orb effect. It adds 50% of the original damage to attack damage for every level and increases knockback.
+
+### Lightweight
+A Spectrite Orb effect. It decreases fall damage by 2.5 hearts per level. Jump height is also increased with every level.
+
+### Prosperity
+A Spectrite Orb effect. It increases luck by 2 levels for every level. 1 level of looting per level is also added on top of enchantments. A Spectrite Enderman may drop a second Spectrite Orb on defeat with level 1 of this effect, and will always do so with level 2.
+
+### Agility
+A Spectrite Orb effect. It increases movement speed and attack speed with every level.
+
+### Amphibious
+A Spectrite Orb effect. It increases underwater breathing time with every level and increases block breaking speed underwater.
+
+### Endurance
+A Spectrite Orb effect. It decreases all damage taken by 25% with level 1 and divides damage taken by the level for every level after that.
+
+### Resilience
+A Spectrite Orb effect. It provides regeneration and reduces bad potion effect durations.
 
 ## Screenshots
 
