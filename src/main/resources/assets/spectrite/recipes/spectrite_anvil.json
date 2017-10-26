@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "spectrite:spectrite_anvil"
+  },
+  "pattern": [
+    "XXX",
+    " Y ",
+    "YYY"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "spectrite:spectrite_block"
+    },
+    "Y": {
+      "item": "spectrite:spectrite_gem"
+    }
+  }
+}
