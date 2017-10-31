@@ -146,7 +146,8 @@ public class ClientProxy extends CommonProxy {
 
 		Map<ResourceLocation, Integer> spectriteEntityIndexes = new HashMap<>();
 
-		EntityList.ENTITY_EGGS.entrySet().stream().filter(ee -> Spectrite.MOD_ID.equals(ee.getKey().getResourceDomain())).map(ee -> ee.getKey()).forEach(ee -> {
+		EntityList.ENTITY_EGGS.entrySet().stream().filter(ee -> ee.getKey() != null
+			&& Spectrite.MOD_ID.equals(ee.getKey().getResourceDomain())).map(ee -> ee.getKey()).forEach(ee -> {
 			spectriteEntityIndexes.put(ee, spectriteEntityIndexes.size());
 		});
 
@@ -157,46 +158,45 @@ public class ClientProxy extends CommonProxy {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-				int ret;
+				int ret = -1;
 				ResourceLocation entityRL = ItemMonsterPlacer.getNamedIdFrom(stack);
-				if (Spectrite.MOD_ID.equals(entityRL.getResourceDomain())) {
-					Integer entityCacheIndex = spectriteEntityIndexes.get(entityRL);
-					int spectriteFrame = SpectriteHelper.getCurrentSpectriteFrame(null);
-					int[][] entityColourCache;
-					if (!colourCache.containsKey(entityCacheIndex)) {
-						colourCache.put(entityCacheIndex, new int[34][36]);
-					}
-					entityColourCache = colourCache.get(entityCacheIndex);
-					if (entityColourCache[tintIndex][spectriteFrame] != 0) {
-						ret = entityColourCache[tintIndex][spectriteFrame];
-					} else {
-						int[][] colours = ItemSpectriteOrb.ORB_COLOUR_RGB;
-
-						int tintIndex2 = tintIndex % 17;
-
-						float partSize = 17f / (colours.length - 1);
-						float progress = ((tintIndex2 / partSize) + ((colours.length / 36f) * spectriteFrame)
-							+ (tintIndex > 16 ? 34 : 0) + (36 * (entityCacheIndex / (float) spectriteEntityIndexes.size()))) % colours.length;
-						int startIndex = (int) Math.floor(progress);
-						progress -= startIndex;
-						int[] rgb = new int[3];
-						for (int c = 0; c < 3; c++) {
-							rgb[c] = Math.round((colours[startIndex][c] * (1f - progress)) + (colours[startIndex < colours.length - 1 ? startIndex + 1 : 0][c] * progress));
+				if (entityRL != null) {
+					if (Spectrite.MOD_ID.equals(entityRL.getResourceDomain())) {
+						Integer entityCacheIndex = spectriteEntityIndexes.get(entityRL);
+						int spectriteFrame = SpectriteHelper.getCurrentSpectriteFrame(null);
+						int[][] entityColourCache;
+						if (!colourCache.containsKey(entityCacheIndex)) {
+							colourCache.put(entityCacheIndex, new int[34][36]);
 						}
-						ret = new Color(rgb[0], rgb[1], rgb[2]).getRGB();
+						entityColourCache = colourCache.get(entityCacheIndex);
+						if (entityColourCache[tintIndex][spectriteFrame] != 0) {
+							ret = entityColourCache[tintIndex][spectriteFrame];
+						} else {
+							int[][] colours = ItemSpectriteOrb.ORB_COLOUR_RGB;
 
-						entityColourCache[tintIndex][spectriteFrame] = ret;
-					}
-				} else {
-					EntityList.EntityEggInfo entityEggInfo = EntityList.ENTITY_EGGS.get(entityRL);
+							int tintIndex2 = tintIndex % 17;
 
-					if (entityEggInfo == null)
-					{
-						ret = -1;
-					}
-					else
-					{
-						ret = tintIndex == 0 ? entityEggInfo.primaryColor : entityEggInfo.secondaryColor;
+							float partSize = 17f / (colours.length - 1);
+							float progress = ((tintIndex2 / partSize) + ((colours.length / 36f) * spectriteFrame)
+									+ (tintIndex > 16 ? 34 : 0) + (36 * (entityCacheIndex / (float) spectriteEntityIndexes.size()))) % colours.length;
+							int startIndex = (int) Math.floor(progress);
+							progress -= startIndex;
+							int[] rgb = new int[3];
+							for (int c = 0; c < 3; c++) {
+								rgb[c] = Math.round((colours[startIndex][c] * (1f - progress)) + (colours[startIndex < colours.length - 1 ? startIndex + 1 : 0][c] * progress));
+							}
+							ret = new Color(rgb[0], rgb[1], rgb[2]).getRGB();
+
+							entityColourCache[tintIndex][spectriteFrame] = ret;
+						}
+					} else {
+						EntityList.EntityEggInfo entityEggInfo = EntityList.ENTITY_EGGS.get(entityRL);
+
+						if (entityEggInfo == null) {
+							ret = -1;
+						} else {
+							ret = tintIndex == 0 ? entityEggInfo.primaryColor : entityEggInfo.secondaryColor;
+						}
 					}
 				}
 
