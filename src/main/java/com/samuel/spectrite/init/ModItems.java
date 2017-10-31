@@ -116,7 +116,8 @@ public class ModItems {
 		Spectrite.SPECTRITE_WITHER_SKULL.setRepairItem(new ItemStack(spectrite_bone));
 
 		Items.SPAWN_EGG.addPropertyOverride(new ResourceLocation("spectrite_egg"), (s, w, e) -> {
-			if (Spectrite.MOD_ID.equals(ItemMonsterPlacer.getNamedIdFrom(s).getResourceDomain())) {
+			ResourceLocation rl = ItemMonsterPlacer.getNamedIdFrom(s);
+			if (rl != null && Spectrite.MOD_ID.equals(rl.getResourceDomain())) {
 				return 1.0F;
 			}
 			return 0.0F;
