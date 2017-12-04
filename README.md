@@ -493,14 +493,14 @@ A compass that will direct you towards the Spectrite Dungeon, given that you hav
 
 Crafting Recipe:
 
-X　X　X
+-　X　-
 
 X　Y　X
 
-X　X　X
+-　X　-
 
 
-X = Spectrite Gem;
+X = Spectrite Compass;
 Y = Compass
 
 ### Spectrite Potion
