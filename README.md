@@ -500,7 +500,7 @@ X　Y　X
 -　X　-
 
 
-X = Spectrite Compass;
+X = Spectrite Block;
 Y = Compass
 
 ### Spectrite Potion
