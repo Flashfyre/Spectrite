@@ -32,7 +32,7 @@ public class EntitySpectriteTippedArrow extends EntityArrow {
 		super(arrow.getEntityWorld(), arrow.shootingEntity != null ? (EntityLivingBase) arrow.shootingEntity : null);
 		float velocity = Math.min(arrow.getEntityWorld().rand.nextFloat() + 0.25f, 1.0f);
 		if (this.shootingEntity != null) {
-			this.setAim(shootingEntity, shootingEntity.rotationPitch, shootingEntity.rotationYaw, 0.0F, velocity * 3.0F, 1.0F);
+			this.shoot(shootingEntity, shootingEntity.rotationPitch, shootingEntity.rotationYaw, 0.0F, velocity * 3.0F, 1.0F);
 		}
 		if (velocity == 1.0f) {
 			this.setIsCritical(true);

@@ -17,7 +17,7 @@ import java.util.Random;
 public interface IPerfectSpectriteItem extends ISpectriteItem {
 
     default boolean onEntitySpectriteItemUpdate(EntityItem entityItem) {
-    	Field delayBeforeCanPickupField = ReflectionHelper.findField(EntityItem.class, "delayBeforeCanPickup", "field_145804_b");
+    	Field delayBeforeCanPickupField = ReflectionHelper.findField(EntityItem.class, "pickupDelay", "field_145804_b");
 
         Random rand = new Random();
 

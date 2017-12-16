@@ -376,7 +376,7 @@ public class EntitySpectriteEnderman extends EntityMob implements ISpectriteMob 
                 Spectrite.Proxy.spawnSpectritePortalParticle(this.world, d3, d4, d5, (double)f, (double)f1, (double)f2);
             }
 
-            this.getNavigator().clearPathEntity();
+            this.getNavigator().clearPath();
 
             return true;
         }
@@ -639,14 +639,14 @@ public class EntitySpectriteEnderman extends EntityMob implements ISpectriteMob 
                 {
                     if (this.spectriteEnderman.shouldAttackPlayer((EntityPlayer)this.targetEntity))
                     {
-                        if (((EntityPlayer)this.targetEntity).getDistanceSqToEntity(this.spectriteEnderman) < 16.0D)
+                        if (((EntityPlayer)this.targetEntity).getDistanceSq(this.spectriteEnderman) < 16.0D)
                         {
                             this.spectriteEnderman.teleportRandomly();
                         }
 
                         this.teleportTime = 0;
                     }
-                    else if (((EntityPlayer)this.targetEntity).getDistanceSqToEntity(this.spectriteEnderman) > 256.0D && this.teleportTime++ >= 30 && this.spectriteEnderman.teleportToEntity(this.targetEntity))
+                    else if (((EntityPlayer)this.targetEntity).getDistanceSq(this.spectriteEnderman) > 256.0D && this.teleportTime++ >= 30 && this.spectriteEnderman.teleportToEntity(this.targetEntity))
                     {
                         this.teleportTime = 0;
                     }

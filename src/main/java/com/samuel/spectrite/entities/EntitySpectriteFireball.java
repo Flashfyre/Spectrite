@@ -259,7 +259,7 @@ public abstract class EntitySpectriteFireball extends Entity {
         }
         else
         {
-            this.setBeenAttacked();
+            this.markVelocityChanged();
 
             if (source.getTrueSource() != null)
             {

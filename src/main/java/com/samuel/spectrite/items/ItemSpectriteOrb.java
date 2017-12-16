@@ -102,6 +102,13 @@ public class ItemSpectriteOrb extends Item implements IPerfectSpectriteItem, ISp
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean hasEffect(ItemStack stack)
+	{
+		return false;
+	}
+
+	@Override
 	public boolean onEntityItemUpdate(EntityItem entityItem) {
 		return this.onEntitySpectriteItemUpdate(entityItem);
 	}

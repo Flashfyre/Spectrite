@@ -1,6 +1,7 @@
 package com.samuel.spectrite.enchantments;
 
 import com.samuel.spectrite.helpers.SpectriteHelper;
+import com.samuel.spectrite.init.ModItems;
 import com.samuel.spectrite.items.IPerfectSpectriteItem;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -22,7 +23,8 @@ public class EnchantmentSpectriteEnhance extends Enchantment {
 
 	public boolean canApplyAtSpectriteAnvil(ItemStack stack) {
 		return !stack.isEmpty() && stack.getItem() instanceof IPerfectSpectriteItem
-			&& !SpectriteHelper.isStackSpectriteEnhanced(stack) && canApplyAtEnchantingTable(stack);
+			&& !SpectriteHelper.isStackSpectriteEnhanced(stack) && canApplyAtEnchantingTable(stack)
+			&& stack.getItem() != ModItems.spectrite_orb;
 	}
 	
 	@Override

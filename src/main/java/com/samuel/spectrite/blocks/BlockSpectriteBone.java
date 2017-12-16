@@ -48,7 +48,7 @@ public class BlockSpectriteBone extends BlockRotatedPillar {
 		Item heldItem;
 		if (!player.getHeldItemMainhand().isEmpty()) {
 			heldItem = player.getHeldItemMainhand().getItem();
-			canBreak = heldItem instanceof ItemTool && (heldItem).getStrVsBlock(player.getHeldItemMainhand(), state) >= 10.0f;
+			canBreak = heldItem instanceof ItemTool && (heldItem).getDestroySpeed(player.getHeldItemMainhand(), state) >= 10.0f;
 		}
         return canBreak ? net.minecraftforge.common.ForgeHooks.blockStrength(state, player, worldIn, pos) : -1.0f;
     }

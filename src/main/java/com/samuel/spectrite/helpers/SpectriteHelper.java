@@ -66,18 +66,18 @@ public class SpectriteHelper {
 			g = 1.0f - g;
 			b = 1.0f - b;
 		}
-				
+
 		return new float[] { r, g, b };
 	}
-	
+
 	public static int getCurrentSpectriteColour(int offsetLevel) {
 		int hueFrame = Math.round((System.currentTimeMillis() >> 5) % 180);
 		int r = MathHelper.floor(hueFrame >= 120 && hueFrame < 150 ? (255f / 30) * (hueFrame - 120) : hueFrame < 30 || hueFrame >= 150 ? 255f : hueFrame < 60 ? (255f / 30) * (30 - (hueFrame - 30)) : 0f),
-			g = MathHelper.floor(hueFrame < 30 ? (255f / 30) * hueFrame : hueFrame < 90 ? 255f : hueFrame < 120 ? (255f / 30) * (30 - (hueFrame - 90)) : 0f),
-			b = MathHelper.floor(hueFrame >= 60 && hueFrame < 90 ? (255f / 30) * (hueFrame - 60) : hueFrame >= 90 && hueFrame < 150 ? 255f : hueFrame >= 150 ? (255f / 30) * (30 - (hueFrame - 150)) : 0f);
-		
+				g = MathHelper.floor(hueFrame < 30 ? (255f / 30) * hueFrame : hueFrame < 90 ? 255f : hueFrame < 120 ? (255f / 30) * (30 - (hueFrame - 90)) : 0f),
+				b = MathHelper.floor(hueFrame >= 60 && hueFrame < 90 ? (255f / 30) * (hueFrame - 60) : hueFrame >= 90 && hueFrame < 150 ? 255f : hueFrame >= 150 ? (255f / 30) * (30 - (hueFrame - 150)) : 0f);
+
 		int tempR = r;
-			
+
 		switch (offsetLevel) {
 			case 1:
 				r = g;
@@ -93,10 +93,10 @@ public class SpectriteHelper {
 			default:
 				break;
 		}
-		
+
 		return (r << 16) + (g << 8) + b + (255 >> 24);
 	}
-	
+
 	public static String getMultiColouredString(String text, boolean rotateTextColour) {
 		StringBuilder formattedText = new StringBuilder();
 		final int textColourCount = textColours.length;
@@ -104,7 +104,7 @@ public class SpectriteHelper {
 		for (int c = 0; c < text.length(); c++) {
 			formattedText.append(textColours[(c + colourIndex) % textColourCount]).append(String.valueOf(text.charAt(c)));
 		}
-		
+
 		return formattedText.toString();
 	}
 

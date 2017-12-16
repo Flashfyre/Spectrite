@@ -73,9 +73,9 @@ public class ItemSpectriteAxe extends ItemAxe implements ISpectriteTool, ISpectr
 	}
 
 	@Override
-	public float getStrVsBlock(ItemStack stack, IBlockState state)
+	public float getDestroySpeed(ItemStack stack, IBlockState state)
 	{
-		return state.getBlock() instanceof BlockBreakable ? this.efficiencyOnProperMaterial : super.getStrVsBlock(stack, state);
+		return state.getBlock() instanceof BlockBreakable ? this.efficiency : super.getDestroySpeed(stack, state);
 	}
 
 	@Override
@@ -172,7 +172,7 @@ public class ItemSpectriteAxe extends ItemAxe implements ISpectriteTool, ISpectr
 	public List<BlockPos> getPlayerBreakableBlocks(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
 		World worldIn = player.world;
 		List<BlockPos> breakableBlocks = new ArrayList<BlockPos>();
-		float centerBlockStrVsBlock = getStrVsBlock(itemstack, worldIn.getBlockState(pos));
+		float centerBlockStrVsBlock = getDestroySpeed(itemstack, worldIn.getBlockState(pos));
 		if (centerBlockStrVsBlock > 1.0f) {
 			Vec3d lookVec = player.getLookVec();
 			EnumFacing facing = EnumFacing.getFacingFromVector((float) lookVec.x,
@@ -208,7 +208,7 @@ public class ItemSpectriteAxe extends ItemAxe implements ISpectriteTool, ISpectr
 				if ((!(itemstack.getItem() instanceof ItemSpectriteAxeSpecial) &&
 						((isDiagonalFacing && (blockCount == 2 || blockCount == 4 || blockCount == 6 || blockCount == 8)) ||
 								(!isDiagonalFacing && (blockCount == 1 || blockCount == 3 || blockCount == 7 || blockCount == 9)))) ||
-						getStrVsBlock(itemstack, curState) < 10.0f || curBlockHardness == -1.0f || centerBlockHardness > curBlockHardness) {
+						getDestroySpeed(itemstack, curState) < 10.0f || curBlockHardness == -1.0f || centerBlockHardness > curBlockHardness) {
 					continue;
 				} else {
 					boolean isVisible = false;

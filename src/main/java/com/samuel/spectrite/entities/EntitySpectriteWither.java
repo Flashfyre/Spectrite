@@ -351,7 +351,7 @@ public class EntitySpectriteWither extends EntityMob implements IRangedAttackMob
                     if (k1 > 0) {
                         Entity entity = this.world.getEntityByID(k1);
 
-                        if (entity != null && entity.isEntityAlive() && this.getDistanceSqToEntity(entity) <= 900.0D && this.canEntityBeSeen(entity)) {
+                        if (entity != null && entity.isEntityAlive() && this.getDistanceSq(entity) <= 900.0D && this.canEntityBeSeen(entity)) {
                             if (entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.disableDamage) {
                                 this.updateWatchedTargetId(i, 0);
                             } else {

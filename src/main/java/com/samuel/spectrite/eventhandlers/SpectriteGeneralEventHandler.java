@@ -186,7 +186,7 @@ public class SpectriteGeneralEventHandler {
 							e.setCanceled(true);
 							EntitySpectriteArrow spectriteArrow = (EntitySpectriteArrow) ModItems.spectrite_arrow.createArrow(e.getWorld(), shootingEntity.getHeldItemOffhand(), shootingEntity);
 							float velocity = Math.min(e.getWorld().rand.nextFloat() + 0.25f, 1.0f);
-							spectriteArrow.setAim(shootingEntity, shootingEntity.rotationPitch, shootingEntity.rotationYaw, 0.0F, velocity * 3.0F, 1.0F);
+							spectriteArrow.shoot(shootingEntity, shootingEntity.rotationPitch, shootingEntity.rotationYaw, 0.0F, velocity * 3.0F, 1.0F);
 							if (velocity == 1.0f) {
 								spectriteArrow.setIsCritical(true);
 							}

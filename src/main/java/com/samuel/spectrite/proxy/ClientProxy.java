@@ -91,7 +91,7 @@ public class ClientProxy extends CommonProxy {
 
 			@Override
 			@SideOnly(Side.CLIENT)
-			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+			public int colorMultiplier(ItemStack stack, int tintIndex) {
 				int ret = 16777215;
 				if (tintIndex < 17) {
 					int spectriteFrame = SpectriteHelper.getCurrentSpectriteFrame(null);
@@ -157,7 +157,7 @@ public class ClientProxy extends CommonProxy {
 
 			@Override
 			@SideOnly(Side.CLIENT)
-			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+			public int colorMultiplier(ItemStack stack, int tintIndex) {
 				int ret = -1;
 				ResourceLocation entityRL = ItemMonsterPlacer.getNamedIdFrom(stack);
 				if (entityRL != null) {

@@ -35,7 +35,7 @@ public class ItemSpectriteWitherRod extends ItemSpectriteSimple implements IPerf
         this.material = material;
         this.maxStackSize = 1;
         this.setMaxDamage(material.getMaxUses());
-        this.attackDamage = 1.0F + material.getDamageVsEntity();
+        this.attackDamage = 1.0F + material.getAttackDamage();
         this.invulnerable = invulnerable;
     }
 

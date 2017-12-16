@@ -89,7 +89,7 @@ public class ItemSpectriteCompass extends ItemCompass implements ISpectriteItem 
             @SideOnly(Side.CLIENT)
             private double getFrameRotation(EntityItemFrame p_185094_1_)
             {
-                return MathHelper.clampAngle(180 + p_185094_1_.facingDirection.getHorizontalIndex() * 90);
+                return MathHelper.wrapDegrees(180 + p_185094_1_.facingDirection.getHorizontalIndex() * 90);
             }
             @SideOnly(Side.CLIENT)
             private double getSpawnToAngle(World p_185092_1_, Entity p_185092_2_)

@@ -189,7 +189,7 @@ public abstract class AbstractSpectriteSkeleton extends AbstractSkeleton impleme
         double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entityarrow.posY;
         double d2 = target.posZ - this.posZ;
         double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
-        entityarrow.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
+        entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
         this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.world.spawnEntity(entityarrow);
     }
@@ -227,7 +227,9 @@ public abstract class AbstractSpectriteSkeleton extends AbstractSkeleton impleme
     public void setCustomNameTag(String name)
     {
         super.setCustomNameTag(name);
-        this.bossInfo.setName(this.getDisplayName());
+        if (this.boss) {
+            this.bossInfo.setName(this.getDisplayName());
+        }
     }
 
     @Override

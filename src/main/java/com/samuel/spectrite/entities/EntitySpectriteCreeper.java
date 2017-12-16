@@ -153,7 +153,7 @@ public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteM
 			if (surrounding.get(s) instanceof EntityLivingBase &&
 				(!(surrounding.get(s)).isOnSameTeam(this))) {
 				EntityLivingBase curEntity = ((EntityLivingBase) surrounding.get(s));
-				double distance = curEntity.getDistanceToEntity(this);
+				double distance = curEntity.getDistance(this);
 				int relPower = (int) Math.ceil(power - distance);
 				int damageLevel = relPower;
 				if (!curEntity.getActiveItemStack().isEmpty() && curEntity.isActiveItemStackBlocking() && curEntity.getActiveItemStack().getItem() instanceof ItemShield) {
