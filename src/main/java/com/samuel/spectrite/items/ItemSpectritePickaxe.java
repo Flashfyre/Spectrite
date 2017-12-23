@@ -111,6 +111,7 @@ public class ItemSpectritePickaxe extends ItemPickaxe implements ISpectriteTool,
 					curPos = targetBlocks.next();
 					curState = worldIn.getBlockState(curPos);
 					curBlock = curState.getBlock();
+					int exp = !worldIn.isRemote ? ForgeHooks.onBlockBreakEvent(worldIn, ((EntityPlayerMP) player).interactionManager.getGameType(), (EntityPlayerMP) player, curPos) : -1;
 					boolean canHarvest = !player.isCreative() && ForgeHooks.canHarvestBlock(curBlock, player, worldIn, curPos) && curBlock.canHarvestBlock(worldIn, curPos, player);
 
 					if (player.isCreative()) {
@@ -126,10 +127,9 @@ public class ItemSpectritePickaxe extends ItemPickaxe implements ISpectriteTool,
 					itemstack.onBlockDestroyed(worldIn, curState, curPos, player);
 
 					if (!worldIn.isRemote) {
-						if (!player.isCreative()) {
-							int exp = ForgeHooks.onBlockBreakEvent(worldIn, ((EntityPlayerMP) player).interactionManager.getGameType(), (EntityPlayerMP) player, curPos);
-							if (exp > -1 && removedByPlayer) {
-								curBlock.harvestBlock(worldIn, player, curPos, curState, worldIn.getTileEntity(curPos), itemstack);
+						if (!player.isCreative() && removedByPlayer) {
+							curBlock.harvestBlock(worldIn, player, curPos, curState, worldIn.getTileEntity(curPos), itemstack);
+							if (exp > 0) {
 								curBlock.dropXpOnBlockBreak(worldIn, curPos, exp);
 							}
 						}
