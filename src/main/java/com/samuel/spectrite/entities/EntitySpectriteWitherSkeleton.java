@@ -325,7 +325,7 @@ public class EntitySpectriteWitherSkeleton extends AbstractSpectriteSkeleton {
 		if (cause.getTrueSource() instanceof EntityCreeper) {
 			EntityCreeper entitycreeper = (EntityCreeper) cause.getTrueSource();
 
-			if (entitycreeper.getPowered() && !entitycreeper.ableToCauseSkullDrop()) {
+			if (entitycreeper.getPowered() && entitycreeper.ableToCauseSkullDrop()) {
 				entitycreeper.incrementDroppedSkulls();
 				this.entityDropItem(new ItemStack(ModItems.spectrite_wither_skeleton_skull), 0.0F);
 			}

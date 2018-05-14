@@ -741,15 +741,15 @@ public class SpectriteGeneralEventHandler {
 	public void onApplyLootingLevel(LootingLevelEvent e) {
 		int lootingLevel = e.getLootingLevel();
 		if (lootingLevel < 2) {
-			EntityLivingBase attacker;
+			Entity attacker;
 			if (e.getDamageSource() instanceof DamageSourceSpectriteIndirectPlayer) {
 				attacker = ((DamageSourceSpectriteIndirectPlayer) e.getDamageSource()).getPlayer();
 			} else {
-				attacker = (EntityLivingBase) (e.getDamageSource().getImmediateSource() instanceof EntityLivingBase ?
-					e.getDamageSource().getImmediateSource() : e.getDamageSource().getTrueSource());
+				attacker = e.getDamageSource().getImmediateSource() instanceof EntityLivingBase ?
+					e.getDamageSource().getImmediateSource() : e.getDamageSource().getTrueSource();
 			}
-			if (attacker != null) {
-				PotionEffect activeProsperityEffect = attacker.getActivePotionEffect(ModPotions.PROSPERITY);
+			if (attacker != null && attacker instanceof EntityLivingBase) {
+				PotionEffect activeProsperityEffect = ((EntityLivingBase) attacker).getActivePotionEffect(ModPotions.PROSPERITY);
 				if (activeProsperityEffect != null) {
 					int effectLootingLevel = activeProsperityEffect.getAmplifier() + 1;
 					if (lootingLevel < effectLootingLevel) {
