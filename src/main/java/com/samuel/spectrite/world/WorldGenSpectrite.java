@@ -91,8 +91,8 @@ public class WorldGenSpectrite implements IWorldGenerator {
 	    	final IBlockState oreState = isSurface ? stateSurface : isNether ? stateNether : stateEnd;
     		final int veinSize = rand.nextInt(rand.nextInt(rand.nextInt((isSurface ? SpectriteConfig.spectriteOre.spectriteMaxSizeSurface :
     			isNether ? SpectriteConfig.spectriteOre.spectriteMaxSizeNether : SpectriteConfig.spectriteOre.spectriteMaxSizeEnd) + 1) + 1) + 1)
-				+ (isSurface ? SpectriteConfig.spectriteOre.spectriteMaxSizeSurface : isNether ? SpectriteConfig.spectriteOre.spectriteMaxSizeNether :
-				SpectriteConfig.spectriteOre.spectriteMaxSizeEnd);
+				+ (isSurface ? SpectriteConfig.spectriteOre.spectriteMinSizeSurface : isNether ? SpectriteConfig.spectriteOre.spectriteMinSizeNether :
+				SpectriteConfig.spectriteOre.spectriteMinSizeEnd);
     		new WorldGenMinable(oreState, veinSize, BlockMatcher.forBlock(matchBlock)).generate(world, rand, pos);
     	    return true;
 	    }
