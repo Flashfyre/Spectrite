@@ -36,7 +36,6 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 
     protected Random rand = new Random();
     protected SpectriteDungeonData savedData;
-    protected World world;
     protected BlockPos spawnPos;
     protected ChunkPos spawnChunkPos;
     protected Map<ChunkPos, Room>[] posRoomsMap = null;
@@ -46,7 +45,7 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 		IChunkProvider chunkProvider) {
 		if (SpectriteConfig.spectriteDungeon.generateSpectriteDungeon && spawnPos != null && !world.isRemote
 			&& world.provider.isSurfaceWorld() && world.getWorldInfo().isMapFeaturesEnabled()) {
-			if ((savedData.isDungeonGenerated() && posRoomsMap == null) || chunkX == spawnChunkPos.x && chunkZ == spawnChunkPos.z) {
+			if (((savedData != null && savedData.isDungeonGenerated()) && posRoomsMap == null) || chunkX == spawnChunkPos.x && chunkZ == spawnChunkPos.z) {
 				int y = getGroundY(chunkX, chunkZ, world);
 				int i = 1;
 		        this.rand.setSeed(world.getSeed());
@@ -99,11 +98,11 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public void onWorldLoad(WorldEvent.Load e) {
-		if (this.world == null && !e.getWorld().isRemote && SpectriteConfig.spectriteDungeon.generateSpectriteDungeon) {
-			this.world = e.getWorld();
-			if (this.world.getWorldType() != WorldType.FLAT && this.world.getActualHeight() >= 30) {
+		World world = e.getWorld();
+		if (!world.isRemote && world.provider.isSurfaceWorld() && SpectriteConfig.spectriteDungeon.generateSpectriteDungeon) {
+			if (world.getWorldType() != WorldType.FLAT && world.getActualHeight() >= 30) {
 				initSpawnPoint(e.getWorld());
-				savedData = (SpectriteDungeonData) this.world.getPerWorldStorage().getOrLoadData(
+				savedData = (SpectriteDungeonData) world.getPerWorldStorage().getOrLoadData(
 					SpectriteDungeonData.class, "spectriteDungeon");
 				if (savedData == null) {
 					savedData = new SpectriteDungeonData("spectriteDungeon");
@@ -112,7 +111,7 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 				if (!savedData.isDungeonGenerated()) {
 					int chunkX = spawnPos.getX() >> 4, chunkZ = spawnPos.getZ() >> 4;
 					if (e.getWorld().isChunkGeneratedAt(chunkX, chunkZ)) {
-						generate(this.world.rand, chunkX, chunkZ, this.world, null, null);
+						generate(world.rand, chunkX, chunkZ, world, null, null);
 						savedData.setDungeonGenerated(true);
 					}
 				}
@@ -120,11 +119,6 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 				this.spawnPos = null;
 			}
 		}
-	}
-	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public void onWorldUnload(WorldEvent.Unload e) {
-		this.world = null;
 	}
 	
 	public void initSpawnPoint(World world) {

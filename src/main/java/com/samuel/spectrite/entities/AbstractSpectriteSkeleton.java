@@ -166,6 +166,8 @@ public abstract class AbstractSpectriteSkeleton extends AbstractSkeleton impleme
      */
     protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source)
     {
+        super.dropLoot(wasRecentlyHit, lootingModifier, source);
+
         this.dropFewItems(wasRecentlyHit, lootingModifier);
 
         Entity damageSourceEntity = source.getTrueSource() != null ? source.getTrueSource() : source.getImmediateSource();
