@@ -54,6 +54,7 @@ public class ModItems {
 	public static ItemSpectriteArmor spectrite_boots;
 	public static ItemSpectriteOrb spectrite_orb;
 	public static ItemSpectriteSimpleFoiled spectrite_star;
+	public static ItemSpectriteCrystal spectrite_crystal;
 	public static ItemSpectriteSkull spectrite_wither_skeleton_skull;
 	public static ItemSpectriteWitherSkull spectrite_wither_skull;
 	public static ItemSpectriteWitherSkull spectrite_wither_invulnerable_skull;
@@ -76,7 +77,6 @@ public class ModItems {
 		spectrite_dust = new ItemSpectriteSimple();
 		spectrite_blaze_rod = new ItemSpectriteSimple();
 		spectrite_blaze_powder = new ItemSpectriteSimple();
-		spectrite_star = new ItemSpectriteSimpleFoiled();
 		spectrite_gem = new ItemSpectriteSimple();
 		spectrite_shovel = new ItemSpectriteShovel();
 		spectrite_shovel_special = new ItemSpectriteShovelSpecial();
@@ -98,6 +98,8 @@ public class ModItems {
 		spectrite_leggings = new ItemSpectriteArmor(EntityEquipmentSlot.LEGS);
 		spectrite_boots = new ItemSpectriteArmor(EntityEquipmentSlot.FEET);
 		spectrite_orb = new ItemSpectriteOrb();
+		spectrite_star = new ItemSpectriteSimpleFoiled();
+		spectrite_crystal = new ItemSpectriteCrystal();
 		spectrite_wither_skeleton_skull = new ItemSpectriteSkull();
 		spectrite_wither_skull = new ItemSpectriteWitherSkull(1);
 		spectrite_wither_invulnerable_skull = new ItemSpectriteWitherSkull(2);
@@ -110,6 +112,7 @@ public class ModItems {
 
 		Spectrite.SPECTRITE_TOOL.setRepairItem(new ItemStack(spectrite_gem));
 		Spectrite.PERFECT_SPECTRITE_TOOL.setRepairItem(new ItemStack(spectrite_gem));
+		Spectrite.PERFECT_SPECTRITE_2_TOOL.setRepairItem(new ItemStack(spectrite_sword_special));
 		Spectrite.SPECTRITE_WITHER_TOOL.setRepairItem(new ItemStack(spectrite_bone));
 		Spectrite.SPECTRITE.setRepairItem(new ItemStack(spectrite_gem));
 		Spectrite.SPECTRITE_WITHER_SKELETON_SKULL.setRepairItem(new ItemStack(spectrite_bone));
@@ -179,6 +182,7 @@ public class ModItems {
 		registerItem(itemRegistry, spectrite_compass,
 			"spectrite_compass");
 		registerItem(itemRegistry, spectrite_star, "spectrite_star");
+		registerItem(itemRegistry, spectrite_crystal, "spectrite_crystal");
 		registerItem(itemRegistry, spectrite_wither_skeleton_skull,
 			"spectrite_wither_skeleton_skull");
 		registerItem(itemRegistry, spectrite_wither_skull,
@@ -192,12 +196,14 @@ public class ModItems {
 		registerItem(itemRegistry, spectrite_wither_rod_invulnerable,
 			"spectrite_wither_rod_invulnerable");
 
-		OreDictionary.registerOre("ingotSpectrite", spectrite_gem);
 		OreDictionary.registerOre("gemSpectrite", spectrite_gem);
 		OreDictionary.registerOre("stickDiamond", diamond_rod);
 		OreDictionary.registerOre("stickSpectrite", spectrite_rod);
+		OreDictionary.registerOre("boneSpectrite", spectrite_bone);
 		OreDictionary.registerOre("dustSpectrite", spectrite_dust);
+		OreDictionary.registerOre("gunpowderSpectrite", spectrite_dust);
 		OreDictionary.registerOre("ingotBrickSpectrite", spectrite_brick);
+		OreDictionary.registerOre("netherStarSpectrite", spectrite_star);
 	}
 
 	public static void populateBowItems() {

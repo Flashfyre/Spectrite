@@ -3,9 +3,6 @@ package com.samuel.spectrite.eventhandlers;
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
 import com.samuel.spectrite.blocks.BlockSpectrite;
-import com.samuel.spectrite.capabilities.ISpectriteBossCapability;
-import com.samuel.spectrite.capabilities.SpectriteBossCapability;
-import com.samuel.spectrite.capabilities.SpectriteBossProvider;
 import com.samuel.spectrite.damagesources.DamageSourceSpectriteIndirectPlayer;
 import com.samuel.spectrite.entities.*;
 import com.samuel.spectrite.etc.ISpectriteTool;
@@ -15,7 +12,6 @@ import com.samuel.spectrite.init.ModItems;
 import com.samuel.spectrite.init.ModPotions;
 import com.samuel.spectrite.init.ModWorldGen;
 import com.samuel.spectrite.items.*;
-import com.samuel.spectrite.packets.PacketSyncSpectriteBoss;
 import com.samuel.spectrite.packets.PacketSyncSpectriteDungeonSpawnPos;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
@@ -28,7 +24,6 @@ import net.minecraft.entity.EntityAreaEffectCloud;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityTippedArrow;
@@ -39,7 +34,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTippedArrow;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
@@ -52,13 +46,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraftforge.client.event.FOVUpdateEvent;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.StartTracking;
-import net.minecraftforge.event.entity.player.PlayerEvent.StopTracking;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
@@ -96,43 +87,20 @@ public class SpectriteGeneralEventHandler {
 		if (!e.getWorld().isRemote) {
 			if (e.getEntity() instanceof EntityLiving) {
 				EntityLivingBase entity = (EntityLivingBase) e.getEntity();
-				if (entity instanceof AbstractSkeleton && !(entity instanceof ISpectriteBipedMob)) {
-					if (entity instanceof EntityLiving && (SpectriteConfig.mobs.spectriteMobSpawnRate > 0d
-							&& (int) entity.getUniqueID().getLeastSignificantBits() % (100 / SpectriteConfig.mobs.spectriteMobSpawnRate) == 0)) {
-						Class entityClass = entity.getClass();
-						EntityLiving spectriteEntity = null;
-
-						if (entityClass == EntitySkeleton.class) {
-							spectriteEntity = new EntitySpectriteSkeleton(entity.getEntityWorld());
-						} else if (entityClass == EntityWitherSkeleton.class) {
-							spectriteEntity = new EntitySpectriteWitherSkeleton(entity.getEntityWorld());
-						} else if (entityClass == EntityCreeper.class) {
-							spectriteEntity = new EntitySpectriteCreeper(entity.getEntityWorld());
-						} else if (entityClass == EntityBlaze.class) {
-							spectriteEntity = new EntitySpectriteBlaze(entity.getEntityWorld());
-						} else if (entityClass == EntityEnderman.class && e.getWorld().provider.getDimension() != 0) {
-							spectriteEntity = new EntitySpectriteEnderman(entity.getEntityWorld());
-						}
+				boolean isSpectriteReplaceable = SpectriteHelper.isSpectriteReplaceableMob(entity);
+				if (isSpectriteReplaceable) {
+					boolean isCrystalInRange = SpectriteHelper.isCrystalInRange(e.getWorld(), entity.getPosition());
+					if ((!isCrystalInRange && SpectriteConfig.mobs.spectriteMobSpawnRate > 0d
+						&& (int) entity.getUniqueID().getLeastSignificantBits() % (100 / SpectriteConfig.mobs.spectriteMobSpawnRate) == 0)
+						|| (isCrystalInRange && SpectriteConfig.mobs.spectriteMobCrystalSpawnRate > 0d
+						&& (int) entity.getUniqueID().getLeastSignificantBits() % (100 / SpectriteConfig.mobs.spectriteMobCrystalSpawnRate) == 0)) {
+						EntityLiving spectriteEntity = SpectriteHelper.getSpectriteReplacementEntity(entity);
 
 						if (spectriteEntity != null) {
 							e.setCanceled(true);
 							spectriteEntity.setLocationAndAngles(entity.lastTickPosX, entity.lastTickPosY, entity.lastTickPosZ, entity.rotationYaw, entity.rotationPitch);
 							e.getWorld().spawnEntity(spectriteEntity);
 							spectriteEntity.onInitialSpawn(e.getWorld().getDifficultyForLocation(entity.getPosition()), null);
-						}
-					}
-				} else if (entity instanceof ISpectriteMob) {
-					if (SpectriteConfig.spectriteSkull.generateSpectriteSkull
-							&& ModWorldGen.spectriteSkull.isPosInSkullBounds(entity.getPosition(), e.getWorld().provider.getDimension())) {
-						if (!(entity instanceof ISpectriteBipedMob) || !((ISpectriteBipedMob) entity).isBoss()) {
-							if (SpectriteConfig.spectriteSkull.spectriteSkullMobCreeperRate > 0f
-									&& entity.getRNG().nextFloat() * 100f < SpectriteConfig.spectriteSkull.spectriteSkullMobCreeperRate) {
-								EntityLiving spectriteCreeper = new EntitySpectriteCreeper(entity.getEntityWorld());
-								spectriteCreeper.setLocationAndAngles(entity.lastTickPosX, entity.lastTickPosY, entity.lastTickPosZ, entity.rotationYaw, entity.rotationPitch);
-								e.getWorld().spawnEntity(spectriteCreeper);
-								spectriteCreeper.onInitialSpawn(e.getWorld().getDifficultyForLocation(entity.getPosition()), null);
-								e.setCanceled(true);
-							}
 						}
 					}
 				}
@@ -229,17 +197,8 @@ public class SpectriteGeneralEventHandler {
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
-			}
-		}
-	}
-	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public void onAttachEntityCapabilities(AttachCapabilitiesEvent<Entity> e) {
-		if (e.getObject() instanceof ISpectriteBipedMob) {
-			EntityLivingBase entity = (EntityLivingBase) e.getObject();
-			if (!entity.hasCapability(SpectriteBossProvider.sbc, null)) {
-				e.addCapability(SpectriteBossCapability.DefaultImpl.resLoc,
-					new SpectriteBossProvider(new SpectriteBossCapability.DefaultImpl(entity, ((ISpectriteBipedMob) entity).isBoss())));
+			} else if (e.getEntity() instanceof EntitySpectriteCrystal) {
+				SpectriteHelper.addCrystalToCache(e.getWorld(), (EntitySpectriteCrystal) e.getEntity());
 			}
 		}
 	}
@@ -582,31 +541,6 @@ public class SpectriteGeneralEventHandler {
 		EntityLivingBase entity = e.getEntityLiving();
 		if (!entity.getEntityWorld().isRemote) {
 			if (entity instanceof ISpectriteMob) {
-				if (entity instanceof ISpectriteBipedMob && ((ISpectriteBipedMob) entity).isBoss()) {
-					final int healRate;
-					final int healingLevel;
-					ItemStack helmetStack = entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-					NBTTagCompound orbEffectsCompound = helmetStack.getSubCompound("OrbEffects");
-					healingLevel = Math.max(entity.getEntityWorld().getDifficulty().ordinal() - (!entity.getHeldItemOffhand().isEmpty()
-						|| orbEffectsCompound == null || !orbEffectsCompound.hasKey("6") || !orbEffectsCompound.getBoolean("6") ? 0 : 1), 0);
-					switch (healingLevel) {
-						case 0:
-							healRate = 40;
-							break;
-						case 1:
-							healRate = 20;
-							break;
-						case 2:
-							healRate = 10;
-							break;
-						default:
-							healRate = 5;
-							break;
-					}
-					if (entity.ticksExisted % healRate == 0) {
-						entity.heal(1f);
-					}
-				}
 				if (entity.getActivePotionEffect(ModPotions.SPECTRITE_STRENGTH) == null) {
 					entity.addPotionEffect(new PotionEffect(ModPotions.SPECTRITE_STRENGTH, 16, entity instanceof ISpectriteBipedMob &&
 						((ISpectriteBipedMob) entity).isHasSpectriteStrength() ? 1 : 0, true, true));
@@ -758,21 +692,6 @@ public class SpectriteGeneralEventHandler {
 				}
 			}
 		}
-	}
-
-	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public void onStartTrackingSpectriteBoss(StartTracking e) {
-		Entity entity = e.getTarget();
-		if (!entity.getEntityWorld().isRemote && entity instanceof ISpectriteBipedMob) {
-			ISpectriteBossCapability sbc = entity.getCapability(SpectriteBossProvider.sbc, null);
-			if (sbc.isEnabled()) {
-                Spectrite.Network.sendTo(new PacketSyncSpectriteBoss(entity.getUniqueID(), true), (EntityPlayerMP) e.getEntityPlayer());
-			}
-		}
-	}
-	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public void onStopTrackingSpectriteBoss(StopTracking e) {
 	}
 	
 	@SubscribeEvent(priority = EventPriority.NORMAL)

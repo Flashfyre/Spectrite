@@ -1,0 +1,12 @@
+{
+  "result": {
+    "item": "minecraft:blaze_powder",
+	"count": 7
+  },
+  "ingredients": [
+    {
+      "item": "spectrite:spectrite_blaze_powder"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

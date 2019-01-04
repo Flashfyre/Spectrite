@@ -2,21 +2,23 @@ package com.samuel.spectrite.world;
 
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
+import com.samuel.spectrite.entities.AbstractSpectriteSkeleton;
+import com.samuel.spectrite.entities.EntitySpectriteCreeper;
+import com.samuel.spectrite.entities.EntitySpectriteSkeleton;
+import com.samuel.spectrite.entities.EntitySpectriteWitherSkeleton;
 import com.samuel.spectrite.init.ModBlocks;
 import com.samuel.spectrite.init.ModLootTables;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -29,10 +31,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class WorldGenSpectriteSkull implements IWorldGenerator {
 	
@@ -121,17 +120,59 @@ public class WorldGenSpectriteSkull implements IWorldGenerator {
 		int chunkXOffset = (chunkX << 4), chunkZOffset = (chunkZ << 4);
 
 		Template template = templateManager.getTemplate(worldIn.getMinecraftServer(), SPECTRITE_SKULL);
+		BlockPos skullPos = new BlockPos(1 + chunkXOffset, baseY, 1 + chunkZOffset);
 		PlacementSettings settings = new PlacementSettings();
 		settings.setRotation(rotationIn);
-		template.addBlocksToWorld(worldIn, new BlockPos(1 + chunkXOffset, baseY, 1 + chunkZOffset), settings);
+		template.addBlocksToWorldChunk(worldIn, skullPos, settings);
 
 		boolean highTierChest = SpectriteConfig.spectriteSkull.spectriteSkullHighTierChestRate > 0F
 			&& worldIn.rand.nextFloat() * 100F < SpectriteConfig.spectriteSkull.spectriteSkullHighTierChestRate;
 
 		SpectriteConfig.EnumSpectriteSkullChestMode chestMode = SpectriteConfig.spectriteSkull.spectriteSkullChestMode;
 		ResourceLocation lootTable = highTierChest ? ModLootTables.spectrite_dungeon_high : ModLootTables.spectrite_dungeon_mid;
-		BlockPos chestPos1 = new BlockPos(11 + chunkXOffset, 12 + baseY, 12 + chunkZOffset),
-			chestPos2 =  new BlockPos(11 + chunkXOffset, 12 + baseY, 13 + chunkZOffset);
+		BlockPos chestPos1 = new BlockPos(11 + chunkXOffset, 13 + baseY, 12 + chunkZOffset),
+			chestPos2 =  new BlockPos(11 + chunkXOffset, 13 + baseY, 13 + chunkZOffset);
+
+		int[] equipmentTypes = AbstractSpectriteSkeleton.EQUIPMENT_TYPES;
+		Map<BlockPos, String> entityPositions = template.getDataBlocks(skullPos, settings);
+		for (Map.Entry<BlockPos, String> e : entityPositions.entrySet()) {
+			BlockPos pos = e.getKey();
+			String rawData = e.getValue();
+			int[] data = new int[rawData.charAt(0) == '2' ? 2 : equipmentTypes.length + 2];
+			for (int d = 0; d < data.length; d++) {
+				int val = rawData.charAt(d) - 48;
+				data[d] = val;
+			}
+			EntityLiving entity = null;
+			switch (data[0]) {
+				case 0:
+					entity = new EntitySpectriteSkeleton(world);;
+				case 1:
+					if (entity == null)
+						entity = new EntitySpectriteWitherSkeleton(world);
+					int equipmentSet = 0;
+					for (int t = 0; t < equipmentTypes.length; t++) {
+						if (data[t + 2] == 1)
+							equipmentSet |= equipmentTypes[t];
+					}
+					((AbstractSpectriteSkeleton) entity).setEquipmentSet(equipmentSet);
+					break;
+				case 2:
+					entity = new EntitySpectriteCreeper(world);
+					break;
+			}
+			world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+			if (entity != null) {
+				EnumFacing facing = EnumFacing.values()[data[1] + 2];
+				float angle = facing.getHorizontalIndex() * 90f;
+				if (angle > 180f)
+					angle -= 360f;
+				entity.setPositionAndRotation(pos.getX() + 0.5f, pos.getY(), pos.getZ() + 0.5f, angle, 0);
+				entity.enablePersistence();
+				world.spawnEntity(entity);
+				entity.onInitialSpawn(world.getDifficultyForLocation(pos), null);
+			}
+		}
 
 		/*for (int z = -15; z < 15; z++) {
 			for (int x = -15; x < 15; x++) {

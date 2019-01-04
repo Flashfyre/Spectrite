@@ -8,12 +8,6 @@ import net.minecraft.item.ItemStack;
 
 public interface ISpectriteBipedMob {
 
-	public default boolean isBoss() {
-		return false;
-	}
-	
-	public void setBoss(boolean boss);
-
 	public default boolean isHasSpectriteStrength() {
 		return false;
 	}
@@ -30,8 +24,8 @@ public interface ISpectriteBipedMob {
 		ItemStack leggingsStack = ((EntityLivingBase) this).getItemStackFromSlot(EntityEquipmentSlot.LEGS);
 		ItemStack bootsStack = ((EntityLivingBase) this).getItemStackFromSlot(EntityEquipmentSlot.FEET);
 		
-		boolean armorFullEnhanced = (this.isBoss() || (helmetStack.getItem() instanceof ItemSpectriteArmor && chestplateStack.getItem() instanceof ItemSpectriteArmor
-			&& leggingsStack.getItem() instanceof ItemSpectriteArmor && bootsStack.getItem() instanceof ItemSpectriteArmor))
+		boolean armorFullEnhanced = (helmetStack.getItem() instanceof ItemSpectriteArmor && chestplateStack.getItem() instanceof ItemSpectriteArmor
+			&& leggingsStack.getItem() instanceof ItemSpectriteArmor && bootsStack.getItem() instanceof ItemSpectriteArmor)
 			&& SpectriteHelper.isStackSpectriteEnhanced(helmetStack) && SpectriteHelper.isStackSpectriteEnhanced(chestplateStack)
 			&& SpectriteHelper.isStackSpectriteEnhanced(leggingsStack) && SpectriteHelper.isStackSpectriteEnhanced(bootsStack);
 		

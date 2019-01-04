@@ -133,6 +133,11 @@ public class ModBlocks {
 		
 		OreDictionary.registerOre("oreSpectrite", spectrite_ore);
 		OreDictionary.registerOre("blockSpectrite", spectrite_block);
+		OreDictionary.registerOre("chestSpectrite", spectrite_chest);
+		OreDictionary.registerOre("chestTrappedSpectrite", spectrite_chest_trapped);
+		OreDictionary.registerOre("blockSpectriteBricks", spectrite_bricks);
+		OreDictionary.registerOre("slabSpectriteBricks", spectrite_brick_slab_half);
+		OreDictionary.registerOre("stairSpectriteBricks", spectrite_brick_stairs);
 		OreDictionary.registerOre("blockGlassSpectrite", spectrite_glass);
 	}
 	

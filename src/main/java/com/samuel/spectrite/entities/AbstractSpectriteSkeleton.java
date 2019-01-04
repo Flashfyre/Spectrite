@@ -1,18 +1,13 @@
 package com.samuel.spectrite.entities;
 
-import com.samuel.spectrite.Spectrite;
-import com.samuel.spectrite.SpectriteConfig;
-import com.samuel.spectrite.helpers.SpectriteHelper;
 import com.samuel.spectrite.init.ModBiomes;
 import com.samuel.spectrite.items.ItemSpectriteBow;
-import com.samuel.spectrite.packets.PacketSyncSpectriteBoss;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemBow;
@@ -21,9 +16,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.BossInfo;
-import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -32,9 +24,12 @@ import java.lang.reflect.Field;
 
 public abstract class AbstractSpectriteSkeleton extends AbstractSkeleton implements ISpectriteMob, ISpectriteBipedMob {
 
-    protected boolean boss;
     protected boolean hasSpectriteResistance;
-    protected int chanceMultiplier;
+    protected Integer equipmentSet;
+
+    public static final int EQUIPMENT_BOW = 1, EQUIPMENT_SPECIAL_WEAPON = 2, EQUIPMENT_HELMET = 4, EQUIPMENT_CHESTPLATE = 8, EQUIPMENT_LEGGINGS = 16, EQUIPMENT_BOOTS = 32;
+    public static final int[] EQUIPMENT_TYPES = new int[] { EQUIPMENT_BOW, EQUIPMENT_SPECIAL_WEAPON, EQUIPMENT_HELMET, EQUIPMENT_CHESTPLATE, EQUIPMENT_LEGGINGS, EQUIPMENT_BOOTS };
+
     protected final EntityAIAttackRangedBow aiArrowAttack = new EntityAIAttackRangedBow(this, 1.0D, 20, 15.0F) {
 
         private Field entity = null;
@@ -55,13 +50,9 @@ public abstract class AbstractSpectriteSkeleton extends AbstractSkeleton impleme
             return false;
         }
     };
-    protected BossInfoServer bossInfo;
 
     public AbstractSpectriteSkeleton(World worldIn) {
         super(worldIn);
-
-        setBoss(!this.world.isRemote && SpectriteConfig.mobs.spectriteMobBossSpawnRate > 0d
-            && (int) getUniqueID().getMostSignificantBits() % (100 / SpectriteConfig.mobs.spectriteMobBossSpawnRate) == 0);
 
         setHasSpectriteResistance(isArmorFullEnhanced());
     }
@@ -113,25 +104,6 @@ public abstract class AbstractSpectriteSkeleton extends AbstractSkeleton impleme
     }
 
     @Override
-    public boolean isBoss() {
-        return boss;
-    }
-
-    @Override
-    public void setBoss(boolean boss) {
-        this.boss = boss;
-
-        if (boss) {
-            this.chanceMultiplier = 10;
-            this.bossInfo = new BossInfoServer(new TextComponentString(SpectriteHelper.getMultiColouredString(this.getDisplayName().getUnformattedText(), true)),
-                    BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
-        } else {
-            this.chanceMultiplier = 1;
-            this.bossInfo = null;
-        }
-    }
-
-    @Override
     public boolean isHasSpectriteResistance() {
         return this.hasSpectriteResistance;
     }
@@ -141,23 +113,12 @@ public abstract class AbstractSpectriteSkeleton extends AbstractSkeleton impleme
         this.hasSpectriteResistance = hasSpectriteResistance;
     }
 
-    @Override
-    public boolean isNonBoss()
-    {
-        return !boss;
+    public Integer getEquipmentSet() {
+        return this.equipmentSet;
     }
 
-    @Override
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
-
-        if (!this.world.isRemote) {
-            if (this.boss) {
-                this.bossInfo.setName(new TextComponentString(SpectriteHelper.getMultiColouredString(this.getDisplayName().getUnformattedText(), true)));
-                this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
-            }
-        }
+    public void setEquipmentSet(Integer equipmentSet) {
+        this.equipmentSet = equipmentSet;
     }
 
     @Override
@@ -196,44 +157,6 @@ public abstract class AbstractSpectriteSkeleton extends AbstractSkeleton impleme
         this.world.spawnEntity(entityarrow);
     }
 
-    /**
-     * Add the given player to the list of players tracking this entity. For instance, a player may track a boss in
-     * order to view its associated boss bar.
-     */
-    @Override
-    public void addTrackingPlayer(EntityPlayerMP player)
-    {
-        super.addTrackingPlayer(player);
-
-        if (this.boss) {
-            this.bossInfo.addPlayer(player);
-            Spectrite.Network.sendTo(new PacketSyncSpectriteBoss(getUniqueID(), true), player);
-        }
-    }
-
-    /**
-     * Removes the given player from the list of players tracking this entity. See {@link Entity#addTrackingPlayer} for
-     * more information on tracking.
-     */
-    @Override
-    public void removeTrackingPlayer(EntityPlayerMP player)
-    {
-        super.removeTrackingPlayer(player);
-
-        if (this.boss) {
-            this.bossInfo.removePlayer(player);
-        }
-    }
-
-    @Override
-    public void setCustomNameTag(String name)
-    {
-        super.setCustomNameTag(name);
-        if (this.boss) {
-            this.bossInfo.setName(this.getDisplayName());
-        }
-    }
-
     @Override
     public void writeEntityToNBT(NBTTagCompound compound)
     {
@@ -245,15 +168,7 @@ public abstract class AbstractSpectriteSkeleton extends AbstractSkeleton impleme
     {
         super.readEntityFromNBT(compound);
 
-        setBoss(!this.world.isRemote && SpectriteConfig.mobs.spectriteMobBossSpawnRate > 0d
-                && (int) getUniqueID().getMostSignificantBits() % (100 / SpectriteConfig.mobs.spectriteMobBossSpawnRate) == 0);
-
         setHasSpectriteResistance(isArmorFullEnhanced());
-
-        if (this.hasCustomName())
-        {
-            this.bossInfo.setName(this.getDisplayName());
-        }
     }
 
     @Override

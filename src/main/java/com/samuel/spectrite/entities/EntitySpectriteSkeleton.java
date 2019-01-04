@@ -8,7 +8,6 @@ import com.samuel.spectrite.init.ModSounds;
 import com.samuel.spectrite.items.IPerfectSpectriteItem;
 import com.samuel.spectrite.items.ItemSpectriteArmor;
 import com.samuel.spectrite.items.ItemSpectriteBow;
-import com.samuel.spectrite.items.ItemSpectriteOrb;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -21,7 +20,6 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -46,15 +44,17 @@ public class EntitySpectriteSkeleton extends AbstractSpectriteSkeleton {
 	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty)
     {
 		Item spectriteWeapon;
-		boolean hasPerfectWeapon = this.boss || SpectriteConfig.mobs.spectriteMobPerfectWeaponRate > 0d
-			&& rand.nextInt((int) (100 / SpectriteConfig.mobs.spectriteMobPerfectWeaponRate)) < 1f;
+		boolean hasPerfectWeapon = (equipmentSet == null && SpectriteConfig.mobs.spectriteMobPerfectWeaponRate > 0d
+			&& rand.nextInt((int) (100 / SpectriteConfig.mobs.spectriteMobPerfectWeaponRate)) < 1f)
+			|| (equipmentSet != null && (equipmentSet & EQUIPMENT_SPECIAL_WEAPON) > 0);
 		Map<Enchantment, Integer> enchantmentMap = new HashMap<Enchantment, Integer>();
 		enchantmentMap.put(ModEnchantments.spectrite_enhance, 1);
 
 		int exp = 15;
 
-		boolean hasBow = this.boss || SpectriteConfig.mobs.spectriteSkeletonSwordRate == 0d ||
-			rand.nextFloat() * 100f >= SpectriteConfig.mobs.spectriteSkeletonSwordRate;
+		boolean hasBow = (equipmentSet == null && SpectriteConfig.mobs.spectriteSkeletonSwordRate == 0d
+			|| rand.nextFloat() * 100f >= SpectriteConfig.mobs.spectriteSkeletonSwordRate)
+				|| (equipmentSet != null && (equipmentSet & EQUIPMENT_BOW) > 0);;
 
 		spectriteWeapon = !hasPerfectWeapon ? hasBow ? ModItems.spectrite_bow : ModItems.spectrite_sword
 			: hasBow ? ModItems.spectrite_bow_special : ModItems.spectrite_sword_special;
@@ -65,8 +65,8 @@ public class EntitySpectriteSkeleton extends AbstractSpectriteSkeleton {
 
 		ItemStack weaponStack = new ItemStack(spectriteWeapon);
 
-		if (hasPerfectWeapon && ((this.world.getDifficulty() == EnumDifficulty.NORMAL && rand.nextInt(32 / chanceMultiplier) == 0)
-			|| (this.world.getDifficulty() == EnumDifficulty.HARD && (this.boss || rand.nextInt(8) == 0)))) {
+		if (hasPerfectWeapon && ((this.world.getDifficulty() == EnumDifficulty.NORMAL && rand.nextInt(32) == 0)
+			|| (this.world.getDifficulty() == EnumDifficulty.HARD && (rand.nextInt(8) == 0)))) {
 			EnchantmentHelper.setEnchantments(enchantmentMap, weaponStack);
 			exp += 10;
 		}
@@ -79,30 +79,19 @@ public class EntitySpectriteSkeleton extends AbstractSpectriteSkeleton {
 			this.setDropChance(EntityEquipmentSlot.OFFHAND, new Double(SpectriteConfig.mobs.spectriteMobArrowDropRate).floatValue() / 100f);
 		}
 
-		EntityEquipmentSlot[] orbEquipmentSlots = ItemSpectriteOrb.ORB_EQUIPMENT_SLOTS;
 		int armourCount = 0;
 		int enhancedCount = 0;
 		double maxHealth = 50.0D;
 
-		if (this.boss || rand.nextInt(4) == 0) {
+		if ((equipmentSet == null && rand.nextInt(4) == 0) || (equipmentSet != null && (equipmentSet & EQUIPMENT_HELMET) > 0)) {
 			ItemSpectriteArmor helmetItem = ModItems.spectrite_helmet;
 			ItemStack helmetStack = new ItemStack(helmetItem);
 			boolean enhanced = false;
-			if ((this.world.getDifficulty() == EnumDifficulty.NORMAL && rand.nextInt(32 / chanceMultiplier) == 0)
-				|| (this.world.getDifficulty() == EnumDifficulty.HARD && (this.boss || rand.nextInt(8) == 0))) {
+			if ((this.world.getDifficulty() == EnumDifficulty.NORMAL && rand.nextInt(32) == 0)
+				|| (this.world.getDifficulty() == EnumDifficulty.HARD && (rand.nextInt(8) == 0))) {
 				EnchantmentHelper.setEnchantments(enchantmentMap, helmetStack);
 				enhanced = true;
 				enhancedCount++;
-			}
-			if (this.boss) {
-				helmetStack.setTagCompound(new NBTTagCompound());
-				helmetItem.updateItemStackNBT(helmetStack.getTagCompound());
-				for (int o = 0; o < orbEquipmentSlots.length; o++) {
-					if (helmetItem.armorType == orbEquipmentSlots[o] && ((this.world.getDifficulty() == EnumDifficulty.NORMAL
-							&& rand.nextInt(3) == 0) || this.world.getDifficulty() == EnumDifficulty.HARD)) {
-						helmetStack.getSubCompound("OrbEffects").setBoolean(new Integer(o).toString(), Boolean.TRUE);
-					}
-				}
 			}
 			this.setItemStackToSlot(EntityEquipmentSlot.HEAD, helmetStack);
 			this.setDropChance(EntityEquipmentSlot.HEAD, new Double(SpectriteConfig.mobs.spectriteMobArmourDropRate).floatValue() / 100f);
@@ -111,25 +100,15 @@ public class EntitySpectriteSkeleton extends AbstractSpectriteSkeleton {
 			exp += ((int) healthIncrease >> 1);
 			armourCount++;
 		}
-		if (this.boss || rand.nextInt(4) == 0) {
+		if ((equipmentSet == null && rand.nextInt(4) == 0) || (equipmentSet != null && (equipmentSet & EQUIPMENT_CHESTPLATE) > 0)) {
 			ItemSpectriteArmor chestplateItem = ModItems.spectrite_chestplate;
 			ItemStack chestplateStack = new ItemStack(chestplateItem);
 			boolean enhanced = false;
-			if ((this.world.getDifficulty() == EnumDifficulty.NORMAL && rand.nextInt(32 / chanceMultiplier) == 0)
-				|| (this.world.getDifficulty() == EnumDifficulty.HARD && (this.boss || rand.nextInt(8) == 0))) {
+			if ((this.world.getDifficulty() == EnumDifficulty.NORMAL && rand.nextInt(32) == 0)
+				|| (this.world.getDifficulty() == EnumDifficulty.HARD && (rand.nextInt(8) == 0))) {
 				EnchantmentHelper.setEnchantments(enchantmentMap, chestplateStack);
 				enhanced = true;
 				enhancedCount++;
-			}
-			if (this.boss) {
-				chestplateStack.setTagCompound(new NBTTagCompound());
-				chestplateItem.updateItemStackNBT(chestplateStack.getTagCompound());
-				for (int o = 0; o < orbEquipmentSlots.length; o++) {
-					if (chestplateItem.armorType == orbEquipmentSlots[o] && ((this.world.getDifficulty() == EnumDifficulty.NORMAL
-							&& rand.nextInt(3) == 0) || this.world.getDifficulty() == EnumDifficulty.HARD)) {
-						chestplateStack.getSubCompound("OrbEffects").setBoolean(new Integer(o).toString(), Boolean.TRUE);
-					}
-				}
 			}
 			this.setItemStackToSlot(EntityEquipmentSlot.CHEST, chestplateStack);
 			this.setDropChance(EntityEquipmentSlot.CHEST, new Double(SpectriteConfig.mobs.spectriteMobArmourDropRate).floatValue() / 100f);
@@ -138,25 +117,15 @@ public class EntitySpectriteSkeleton extends AbstractSpectriteSkeleton {
 			exp += ((int) healthIncrease >> 1);
 			armourCount++;
 		}
-		if (this.boss || rand.nextInt(4) == 0) {
+		if ((equipmentSet == null && rand.nextInt(4) == 0) || (equipmentSet != null && (equipmentSet & EQUIPMENT_LEGGINGS) > 0)) {
 			ItemSpectriteArmor leggingsItem = ModItems.spectrite_leggings;
 			ItemStack leggingsStack = new ItemStack(leggingsItem);
 			boolean enhanced = false;
-			if ((this.world.getDifficulty() == EnumDifficulty.NORMAL && rand.nextInt(32 / chanceMultiplier) == 0)
-				|| (this.world.getDifficulty() == EnumDifficulty.HARD && (this.boss || rand.nextInt(8) == 0))) {
+			if ((this.world.getDifficulty() == EnumDifficulty.NORMAL && rand.nextInt(32) == 0)
+				|| (this.world.getDifficulty() == EnumDifficulty.HARD && (rand.nextInt(8) == 0))) {
 				EnchantmentHelper.setEnchantments(enchantmentMap, leggingsStack);
 				enhanced = true;
 				enhancedCount++;
-			}
-			if (this.boss) {
-				leggingsStack.setTagCompound(new NBTTagCompound());
-				leggingsItem.updateItemStackNBT(leggingsStack.getTagCompound());
-				for (int o = 0; o < orbEquipmentSlots.length; o++) {
-					if (leggingsItem.armorType == orbEquipmentSlots[o] && ((this.world.getDifficulty() == EnumDifficulty.NORMAL
-							&& rand.nextInt(3) == 0) || this.world.getDifficulty() == EnumDifficulty.HARD)) {
-						leggingsStack.getSubCompound("OrbEffects").setBoolean(new Integer(o).toString(), Boolean.TRUE);
-					}
-				}
 			}
 			this.setItemStackToSlot(EntityEquipmentSlot.LEGS, leggingsStack);
 			this.setDropChance(EntityEquipmentSlot.LEGS, new Double(SpectriteConfig.mobs.spectriteMobArmourDropRate).floatValue() / 100f);
@@ -165,25 +134,15 @@ public class EntitySpectriteSkeleton extends AbstractSpectriteSkeleton {
 			exp += ((int) healthIncrease >> 1);
 			armourCount++;
 		}
-		if (this.boss || rand.nextInt(4) == 0) {
+		if ((equipmentSet == null && rand.nextInt(4) == 0) || (equipmentSet != null && (equipmentSet & EQUIPMENT_BOOTS) > 0)) {
 			ItemSpectriteArmor bootsItem = ModItems.spectrite_boots;
 			ItemStack bootsStack = new ItemStack(bootsItem);
 			boolean enhanced = false;
-			if ((this.world.getDifficulty() == EnumDifficulty.NORMAL && rand.nextInt(32 / chanceMultiplier) == 0)
-				|| (this.world.getDifficulty() == EnumDifficulty.HARD && (this.boss || rand.nextInt(8) == 0))) {
+			if ((this.world.getDifficulty() == EnumDifficulty.NORMAL && rand.nextInt(32) == 0)
+				|| (this.world.getDifficulty() == EnumDifficulty.HARD && (rand.nextInt(8) == 0))) {
 				EnchantmentHelper.setEnchantments(enchantmentMap, bootsStack);
 				enhanced = true;
 				enhancedCount++;
-			}
-			if (this.boss) {
-				bootsStack.setTagCompound(new NBTTagCompound());
-				bootsItem.updateItemStackNBT(bootsStack.getTagCompound());
-				for (int o = 0; o < orbEquipmentSlots.length; o++) {
-					if (bootsItem.armorType == orbEquipmentSlots[o] && ((this.world.getDifficulty() == EnumDifficulty.NORMAL
-							&& rand.nextInt(3) == 0) || this.world.getDifficulty() == EnumDifficulty.HARD)) {
-						bootsStack.getSubCompound("OrbEffects").setBoolean(new Integer(o).toString(), Boolean.TRUE);
-					}
-				}
 			}
 			this.setItemStackToSlot(EntityEquipmentSlot.FEET, bootsStack);
 			this.setDropChance(EntityEquipmentSlot.FEET, new Double(SpectriteConfig.mobs.spectriteMobArmourDropRate).floatValue() / 100f);
@@ -199,10 +158,6 @@ public class EntitySpectriteSkeleton extends AbstractSpectriteSkeleton {
 				exp += 10;
 				setHasSpectriteResistance(true);
 			}
-		}
-
-		if (this.boss) {
-			exp *= 2.5F;
 		}
 
 		this.experienceValue = exp;
@@ -276,8 +231,7 @@ public class EntitySpectriteSkeleton extends AbstractSpectriteSkeleton {
         {
         	boolean enhanced = false;
 			if (this.getActiveItemStack().getItem() instanceof IPerfectSpectriteItem) {
-				ItemStack bowItemStack = this.getActiveItemStack();
-				NBTTagList enchantmentTags = bowItemStack.getEnchantmentTagList();
+				NBTTagList enchantmentTags = itemstack.getEnchantmentTagList();
 				for (int ec = 0; ec < enchantmentTags.tagCount(); ec++) {
 					if (enchantmentTags.get(ec).getId() == Enchantment.getEnchantmentID(ModEnchantments.spectrite_enhance)) {
 						enhanced = true;

@@ -1,0 +1,12 @@
+{
+  "result": {
+    "item": "minecraft:bone",
+	"count": 7
+  },
+  "ingredients": [
+    {
+      "item": "spectrite:spectrite_bone"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

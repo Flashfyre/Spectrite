@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "spectrite:spectrite_sword_2"
+  },
+  "pattern": [
+    " X ",
+    " Y ",
+    "X X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "spectrite:spectrite_sword_special"
+    },
+    "Y": {
+      "item": "spectrite:spectrite_star"
+    }
+  }
+}

@@ -24,6 +24,8 @@ public interface ISpectriteCustomTooltipItem extends ISpectriteItem {
                .translateToLocal(("iteminfo." + unlocalizedName.substring(5) + (SpectriteHelper.isStackSpectriteEnhanced(stack) ? "_enhanced" : "")
                + ".l" + ++lineCount))).endsWith("@");
            list.add(!isLastLine ? curLine : curLine.substring(0, curLine.length() - 1));
+           if (lineCount >= 6)
+               break;
        }
        list.set(0, ((ISpectriteCustomTooltipItem) stack.getItem()).getMultiColouredDisplayName(stack, stack.getDisplayName()));
    }

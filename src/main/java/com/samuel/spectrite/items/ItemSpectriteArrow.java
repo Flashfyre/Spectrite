@@ -35,7 +35,7 @@ public class ItemSpectriteArrow extends ItemArrow implements ISpectriteCustomToo
 
 			SpectriteHelper.damageBow(shooter, stack, null);
 		}
-        return new EntitySpectriteArrow(worldIn, shooter, stack.getItem() instanceof IPerfectSpectriteItem, false);
+        return new EntitySpectriteArrow(worldIn, shooter, stack.getItem() instanceof IPerfectSpectriteItem, SpectriteHelper.isStackSpectriteEnhanced(stack));
     }
 	
 	@Override

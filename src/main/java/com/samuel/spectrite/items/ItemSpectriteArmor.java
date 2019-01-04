@@ -61,7 +61,7 @@ public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteIt
 				for (String o : orbEffectsCompound.getKeySet()) {
 					if (orbEffectsCompound.getBoolean(o)) {
 						int c = Integer.parseInt(o);
-						list.add(potionStartIndex + ++potionEffectsCount, SpectriteHelper.textColours[c] + " " + I18n.translateToLocal(ModItems.spectrite_orb.ORB_POTIONS[c].getName())
+						list.add(potionStartIndex + ++potionEffectsCount, SpectriteHelper.TEXT_COLORS[c] + " " + I18n.translateToLocal(ModItems.spectrite_orb.ORB_POTIONS[c].getName())
 								+ I18n.translateToLocal("iteminfo." + ModItems.spectrite_orb.getUnlocalizedName().substring(5) + ".effect.level.1"));
 					}
 				}

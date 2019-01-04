@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "spectrite:spectrite_crystal"
+  },
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XZX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+	"X": {
+      "item": "spectrite:spectrite_glass"
+    },
+    "Y": {
+      "item": "minecraft:ender_eye"
+    },
+	"Z": {
+      "item": "minecraft:ghast_tear"
+    }
+  }
+}

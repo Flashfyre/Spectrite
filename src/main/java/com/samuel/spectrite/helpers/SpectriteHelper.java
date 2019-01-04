@@ -1,5 +1,7 @@
 package com.samuel.spectrite.helpers;
 
+import com.samuel.spectrite.SpectriteConfig;
+import com.samuel.spectrite.entities.*;
 import com.samuel.spectrite.init.ModEnchantments;
 import com.samuel.spectrite.init.ModItems;
 import com.samuel.spectrite.init.ModPotions;
@@ -7,7 +9,9 @@ import com.samuel.spectrite.items.*;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -29,18 +33,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.ref.WeakReference;
+import java.util.*;
 
 public class SpectriteHelper {
 	
-	public static final TextFormatting[] textColours = new TextFormatting[] { TextFormatting.RED, TextFormatting.GOLD, TextFormatting.YELLOW, TextFormatting.GREEN,
+	public static final TextFormatting[] TEXT_COLORS = new TextFormatting[] { TextFormatting.RED, TextFormatting.GOLD, TextFormatting.YELLOW, TextFormatting.GREEN,
 		TextFormatting.BLUE, TextFormatting.DARK_PURPLE, TextFormatting.LIGHT_PURPLE };
-	private static final MapColor[] mapColours = new MapColor[] { MapColor.RED, MapColor.ORANGE_STAINED_HARDENED_CLAY,
+	private static final MapColor[] MAP_COLORS = new MapColor[] { MapColor.RED, MapColor.ORANGE_STAINED_HARDENED_CLAY,
 		MapColor.YELLOW, MapColor.LIME, MapColor.BLUE, MapColor.PURPLE, MapColor.PINK };
 	private static final HashMap<Integer, Integer[]> ORB_TEXT_COLOUR_INDEXES_CACHE = new HashMap<>();
+	private static final Map<World, Set<WeakReference<EntitySpectriteCrystal>>> SPECTRITE_CRYSTALS_CACHE = new WeakHashMap<>();
 
 	public static int getCurrentSpectriteFrame(World worldIn) {
 		if (worldIn == null) {
@@ -99,10 +102,10 @@ public class SpectriteHelper {
 
 	public static String getMultiColouredString(String text, boolean rotateTextColour) {
 		StringBuilder formattedText = new StringBuilder();
-		final int textColourCount = textColours.length;
+		final int textColourCount = TEXT_COLORS.length;
 		final int colourIndex = rotateTextColour ? Math.round((System.currentTimeMillis() >> 7) % 7) : 0;
 		for (int c = 0; c < text.length(); c++) {
-			formattedText.append(textColours[(c + colourIndex) % textColourCount]).append(String.valueOf(text.charAt(c)));
+			formattedText.append(TEXT_COLORS[(c + colourIndex) % textColourCount]).append(String.valueOf(text.charAt(c)));
 		}
 
 		return formattedText.toString();
@@ -128,7 +131,7 @@ public class SpectriteHelper {
 				}
 				final int textColourCount = textColourIndexes.length;
 				for (int c = 0; c < text.length(); c++) {
-					formattedText.append(textColours[textColourIndexes[c % textColourCount]]).append(String.valueOf(text.charAt(c)));
+					formattedText.append(TEXT_COLORS[textColourIndexes[c % textColourCount]]).append(String.valueOf(text.charAt(c)));
 				}
 			} else {
 				formattedText.append(text);
@@ -142,7 +145,7 @@ public class SpectriteHelper {
 	public static MapColor getSpectriteMapColour(World worldIn, BlockPos pos) {
 		int posOffset = pos.getX() + pos.getY() + pos.getZ();
 
-		return mapColours[(posOffset + (int) (worldIn.getWorldTime() >> 2)) % 7];
+		return MAP_COLORS[(posOffset + (int) (worldIn.getWorldTime() >> 2)) % 7];
 	}
 	
 	public static boolean isStackSpectriteEnhanced(ItemStack stack) {
@@ -259,5 +262,99 @@ public class SpectriteHelper {
 		for (IForgeRegistryEntry o : objects) {
 			registeredObjects.put(o.getRegistryName().getResourcePath(), o);
 		}
+	}
+
+	public static boolean isSpectriteReplaceableMob(EntityLivingBase entity) {
+		if (entity.isNonBoss() && !(entity instanceof ISpectriteMob)) {
+			if (entity instanceof EntitySpider || entity instanceof EntitySlime || entity instanceof EntityGuardian)
+				return false;
+			boolean isDirectReplacement = entity instanceof AbstractSkeleton || entity instanceof EntityCreeper
+					|| entity instanceof EntityBlaze || entity instanceof EntityEnderman || entity instanceof EntityIronGolem;
+			if (entity.height >= 0.6f && (entity.getMaxHealth() < 100d || (entity instanceof EntityIronGolem && !((EntityIronGolem) entity).isPlayerCreated())))
+				return isDirectReplacement || entity instanceof IMob;
+		}
+
+		return false;
+	}
+
+	public static EntityLiving getSpectriteReplacementEntity(EntityLivingBase entity) {
+		World world = entity.getEntityWorld();
+		Class<? extends EntityLivingBase> spectriteClass = entity.getClass();
+		Class<? extends EntityLivingBase> vanillaClass = null;
+		EntityLiving spectriteEntity = null;
+
+		if (EntityCreeper.class.isAssignableFrom(spectriteClass))
+			vanillaClass = EntityCreeper.class;
+		else if (EntityBlaze.class.isAssignableFrom(spectriteClass))
+			vanillaClass = EntityBlaze.class;
+		else if (EntityEnderman.class.isAssignableFrom(spectriteClass))
+			vanillaClass = EntityEnderman.class;
+		else if (EntityIronGolem.class.isAssignableFrom(spectriteClass))
+			vanillaClass = EntityIronGolem.class;
+		else {
+			switch (spectriteClass.getSimpleName()) {
+				case "EntityBasalz":
+				case "EntityBlitz":
+				case "EntityBlizz":
+					vanillaClass = EntityBlaze.class;
+					break;
+			}
+			if (vanillaClass == null && entity.height >= entity.width * 1.5f) {
+				if (EntityWitherSkeleton.class.isAssignableFrom(spectriteClass)
+					|| (EntitySkeleton.class != spectriteClass && world.provider.getDimension() == -1))
+					vanillaClass = EntityWitherSkeleton.class;
+				else
+					vanillaClass = EntitySkeleton.class;
+			}
+		}
+
+		if (vanillaClass != null)
+			spectriteEntity = getSpectriteReplacementEntity(world, vanillaClass);
+
+		return spectriteEntity;
+	}
+
+	public static EntityLiving getSpectriteReplacementEntity(World world, Class<? extends EntityLivingBase> clazz) {
+		EntityLiving spectriteEntity = null;
+
+		if (EntitySkeleton.class == clazz)
+			spectriteEntity = new EntitySpectriteSkeleton(world);
+		else if (EntityCreeper.class == clazz)
+			spectriteEntity = new EntitySpectriteCreeper(world);
+		else if (EntityWitherSkeleton.class == clazz)
+			spectriteEntity = new EntitySpectriteWitherSkeleton(world);
+		else if (EntityEnderman.class == clazz)
+			spectriteEntity = new EntitySpectriteEnderman(world);
+		else if (EntityBlaze.class == clazz)
+			spectriteEntity = new EntitySpectriteBlaze(world);
+		else if (EntityIronGolem.class == clazz)
+			spectriteEntity = new EntitySpectriteGolem(world);
+
+		return spectriteEntity;
+	}
+
+	public static void addCrystalToCache(World world, EntitySpectriteCrystal crystal) {
+		if (!SPECTRITE_CRYSTALS_CACHE.containsKey(world)) {
+			SPECTRITE_CRYSTALS_CACHE.put(world, new HashSet<>());
+		}
+		SPECTRITE_CRYSTALS_CACHE.get(world).add(new WeakReference<>(crystal));
+	}
+
+	public static boolean isCrystalInRange(World world, BlockPos pos) {
+		Set<WeakReference<EntitySpectriteCrystal>> worldCrystals = SPECTRITE_CRYSTALS_CACHE.get(world);
+		if (worldCrystals != null) {
+			Iterator<WeakReference<EntitySpectriteCrystal>> worldCrystalsIterator = worldCrystals.iterator();
+			while (worldCrystalsIterator.hasNext()) {
+				EntitySpectriteCrystal crystal = worldCrystalsIterator.next().get();
+				if (crystal == null)
+					worldCrystalsIterator.remove();
+				else if (!crystal.isDead) {
+					if (crystal.getPosition().getDistance(pos.getX(), pos.getY(), pos.getZ()) <= SpectriteConfig.blocks.spectriteCrystalEffectRange)
+						return true;
+				}
+			}
+		}
+
+		return false;
 	}
 }

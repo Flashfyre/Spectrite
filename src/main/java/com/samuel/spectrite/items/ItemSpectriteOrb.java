@@ -68,12 +68,12 @@ public class ItemSpectriteOrb extends Item implements IPerfectSpectriteItem, ISp
 				if ((damage & ORB_COLOURS[c]) > 0) {
 					armourSlotCompatibility[ORB_EQUIPMENT_SLOTS[c].ordinal() - 2] = true;
 					colours.add(c);
-					lines.add(SpectriteHelper.textColours[c] + " " + I18n.format(ModItems.spectrite_orb.ORB_POTIONS[c].getName()) + level1);
+					lines.add(SpectriteHelper.TEXT_COLORS[c] + " " + I18n.format(ModItems.spectrite_orb.ORB_POTIONS[c].getName()) + level1);
 				}
 			}
 			lines.add(I18n.format("iteminfo." + name + ".l2", cooldown));
 			for (int c = 0; c < colours.size(); c++) {
-				lines.add(SpectriteHelper.textColours[colours.get(c)] + " " + I18n.format(ModItems.spectrite_orb.ORB_POTIONS[colours.get(c)].getName())
+				lines.add(SpectriteHelper.TEXT_COLORS[colours.get(c)] + " " + I18n.format(ModItems.spectrite_orb.ORB_POTIONS[colours.get(c)].getName())
 						+ level2 + I18n.format("iteminfo." + name + ".effect.duration", duration));
 			}
 			for (int s = armourSlotCompatibility.length - 1; s >= 0; s--) {

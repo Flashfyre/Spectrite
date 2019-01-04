@@ -282,7 +282,7 @@ public class EntitySpectriteWither extends EntityMob implements IRangedAttackMob
 
             if (j1 <= 0)
             {
-                Spectrite.Proxy.newSpectriteExplosion(this.world,this, this.posX, this.posY + (double)this.getEyeHeight(), this.posZ, 10.0F, true, this.world.getGameRules().getBoolean("mobGriefing"), false);
+                Spectrite.Proxy.newSpectriteExplosion(this.world,this, this.posX, this.posY + (double)this.getEyeHeight(), this.posZ, 10.0F, true, this.world.getGameRules().getBoolean("mobGriefing"), true);
                 this.world.playSound(null, new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ), ModSounds.explosion, SoundCategory.HOSTILE, 1.0f, 1.0f);
                 this.world.playBroadcastSound(1023, new BlockPos(this), 0);
             } else if (j1 == 30) {

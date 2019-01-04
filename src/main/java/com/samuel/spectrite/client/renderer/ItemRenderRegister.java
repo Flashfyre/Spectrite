@@ -47,6 +47,7 @@ public final class ItemRenderRegister {
 		for (int o = 0; o < 128; o++)
 			registerItemModel(ModItems.spectrite_orb, o);
 		registerItemModel(ModItems.spectrite_star);
+		registerItemModel(ModItems.spectrite_crystal);
 		registerItemModel(ModItems.spectrite_wither_skeleton_skull);
 		registerItemModel(ModItems.spectrite_wither_skull);
 		registerItemModel(ModItems.spectrite_wither_invulnerable_skull);

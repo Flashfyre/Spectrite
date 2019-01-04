@@ -1,6 +1,7 @@
 {
   "result": {
-    "item": "spectrite:spectrite_arrow"
+    "item": "spectrite:spectrite_arrow",
+	"count": 8
   },
   "pattern": [
     " X ",

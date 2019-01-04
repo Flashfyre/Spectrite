@@ -2,8 +2,6 @@ package com.samuel.spectrite.proxy;
 
 import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
-import com.samuel.spectrite.capabilities.ISpectriteBossCapability;
-import com.samuel.spectrite.capabilities.SpectriteBossCapability;
 import com.samuel.spectrite.client.gui.GuiHandlerSpectriteRepair;
 import com.samuel.spectrite.client.particles.EnumSpectriteParticleTypes;
 import com.samuel.spectrite.entities.EntitySpectriteEnderman;
@@ -15,7 +13,6 @@ import com.samuel.spectrite.init.*;
 import com.samuel.spectrite.packets.PacketSpectriteExplosion;
 import com.samuel.spectrite.packets.PacketSpectriteParticles;
 import com.samuel.spectrite.update.UpdateNotifier;
-import jline.internal.Nullable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,7 +30,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -84,10 +80,6 @@ public class CommonProxy {
 		ModItems.createItems();
 		ModLootTables.registerLootTables();
 		
-		CapabilityManager.INSTANCE.register(ISpectriteBossCapability.class,
-				new SpectriteBossCapability.DefaultImpl.Storage(),
-				new SpectriteBossCapability.DefaultImpl.Factory());
-		
 		ModSounds.initSounds();
 		ModTileEntities.initTileEntities();
 		ModDispenserBehavior.initDispenserBehavior();
@@ -132,8 +124,7 @@ public class CommonProxy {
 		EntitySpectriteEnderman.initCarriableBlocks();
 	}
 
-	public void performDispersedSpectriteDamage(World world, int power, int explosionPower, Vec3d hitCoords, Entity source,
-		@Nullable Entity indirectSource, Random rand) {
+	public void performDispersedSpectriteDamage(World world, int power, int explosionPower, Vec3d hitCoords, Entity source, Entity indirectSource, Random rand) {
 		if (!world.isRemote) {
 			BlockPos hitPos = new BlockPos(hitCoords);
 			List<Entity> surrounding = world.getEntitiesWithinAABBExcludingEntity(source,
@@ -190,9 +181,9 @@ public class CommonProxy {
 						1.0F + (rand.nextFloat()) * 0.4F);
 				} else if (power == 5) {
 					world.playSound(null, hitPos, ModSounds.explosion, SoundCategory.PLAYERS, 0.75F + Math.max(explosionPower, 0F),
-						0.75F + (world.rand.nextFloat()) * 0.4F);
+							0.75F + (world.rand.nextFloat()) * 0.4F);
 					world.playSound(null, hitPos, ModSounds.fatality, SoundCategory.PLAYERS, 1.0F + Math.max(explosionPower, 0F),
-						1.0F);
+							1.0F);
 				} else if (power >= 6) {
 					world.playSound(null, hitPos, ModSounds.explosion, SoundCategory.PLAYERS, 0.75F + Math.max(explosionPower, 0F),
 						0.5F + (world.rand.nextFloat()) * 0.4F);
@@ -251,7 +242,7 @@ public class CommonProxy {
 		}
 	}
 
-	public SpectriteExplosion newSpectriteExplosion(World world, @Nullable Entity entityIn, double x, double y, double z, float strength, boolean isFlaming, boolean isSmoking, boolean overrideSound)
+	public SpectriteExplosion newSpectriteExplosion(World world, Entity entityIn, double x, double y, double z, float strength, boolean isFlaming, boolean isSmoking, boolean overrideSound)
 	{
 		SpectriteExplosion explosion = new SpectriteExplosion(world, entityIn, x, y, z, strength, isFlaming, isSmoking, overrideSound);
 		if (net.minecraftforge.event.ForgeEventFactory.onExplosionStart(world, explosion))

@@ -53,8 +53,8 @@ public class EntitySpectriteEnderman extends EntityMob implements ISpectriteMob 
     private static final UUID ATTACKING_SPEED_BOOST_ID = UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0");
     private static final AttributeModifier ATTACKING_SPEED_BOOST = (new AttributeModifier(ATTACKING_SPEED_BOOST_ID, "Attacking speed boost", 0.24270000964D, 0)).setSaved(false);
     private static final Set<Block> CARRIABLE_BLOCKS = Sets.<Block>newIdentityHashSet();
-    private static final DataParameter<Optional<IBlockState>> CARRIED_BLOCK = EntityDataManager.<Optional<IBlockState>>createKey(EntityEnderman.class, DataSerializers.OPTIONAL_BLOCK_STATE);
-    private static final DataParameter<Boolean> SCREAMING = EntityDataManager.<Boolean>createKey(EntityEnderman.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Optional<IBlockState>> CARRIED_BLOCK = EntityDataManager.<Optional<IBlockState>>createKey(EntitySpectriteEnderman.class, DataSerializers.OPTIONAL_BLOCK_STATE);
+    private static final DataParameter<Boolean> SCREAMING = EntityDataManager.<Boolean>createKey(EntitySpectriteEnderman.class, DataSerializers.BOOLEAN);
     private int lastCreepySound;
     private int targetChangeTime;
 

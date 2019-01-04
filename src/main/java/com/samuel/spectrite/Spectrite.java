@@ -3,7 +3,6 @@ package com.samuel.spectrite;
 import com.samuel.spectrite.etc.CommandSpectriteDungeon;
 import com.samuel.spectrite.packets.PacketSpectriteExplosion;
 import com.samuel.spectrite.packets.PacketSpectriteParticles;
-import com.samuel.spectrite.packets.PacketSyncSpectriteBoss;
 import com.samuel.spectrite.packets.PacketSyncSpectriteDungeonSpawnPos;
 import com.samuel.spectrite.proxy.CommonProxy;
 import net.minecraft.init.SoundEvents;
@@ -66,9 +65,6 @@ public class Spectrite {
 	public void preInit(FMLPreInitializationEvent e) {
 		Network = NetworkRegistry.INSTANCE
 			.newSimpleChannel("Spectrite");
-		Network.registerMessage(
-			PacketSyncSpectriteBoss.Handler.class,
-			PacketSyncSpectriteBoss.class, 0, Side.CLIENT);
 		Network.registerMessage(
 			PacketSyncSpectriteDungeonSpawnPos.Handler.class,
 			PacketSyncSpectriteDungeonSpawnPos.class, 1, Side.CLIENT);

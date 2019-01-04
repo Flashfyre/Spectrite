@@ -1,9 +1,6 @@
 package com.samuel.spectrite.client.eventhandlers;
 
-import com.samuel.spectrite.Spectrite;
 import com.samuel.spectrite.SpectriteConfig;
-import com.samuel.spectrite.capabilities.ISpectriteBossCapability;
-import com.samuel.spectrite.capabilities.SpectriteBossProvider;
 import com.samuel.spectrite.client.renderer.SpectriteParticleManager;
 import com.samuel.spectrite.client.sounds.SpectritePositionedMobDeathSound;
 import com.samuel.spectrite.client.sounds.SpectritePositionedSound;
@@ -16,7 +13,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSound;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -27,12 +23,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -56,61 +50,6 @@ public class SpectriteClientEventHandler implements IResourceManagerReloadListen
 	private static Field currentBlock = null;
 	private static Field blockDamageMP = null;
 	private final TextureAtlasSprite[] blockDamageSprites = new TextureAtlasSprite[10];
-
-	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public void onRenderEntity(RenderLivingEvent.Post e) {
-		if (e.getEntity().hasCapability(SpectriteBossProvider.sbc, null)) {
-			ISpectriteBossCapability sbc = e.getEntity().getCapability(SpectriteBossProvider.sbc, null);
-			if (sbc.isEnabled()) {
-				RenderManager renderManager = e.getRenderer().getRenderManager();
-				boolean isSneaking = e.getEntity().isSneaking();
-				float viewerYaw = renderManager.playerViewY;
-				float viewerPitch = renderManager.playerViewX;
-				boolean isThirdPersonFrontal = renderManager.options.thirdPersonView == 2;
-				float f = e.getEntity().height + 0.5F - (isSneaking ? 0.25F : 0.0F) + (e.getEntity().hasCustomName() ? 0.3f : 0.0f);
-				int hueFrame = ((int) e.getEntity().getEntityWorld().getWorldTime()) % 180;
-				float r = hueFrame >= 120 && hueFrame < 150 ? (1f / 30) * (hueFrame - 120) : hueFrame < 30 || hueFrame >= 150 ? 1f : hueFrame < 60 ? (1f / 30) * (30 - (hueFrame - 30)) : 0f,
-					g = hueFrame < 30 ? (1f / 30) * hueFrame : hueFrame < 90 ? 1f : hueFrame < 120 ? (1f / 30) * (30 - (hueFrame - 90)) : 0f,
-					b = hueFrame >= 60 && hueFrame < 90 ? (1f / 30) * (hueFrame - 60) : hueFrame >= 90 && hueFrame < 150 ? 1f : hueFrame >= 150 ? (1f / 30) * (30 - (hueFrame - 150)) : 0f;
-				
-				GlStateManager.pushMatrix();
-				GlStateManager.translate(e.getX(), e.getY() + f, e.getZ());
-				GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
-				GlStateManager.rotate(-viewerYaw, 0.0F, 1.0F, 0.0F);
-				GlStateManager.rotate((isThirdPersonFrontal ? -1 : 1) * viewerPitch, 1.0F, 0.0F, 0.0F);
-				GlStateManager.scale(-0.025F, -0.025F, 0.025F);
-				GlStateManager.disableLighting();
-				GlStateManager.depthMask(false);
-				
-				if (!isSneaking) {
-				    GlStateManager.disableDepth();
-				}
-				
-				GlStateManager.enableBlend();
-				GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
-					GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-				Tessellator tessellator = Tessellator.getInstance();
-				BufferBuilder bufferBuilder = tessellator.getBuffer();
-				GlStateManager.color(r, g, b);
-				renderManager.renderEngine.bindTexture(new ResourceLocation(String.format("%s:textures/gui/crown.png", Spectrite.MOD_ID)));
-				bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-				bufferBuilder.pos(-8.0D, 10.0D, 0.0D).tex(0, 1).endVertex();
-				bufferBuilder.pos(8.0D, 10.0D, 0.0D).tex(1, 1).endVertex();
-				bufferBuilder.pos(8.0D, 0.0D, 0.0D).tex(1, 0).endVertex();
-				bufferBuilder.pos(-8.0D, 0.0D, 0.0D).tex(0, 0).endVertex();
-				tessellator.draw();
-				
-				if (!isSneaking) {
-				    GlStateManager.enableDepth();
-				}
-				
-				GlStateManager.depthMask(true);
-				GlStateManager.enableLighting();
-				GlStateManager.disableBlend();
-				GlStateManager.popMatrix();
-			}
-		}
-	}
 
 	@SubscribeEvent
 	public void onGameTick(TickEvent.ClientTickEvent event) {

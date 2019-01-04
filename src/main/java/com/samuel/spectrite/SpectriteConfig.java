@@ -108,6 +108,9 @@ public class SpectriteConfig {
 		@Config.LangKey("config.spectrite_chest_enchant_rate")
 		@Config.RangeDouble(min=0, max=100)
 		public double spectriteChestEnchantRate = 0.5d;
+		@Config.LangKey("config.spectrite_crystal_effect_range")
+		@Config.RangeInt(min=1, max=256)
+		public int spectriteCrystalEffectRange = 32;
 	}
 
 	public static class Items {
@@ -141,10 +144,10 @@ public class SpectriteConfig {
 	public static class Mobs {
 		@Config.LangKey("config.spectrite_mob_spawn_rate")
 		@Config.RangeDouble(min=0, max=100)
-		public double spectriteMobSpawnRate = 0.4d;
-		@Config.LangKey("config.spectrite_mob_boss_spawn_rate")
+		public double spectriteMobSpawnRate = 0.1d;
+		@Config.LangKey("config.spectrite_mob_spawn_rate_crystal")
 		@Config.RangeDouble(min=0, max=100)
-		public double spectriteMobBossSpawnRate = 0.4d;
+		public double spectriteMobCrystalSpawnRate = 1d;
 		@Config.LangKey("config.spectrite_mob_perfect_weapon_rate")
 		@Config.RangeDouble(min=0, max=100)
 		public double spectriteMobPerfectWeaponRate = 2.5d;
@@ -171,7 +174,7 @@ public class SpectriteConfig {
 		public double spectriteWitherSkeletonBowRate = 12.5d;
 		@Config.LangKey("config.spectrite_wither_skeleton_use_skeleton_height")
 		public boolean spectriteWitherSkeletonUseSkeletonHeight = false;
-		@Config.LangKey("config.spectrite_enderman_orb_rate")
+		@Config.LangKey("config.spectrite_enderman_orb_drop_rate")
 		@Config.RangeDouble(min=0, max=100)
 		public double spectriteEndermanOrbDropRate = 100.0d;
 	}
@@ -192,9 +195,6 @@ public class SpectriteConfig {
 		@Config.LangKey("config.spectrite_skull_surface_rate")
 		@Config.RangeDouble(min=0, max=100)
 		public double spectriteSkullSurfaceRate = 6.25d;
-		@Config.LangKey("config.spectrite_skull_mob_creeper_rate")
-		@Config.RangeDouble(min=0, max=80)
-		public double spectriteSkullMobCreeperRate = 6.25d;
 		@Config.LangKey("config.spectrite_skull_high_tier_chest_rate")
 		@Config.RangeDouble(min=0, max=100)
 		public double spectriteSkullHighTierChestRate = 20.0d;

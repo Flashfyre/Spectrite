@@ -33,6 +33,7 @@ public class ModEntities {
 		registerEntity("SpectriteWitherSkull", EntitySpectriteWitherSkull.class, mod, false);
 		registerEntity("SpectriteAreaEffectCloud", EntitySpectriteAreaEffectCloud.class, mod, false);
 		registerEntity("SpectriteTippedArrow", EntitySpectriteTippedArrow.class, mod, false);
+		registerEntity("SpectriteCrystal", EntitySpectriteCrystal.class, mod, false);
 	}
 	
 	@SubscribeEvent

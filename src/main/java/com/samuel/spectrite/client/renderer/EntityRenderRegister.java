@@ -25,5 +25,6 @@ public class EntityRenderRegister {
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteTippedArrow.class, RenderSpectriteTippedArrow::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteAreaEffectCloud.class, RenderSpectriteAreaEffectCloud::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySmallSpectriteFireball.class, RenderSpectriteFireball::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpectriteCrystal.class, RenderSpectriteCrystal::new);
 	}
 }

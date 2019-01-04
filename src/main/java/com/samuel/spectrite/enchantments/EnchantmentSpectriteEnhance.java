@@ -22,7 +22,7 @@ public class EnchantmentSpectriteEnhance extends Enchantment {
     }
 
 	public boolean canApplyAtSpectriteAnvil(ItemStack stack) {
-		return !stack.isEmpty() && stack.getItem() instanceof IPerfectSpectriteItem
+		return !stack.isEmpty() && stack.getCount() == 1 && stack.getItem() instanceof IPerfectSpectriteItem
 			&& !SpectriteHelper.isStackSpectriteEnhanced(stack) && canApplyAtEnchantingTable(stack)
 			&& stack.getItem() != ModItems.spectrite_orb;
 	}
