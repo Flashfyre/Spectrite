@@ -36,7 +36,7 @@ public class TileEntitySpectriteWitherSkeletonSkullRenderer extends TileEntitySk
 	@Override
 	public void render(TileEntitySkull p_192841_1_, double p_192841_2_, double p_192841_4_, double p_192841_6_, float p_192841_8_, int p_192841_9_, float p_192841_10_)
     {
-        EnumFacing enumfacing = EnumFacing.getFront(p_192841_1_.getBlockMetadata() & 7);
+        EnumFacing enumfacing = EnumFacing.byIndex(p_192841_1_.getBlockMetadata() & 7);
         float f = p_192841_1_.getAnimationProgress(p_192841_8_);
         this.renderSkull((float)p_192841_2_, (float)p_192841_4_, (float)p_192841_6_, enumfacing, p_192841_1_.getSkullRotation() * 360 / 16.0F, p_192841_1_.getSkullType(), p_192841_9_, f, p_192841_1_.getWorld());
     }

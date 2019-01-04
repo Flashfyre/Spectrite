@@ -40,7 +40,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
@@ -213,7 +213,7 @@ public class EntitySpectriteEnderman extends EntityMob implements ISpectriteMob 
         {
             Vec3d vec3d = player.getLook(1.0F).normalize();
             Vec3d vec3d1 = new Vec3d(this.posX - player.posX, this.getEntityBoundingBox().minY + (double)this.getEyeHeight() - (player.posY + (double)player.getEyeHeight()), this.posZ - player.posZ);
-            double d0 = vec3d1.lengthVector();
+            double d0 = vec3d1.length();
             vec3d1 = vec3d1.normalize();
             double d1 = vec3d.dotProduct(vec3d1);
             return d1 > 1.0D - 0.025D / d0 ? player.canEntityBeSeen(this) : false;
@@ -523,7 +523,7 @@ public class EntitySpectriteEnderman extends EntityMob implements ISpectriteMob 
     }
 
     public static void initCarriableBlocks() {
-        Field endermanCarriableBlocksField = ReflectionHelper.findField(EntityEnderman.class, "CARRIABLE_BLOCKS", "field_70827_d");
+        Field endermanCarriableBlocksField = ObfuscationReflectionHelper.findField(EntityEnderman.class, "field_70827_d");
         Set<Block> endermanCarriableBlocks = null;
         try {
             endermanCarriableBlocks = (Set<Block>) endermanCarriableBlocksField.get(null);

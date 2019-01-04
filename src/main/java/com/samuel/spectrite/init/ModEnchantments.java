@@ -46,8 +46,8 @@ public class ModEnchantments {
 	@SubscribeEvent
 	public void onMissingMapping(RegistryEvent.MissingMappings<Enchantment> e) {
 		for (RegistryEvent.MissingMappings.Mapping<Enchantment> mapping : e.getAllMappings()) {
-			if ("spectritemod".equals(mapping.key.getResourceDomain())) {
-				String resourcePath =  mapping.key.getResourcePath();
+			if ("spectritemod".equals(mapping.key.getNamespace())) {
+				String resourcePath =  mapping.key.getPath();
 				if (registeredEnchantments.containsKey(resourcePath)) {
 					mapping.remap((Enchantment) registeredEnchantments.get(resourcePath));
 				}

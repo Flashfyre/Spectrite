@@ -31,8 +31,8 @@ public abstract class BlockSpectriteBrickSlab extends BlockSlab {
 	}
 
 	@Override
-	public String getUnlocalizedName(int meta) {
-		return this.getUnlocalizedName();
+	public String getTranslationKey(int meta) {
+		return this.getTranslationKey();
 	}
 
 	@Override

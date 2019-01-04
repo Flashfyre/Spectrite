@@ -136,12 +136,12 @@ public class WorldGenSpectriteDungeon implements IWorldGenerator {
 	private static void populateChunkBiome(int chunkX, int chunkZ, World world) {
 		byte sdBiomeId = (byte) Biome.getIdForBiome(ModBiomes.spectrite_dungeon);
 		BlockPos pos = new BlockPos(chunkX << 4, 4, chunkZ << 4);
-		byte[] biomeArray = world.getChunkFromBlockCoords(pos).getBiomeArray(); 
+		byte[] biomeArray = world.getChunk(pos).getBiomeArray();
 		
 		for (int p = 0; p < biomeArray.length; p++) {
 			biomeArray[p] = sdBiomeId;
 		}
-		world.getChunkFromBlockCoords(pos).setBiomeArray(biomeArray);
+		world.getChunk(pos).setBiomeArray(biomeArray);
 	}
 	
 	public static int getGroundY(int chunkX, int chunkZ, World world) {

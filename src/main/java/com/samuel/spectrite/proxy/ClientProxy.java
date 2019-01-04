@@ -147,7 +147,7 @@ public class ClientProxy extends CommonProxy {
 		Map<ResourceLocation, Integer> spectriteEntityIndexes = new HashMap<>();
 
 		EntityList.ENTITY_EGGS.entrySet().stream().filter(ee -> ee.getKey() != null
-			&& Spectrite.MOD_ID.equals(ee.getKey().getResourceDomain())).map(ee -> ee.getKey()).forEach(ee -> {
+			&& Spectrite.MOD_ID.equals(ee.getKey().getNamespace())).map(ee -> ee.getKey()).forEach(ee -> {
 			spectriteEntityIndexes.put(ee, spectriteEntityIndexes.size());
 		});
 
@@ -161,7 +161,7 @@ public class ClientProxy extends CommonProxy {
 				int ret = -1;
 				ResourceLocation entityRL = ItemMonsterPlacer.getNamedIdFrom(stack);
 				if (entityRL != null) {
-					if (Spectrite.MOD_ID.equals(entityRL.getResourceDomain())) {
+					if (Spectrite.MOD_ID.equals(entityRL.getNamespace())) {
 						Integer entityCacheIndex = spectriteEntityIndexes.get(entityRL);
 						int spectriteFrame = SpectriteHelper.getCurrentSpectriteFrame(null);
 						int[][] entityColourCache;

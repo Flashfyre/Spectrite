@@ -99,8 +99,8 @@ public class ModPotions {
 	@SubscribeEvent
 	public void onMissingPotionMapping(RegistryEvent.MissingMappings<Potion> e) {
 		for (RegistryEvent.MissingMappings.Mapping<Potion> mapping : e.getAllMappings()) {
-			if ("spectritemod".equals(mapping.key.getResourceDomain())) {
-				String resourcePath =  mapping.key.getResourcePath();
+			if ("spectritemod".equals(mapping.key.getNamespace())) {
+				String resourcePath =  mapping.key.getPath();
 				if (registeredPotions.containsKey(resourcePath)) {
 					mapping.remap((Potion) registeredPotions.get(resourcePath));
 				}
@@ -111,8 +111,8 @@ public class ModPotions {
 	@SubscribeEvent
 	public void onMissingPotionTypeMapping(RegistryEvent.MissingMappings<PotionType> e) {
 		for (RegistryEvent.MissingMappings.Mapping<PotionType> mapping : e.getAllMappings()) {
-			if ("spectritemod".equals(mapping.key.getResourceDomain())) {
-				String resourcePath =  mapping.key.getResourcePath();
+			if ("spectritemod".equals(mapping.key.getNamespace())) {
+				String resourcePath =  mapping.key.getPath();
 				if (registeredPotionTypes.containsKey(resourcePath)) {
 					mapping.remap((PotionType) registeredPotionTypes.get(resourcePath));
 				}

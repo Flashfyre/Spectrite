@@ -260,7 +260,7 @@ public class SpectriteHelper {
 	public static void populateRegisteredObjectsList(Map<String, IForgeRegistryEntry> registeredObjects,
 		IForgeRegistryEntry ... objects) {
 		for (IForgeRegistryEntry o : objects) {
-			registeredObjects.put(o.getRegistryName().getResourcePath(), o);
+			registeredObjects.put(o.getRegistryName().getPath(), o);
 		}
 	}
 

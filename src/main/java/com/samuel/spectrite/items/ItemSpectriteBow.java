@@ -40,7 +40,7 @@ public class ItemSpectriteBow extends ItemBow implements ISpectriteCustomTooltip
 		String curLine;
 		while (!isLastLine) {
 			isLastLine = (curLine = I18n
-					.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + (SpectriteHelper.isStackSpectriteEnhanced(stack) ? "_enhanced" : "") + ".l" +
+					.translateToLocal(("iteminfo." + getTranslationKey().substring(5) + (SpectriteHelper.isStackSpectriteEnhanced(stack) ? "_enhanced" : "") + ".l" +
 							++lineCount))).endsWith("@");
 			list.add(!isLastLine ? curLine : curLine
 					.substring(0, curLine.length() - 1));

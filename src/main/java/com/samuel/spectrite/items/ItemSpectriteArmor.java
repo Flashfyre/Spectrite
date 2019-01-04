@@ -49,7 +49,7 @@ public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteIt
 		String curLine;
 		while (!isLastLine) {
 			isLastLine = (curLine = TextFormatting.RED + I18n
-				.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + (SpectriteHelper.isStackSpectriteEnhanced(stack) ? "_enhanced" : "")
+				.translateToLocal(("iteminfo." + getTranslationKey().substring(5) + (SpectriteHelper.isStackSpectriteEnhanced(stack) ? "_enhanced" : "")
 				+ "." + SpectriteConfig.items.spectriteArmourBonusMode.ordinal()  + ".l" + ++lineCount))).endsWith("@");
 			list.add(!isLastLine ? curLine : curLine
 				.substring(0, curLine.length() - 1));
@@ -62,7 +62,7 @@ public class ItemSpectriteArmor extends ItemArmor implements IPerfectSpectriteIt
 					if (orbEffectsCompound.getBoolean(o)) {
 						int c = Integer.parseInt(o);
 						list.add(potionStartIndex + ++potionEffectsCount, SpectriteHelper.TEXT_COLORS[c] + " " + I18n.translateToLocal(ModItems.spectrite_orb.ORB_POTIONS[c].getName())
-								+ I18n.translateToLocal("iteminfo." + ModItems.spectrite_orb.getUnlocalizedName().substring(5) + ".effect.level.1"));
+								+ I18n.translateToLocal("iteminfo." + ModItems.spectrite_orb.getTranslationKey().substring(5) + ".effect.level.1"));
 					}
 				}
 			}

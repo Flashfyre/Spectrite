@@ -27,7 +27,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
@@ -199,7 +199,7 @@ public class EntitySpectriteSkeleton extends AbstractSpectriteSkeleton {
             if (itemstack.getItem() instanceof ItemSpectriteBow)
             {
             	this.tasks.removeTask(this.aiArrowAttack);
-            	Field aiAttackOnCollide = ReflectionHelper.findField(AbstractSkeleton.class, new String[] { "aiAttackOnCollide", "field_85038_e" });
+            	Field aiAttackOnCollide = ObfuscationReflectionHelper.findField(AbstractSkeleton.class, "field_85038_e");
             	try {
         			this.tasks.removeTask((EntityAIAttackMelee) aiAttackOnCollide.get(this));
         		} catch (Exception e) {

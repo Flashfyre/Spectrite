@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import java.lang.reflect.Field;
 
@@ -38,7 +38,7 @@ public abstract class AbstractSpectriteSkeleton extends AbstractSkeleton impleme
         protected boolean isBowInMainhand()
         {
             if (entity == null) {
-                entity = ReflectionHelper.findField(EntityAIAttackRangedBow.class, new String[] { "entity", "field_188499_a" });
+                entity = ObfuscationReflectionHelper.findField(EntityAIAttackRangedBow.class, "field_188499_a" );
             }
             AbstractSkeleton entityInstance;
             try {
@@ -80,7 +80,7 @@ public abstract class AbstractSpectriteSkeleton extends AbstractSkeleton impleme
             if (itemstack.getItem() instanceof ItemSpectriteBow)
             {
                 this.tasks.removeTask(this.aiArrowAttack);
-                Field aiAttackOnCollide = ReflectionHelper.findField(AbstractSkeleton.class, new String[] { "aiAttackOnCollide", "field_85038_e" });
+                Field aiAttackOnCollide = ObfuscationReflectionHelper.findField(AbstractSkeleton.class, "field_85038_e" );
                 try {
                     this.tasks.removeTask((EntityAIAttackMelee) aiAttackOnCollide.get(this));
                 } catch (Exception e) {
@@ -152,7 +152,7 @@ public abstract class AbstractSpectriteSkeleton extends AbstractSkeleton impleme
         double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entityarrow.posY;
         double d2 = target.posZ - this.posZ;
         double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
-        entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
+        entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().getId() * 4));
         this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.world.spawnEntity(entityarrow);
     }

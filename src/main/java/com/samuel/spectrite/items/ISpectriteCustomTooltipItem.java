@@ -17,7 +17,7 @@ public interface ISpectriteCustomTooltipItem extends ISpectriteItem {
        int lineCount = 0;
        boolean isLastLine = false;
        Item item = stack.getItem();
-       String unlocalizedName = item.getUnlocalizedName();
+       String unlocalizedName = item.getTranslationKey();
        String curLine;
        while (!isLastLine) {
            isLastLine = (curLine = I18n

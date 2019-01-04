@@ -20,7 +20,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
@@ -35,10 +35,10 @@ public class EntitySpectriteCreeper extends EntityCreeper implements ISpectriteM
 	public EntitySpectriteCreeper(World worldIn) {
 		super(worldIn);
 		if (timeSinceIgnitedField == null) {
-    		timeSinceIgnitedField = ReflectionHelper.findField(EntityCreeper.class, new String[] { "timeSinceIgnited", "field_70833_d" });
+    		timeSinceIgnitedField = ObfuscationReflectionHelper.findField(EntityCreeper.class, "field_70833_d");
     	}
     	if (fuseTimeField == null) {
-    		fuseTimeField = ReflectionHelper.findField(EntityCreeper.class, new String[] { "fuseTime", "field_82225_f" });
+    		fuseTimeField = ObfuscationReflectionHelper.findField(EntityCreeper.class, "field_82225_f");
     	}
     	this.experienceValue = 25;
 	}

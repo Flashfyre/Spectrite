@@ -22,7 +22,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -144,7 +144,7 @@ public class EntitySpectriteGolem extends EntityIronGolem implements ISpectriteM
 		if (id == 4)
 		{
 			if (attackTimerField == null) {
-				attackTimerField = ReflectionHelper.findField(EntityIronGolem.class, "attackTimer", "field_70855_f");
+				attackTimerField = ObfuscationReflectionHelper.findField(EntityIronGolem.class, "field_70855_f");
 			}
 			try {
 				attackTimerField.set(this, 10);

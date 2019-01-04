@@ -19,7 +19,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -71,8 +71,7 @@ public class RenderSpectriteBlaze extends RenderLiving<EntitySpectriteBlaze> {
                 if (f > 0.0F)
                 {
                 	if (renderShadow == null) {
-                		renderShadow = ReflectionHelper.findMethod(Render.class, "renderShadow", "func_76975_c",
-            				Entity.class, double.class, double.class, double.class, float.class, float.class);
+                		renderShadow = ObfuscationReflectionHelper.findMethod(Render.class, "func_76975_c", void.class, Entity.class, double.class, double.class, double.class, float.class, float.class);
                 	}
                     try {
 						renderShadow.invoke(this, entityIn, x, y, z, f, partialTicks);

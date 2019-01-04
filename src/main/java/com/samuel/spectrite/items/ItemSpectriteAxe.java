@@ -61,7 +61,7 @@ public class ItemSpectriteAxe extends ItemAxe implements ISpectriteTool, ISpectr
 		String curLine;
 		while (!isLastLine) {
 			isLastLine = (curLine = I18n
-				.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + ".l" +
+				.translateToLocal(("iteminfo." + getTranslationKey().substring(5) + ".l" +
 				++lineCount))).endsWith("@");
 			if (lineCount % 2 == 1) {
 				curLine = curLine.replace("#", String.format("%.2f", lineCount == 1 ? toolCooldown : weaponCooldown));
@@ -113,7 +113,7 @@ public class ItemSpectriteAxe extends ItemAxe implements ISpectriteTool, ISpectr
 					boolean removedByPlayer = curBlock.removedByPlayer(curState, worldIn, curPos, player, canHarvest);
 
 					if (removedByPlayer) {
-						curBlock.onBlockDestroyedByPlayer(worldIn, curPos, curState);
+						curBlock.onPlayerDestroy(worldIn, curPos, curState);
 					}
 
 					itemstack.onBlockDestroyed(worldIn, curState, curPos, player);
@@ -131,7 +131,7 @@ public class ItemSpectriteAxe extends ItemAxe implements ISpectriteTool, ISpectr
 					} else {
 						worldIn.playEvent(2001, curPos, Block.getStateId(curState));
 						if (curBlock.removedByPlayer(curState, worldIn, curPos, player, true)) {
-							curBlock.onBlockDestroyedByPlayer(worldIn, curPos, curState);
+							curBlock.onPlayerDestroy(worldIn, curPos, curState);
 						}
 
 						itemstack.onBlockDestroyed(worldIn, curState, curPos, player);

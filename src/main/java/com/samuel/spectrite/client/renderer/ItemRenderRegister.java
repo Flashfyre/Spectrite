@@ -69,6 +69,6 @@ public final class ItemRenderRegister {
 
 	public static void registerItemModel(Item item, int metadata) {
 		ModelLoader.setCustomModelResourceLocation(item, metadata,
-			new ModelResourceLocation(new ResourceLocation(Spectrite.MOD_ID, item.getUnlocalizedName(new ItemStack(item, 1, metadata)).substring(5)), "inventory"));
+			new ModelResourceLocation(new ResourceLocation(Spectrite.MOD_ID, item.getTranslationKey(new ItemStack(item, 1, metadata)).substring(5)), "inventory"));
 	}
 }

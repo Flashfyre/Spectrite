@@ -44,7 +44,7 @@ public class BlockMoltenSpectrite extends BlockFluidClassic {
 	/**
      * Called When an Entity Collided with the Block
      */
-    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
 		if (!worldIn.isRemote) {
 	    	if (state.getBlock() == ModBlocks.molten_spectrite) {

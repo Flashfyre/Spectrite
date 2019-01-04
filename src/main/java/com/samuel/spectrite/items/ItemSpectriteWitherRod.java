@@ -53,7 +53,7 @@ public class ItemSpectriteWitherRod extends ItemSpectriteSimple implements IPerf
         String curLine;
         while (!isLastLine) {
             isLastLine = (curLine = I18n
-                    .translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + ".l" +
+                    .translateToLocal(("iteminfo." + getTranslationKey().substring(5) + ".l" +
                             ++lineCount))).endsWith("@");
             if (lineCount % 2 == 1) {
                 curLine = curLine.replace("#", String.format("%.2f", lineCount == 1 ? rodCooldown : weaponCooldown));

@@ -53,9 +53,9 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -109,10 +109,10 @@ public class SpectriteGeneralEventHandler {
 
 				if (!entityItem.getItem().isEmpty() && entityItem.getItem().getItem() instanceof IPerfectSpectriteItem) {
 					if (healthField == null) {
-						healthField = ReflectionHelper.findField(EntityItem.class, "health", "field_70291_e");
+						healthField = ObfuscationReflectionHelper.findField(EntityItem.class, "field_70291_e");
 					}
 					if (immuneToFireField == null) {
-						immuneToFireField = ReflectionHelper.findField(Entity.class, "isImmuneToFire", "field_70178_ae");
+						immuneToFireField = ObfuscationReflectionHelper.findField(Entity.class, "field_70178_ae");
 					}
 					try {
 						healthField.set(entityItem, 5000);
@@ -124,10 +124,10 @@ public class SpectriteGeneralEventHandler {
 			} else if (e.getEntity() instanceof EntityTippedArrow) {
 				EntityTippedArrow arrow = (EntityTippedArrow) e.getEntity();
 				if (potionField_tippedArrow == null) {
-					potionField_tippedArrow = ReflectionHelper.findField(EntityTippedArrow.class, "potion", "field_184560_g");
+					potionField_tippedArrow = ObfuscationReflectionHelper.findField(EntityTippedArrow.class, "field_184560_g");
 				}
 				if (getArrowStackMethod == null) {
-					getArrowStackMethod = ReflectionHelper.findMethod(EntityTippedArrow.class, "getArrowStack", "func_184550_j");
+					getArrowStackMethod = ObfuscationReflectionHelper.findMethod(EntityTippedArrow.class, "func_184550_j", ItemStack.class);
 				}
 				PotionType potionType;
 				try {
@@ -171,7 +171,7 @@ public class SpectriteGeneralEventHandler {
 			} else if (e.getEntity() instanceof EntityAreaEffectCloud) {
 				EntityAreaEffectCloud entity = (EntityAreaEffectCloud) e.getEntity();
 				if (potionField_areaEffectCloud == null) {
-					potionField_areaEffectCloud = ReflectionHelper.findField(EntityAreaEffectCloud.class, new String[]{"potion", "field_184502_e"});
+					potionField_areaEffectCloud = ObfuscationReflectionHelper.findField(EntityAreaEffectCloud.class, "field_184502_e");
 				}
 				PotionType potionType;
 				try {
@@ -397,10 +397,10 @@ public class SpectriteGeneralEventHandler {
 					TileEntity te = world.getTileEntity(pos);
 					if (te.getClass() == TileEntityBeacon.class) {
 						if (primaryEffectField == null) {
-							primaryEffectField = ReflectionHelper.findField(TileEntityBeacon.class,  "primaryEffect", "field_146013_m");
-							secondaryEffectField = ReflectionHelper.findField(TileEntityBeacon.class, "secondaryEffect", "field_146010_n");
-							paymentField = ReflectionHelper.findField(TileEntityBeacon.class, "payment", "field_146011_o");
-							customNameField = ReflectionHelper.findField(TileEntityBeacon.class, "customName", "field_146008_p");
+							primaryEffectField = ObfuscationReflectionHelper.findField(TileEntityBeacon.class,  "field_146013_m");
+							secondaryEffectField = ObfuscationReflectionHelper.findField(TileEntityBeacon.class, "field_146010_n");
+							paymentField = ObfuscationReflectionHelper.findField(TileEntityBeacon.class, "field_146011_o");
+							customNameField = ObfuscationReflectionHelper.findField(TileEntityBeacon.class, "field_146008_p");
 						}
 						try {
 							Potion primaryEffect = (Potion) primaryEffectField.get(te), secondaryEffect = (Potion) secondaryEffectField.get(te);
@@ -430,10 +430,10 @@ public class SpectriteGeneralEventHandler {
 					TileEntity te = world.getTileEntity(e.getPos());
 					if (te.getClass() == TileEntityBeacon.class) {
 						if (primaryEffectField == null) {
-							primaryEffectField = ReflectionHelper.findField(TileEntityBeacon.class,  "primaryEffect", "field_146013_m");
-							secondaryEffectField = ReflectionHelper.findField(TileEntityBeacon.class, "secondaryEffect", "field_146010_n");
-							paymentField = ReflectionHelper.findField(TileEntityBeacon.class, "payment", "field_146011_o");
-							customNameField = ReflectionHelper.findField(TileEntityBeacon.class, "customName", "field_146008_p");
+							primaryEffectField = ObfuscationReflectionHelper.findField(TileEntityBeacon.class,  "field_146013_m");
+							secondaryEffectField = ObfuscationReflectionHelper.findField(TileEntityBeacon.class, "field_146010_n");
+							paymentField = ObfuscationReflectionHelper.findField(TileEntityBeacon.class, "field_146011_o");
+							customNameField = ObfuscationReflectionHelper.findField(TileEntityBeacon.class, "field_146008_p");
 						}
 						try {
 							Potion primaryEffect = (Potion) primaryEffectField.get(te), secondaryEffect = (Potion) secondaryEffectField.get(te);
@@ -485,10 +485,10 @@ public class SpectriteGeneralEventHandler {
 				if (pos.getY() == 256) {
 					TileEntity te = world.getTileEntity(beaconPos);
 					if (primaryEffectField == null) {
-						primaryEffectField = ReflectionHelper.findField(TileEntityBeacon.class,  "primaryEffect", "field_146013_m");
-						secondaryEffectField = ReflectionHelper.findField(TileEntityBeacon.class, "secondaryEffect", "field_146010_n");
-						paymentField = ReflectionHelper.findField(TileEntityBeacon.class, "payment", "field_146011_o");
-						customNameField = ReflectionHelper.findField(TileEntityBeacon.class, "customName", "field_146008_p");
+						primaryEffectField = ObfuscationReflectionHelper.findField(TileEntityBeacon.class,  "field_146013_m");
+						secondaryEffectField = ObfuscationReflectionHelper.findField(TileEntityBeacon.class, "field_146010_n");
+						paymentField = ObfuscationReflectionHelper.findField(TileEntityBeacon.class, "field_146011_o");
+						customNameField = ObfuscationReflectionHelper.findField(TileEntityBeacon.class, "field_146008_p");
 					}
 					try {
 						Potion primaryEffect = (Potion) primaryEffectField.get(te), secondaryEffect = (Potion) secondaryEffectField.get(te);
@@ -636,7 +636,7 @@ public class SpectriteGeneralEventHandler {
 						relAmplifier--;
 					}
 					if (potionEffectDurationField == null) {
-						potionEffectDurationField = ReflectionHelper.findField(PotionEffect.class, "duration", "field_76460_b");
+						potionEffectDurationField = ObfuscationReflectionHelper.findField(PotionEffect.class, "field_76460_b");
 					}
 					int newDuration = activeEffect.getDuration();
 					if (relAmplifier == 0) {

@@ -68,7 +68,7 @@ public class TileEntitySpectriteChest extends TileEntityChest {
 	public ITextComponent getDisplayName() {
 		if (blockType == null)
 			blockType = getBlockType();
-		String name = blockType.getUnlocalizedName() + ".name";
+		String name = blockType.getTranslationKey() + ".name";
 		if (((BlockSpectriteChest) blockType).isDoubleChest(world, pos)) {
 			name = name.substring(0, 5) + "large_" + name.substring(5);
 		}

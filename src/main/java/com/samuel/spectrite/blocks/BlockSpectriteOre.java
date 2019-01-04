@@ -132,7 +132,7 @@ public class BlockSpectriteOre extends BlockOre implements IMetaBlockName {
 	}
 	
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 	

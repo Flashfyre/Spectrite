@@ -38,8 +38,8 @@ public class ModBiomes {
 	@SubscribeEvent
 	public void onMissingMapping(RegistryEvent.MissingMappings<Biome> e) {
 		for (RegistryEvent.MissingMappings.Mapping<Biome> mapping : e.getAllMappings()) {
-			if ("spectritemod".equals(mapping.key.getResourceDomain())) {
-				String resourcePath =  mapping.key.getResourcePath();
+			if ("spectritemod".equals(mapping.key.getNamespace())) {
+				String resourcePath =  mapping.key.getPath();
 				if (registeredBiomes.containsKey(resourcePath)) {
 					mapping.remap((Biome) registeredBiomes.get(resourcePath));
 				}

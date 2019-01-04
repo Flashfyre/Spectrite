@@ -57,7 +57,7 @@ public class ItemSpectriteOrb extends Item implements IPerfectSpectriteItem, ISp
 		if (damage > 0) {
 			double cooldown = SpectriteConfig.items.spectriteOrbCooldown * (SpectriteHelper.isStackSpectriteEnhanced(stack) ? 0.5D : 1D);
 			double duration = SpectriteConfig.items.spectriteOrbDuration;
-			String name = getUnlocalizedName().substring(5);
+			String name = getTranslationKey().substring(5);
 			String level1 = I18n.format("iteminfo." + name + ".effect.level.1");
 			String level2 = I18n.format("iteminfo." + name + ".effect.level.2");
 			List<Integer> colours = new ArrayList<>();
@@ -81,13 +81,13 @@ public class ItemSpectriteOrb extends Item implements IPerfectSpectriteItem, ISp
 					EntityEquipmentSlot compatibleArmourSlot = EntityEquipmentSlot.values()[s + 2];
 					String compatibleArmourName;
 					if (compatibleArmourSlot == EntityEquipmentSlot.HEAD) {
-						compatibleArmourName = ModItems.spectrite_helmet.getUnlocalizedName();
+						compatibleArmourName = ModItems.spectrite_helmet.getTranslationKey();
 					} else if (compatibleArmourSlot == EntityEquipmentSlot.CHEST) {
-						compatibleArmourName = ModItems.spectrite_chestplate.getUnlocalizedName();
+						compatibleArmourName = ModItems.spectrite_chestplate.getTranslationKey();
 					} else if (compatibleArmourSlot == EntityEquipmentSlot.LEGS) {
-						compatibleArmourName = ModItems.spectrite_leggings.getUnlocalizedName();
+						compatibleArmourName = ModItems.spectrite_leggings.getTranslationKey();
 					} else {
-						compatibleArmourName = ModItems.spectrite_boots.getUnlocalizedName();
+						compatibleArmourName = ModItems.spectrite_boots.getTranslationKey();
 					}
 					compatibleArmourName = SpectriteHelper.getMultiColouredString(I18n.format(compatibleArmourName + ".name"), false);
 					lines.add(I18n.format("iteminfo." + name + ".l3", compatibleArmourName));

@@ -19,8 +19,8 @@ public class ItemSpectriteWitherPart extends ItemSpectriteSimple {
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName(stack) + "_" + (stack.getItemDamage() == 0 ? "normal" : "invulnerable");
+    public String getTranslationKey(ItemStack stack) {
+        return super.getTranslationKey(stack) + "_" + (stack.getItemDamage() == 0 ? "normal" : "invulnerable");
     }
 
     /**

@@ -154,7 +154,7 @@ public class ItemSpectriteSkull extends ItemArmor implements ISpectriteCustomToo
      * different names based on their damage or NBT.
      */
     @Override
-    public String getUnlocalizedName(ItemStack stack)
+    public String getTranslationKey(ItemStack stack)
     {
         return "item.spectrite_" + SKULL_TYPES[skullType] + "_skull";
     }

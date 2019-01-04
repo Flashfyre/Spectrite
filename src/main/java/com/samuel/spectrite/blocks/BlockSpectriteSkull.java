@@ -91,7 +91,7 @@ public class BlockSpectriteSkull extends BlockSkull {
      */
     public String getLocalizedName()
     {
-        return I18n.translateToLocal(this.getUnlocalizedName() + ".name");
+        return I18n.translateToLocal(this.getTranslationKey() + ".name");
     }
 
     @Override

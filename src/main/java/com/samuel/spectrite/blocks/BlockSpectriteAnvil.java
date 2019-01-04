@@ -89,7 +89,7 @@ public class BlockSpectriteAnvil extends BlockAnvil {
         @Override
         public ITextComponent getDisplayName()
         {
-            return new TextComponentTranslation(ModBlocks.spectrite_anvil.getUnlocalizedName() + ".name", new Object[0]);
+            return new TextComponentTranslation(ModBlocks.spectrite_anvil.getTranslationKey() + ".name", new Object[0]);
         }
 
         @Override

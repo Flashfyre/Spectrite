@@ -120,7 +120,7 @@ public class ModItems {
 
 		Items.SPAWN_EGG.addPropertyOverride(new ResourceLocation("spectrite_egg"), (s, w, e) -> {
 			ResourceLocation rl = ItemMonsterPlacer.getNamedIdFrom(s);
-			if (rl != null && Spectrite.MOD_ID.equals(rl.getResourceDomain())) {
+			if (rl != null && Spectrite.MOD_ID.equals(rl.getNamespace())) {
 				return 1.0F;
 			}
 			return 0.0F;
@@ -219,8 +219,8 @@ public class ModItems {
 	@SubscribeEvent
 	public void onMissingMapping(RegistryEvent.MissingMappings<Item> e) {
 		for (RegistryEvent.MissingMappings.Mapping<Item> mapping : e.getAllMappings()) {
-			if ("spectritemod".equals(mapping.key.getResourceDomain())) {
-				String resourcePath =  mapping.key.getResourcePath();
+			if ("spectritemod".equals(mapping.key.getNamespace())) {
+				String resourcePath =  mapping.key.getPath();
 				if (registeredItems.containsKey(resourcePath)) {
 					mapping.remap((Item) registeredItems.get(resourcePath));
 				}
@@ -230,7 +230,7 @@ public class ModItems {
 	
 	private static <T extends Item> T registerItem(IForgeRegistry<Item> registry, T item, String name)
 	{
-		item.setUnlocalizedName(name);
+		item.setTranslationKey(name);
 		item.setRegistryName(name);
 		item.setCreativeTab(CreativeTabSpectrite.INSTANCE);
 

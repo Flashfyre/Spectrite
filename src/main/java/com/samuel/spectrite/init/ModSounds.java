@@ -127,8 +127,8 @@ public class ModSounds {
 	@SubscribeEvent
 	public void onMissingMapping(RegistryEvent.MissingMappings<SoundEvent> e) {
 		for (RegistryEvent.MissingMappings.Mapping<SoundEvent> mapping : e.getAllMappings()) {
-			if ("spectritemod".equals(mapping.key.getResourceDomain())) {
-				String resourcePath =  mapping.key.getResourcePath();
+			if ("spectritemod".equals(mapping.key.getNamespace())) {
+				String resourcePath =  mapping.key.getPath();
 				if (registeredSoundEvents.containsKey(resourcePath)) {
 					mapping.remap((SoundEvent) registeredSoundEvents.get(resourcePath));
 				}

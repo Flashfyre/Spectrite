@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = Spectrite.MOD_ID, name = Spectrite.MOD_NAME, version = Spectrite.VERSION, acceptedMinecraftVersions="[1.12,1.13)", certificateFingerprint = "@FINGERPRINT@")
+@Mod(modid = Spectrite.MOD_ID, name = Spectrite.MOD_NAME, version = Spectrite.VERSION, acceptedMinecraftVersions="[1.12,1.13)", dependencies="after:forge@[14.23.5.2779,);", certificateFingerprint = "@FINGERPRINT@")
 public class Spectrite {
 	public static final String MOD_NAME = "Spectrite";
 	public static final String MOD_ID = "spectrite";

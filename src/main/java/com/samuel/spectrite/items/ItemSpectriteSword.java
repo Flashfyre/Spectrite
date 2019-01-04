@@ -58,7 +58,7 @@ public class ItemSpectriteSword extends ItemSword implements ISpectriteCustomToo
 		String curLine;
 		while (!isLastLine) {
 			isLastLine = (curLine = I18n
-				.translateToLocal(("iteminfo." + getUnlocalizedName().substring(5) + ".l" +
+				.translateToLocal(("iteminfo." + getTranslationKey().substring(5) + ".l" +
 				++lineCount))).endsWith("@");
 			if (lineCount == 1) {
 				curLine = curLine.replace("#", String.valueOf(SpectriteConfig.items.spectriteWeaponCooldown * (SpectriteHelper.isStackSpectriteEnhanced(stack) ? 0.5F : 1)));

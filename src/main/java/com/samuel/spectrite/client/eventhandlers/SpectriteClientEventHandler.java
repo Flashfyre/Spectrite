@@ -30,10 +30,10 @@ import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -81,7 +81,7 @@ public class SpectriteClientEventHandler implements IResourceManagerReloadListen
 		boolean hittingBlock = false;
 
 		if (isHittingBlock == null) {
-			isHittingBlock = ReflectionHelper.findField(PlayerControllerMP.class, "isHittingBlock", "field_78778_j");
+			isHittingBlock = ObfuscationReflectionHelper.findField(PlayerControllerMP.class,  "field_78778_j");
 		}
 
 		try {
@@ -94,7 +94,7 @@ public class SpectriteClientEventHandler implements IResourceManagerReloadListen
 			if (stack != null && stack.getItem() instanceof ISpectriteTool && !player.isSneaking()
 				&& player.getCooldownTracker().getCooldown((stack.getItem()), 0f) == 0f && !player.isSneaking()) {
 				if (currentBlock == null) {
-					currentBlock = ReflectionHelper.findField(PlayerControllerMP.class, "currentBlock", "field_178895_c");
+					currentBlock = ObfuscationReflectionHelper.findField(PlayerControllerMP.class, "field_178895_c");
 				}
 				BlockPos currentBlockPos = null;
 				try {
@@ -119,7 +119,7 @@ public class SpectriteClientEventHandler implements IResourceManagerReloadListen
 		double d2 = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ) * partialTicks;
 
 		if (blockDamageMP == null) {
-			blockDamageMP = ReflectionHelper.findField(PlayerControllerMP.class, "curBlockDamageMP", "field_78770_f");
+			blockDamageMP = ObfuscationReflectionHelper.findField(PlayerControllerMP.class, "field_78770_f");
 		}
 
 		float blockDamage = -1f;

@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Field;
@@ -34,7 +34,7 @@ public class ParticleSpectriteExplosionLarge extends ParticleExplosionLarge {
         this.textureManager = textureManagerIn;
 
         if (lifeTimeField == null) {
-            lifeTimeField = ReflectionHelper.findField(ParticleExplosionLarge.class, "lifeTime", "field_70584_aq");
+            lifeTimeField = ObfuscationReflectionHelper.findField(ParticleExplosionLarge.class, "field_70584_aq");
         }
         try {
             this.lifeTime = (int) lifeTimeField.get(this);

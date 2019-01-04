@@ -90,8 +90,8 @@ public class ModelMoltenSpectrite implements IModel
         @Override
 		public boolean accepts(ResourceLocation modelLocation)
         {
-            return modelLocation.getResourceDomain().equals(Spectrite.MOD_ID) && (
-                modelLocation.getResourcePath().equals("molten_spectrite"));
+            return modelLocation.getNamespace().equals(Spectrite.MOD_ID) && (
+                modelLocation.getPath().equals("molten_spectrite"));
         }
 
         @Override
@@ -262,7 +262,7 @@ public class ModelMoltenSpectrite implements IModel
 
                 for(int i = 0; i < 4; i++)
                 {
-                    side = EnumFacing.getHorizontal((5 - i) % 4);
+                    side = EnumFacing.byHorizontalIndex((5 - i) % 4);
                     BakedQuad q[] = new BakedQuad[2];
 
                     for(int k = 0; k < 2; k++)
@@ -333,7 +333,7 @@ public class ModelMoltenSpectrite implements IModel
                     break;
                 }
                 case NORMAL:
-                    builder.put(e, side.getFrontOffsetX(), side.getFrontOffsetY(), side.getFrontOffsetZ(), 0f);
+                    builder.put(e, side.getXOffset(), side.getYOffset(), side.getZOffset(), 0f);
                     break;
                 default:
                     builder.put(e);

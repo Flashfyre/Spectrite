@@ -24,7 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.StringUtils;
@@ -56,9 +56,9 @@ public class ContainerSpectriteRepair extends ContainerRepair {
     {
         super(playerInventory, worldIn, blockPosIn, player);
         if (this.outputSlot == null) {
-            this.outputSlot = ReflectionHelper.findField(ContainerRepair.class, "outputSlot", "field_82852_f");
-            this.inputSlots = ReflectionHelper.findField(ContainerRepair.class, "inputSlots", "field_82853_g");
-            this.repairedItemName = ReflectionHelper.findField(ContainerRepair.class, "repairedItemName", "field_82857_m");
+            this.outputSlot = ObfuscationReflectionHelper.findField(ContainerRepair.class, "field_82852_f");
+            this.inputSlots = ObfuscationReflectionHelper.findField(ContainerRepair.class, "field_82853_g");
+            this.repairedItemName = ObfuscationReflectionHelper.findField(ContainerRepair.class, "field_82857_m");
         }
         IInventory outputSlot = null;
         try {
@@ -263,7 +263,7 @@ public class ContainerSpectriteRepair extends ContainerRepair {
             if (!itemstack2.isEmpty())
             {
                 if (!net.minecraftforge.common.ForgeHooks.onAnvilChange(this, itemstack, itemstack2, outputSlot, repairedItemName, j)) return;
-                flag = itemstack2.getItem() == Items.ENCHANTED_BOOK && !ItemEnchantedBook.getEnchantments(itemstack2).hasNoTags();
+                flag = itemstack2.getItem() == Items.ENCHANTED_BOOK && !ItemEnchantedBook.getEnchantments(itemstack2).isEmpty();
 
                 if (this.isOrbMode()) {
                     Item stack1Item = itemstack.getItem();
@@ -354,7 +354,7 @@ public class ContainerSpectriteRepair extends ContainerRepair {
                 }
                 else if (itemstack1.isItemStackDamageable() && itemstack1.getItem().getIsRepairable(itemstack, itemstack2))
                 {
-                    flag = itemstack2.getItem() == Items.ENCHANTED_BOOK && !ItemEnchantedBook.getEnchantments(itemstack2).hasNoTags();
+                    flag = itemstack2.getItem() == Items.ENCHANTED_BOOK && !ItemEnchantedBook.getEnchantments(itemstack2).isEmpty();
                     int l2 = Math.min(itemstack1.getItemDamage(), itemstack1.getMaxDamage() / 4);
 
                     if (l2 <= 0)

@@ -39,8 +39,8 @@ public class ModEntities {
 	@SubscribeEvent
 	public void onMissingMapping(RegistryEvent.MissingMappings<EntityEntry> e) {
 		for (RegistryEvent.MissingMappings.Mapping<EntityEntry> mapping : e.getAllMappings()) {
-			if ("spectritemod".equals(mapping.key.getResourceDomain())) {
-				String resourcePath =  mapping.key.getResourcePath();
+			if ("spectritemod".equals(mapping.key.getNamespace())) {
+				String resourcePath =  mapping.key.getPath();
 				if (registeredEntities.containsKey(resourcePath)) {
 					mapping.remap((EntityEntry) registeredEntities.get(resourcePath));
 				}

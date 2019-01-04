@@ -144,8 +144,8 @@ public class ModBlocks {
 	@SubscribeEvent
 	public void onMissingBlockMapping(RegistryEvent.MissingMappings<Block> e) {
 		for (RegistryEvent.MissingMappings.Mapping<Block> mapping : e.getAllMappings()) {
-			if ("spectritemod".equals(mapping.key.getResourceDomain())) {
-				String resourcePath =  mapping.key.getResourcePath();
+			if ("spectritemod".equals(mapping.key.getNamespace())) {
+				String resourcePath =  mapping.key.getPath();
 				if (registeredBlocks.containsKey(resourcePath)) {
 					mapping.remap((Block) registeredBlocks.get(resourcePath));
 				}
@@ -156,8 +156,8 @@ public class ModBlocks {
 	@SubscribeEvent
 	public void onMissingItemBlockMapping(RegistryEvent.MissingMappings<Item> e) {
 		for (RegistryEvent.MissingMappings.Mapping<Item> mapping : e.getAllMappings()) {
-			if ("spectritemod".equals(mapping.key.getResourceDomain())) {
-				String resourcePath =  mapping.key.getResourcePath();
+			if ("spectritemod".equals(mapping.key.getNamespace())) {
+				String resourcePath =  mapping.key.getPath();
 				if (registeredItemBlocks.containsKey(resourcePath)) {
 					mapping.remap((Item) registeredItemBlocks.get(resourcePath));
 				}
@@ -167,7 +167,7 @@ public class ModBlocks {
 	
 	private static void registerBlock(IForgeRegistry<Block> registry, Block block, ItemBlock item, String name, boolean addToCreativeTab)
 	{
-		block.setUnlocalizedName(name);
+		block.setTranslationKey(name);
 		block.setRegistryName(name);
 
 		registry.register(block);
@@ -187,9 +187,9 @@ public class ModBlocks {
 	
 	private static void registerSlabBlock(IForgeRegistry<Block> registry, BlockSlab halfSlab, BlockSlab doubleSlab, String name)
 	{
-		halfSlab.setUnlocalizedName(name + "_half");
+		halfSlab.setTranslationKey(name + "_half");
 		halfSlab.setRegistryName(name + "_half");
-		doubleSlab.setUnlocalizedName(name + "_double");
+		doubleSlab.setTranslationKey(name + "_double");
 		doubleSlab.setRegistryName(name + "_double");
 
 		registry.register(halfSlab);
