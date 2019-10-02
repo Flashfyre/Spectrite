@@ -1,7 +1,7 @@
 # Spectrite Mod
 
 ## Description
-This is a Minecraft Forge mod that adds a new and extremely rare mineral to world generation in all 3 default dimensions. Hold on! This isn't just another boring mineral mod! This mineral is capable of crafting far better items than diamond such as a pickaxe that can mine 9 blocks at once and an armour set that, with all the pieces, will make you practically invincible. Sound game-breaking? Not really, Spectrite is really hard to come by so it would usually take a very long time to acquire enough to craft items with it, unless of course you decide to make it more common in the configuration. This mod, aside from providing the (hard-to-reach) means of making you extremely overpowered, fits right into Vanilla gameplay, so I can recommend using it no matter what mods you use. To be honest, I (the developer) can't even play the game without it anymore.
+This is a Minecraft Forge mod that adds a new and extremely rare mineral to world generation in all 3 default dimensions. Hold on! This isn't just another boring mineral mod! This mineral is capable of crafting far better items than diamond such as a pickaxe that can mine 9 blocks at once and an armour set that, with all the pieces, will make you practically invincible. Spectrite items and mobs are far superior to their vanilla counterparts but, since you'll hardly ever encounter them, they generally won't throw off the balance of the game too much. If you find that they do, you can always adjust the configurations to suit your preferences.
 
 ## Finding Spectrite Ore
 Spectrite Ore is intended to be very rare, even though it is the only ore you can find it in any of the 3 dimensions. Unlike other ores, the size of a vein is chosen by taking a random number between the minimum and maximum vein sizes, taking another random number between 1 and the first random number, and repeating this a third time. This means that there is a very high chance of getting a vein with the minimum size and a very low chance of getting a vein with the maximum size. The chances of a Spectrite Ore vein generating, by default, are different for each dimension:
@@ -332,7 +332,7 @@ X = Spectrite Gem;
 Y = Spectrite Rod
 
 ### Diamond Spectrite Sword
-A ridiculously powerful sword made entirely of Spectrite. This sword inflicts dispersed Spectrite Damage II with a cooldown. Neither allies nor blocks are affected by this damage. There is a cooldown period (default 3.5s) for hitting an entity with Spectrite Damage and no Spectrite Damage will be applied if the sword is used before this cooldown has finished.
+A ridiculously powerful sword made of Spectrite with a diamond handle. This sword inflicts dispersed Spectrite Damage II with a cooldown. Neither allies nor blocks are affected by this damage. There is a cooldown period (default 3.5s) for hitting an entity with Spectrite Damage and no Spectrite Damage will be applied if the sword is used before this cooldown has finished.
 
 Crafting Recipes:
 
@@ -368,10 +368,28 @@ A special sword made entirely of Spectrite. This sword inflicts dispersed Spectr
 
 Superchromaticity Effect: Cut cooldown in half
 
-### Spectrite Arrow
-An arrow made of Spectrite. On collision, they explode with a similar Spectrite Damage effect to a Spectrite Sword, or a Spectrite Legend Sword effect for critical arrows. This effect can also be configured to be replaced with an ordinary explosion (damages terrain and self/allies), or to keep the Spectrite Damage effect while also adding an explosion. These arrows are extremely expensive to craft, therefore it is recommended they only be used with Spectrite bows with the infinity enchantment. These arrows can be fired from an ordinary bow, but they will do heavy damage to it and a fully repaired bow without unbreaking will be destroyed after just 4 Spectrite Arrows. Spectrite Bows are able to fire these arrows while taking significantly less damage.
+### Diamond Spectrite Arrow
+An arrow made of Spectrite with a diamond shaft. On collision, they will inflict dispersed Spectrite Damage II. The collision effect can also be configured to be replaced with an ordinary explosion (damages terrain and self/allies), or to keep the Spectrite Damage effect while also adding an explosion. These arrows are very expensive to craft, therefore it is recommended they only be used with Spectrite Bows with the infinity enchantment. These arrows can be fired from an ordinary bow, but they will do heavy damage to the bow. Spectrite Bows and Diamond Spectrite Bows are able to fire these arrows while taking significantly less damage.
 
-Crafting Recipe:
+Crafting Recipe (x8):
+
+-　X　-
+
+-　Y　-
+
+-　Z　-
+
+
+X = Spectrite Gem;
+Y = Diamond Rod;
+Z = Feather
+
+### Spectrite Arrow
+An arrow made entirely of Spectrite. On collision, they will inflict dispersed Spectrite Damage III (or IV if enhanced with Superchromaticity). The collision effect can also be configured to be replaced with an ordinary explosion (damages terrain and self/allies), or to keep the Spectrite Damage effect while also adding an explosion. These arrows are very expensive to craft, therefore it is recommended they only be used with Spectrite Bows with the infinity enchantment. These arrows can be fired from an ordinary bow, but they will do heavy damage to the bow. Spectrite Bows and Diamond Spectrite Bows are able to fire these arrows while taking significantly less damage.
+
+Superchromaticity Effect: Spectrite Damage level increased by 1
+
+Crafting Recipe (x8):
 
 -　X　-
 
@@ -385,7 +403,7 @@ Y = Spectrite Rod;
 Z = Feather
 
 ### Diamond Spectrite Bow
-A bow made of diamond and Spectrite. It is more durable than a regular bow, but its main advantage is that it takes 90% less damage when shooting Spectrite Arrows.
+A bow made of diamond and Spectrite. It is more durable than a regular bow, but its main advantage is that it takes 90% less damage when shooting Spectrite Arrows and Diamond Spectrite Arrows.
 
 Crafting Recipe:
 
@@ -401,7 +419,7 @@ Y = String;
 Z = Spectrite Rod
 
 ### Spectrite Bow
-A bow made entirely of Spectrite. It is even more durable than a Spectrite Bow and takes 66% less damage than a Spectrite Bow when shooting Spectrite Arrows.
+A bow made entirely of Spectrite. It is even more durable than a Spectrite Bow and takes 66% less damage than a Spectrite Bow when shooting Spectrite Arrows and Diamond Spectrite Arrows.
 
 Superchromaticity Effect: Spectrite Arrow cooldown is cut in half
 
@@ -443,7 +461,7 @@ X　-　X
 X = Spectrite Gem
 
 ### Diamond Spectrite Shield
-A shield made of diamond and Spectrite. It is more durable than a regular shield, but its main advantage is that it defends much better against Spectrite Weapons, decreasing received Spectrite Damage level by 1 when blocking.
+A shield made of diamond and Spectrite. It is more durable than a regular shield, but its main advantage is that it defends much better against Spectrite Weapons, decreasing received Spectrite Damage levels by 1 when blocking.
 
 Crafting Recipe:
 
@@ -458,7 +476,7 @@ X = Diamond;
 Y = Spectrite Block
 
 ### Spectrite Shield
-A shield made entirely of Spectrite. It is even more durable than a Spectrite Shield and defends even better against Spectrite Weapons, decreasing received Spectrite Damage level by 2 when blocking.
+A shield made entirely of Spectrite. It is even more durable than a Spectrite Shield and defends even better against Spectrite Weapons, decreasing received Spectrite Damage levels by 2 when blocking.
 
 Superchromaticity Effect: Increased Spectrite Damage levels blocked by 1
 
@@ -649,6 +667,22 @@ X = Invulnerable Spectrite Wither Skull;
 Y = Invulnerable Spectrite Wither Torso;
 Z = Invulnerable Spectrite Wither Tail
 
+### Spectrite Crystal
+An Ender Crystal made with Spectrite Glass. Like a regular Ender Crystal, it may only be placed in bedrock or obsidian. Any mob that spawns in close proximity to a placed Spectrite Crystal (default 32 block radius) has a significantly higher chance of spawning as a Spectrite mob (default 0.1% -> 1%). As you might expect, the explosion that results from breaking one of these is much more intense than that of a regular Ender Crystal and you probably don't want to be nearby if one does explode.
+
+Crafting Recipe:
+
+X　X　X
+
+X　Y　X
+
+X　Z　X
+
+
+X = Spectrite Glass;
+Y = Ender Eye;
+Z = Ghast Tear
+
 ### Bucket of Molten Spectrite
 A bucket of deadly Molten Spectrite. Its only practical use is as a last-resort weapon since it cannot be used as a fuel source since it would melt its container. What? You want to know how the bucket can hold it? Well that's obviously becau
 
@@ -678,9 +712,6 @@ An enderman made of Spectrite. It has 2.5x the health of a regular enderman and 
 
 ### Spectrite Wither
 A wither made of Spectrite. It has 2.5x the health of a regular wither and its skulls are much more powerful, adding Spectrite Damage and, if invulnerable, lingering clouds of Spectrite Damage. If on normal difficulty or higher, it will occassionally use a special attack where it rises and spins, firing skulls diagonally downward in all directions. After enough damage on hard mode, it will do 3 fast spins instead of 1 slow one. Upon being defeated, he drops a Spectrite Star, a Spectrite Wither Skull, a Spectrite Wither Torso, and a Spectrite Wither Tail.
-
-## Spectrite Skeleton Bosses
-On rare occassions, a Spectrite Skeleton or Spectrite Wither Skeleton, marked with a hue-rotating crown icon above its head, may spawn with full Spectrite Armour. Spectrite Skeletons will also be guaranteed a Spectrite Bow, while Spectrite Wither Skeletons will have a guaranteed Spectrite Legend Blade. Depending on the difficulty mode, the mob's armour and/or weapon may also be enchanted with Superchromaticity and have Spectrite Orb effects on the armour. These bosses can be very hard to kill due to their high rate of healing and high damage, so it is recommended to avoid them until you have a Spectrite Sword (at the very least) along with full Spectrite Armour.
 
 ## Enchantments
 
@@ -747,9 +778,6 @@ Spectrite Ore as found in The End
 ![New chests!](/screenshots/4.png?raw=true "New chests!")
 New chests!
 **(Edit: Iron, Gold, and Diamond chests have been removed in favour of using the Iron Chests mod version instead)**
-
-![A Spectrite Boss mob](/screenshots/5.png?raw=true "A Spectrite Boss mob")
-A Spectrite Boss mob
 
 ![Playing alone and can't beat the Ender Dragon? Time to level the playing field!](/screenshots/6.png?raw=true "Playing alone and can't beat the Ender Dragon? Time to level the playing field!")
 Playing alone and can't beat the Ender Dragon? Time to level the playing field!
